@@ -3,29 +3,29 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		3641C73F234CCEC30058CF26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3641C73E234CCEC30058CF26 /* AppDelegate.swift */; };
-		3641C741234CCEC30058CF26 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3641C740234CCEC30058CF26 /* SceneDelegate.swift */; };
-		3641C743234CCEC30058CF26 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3641C742234CCEC30058CF26 /* ViewController.swift */; };
 		3641C746234CCEC30058CF26 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3641C744234CCEC30058CF26 /* Main.storyboard */; };
 		3641C749234CCEC30058CF26 /* Fun2Order.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3641C747234CCEC30058CF26 /* Fun2Order.xcdatamodeld */; };
 		3641C74B234CCEC40058CF26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3641C74A234CCEC40058CF26 /* Assets.xcassets */; };
 		3641C74E234CCEC40058CF26 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3641C74C234CCEC40058CF26 /* LaunchScreen.storyboard */; };
+		3641C757234CD1620058CF26 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3641C756234CD1620058CF26 /* SceneDelegate.swift */; };
+		3641C759234D63280058CF26 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3641C758234D63280058CF26 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3641C73B234CCEC30058CF26 /* Fun2Order.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fun2Order.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3641C73E234CCEC30058CF26 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3641C740234CCEC30058CF26 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		3641C742234CCEC30058CF26 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		3641C745234CCEC30058CF26 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3641C748234CCEC30058CF26 /* Fun2Order.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Fun2Order.xcdatamodel; sourceTree = "<group>"; };
 		3641C74A234CCEC40058CF26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3641C74D234CCEC40058CF26 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3641C74F234CCEC40058CF26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3641C756234CD1620058CF26 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		3641C758234D63280058CF26 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +46,7 @@
 				3641C73C234CCEC30058CF26 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		3641C73C234CCEC30058CF26 /* Products */ = {
 			isa = PBXGroup;
@@ -58,14 +59,14 @@
 		3641C73D234CCEC30058CF26 /* Fun2Order */ = {
 			isa = PBXGroup;
 			children = (
+				3641C756234CD1620058CF26 /* SceneDelegate.swift */,
 				3641C73E234CCEC30058CF26 /* AppDelegate.swift */,
-				3641C740234CCEC30058CF26 /* SceneDelegate.swift */,
-				3641C742234CCEC30058CF26 /* ViewController.swift */,
 				3641C744234CCEC30058CF26 /* Main.storyboard */,
 				3641C74A234CCEC40058CF26 /* Assets.xcassets */,
 				3641C74C234CCEC40058CF26 /* LaunchScreen.storyboard */,
 				3641C74F234CCEC40058CF26 /* Info.plist */,
 				3641C747234CCEC30058CF26 /* Fun2Order.xcdatamodeld */,
+				3641C758234D63280058CF26 /* HomeViewController.swift */,
 			);
 			path = Fun2Order;
 			sourceTree = "<group>";
@@ -106,7 +107,7 @@
 				};
 			};
 			buildConfigurationList = 3641C736234CCEC30058CF26 /* Build configuration list for PBXProject "Fun2Order" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -141,10 +142,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3641C743234CCEC30058CF26 /* ViewController.swift in Sources */,
 				3641C749234CCEC30058CF26 /* Fun2Order.xcdatamodeld in Sources */,
 				3641C73F234CCEC30058CF26 /* AppDelegate.swift in Sources */,
-				3641C741234CCEC30058CF26 /* SceneDelegate.swift in Sources */,
+				3641C757234CD1620058CF26 /* SceneDelegate.swift in Sources */,
+				3641C759234D63280058CF26 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +292,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -298,7 +300,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = TeamPlus.Fun2Order;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -309,6 +311,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -316,7 +319,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = TeamPlus.Fun2Order;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
