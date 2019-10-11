@@ -4,13 +4,13 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
         <scene sceneID="0wm-cz-WXk">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="CZr-1a-cQ1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController id="myY-7K-WVh" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yvh-aR-Y2Y">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -20,58 +20,73 @@
                         <segue destination="Vrc-hP-5Fm" kind="relationship" relationship="rootViewController" id="Iwl-XO-YEo"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CZr-1a-cQ1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-826" y="-82"/>
         </scene>
         <!--Home-->
-        <scene sceneID="4db-lp-3sH">
+        <scene sceneID="SWo-1a-eq6">
             <objects>
-                <tableViewController id="Akh-U9-m45" customClass="HomeViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="lng-1y-Rnt">
+                <viewController title="Home" id="lhU-FT-xtp" customClass="HomeViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pil-sS-cp5">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P5F-Pv-Ibf" customClass="FSPagerView" customModule="Fun2Order" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="88" width="414" height="293"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="P5F-Pv-Ibf" secondAttribute="height" multiplier="414:293" id="WZt-b9-cnl"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isInfinite" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aVt-MN-yk4" customClass="FSPageControl" customModule="Fun2Order" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="327" width="414" height="28"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.40000000000000002" alpha="0.40999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="siN-1A-jcC">
-                                <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="siN-1A-jcC" id="SbG-Gk-iay">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="Akh-U9-m45" id="Lyt-bE-c1g"/>
-                            <outlet property="delegate" destination="Akh-U9-m45" id="z5p-lZ-JJL"/>
-                        </connections>
-                    </tableView>
-                    <tabBarItem key="tabBarItem" title="Home" id="oY8-cF-jF4" userLabel="Home"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ba7-Hs-E7e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                        <constraints>
+                            <constraint firstItem="P5F-Pv-Ibf" firstAttribute="leading" secondItem="qWc-St-5Ko" secondAttribute="leading" id="B06-xL-aHN"/>
+                            <constraint firstItem="P5F-Pv-Ibf" firstAttribute="top" secondItem="qWc-St-5Ko" secondAttribute="top" id="bMA-Mc-3g8"/>
+                            <constraint firstItem="P5F-Pv-Ibf" firstAttribute="trailing" secondItem="qWc-St-5Ko" secondAttribute="trailing" id="ygC-HX-NJ0"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="qWc-St-5Ko"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Home" image="TabBar_Home" selectedImage="TabBar_Home" id="soO-e0-16j"/>
+                    <connections>
+                        <outlet property="pageControl" destination="aVt-MN-yk4" id="8eV-8W-ubR"/>
+                        <outlet property="pagerView" destination="P5F-Pv-Ibf" id="TFl-q2-Tgo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LGv-8t-tZh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="759" y="-424"/>
+            <point key="canvasLocation" x="763.768115942029" y="-461.38392857142856"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Home-->
         <scene sceneID="ape-v2-BcT">
             <objects>
                 <tabBarController id="Vrc-hP-5Fm" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="Xbp-aj-bCG"/>
+                    <navigationItem key="navigationItem" title="Home" id="Xbp-aj-bCG"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="1TV-3u-7ar">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" red="0.20000000000000001" green="0.80392156862745101" blue="0.11764705882352941" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                        <color key="selectedImageTintColor" red="0.20000000000000001" green="0.80392156862745101" blue="0.11764705882352941" alpha="0.84705882352941175" colorSpace="calibratedRGB"/>
                     </tabBar>
                     <connections>
-                        <segue destination="Akh-U9-m45" kind="relationship" relationship="viewControllers" id="yxd-m9-9I3"/>
-                        <segue destination="xqA-34-jxq" kind="relationship" relationship="viewControllers" id="8rb-jS-xL4"/>
+                        <segue destination="lhU-FT-xtp" kind="relationship" relationship="viewControllers" id="AVp-gP-UWj"/>
+                        <segue destination="xqA-34-jxq" kind="relationship" relationship="viewControllers" id="Npl-cU-VvA"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KUe-e4-efo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-55" y="-82"/>
         </scene>
-        <!--Favorite-->
+        <!--Item-->
         <scene sceneID="NdE-Cm-HtG">
             <objects>
                 <tableViewController id="xqA-34-jxq" sceneMemberID="viewController">
@@ -94,11 +109,15 @@
                             <outlet property="delegate" destination="xqA-34-jxq" id="1UY-uA-WEB"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Favorite" id="a6w-QE-UMX" userLabel="Favorite"/>
+                    <tabBarItem key="tabBarItem" title="Item" image="TabBar_Favorite" selectedImage="TabBar_Favorite" id="a6w-QE-UMX" userLabel="Favorite"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fwu-x6-vpZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="765" y="256"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="TabBar_Favorite" width="25" height="25"/>
+        <image name="TabBar_Home" width="25" height="25"/>
+    </resources>
 </document>
