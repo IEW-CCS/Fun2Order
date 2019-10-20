@@ -7,20 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3614E0E62358A8DE00D23BA6 /* CategorySectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3614E0E52358A8DE00D23BA6 /* CategorySectionView.swift */; };
+		3614E0E92358A9D900D23BA6 /* CategorySectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3614E0E82358A9D900D23BA6 /* CategorySectionView.xib */; };
+		36159C052354386900664D75 /* BrandCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36159C032354386900664D75 /* BrandCollectionViewCell.swift */; };
+		36159C062354386900664D75 /* BrandCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36159C042354386900664D75 /* BrandCollectionViewCell.xib */; };
+		36159C0C2354B9F400664D75 /* Icon_Favorite_Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 36159C0B2354B9F400664D75 /* Icon_Favorite_Button.png */; };
+		36159C102354BEBA00664D75 /* 迷克夏@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36159C0D2354BEBA00664D75 /* 迷克夏@2x.jpg */; };
+		36159C112354BEBA00664D75 /* 迷克夏@3x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36159C0E2354BEBA00664D75 /* 迷克夏@3x.jpg */; };
+		36159C122354BEBA00664D75 /* 迷克夏.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36159C0F2354BEBA00664D75 /* 迷克夏.jpg */; };
+		36159C142355B3D500664D75 /* CommonStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36159C132355B3D500664D75 /* CommonStruct.swift */; };
+		36159C162355E5ED00664D75 /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36159C152355E5ED00664D75 /* GlobalConstants.swift */; };
+		36159C1823569D7300664D75 /* ProductDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36159C1723569D7300664D75 /* ProductDetailTableViewController.swift */; };
 		362B9102234F27110079A108 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362B9101234F27110079A108 /* HomeViewController.swift */; };
+		362C481E235B48950010C845 /* Add_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 362C481D235B48950010C845 /* Add_Icon.png */; };
+		362C4821235B56550010C845 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362C481F235B56550010C845 /* RecipeCell.swift */; };
+		362C4822235B56550010C845 /* RecipeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 362C4820235B56550010C845 /* RecipeCell.xib */; };
+		362C4824235B596A0010C845 /* RecipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362C4823235B596A0010C845 /* RecipeTableViewController.swift */; };
+		362C4829235C71040010C845 /* QuantityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362C4827235C71040010C845 /* QuantityCell.swift */; };
+		362C482A235C71040010C845 /* QuantityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 362C4828235C71040010C845 /* QuantityCell.xib */; };
+		362C482C235C75810010C845 /* Icon_Cup.png in Resources */ = {isa = PBXBuildFile; fileRef = 362C482B235C75810010C845 /* Icon_Cup.png */; };
+		362C482E235C8CDC0010C845 /* Icon_Favorite3.png in Resources */ = {isa = PBXBuildFile; fileRef = 362C482D235C8CDC0010C845 /* Icon_Favorite3.png */; };
+		362C4830235C8F360010C845 /* Icon_Cart_Red.png in Resources */ = {isa = PBXBuildFile; fileRef = 362C482F235C8F360010C845 /* Icon_Cart_Red.png */; };
+		362C4833235C8F560010C845 /* BasicButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362C4831235C8F560010C845 /* BasicButtonCell.swift */; };
+		362C4834235C8F560010C845 /* BasicButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 362C4832235C8F560010C845 /* BasicButtonCell.xib */; };
 		3641C73F234CCEC30058CF26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3641C73E234CCEC30058CF26 /* AppDelegate.swift */; };
 		3641C746234CCEC30058CF26 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3641C744234CCEC30058CF26 /* Main.storyboard */; };
 		3641C749234CCEC30058CF26 /* Fun2Order.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3641C747234CCEC30058CF26 /* Fun2Order.xcdatamodeld */; };
 		3641C74B234CCEC40058CF26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3641C74A234CCEC40058CF26 /* Assets.xcassets */; };
 		3641C74E234CCEC40058CF26 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3641C74C234CCEC40058CF26 /* LaunchScreen.storyboard */; };
 		3641C757234CD1620058CF26 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3641C756234CD1620058CF26 /* SceneDelegate.swift */; };
-		3641C764234DD3360058CF26 /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3641C75D234DD3360058CF26 /* 2.jpg */; };
-		3641C765234DD3360058CF26 /* 7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3641C75E234DD3360058CF26 /* 7.jpg */; };
-		3641C766234DD3360058CF26 /* 6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3641C75F234DD3360058CF26 /* 6.jpg */; };
-		3641C767234DD3360058CF26 /* 5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3641C760234DD3360058CF26 /* 5.jpg */; };
-		3641C768234DD3360058CF26 /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3641C761234DD3360058CF26 /* 3.jpg */; };
-		3641C769234DD3360058CF26 /* 4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3641C762234DD3360058CF26 /* 4.jpg */; };
-		3641C76A234DD3370058CF26 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3641C763234DD3360058CF26 /* 1.jpg */; };
+		364F120F2358379100988937 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364F120E2358379100988937 /* Checkbox.swift */; };
+		364F1212235839AF00988937 /* ProductBriefCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364F1210235839AF00988937 /* ProductBriefCell.swift */; };
+		364F1213235839AF00988937 /* ProductBriefCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 364F1211235839AF00988937 /* ProductBriefCell.xib */; };
 		366E126523502B9100BFFF45 /* FSPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E125C23502B9100BFFF45 /* FSPageControl.swift */; };
 		366E126623502B9100BFFF45 /* FSPagerViewObjcCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = 366E125D23502B9100BFFF45 /* FSPagerViewObjcCompat.m */; };
 		366E126723502B9100BFFF45 /* FSPagerViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E125E23502B9100BFFF45 /* FSPagerViewCell.swift */; };
@@ -29,10 +47,129 @@
 		366E126A23502B9100BFFF45 /* FSPagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E126223502B9100BFFF45 /* FSPagerView.swift */; };
 		366E126B23502B9100BFFF45 /* FSPageViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E126323502B9100BFFF45 /* FSPageViewLayout.swift */; };
 		366E126C23502B9100BFFF45 /* FSPageViewTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E126423502B9100BFFF45 /* FSPageViewTransformer.swift */; };
+		36D583842352DB7F00AEB84F /* BannerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D583832352DB7F00AEB84F /* BannerDetailViewController.swift */; };
+		36D583862352FCE000AEB84F /* 8.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583852352FCE000AEB84F /* 8.png */; };
+		36D5838A2353011000AEB84F /* SelectStoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D583882353011000AEB84F /* SelectStoreCell.swift */; };
+		36D5838B2353011000AEB84F /* SelectStoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36D583892353011000AEB84F /* SelectStoreCell.xib */; };
+		36D5838D23533D1D00AEB84F /* FavoriteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D5838C23533D1D00AEB84F /* FavoriteTableViewController.swift */; };
+		36D583952353455200AEB84F /* 5.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D5838E2353455100AEB84F /* 5.png */; };
+		36D583972353455200AEB84F /* 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583902353455100AEB84F /* 3.png */; };
+		36D583982353455200AEB84F /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583912353455100AEB84F /* 1.png */; };
+		36D5839B2353455200AEB84F /* 6.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583942353455100AEB84F /* 6.png */; };
+		36D5839D2353466800AEB84F /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D5839C2353466800AEB84F /* 2.png */; };
+		36D583A023534BDA00AEB84F /* 4.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D5839E23534BD900AEB84F /* 4.png */; };
+		36D583A123534BDA00AEB84F /* 7.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D5839F23534BD900AEB84F /* 7.png */; };
+		36D583A42353599D00AEB84F /* FavoriteStoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D583A22353599D00AEB84F /* FavoriteStoreCell.swift */; };
+		36D583A52353599D00AEB84F /* FavoriteStoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36D583A32353599D00AEB84F /* FavoriteStoreCell.xib */; };
+		36D583A723535DE300AEB84F /* Fun2Order_AppStore_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583A623535DE300AEB84F /* Fun2Order_AppStore_Icon.png */; };
+		36D583A92354038E00AEB84F /* BrandListCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D583A82354038E00AEB84F /* BrandListCollectionViewController.swift */; };
+		36D583CD2354151500AEB84F /* 自在軒@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583AC2354151300AEB84F /* 自在軒@3x.png */; };
+		36D583CE2354151500AEB84F /* 公館手作@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583AD2354151300AEB84F /* 公館手作@2x.jpg */; };
+		36D583CF2354151500AEB84F /* 紅太陽@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583AE2354151300AEB84F /* 紅太陽@3x.png */; };
+		36D583D02354151500AEB84F /* 紅太陽@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583AF2354151300AEB84F /* 紅太陽@2x.png */; };
+		36D583D12354151500AEB84F /* 柚豆@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583B02354151300AEB84F /* 柚豆@2x.jpg */; };
+		36D583D22354151500AEB84F /* 丸作@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583B12354151300AEB84F /* 丸作@2x.jpg */; };
+		36D583D32354151500AEB84F /* 五十嵐@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583B22354151300AEB84F /* 五十嵐@3x.png */; };
+		36D583D42354151500AEB84F /* 上宇林@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583B32354151400AEB84F /* 上宇林@2x.jpg */; };
+		36D583D52354151500AEB84F /* 圓石@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583B42354151400AEB84F /* 圓石@2x.jpg */; };
+		36D583D62354151500AEB84F /* Teas原味.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583B52354151400AEB84F /* Teas原味.jpg */; };
+		36D583D72354151500AEB84F /* Teas原味@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583B62354151400AEB84F /* Teas原味@2x.jpg */; };
+		36D583D82354151500AEB84F /* 上宇林.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583B72354151400AEB84F /* 上宇林.jpg */; };
+		36D583D92354151500AEB84F /* 公館手作.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583B82354151400AEB84F /* 公館手作.jpg */; };
+		36D583DA2354151500AEB84F /* 紅太陽.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583B92354151400AEB84F /* 紅太陽.png */; };
+		36D583DB2354151500AEB84F /* 圓石.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583BA2354151400AEB84F /* 圓石.jpg */; };
+		36D583DC2354151500AEB84F /* 柚豆@3x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583BB2354151400AEB84F /* 柚豆@3x.jpg */; };
+		36D583DE2354151500AEB84F /* 丸作.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583BD2354151400AEB84F /* 丸作.jpg */; };
+		36D583E02354151500AEB84F /* 茶湯會@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583BF2354151400AEB84F /* 茶湯會@2x.jpg */; };
+		36D583E12354151500AEB84F /* 丸作@3x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583C02354151400AEB84F /* 丸作@3x.jpg */; };
+		36D583E22354151500AEB84F /* Teas原味@3x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583C12354151400AEB84F /* Teas原味@3x.jpg */; };
+		36D583E32354151500AEB84F /* 柚豆.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583C22354151500AEB84F /* 柚豆.jpg */; };
+		36D583E42354151500AEB84F /* 茶湯會.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583C32354151500AEB84F /* 茶湯會.jpg */; };
+		36D583E52354151500AEB84F /* 自在軒@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583C42354151500AEB84F /* 自在軒@2x.png */; };
+		36D583E62354151500AEB84F /* 五十嵐.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583C52354151500AEB84F /* 五十嵐.png */; };
+		36D583E72354151500AEB84F /* 五十嵐@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583C62354151500AEB84F /* 五十嵐@2x.png */; };
+		36D583E82354151500AEB84F /* 圓石@3x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583C72354151500AEB84F /* 圓石@3x.jpg */; };
+		36D583E92354151500AEB84F /* 自在軒.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583C82354151500AEB84F /* 自在軒.png */; };
+		36D583EA2354151500AEB84F /* 公館手作@3x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583C92354151500AEB84F /* 公館手作@3x.jpg */; };
+		36D583EC2354151500AEB84F /* 上宇林@3x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583CB2354151500AEB84F /* 上宇林@3x.jpg */; };
+		36D583ED2354151500AEB84F /* 茶湯會@3x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 36D583CC2354151500AEB84F /* 茶湯會@3x.jpg */; };
+		36DC79FB2356B783009D48F5 /* ProductDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DC79F92356B783009D48F5 /* ProductDetailCell.swift */; };
+		36DC79FC2356B783009D48F5 /* ProductDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36DC79FA2356B783009D48F5 /* ProductDetailCell.xib */; };
+		36DC79FE2356BB1E009D48F5 /* Icon_Favorite2_Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC79FD2356BB1E009D48F5 /* Icon_Favorite2_Button.png */; };
+		36DC7A302356CB94009D48F5 /* 紅茶@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A002356CB90009D48F5 /* 紅茶@2x.png */; };
+		36DC7A312356CB94009D48F5 /* 綠茶@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A012356CB90009D48F5 /* 綠茶@3x.png */; };
+		36DC7A322356CB94009D48F5 /* 鮮奶冬瓜@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A022356CB90009D48F5 /* 鮮奶冬瓜@3x.png */; };
+		36DC7A332356CB94009D48F5 /* 金桔檸檬.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A032356CB90009D48F5 /* 金桔檸檬.png */; };
+		36DC7A342356CB94009D48F5 /* 檸檬愛玉@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A042356CB90009D48F5 /* 檸檬愛玉@2x.png */; };
+		36DC7A352356CB94009D48F5 /* 纖活綠茶.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A052356CB90009D48F5 /* 纖活綠茶.png */; };
+		36DC7A362356CB94009D48F5 /* 觀音拿鐵@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A062356CB90009D48F5 /* 觀音拿鐵@3x.png */; };
+		36DC7A372356CB94009D48F5 /* 珍珠鮮奶茶.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A072356CB91009D48F5 /* 珍珠鮮奶茶.png */; };
+		36DC7A382356CB94009D48F5 /* 珍珠奶茶@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A082356CB91009D48F5 /* 珍珠奶茶@2x.png */; };
+		36DC7A392356CB94009D48F5 /* 檸檬愛玉@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A092356CB91009D48F5 /* 檸檬愛玉@3x.png */; };
+		36DC7A3A2356CB94009D48F5 /* 青茶@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A0A2356CB91009D48F5 /* 青茶@3x.png */; };
+		36DC7A3B2356CB94009D48F5 /* 青茶@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A0B2356CB91009D48F5 /* 青茶@2x.png */; };
+		36DC7A3C2356CB94009D48F5 /* 金桔檸檬@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A0C2356CB91009D48F5 /* 金桔檸檬@3x.png */; };
+		36DC7A3D2356CB94009D48F5 /* 檸檬愛玉.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A0D2356CB91009D48F5 /* 檸檬愛玉.png */; };
+		36DC7A3E2356CB94009D48F5 /* 珍珠鮮奶茶@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A0E2356CB91009D48F5 /* 珍珠鮮奶茶@3x.png */; };
+		36DC7A3F2356CB94009D48F5 /* 青茶.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A0F2356CB91009D48F5 /* 青茶.png */; };
+		36DC7A402356CB94009D48F5 /* 觀音拿鐵.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A102356CB91009D48F5 /* 觀音拿鐵.png */; };
+		36DC7A412356CB94009D48F5 /* 百香愛玉.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A112356CB91009D48F5 /* 百香愛玉.png */; };
+		36DC7A422356CB94009D48F5 /* 紅茶.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A122356CB92009D48F5 /* 紅茶.png */; };
+		36DC7A432356CB94009D48F5 /* 珍珠奶茶@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A132356CB92009D48F5 /* 珍珠奶茶@3x.png */; };
+		36DC7A442356CB94009D48F5 /* 蜂蜜檸檬@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A142356CB92009D48F5 /* 蜂蜜檸檬@2x.png */; };
+		36DC7A452356CB94009D48F5 /* 綠茶@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A152356CB92009D48F5 /* 綠茶@2x.png */; };
+		36DC7A462356CB94009D48F5 /* 金桔檸檬@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A162356CB92009D48F5 /* 金桔檸檬@2x.png */; };
+		36DC7A472356CB94009D48F5 /* 珍珠奶茶.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A172356CB92009D48F5 /* 珍珠奶茶.png */; };
+		36DC7A482356CB94009D48F5 /* 珍珠觀音拿鐵@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A182356CB92009D48F5 /* 珍珠觀音拿鐵@3x.png */; };
+		36DC7A492356CB94009D48F5 /* 奶茶@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A192356CB92009D48F5 /* 奶茶@2x.png */; };
+		36DC7A4A2356CB94009D48F5 /* 珍珠觀音拿鐵.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A1A2356CB92009D48F5 /* 珍珠觀音拿鐵.png */; };
+		36DC7A4B2356CB94009D48F5 /* 珍珠觀音拿鐵@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A1B2356CB92009D48F5 /* 珍珠觀音拿鐵@2x.png */; };
+		36DC7A4C2356CB94009D48F5 /* 奶茶@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A1C2356CB92009D48F5 /* 奶茶@3x.png */; };
+		36DC7A4D2356CB94009D48F5 /* 新鮮水果茶@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A1D2356CB92009D48F5 /* 新鮮水果茶@3x.png */; };
+		36DC7A4E2356CB94009D48F5 /* 百香愛玉@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A1E2356CB93009D48F5 /* 百香愛玉@2x.png */; };
+		36DC7A4F2356CB94009D48F5 /* 蜂蜜檸檬@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A1F2356CB93009D48F5 /* 蜂蜜檸檬@3x.png */; };
+		36DC7A502356CB94009D48F5 /* 仙草凍奶茶.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A202356CB93009D48F5 /* 仙草凍奶茶.png */; };
+		36DC7A512356CB94009D48F5 /* 綠茶.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A212356CB93009D48F5 /* 綠茶.png */; };
+		36DC7A522356CB94009D48F5 /* 仙草凍奶茶@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A222356CB93009D48F5 /* 仙草凍奶茶@2x.png */; };
+		36DC7A532356CB94009D48F5 /* 纖活綠茶@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A232356CB93009D48F5 /* 纖活綠茶@2x.png */; };
+		36DC7A542356CB94009D48F5 /* 新鮮水果茶@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A242356CB93009D48F5 /* 新鮮水果茶@2x.png */; };
+		36DC7A552356CB94009D48F5 /* 纖活綠茶@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A252356CB93009D48F5 /* 纖活綠茶@3x.png */; };
+		36DC7A562356CB94009D48F5 /* 新鮮水果茶.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A262356CB93009D48F5 /* 新鮮水果茶.png */; };
+		36DC7A572356CB94009D48F5 /* 蜂蜜檸檬.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A272356CB93009D48F5 /* 蜂蜜檸檬.png */; };
+		36DC7A582356CB94009D48F5 /* 鮮奶冬瓜@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A282356CB93009D48F5 /* 鮮奶冬瓜@2x.png */; };
+		36DC7A592356CB94009D48F5 /* 觀音拿鐵@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A292356CB93009D48F5 /* 觀音拿鐵@2x.png */; };
+		36DC7A5A2356CB94009D48F5 /* 紅茶@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A2A2356CB94009D48F5 /* 紅茶@3x.png */; };
+		36DC7A5B2356CB94009D48F5 /* 鮮奶冬瓜.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A2B2356CB94009D48F5 /* 鮮奶冬瓜.png */; };
+		36DC7A5C2356CB94009D48F5 /* 奶茶.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A2C2356CB94009D48F5 /* 奶茶.png */; };
+		36DC7A5D2356CB94009D48F5 /* 百香愛玉@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A2D2356CB94009D48F5 /* 百香愛玉@3x.png */; };
+		36DC7A5E2356CB94009D48F5 /* 仙草凍奶茶@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A2E2356CB94009D48F5 /* 仙草凍奶茶@3x.png */; };
+		36DC7A5F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A2F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3614E0E52358A8DE00D23BA6 /* CategorySectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySectionView.swift; sourceTree = "<group>"; };
+		3614E0E82358A9D900D23BA6 /* CategorySectionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategorySectionView.xib; sourceTree = "<group>"; };
+		36159C032354386900664D75 /* BrandCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandCollectionViewCell.swift; sourceTree = "<group>"; };
+		36159C042354386900664D75 /* BrandCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BrandCollectionViewCell.xib; sourceTree = "<group>"; };
+		36159C0B2354B9F400664D75 /* Icon_Favorite_Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Favorite_Button.png; sourceTree = "<group>"; };
+		36159C0D2354BEBA00664D75 /* 迷克夏@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "迷克夏@2x.jpg"; sourceTree = "<group>"; };
+		36159C0E2354BEBA00664D75 /* 迷克夏@3x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "迷克夏@3x.jpg"; sourceTree = "<group>"; };
+		36159C0F2354BEBA00664D75 /* 迷克夏.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "迷克夏.jpg"; sourceTree = "<group>"; };
+		36159C132355B3D500664D75 /* CommonStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonStruct.swift; sourceTree = "<group>"; };
+		36159C152355E5ED00664D75 /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
+		36159C1723569D7300664D75 /* ProductDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailTableViewController.swift; sourceTree = "<group>"; };
 		362B9101234F27110079A108 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		362C481D235B48950010C845 /* Add_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Add_Icon.png; sourceTree = "<group>"; };
+		362C481F235B56550010C845 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
+		362C4820235B56550010C845 /* RecipeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeCell.xib; sourceTree = "<group>"; };
+		362C4823235B596A0010C845 /* RecipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeTableViewController.swift; sourceTree = "<group>"; };
+		362C4827235C71040010C845 /* QuantityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantityCell.swift; sourceTree = "<group>"; };
+		362C4828235C71040010C845 /* QuantityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuantityCell.xib; sourceTree = "<group>"; };
+		362C482B235C75810010C845 /* Icon_Cup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Cup.png; sourceTree = "<group>"; };
+		362C482D235C8CDC0010C845 /* Icon_Favorite3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Favorite3.png; sourceTree = "<group>"; };
+		362C482F235C8F360010C845 /* Icon_Cart_Red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Cart_Red.png; sourceTree = "<group>"; };
+		362C4831235C8F560010C845 /* BasicButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicButtonCell.swift; sourceTree = "<group>"; };
+		362C4832235C8F560010C845 /* BasicButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BasicButtonCell.xib; sourceTree = "<group>"; };
 		3641C73B234CCEC30058CF26 /* Fun2Order.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fun2Order.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3641C73E234CCEC30058CF26 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3641C745234CCEC30058CF26 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -41,13 +178,9 @@
 		3641C74D234CCEC40058CF26 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3641C74F234CCEC40058CF26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3641C756234CD1620058CF26 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		3641C75D234DD3360058CF26 /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
-		3641C75E234DD3360058CF26 /* 7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 7.jpg; sourceTree = "<group>"; };
-		3641C75F234DD3360058CF26 /* 6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6.jpg; sourceTree = "<group>"; };
-		3641C760234DD3360058CF26 /* 5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 5.jpg; sourceTree = "<group>"; };
-		3641C761234DD3360058CF26 /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
-		3641C762234DD3360058CF26 /* 4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 4.jpg; sourceTree = "<group>"; };
-		3641C763234DD3360058CF26 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
+		364F120E2358379100988937 /* Checkbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
+		364F1210235839AF00988937 /* ProductBriefCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductBriefCell.swift; sourceTree = "<group>"; };
+		364F1211235839AF00988937 /* ProductBriefCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductBriefCell.xib; sourceTree = "<group>"; };
 		366E125C23502B9100BFFF45 /* FSPageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSPageControl.swift; sourceTree = "<group>"; };
 		366E125D23502B9100BFFF45 /* FSPagerViewObjcCompat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSPagerViewObjcCompat.m; sourceTree = "<group>"; };
 		366E125E23502B9100BFFF45 /* FSPagerViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSPagerViewCell.swift; sourceTree = "<group>"; };
@@ -58,6 +191,103 @@
 		366E126323502B9100BFFF45 /* FSPageViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSPageViewLayout.swift; sourceTree = "<group>"; };
 		366E126423502B9100BFFF45 /* FSPageViewTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSPageViewTransformer.swift; sourceTree = "<group>"; };
 		366E126D23502BD100BFFF45 /* Fun2Order-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fun2Order-Bridging-Header.h"; sourceTree = "<group>"; };
+		36D583832352DB7F00AEB84F /* BannerDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerDetailViewController.swift; sourceTree = "<group>"; };
+		36D583852352FCE000AEB84F /* 8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8.png; sourceTree = "<group>"; };
+		36D583882353011000AEB84F /* SelectStoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectStoreCell.swift; sourceTree = "<group>"; };
+		36D583892353011000AEB84F /* SelectStoreCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectStoreCell.xib; sourceTree = "<group>"; };
+		36D5838C23533D1D00AEB84F /* FavoriteTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteTableViewController.swift; sourceTree = "<group>"; };
+		36D5838E2353455100AEB84F /* 5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5.png; sourceTree = "<group>"; };
+		36D583902353455100AEB84F /* 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3.png; sourceTree = "<group>"; };
+		36D583912353455100AEB84F /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
+		36D583942353455100AEB84F /* 6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 6.png; sourceTree = "<group>"; };
+		36D5839C2353466800AEB84F /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
+		36D5839E23534BD900AEB84F /* 4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4.png; sourceTree = "<group>"; };
+		36D5839F23534BD900AEB84F /* 7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7.png; sourceTree = "<group>"; };
+		36D583A22353599D00AEB84F /* FavoriteStoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteStoreCell.swift; sourceTree = "<group>"; };
+		36D583A32353599D00AEB84F /* FavoriteStoreCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavoriteStoreCell.xib; sourceTree = "<group>"; };
+		36D583A623535DE300AEB84F /* Fun2Order_AppStore_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Fun2Order_AppStore_Icon.png; sourceTree = "<group>"; };
+		36D583A82354038E00AEB84F /* BrandListCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandListCollectionViewController.swift; sourceTree = "<group>"; };
+		36D583AC2354151300AEB84F /* 自在軒@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "自在軒@3x.png"; sourceTree = "<group>"; };
+		36D583AD2354151300AEB84F /* 公館手作@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "公館手作@2x.jpg"; sourceTree = "<group>"; };
+		36D583AE2354151300AEB84F /* 紅太陽@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "紅太陽@3x.png"; sourceTree = "<group>"; };
+		36D583AF2354151300AEB84F /* 紅太陽@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "紅太陽@2x.png"; sourceTree = "<group>"; };
+		36D583B02354151300AEB84F /* 柚豆@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "柚豆@2x.jpg"; sourceTree = "<group>"; };
+		36D583B12354151300AEB84F /* 丸作@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "丸作@2x.jpg"; sourceTree = "<group>"; };
+		36D583B22354151300AEB84F /* 五十嵐@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "五十嵐@3x.png"; sourceTree = "<group>"; };
+		36D583B32354151400AEB84F /* 上宇林@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "上宇林@2x.jpg"; sourceTree = "<group>"; };
+		36D583B42354151400AEB84F /* 圓石@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "圓石@2x.jpg"; sourceTree = "<group>"; };
+		36D583B52354151400AEB84F /* Teas原味.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Teas原味.jpg"; sourceTree = "<group>"; };
+		36D583B62354151400AEB84F /* Teas原味@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Teas原味@2x.jpg"; sourceTree = "<group>"; };
+		36D583B72354151400AEB84F /* 上宇林.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "上宇林.jpg"; sourceTree = "<group>"; };
+		36D583B82354151400AEB84F /* 公館手作.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "公館手作.jpg"; sourceTree = "<group>"; };
+		36D583B92354151400AEB84F /* 紅太陽.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "紅太陽.png"; sourceTree = "<group>"; };
+		36D583BA2354151400AEB84F /* 圓石.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "圓石.jpg"; sourceTree = "<group>"; };
+		36D583BB2354151400AEB84F /* 柚豆@3x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "柚豆@3x.jpg"; sourceTree = "<group>"; };
+		36D583BD2354151400AEB84F /* 丸作.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "丸作.jpg"; sourceTree = "<group>"; };
+		36D583BF2354151400AEB84F /* 茶湯會@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "茶湯會@2x.jpg"; sourceTree = "<group>"; };
+		36D583C02354151400AEB84F /* 丸作@3x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "丸作@3x.jpg"; sourceTree = "<group>"; };
+		36D583C12354151400AEB84F /* Teas原味@3x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Teas原味@3x.jpg"; sourceTree = "<group>"; };
+		36D583C22354151500AEB84F /* 柚豆.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "柚豆.jpg"; sourceTree = "<group>"; };
+		36D583C32354151500AEB84F /* 茶湯會.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "茶湯會.jpg"; sourceTree = "<group>"; };
+		36D583C42354151500AEB84F /* 自在軒@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "自在軒@2x.png"; sourceTree = "<group>"; };
+		36D583C52354151500AEB84F /* 五十嵐.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "五十嵐.png"; sourceTree = "<group>"; };
+		36D583C62354151500AEB84F /* 五十嵐@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "五十嵐@2x.png"; sourceTree = "<group>"; };
+		36D583C72354151500AEB84F /* 圓石@3x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "圓石@3x.jpg"; sourceTree = "<group>"; };
+		36D583C82354151500AEB84F /* 自在軒.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "自在軒.png"; sourceTree = "<group>"; };
+		36D583C92354151500AEB84F /* 公館手作@3x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "公館手作@3x.jpg"; sourceTree = "<group>"; };
+		36D583CB2354151500AEB84F /* 上宇林@3x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "上宇林@3x.jpg"; sourceTree = "<group>"; };
+		36D583CC2354151500AEB84F /* 茶湯會@3x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "茶湯會@3x.jpg"; sourceTree = "<group>"; };
+		36DC79F92356B783009D48F5 /* ProductDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailCell.swift; sourceTree = "<group>"; };
+		36DC79FA2356B783009D48F5 /* ProductDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductDetailCell.xib; sourceTree = "<group>"; };
+		36DC79FD2356BB1E009D48F5 /* Icon_Favorite2_Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Favorite2_Button.png; sourceTree = "<group>"; };
+		36DC7A002356CB90009D48F5 /* 紅茶@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "紅茶@2x.png"; sourceTree = "<group>"; };
+		36DC7A012356CB90009D48F5 /* 綠茶@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "綠茶@3x.png"; sourceTree = "<group>"; };
+		36DC7A022356CB90009D48F5 /* 鮮奶冬瓜@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "鮮奶冬瓜@3x.png"; sourceTree = "<group>"; };
+		36DC7A032356CB90009D48F5 /* 金桔檸檬.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "金桔檸檬.png"; sourceTree = "<group>"; };
+		36DC7A042356CB90009D48F5 /* 檸檬愛玉@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "檸檬愛玉@2x.png"; sourceTree = "<group>"; };
+		36DC7A052356CB90009D48F5 /* 纖活綠茶.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "纖活綠茶.png"; sourceTree = "<group>"; };
+		36DC7A062356CB90009D48F5 /* 觀音拿鐵@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "觀音拿鐵@3x.png"; sourceTree = "<group>"; };
+		36DC7A072356CB91009D48F5 /* 珍珠鮮奶茶.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "珍珠鮮奶茶.png"; sourceTree = "<group>"; };
+		36DC7A082356CB91009D48F5 /* 珍珠奶茶@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "珍珠奶茶@2x.png"; sourceTree = "<group>"; };
+		36DC7A092356CB91009D48F5 /* 檸檬愛玉@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "檸檬愛玉@3x.png"; sourceTree = "<group>"; };
+		36DC7A0A2356CB91009D48F5 /* 青茶@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "青茶@3x.png"; sourceTree = "<group>"; };
+		36DC7A0B2356CB91009D48F5 /* 青茶@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "青茶@2x.png"; sourceTree = "<group>"; };
+		36DC7A0C2356CB91009D48F5 /* 金桔檸檬@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "金桔檸檬@3x.png"; sourceTree = "<group>"; };
+		36DC7A0D2356CB91009D48F5 /* 檸檬愛玉.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "檸檬愛玉.png"; sourceTree = "<group>"; };
+		36DC7A0E2356CB91009D48F5 /* 珍珠鮮奶茶@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "珍珠鮮奶茶@3x.png"; sourceTree = "<group>"; };
+		36DC7A0F2356CB91009D48F5 /* 青茶.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "青茶.png"; sourceTree = "<group>"; };
+		36DC7A102356CB91009D48F5 /* 觀音拿鐵.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "觀音拿鐵.png"; sourceTree = "<group>"; };
+		36DC7A112356CB91009D48F5 /* 百香愛玉.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "百香愛玉.png"; sourceTree = "<group>"; };
+		36DC7A122356CB92009D48F5 /* 紅茶.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "紅茶.png"; sourceTree = "<group>"; };
+		36DC7A132356CB92009D48F5 /* 珍珠奶茶@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "珍珠奶茶@3x.png"; sourceTree = "<group>"; };
+		36DC7A142356CB92009D48F5 /* 蜂蜜檸檬@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "蜂蜜檸檬@2x.png"; sourceTree = "<group>"; };
+		36DC7A152356CB92009D48F5 /* 綠茶@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "綠茶@2x.png"; sourceTree = "<group>"; };
+		36DC7A162356CB92009D48F5 /* 金桔檸檬@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "金桔檸檬@2x.png"; sourceTree = "<group>"; };
+		36DC7A172356CB92009D48F5 /* 珍珠奶茶.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "珍珠奶茶.png"; sourceTree = "<group>"; };
+		36DC7A182356CB92009D48F5 /* 珍珠觀音拿鐵@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "珍珠觀音拿鐵@3x.png"; sourceTree = "<group>"; };
+		36DC7A192356CB92009D48F5 /* 奶茶@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "奶茶@2x.png"; sourceTree = "<group>"; };
+		36DC7A1A2356CB92009D48F5 /* 珍珠觀音拿鐵.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "珍珠觀音拿鐵.png"; sourceTree = "<group>"; };
+		36DC7A1B2356CB92009D48F5 /* 珍珠觀音拿鐵@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "珍珠觀音拿鐵@2x.png"; sourceTree = "<group>"; };
+		36DC7A1C2356CB92009D48F5 /* 奶茶@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "奶茶@3x.png"; sourceTree = "<group>"; };
+		36DC7A1D2356CB92009D48F5 /* 新鮮水果茶@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "新鮮水果茶@3x.png"; sourceTree = "<group>"; };
+		36DC7A1E2356CB93009D48F5 /* 百香愛玉@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "百香愛玉@2x.png"; sourceTree = "<group>"; };
+		36DC7A1F2356CB93009D48F5 /* 蜂蜜檸檬@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "蜂蜜檸檬@3x.png"; sourceTree = "<group>"; };
+		36DC7A202356CB93009D48F5 /* 仙草凍奶茶.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "仙草凍奶茶.png"; sourceTree = "<group>"; };
+		36DC7A212356CB93009D48F5 /* 綠茶.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "綠茶.png"; sourceTree = "<group>"; };
+		36DC7A222356CB93009D48F5 /* 仙草凍奶茶@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "仙草凍奶茶@2x.png"; sourceTree = "<group>"; };
+		36DC7A232356CB93009D48F5 /* 纖活綠茶@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "纖活綠茶@2x.png"; sourceTree = "<group>"; };
+		36DC7A242356CB93009D48F5 /* 新鮮水果茶@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "新鮮水果茶@2x.png"; sourceTree = "<group>"; };
+		36DC7A252356CB93009D48F5 /* 纖活綠茶@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "纖活綠茶@3x.png"; sourceTree = "<group>"; };
+		36DC7A262356CB93009D48F5 /* 新鮮水果茶.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "新鮮水果茶.png"; sourceTree = "<group>"; };
+		36DC7A272356CB93009D48F5 /* 蜂蜜檸檬.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "蜂蜜檸檬.png"; sourceTree = "<group>"; };
+		36DC7A282356CB93009D48F5 /* 鮮奶冬瓜@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "鮮奶冬瓜@2x.png"; sourceTree = "<group>"; };
+		36DC7A292356CB93009D48F5 /* 觀音拿鐵@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "觀音拿鐵@2x.png"; sourceTree = "<group>"; };
+		36DC7A2A2356CB94009D48F5 /* 紅茶@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "紅茶@3x.png"; sourceTree = "<group>"; };
+		36DC7A2B2356CB94009D48F5 /* 鮮奶冬瓜.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "鮮奶冬瓜.png"; sourceTree = "<group>"; };
+		36DC7A2C2356CB94009D48F5 /* 奶茶.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "奶茶.png"; sourceTree = "<group>"; };
+		36DC7A2D2356CB94009D48F5 /* 百香愛玉@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "百香愛玉@3x.png"; sourceTree = "<group>"; };
+		36DC7A2E2356CB94009D48F5 /* 仙草凍奶茶@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "仙草凍奶茶@3x.png"; sourceTree = "<group>"; };
+		36DC7A2F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "珍珠鮮奶茶@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +301,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		36159C07235493C100664D75 /* StructDefinition */ = {
+			isa = PBXGroup;
+			children = (
+				36159C132355B3D500664D75 /* CommonStruct.swift */,
+				36159C152355E5ED00664D75 /* GlobalConstants.swift */,
+			);
+			path = StructDefinition;
+			sourceTree = "<group>";
+		};
+		36159C082354B8F300664D75 /* icons */ = {
+			isa = PBXGroup;
+			children = (
+				362C482B235C75810010C845 /* Icon_Cup.png */,
+				362C481D235B48950010C845 /* Add_Icon.png */,
+				36159C0B2354B9F400664D75 /* Icon_Favorite_Button.png */,
+				36DC79FD2356BB1E009D48F5 /* Icon_Favorite2_Button.png */,
+				362C482D235C8CDC0010C845 /* Icon_Favorite3.png */,
+				362C482F235C8F360010C845 /* Icon_Cart_Red.png */,
+			);
+			path = icons;
+			sourceTree = "<group>";
+		};
 		3641C732234CCEC30058CF26 = {
 			isa = PBXGroup;
 			children = (
@@ -91,15 +343,22 @@
 		3641C73D234CCEC30058CF26 /* Fun2Order */ = {
 			isa = PBXGroup;
 			children = (
+				36159C07235493C100664D75 /* StructDefinition */,
+				36D58387235300D100AEB84F /* CustomCell */,
 				366E125B23502B7000BFFF45 /* FSPagerView */,
 				3641C756234CD1620058CF26 /* SceneDelegate.swift */,
 				3641C73E234CCEC30058CF26 /* AppDelegate.swift */,
-				3641C744234CCEC30058CF26 /* Main.storyboard */,
 				3641C74C234CCEC40058CF26 /* LaunchScreen.storyboard */,
 				3641C74F234CCEC40058CF26 /* Info.plist */,
 				3641C747234CCEC30058CF26 /* Fun2Order.xcdatamodeld */,
 				3641C75B234DD2F40058CF26 /* Resources */,
+				3641C744234CCEC30058CF26 /* Main.storyboard */,
 				362B9101234F27110079A108 /* HomeViewController.swift */,
+				36D583832352DB7F00AEB84F /* BannerDetailViewController.swift */,
+				36D5838C23533D1D00AEB84F /* FavoriteTableViewController.swift */,
+				36D583A82354038E00AEB84F /* BrandListCollectionViewController.swift */,
+				36159C1723569D7300664D75 /* ProductDetailTableViewController.swift */,
+				362C4823235B596A0010C845 /* RecipeTableViewController.swift */,
 			);
 			path = Fun2Order;
 			sourceTree = "<group>";
@@ -116,13 +375,10 @@
 		3641C75C234DD30A0058CF26 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				3641C763234DD3360058CF26 /* 1.jpg */,
-				3641C75D234DD3360058CF26 /* 2.jpg */,
-				3641C761234DD3360058CF26 /* 3.jpg */,
-				3641C762234DD3360058CF26 /* 4.jpg */,
-				3641C760234DD3360058CF26 /* 5.jpg */,
-				3641C75F234DD3360058CF26 /* 6.jpg */,
-				3641C75E234DD3360058CF26 /* 7.jpg */,
+				36DC79FF2356CB7C009D48F5 /* ProductImages */,
+				36159C082354B8F300664D75 /* icons */,
+				36D583AB235414F500AEB84F /* BrandImages */,
+				36D583AA235414D900AEB84F /* TestImages */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -142,6 +398,143 @@
 				366E126D23502BD100BFFF45 /* Fun2Order-Bridging-Header.h */,
 			);
 			path = FSPagerView;
+			sourceTree = "<group>";
+		};
+		36D58387235300D100AEB84F /* CustomCell */ = {
+			isa = PBXGroup;
+			children = (
+				364F120E2358379100988937 /* Checkbox.swift */,
+				36D583882353011000AEB84F /* SelectStoreCell.swift */,
+				36D583892353011000AEB84F /* SelectStoreCell.xib */,
+				36D583A22353599D00AEB84F /* FavoriteStoreCell.swift */,
+				36D583A32353599D00AEB84F /* FavoriteStoreCell.xib */,
+				36159C032354386900664D75 /* BrandCollectionViewCell.swift */,
+				36159C042354386900664D75 /* BrandCollectionViewCell.xib */,
+				36DC79F92356B783009D48F5 /* ProductDetailCell.swift */,
+				36DC79FA2356B783009D48F5 /* ProductDetailCell.xib */,
+				364F1210235839AF00988937 /* ProductBriefCell.swift */,
+				364F1211235839AF00988937 /* ProductBriefCell.xib */,
+				3614E0E52358A8DE00D23BA6 /* CategorySectionView.swift */,
+				3614E0E82358A9D900D23BA6 /* CategorySectionView.xib */,
+				362C481F235B56550010C845 /* RecipeCell.swift */,
+				362C4820235B56550010C845 /* RecipeCell.xib */,
+				362C4827235C71040010C845 /* QuantityCell.swift */,
+				362C4828235C71040010C845 /* QuantityCell.xib */,
+				362C4831235C8F560010C845 /* BasicButtonCell.swift */,
+				362C4832235C8F560010C845 /* BasicButtonCell.xib */,
+			);
+			path = CustomCell;
+			sourceTree = "<group>";
+		};
+		36D583AA235414D900AEB84F /* TestImages */ = {
+			isa = PBXGroup;
+			children = (
+				36D583A623535DE300AEB84F /* Fun2Order_AppStore_Icon.png */,
+				36D583912353455100AEB84F /* 1.png */,
+				36D5839C2353466800AEB84F /* 2.png */,
+				36D583902353455100AEB84F /* 3.png */,
+				36D5839E23534BD900AEB84F /* 4.png */,
+				36D5838E2353455100AEB84F /* 5.png */,
+				36D583942353455100AEB84F /* 6.png */,
+				36D5839F23534BD900AEB84F /* 7.png */,
+				36D583852352FCE000AEB84F /* 8.png */,
+			);
+			path = TestImages;
+			sourceTree = "<group>";
+		};
+		36D583AB235414F500AEB84F /* BrandImages */ = {
+			isa = PBXGroup;
+			children = (
+				36D583B72354151400AEB84F /* 上宇林.jpg */,
+				36D583B32354151400AEB84F /* 上宇林@2x.jpg */,
+				36D583CB2354151500AEB84F /* 上宇林@3x.jpg */,
+				36D583BD2354151400AEB84F /* 丸作.jpg */,
+				36D583B12354151300AEB84F /* 丸作@2x.jpg */,
+				36D583C02354151400AEB84F /* 丸作@3x.jpg */,
+				36D583C52354151500AEB84F /* 五十嵐.png */,
+				36D583C62354151500AEB84F /* 五十嵐@2x.png */,
+				36D583B22354151300AEB84F /* 五十嵐@3x.png */,
+				36D583B82354151400AEB84F /* 公館手作.jpg */,
+				36D583AD2354151300AEB84F /* 公館手作@2x.jpg */,
+				36D583C92354151500AEB84F /* 公館手作@3x.jpg */,
+				36159C0F2354BEBA00664D75 /* 迷克夏.jpg */,
+				36159C0D2354BEBA00664D75 /* 迷克夏@2x.jpg */,
+				36159C0E2354BEBA00664D75 /* 迷克夏@3x.jpg */,
+				36D583C82354151500AEB84F /* 自在軒.png */,
+				36D583C42354151500AEB84F /* 自在軒@2x.png */,
+				36D583AC2354151300AEB84F /* 自在軒@3x.png */,
+				36D583C22354151500AEB84F /* 柚豆.jpg */,
+				36D583B02354151300AEB84F /* 柚豆@2x.jpg */,
+				36D583BB2354151400AEB84F /* 柚豆@3x.jpg */,
+				36D583B92354151400AEB84F /* 紅太陽.png */,
+				36D583AF2354151300AEB84F /* 紅太陽@2x.png */,
+				36D583AE2354151300AEB84F /* 紅太陽@3x.png */,
+				36D583C32354151500AEB84F /* 茶湯會.jpg */,
+				36D583BF2354151400AEB84F /* 茶湯會@2x.jpg */,
+				36D583CC2354151500AEB84F /* 茶湯會@3x.jpg */,
+				36D583BA2354151400AEB84F /* 圓石.jpg */,
+				36D583B42354151400AEB84F /* 圓石@2x.jpg */,
+				36D583C72354151500AEB84F /* 圓石@3x.jpg */,
+				36D583B52354151400AEB84F /* Teas原味.jpg */,
+				36D583B62354151400AEB84F /* Teas原味@2x.jpg */,
+				36D583C12354151400AEB84F /* Teas原味@3x.jpg */,
+			);
+			path = BrandImages;
+			sourceTree = "<group>";
+		};
+		36DC79FF2356CB7C009D48F5 /* ProductImages */ = {
+			isa = PBXGroup;
+			children = (
+				36DC7A202356CB93009D48F5 /* 仙草凍奶茶.png */,
+				36DC7A222356CB93009D48F5 /* 仙草凍奶茶@2x.png */,
+				36DC7A2E2356CB94009D48F5 /* 仙草凍奶茶@3x.png */,
+				36DC7A2C2356CB94009D48F5 /* 奶茶.png */,
+				36DC7A192356CB92009D48F5 /* 奶茶@2x.png */,
+				36DC7A1C2356CB92009D48F5 /* 奶茶@3x.png */,
+				36DC7A112356CB91009D48F5 /* 百香愛玉.png */,
+				36DC7A1E2356CB93009D48F5 /* 百香愛玉@2x.png */,
+				36DC7A2D2356CB94009D48F5 /* 百香愛玉@3x.png */,
+				36DC7A032356CB90009D48F5 /* 金桔檸檬.png */,
+				36DC7A162356CB92009D48F5 /* 金桔檸檬@2x.png */,
+				36DC7A0C2356CB91009D48F5 /* 金桔檸檬@3x.png */,
+				36DC7A0F2356CB91009D48F5 /* 青茶.png */,
+				36DC7A0B2356CB91009D48F5 /* 青茶@2x.png */,
+				36DC7A0A2356CB91009D48F5 /* 青茶@3x.png */,
+				36DC7A172356CB92009D48F5 /* 珍珠奶茶.png */,
+				36DC7A082356CB91009D48F5 /* 珍珠奶茶@2x.png */,
+				36DC7A132356CB92009D48F5 /* 珍珠奶茶@3x.png */,
+				36DC7A072356CB91009D48F5 /* 珍珠鮮奶茶.png */,
+				36DC7A2F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png */,
+				36DC7A0E2356CB91009D48F5 /* 珍珠鮮奶茶@3x.png */,
+				36DC7A1A2356CB92009D48F5 /* 珍珠觀音拿鐵.png */,
+				36DC7A1B2356CB92009D48F5 /* 珍珠觀音拿鐵@2x.png */,
+				36DC7A182356CB92009D48F5 /* 珍珠觀音拿鐵@3x.png */,
+				36DC7A122356CB92009D48F5 /* 紅茶.png */,
+				36DC7A002356CB90009D48F5 /* 紅茶@2x.png */,
+				36DC7A2A2356CB94009D48F5 /* 紅茶@3x.png */,
+				36DC7A262356CB93009D48F5 /* 新鮮水果茶.png */,
+				36DC7A242356CB93009D48F5 /* 新鮮水果茶@2x.png */,
+				36DC7A1D2356CB92009D48F5 /* 新鮮水果茶@3x.png */,
+				36DC7A272356CB93009D48F5 /* 蜂蜜檸檬.png */,
+				36DC7A142356CB92009D48F5 /* 蜂蜜檸檬@2x.png */,
+				36DC7A1F2356CB93009D48F5 /* 蜂蜜檸檬@3x.png */,
+				36DC7A212356CB93009D48F5 /* 綠茶.png */,
+				36DC7A152356CB92009D48F5 /* 綠茶@2x.png */,
+				36DC7A012356CB90009D48F5 /* 綠茶@3x.png */,
+				36DC7A2B2356CB94009D48F5 /* 鮮奶冬瓜.png */,
+				36DC7A282356CB93009D48F5 /* 鮮奶冬瓜@2x.png */,
+				36DC7A022356CB90009D48F5 /* 鮮奶冬瓜@3x.png */,
+				36DC7A0D2356CB91009D48F5 /* 檸檬愛玉.png */,
+				36DC7A042356CB90009D48F5 /* 檸檬愛玉@2x.png */,
+				36DC7A092356CB91009D48F5 /* 檸檬愛玉@3x.png */,
+				36DC7A052356CB90009D48F5 /* 纖活綠茶.png */,
+				36DC7A232356CB93009D48F5 /* 纖活綠茶@2x.png */,
+				36DC7A252356CB93009D48F5 /* 纖活綠茶@3x.png */,
+				36DC7A102356CB91009D48F5 /* 觀音拿鐵.png */,
+				36DC7A292356CB93009D48F5 /* 觀音拿鐵@2x.png */,
+				36DC7A062356CB90009D48F5 /* 觀音拿鐵@3x.png */,
+			);
+			path = ProductImages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,16 +596,114 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3641C766234DD3360058CF26 /* 6.jpg in Resources */,
+				36159C102354BEBA00664D75 /* 迷克夏@2x.jpg in Resources */,
+				36D583ED2354151500AEB84F /* 茶湯會@3x.jpg in Resources */,
+				36D583DE2354151500AEB84F /* 丸作.jpg in Resources */,
+				36DC7A552356CB94009D48F5 /* 纖活綠茶@3x.png in Resources */,
+				36D583A023534BDA00AEB84F /* 4.png in Resources */,
+				36D583D02354151500AEB84F /* 紅太陽@2x.png in Resources */,
+				36159C112354BEBA00664D75 /* 迷克夏@3x.jpg in Resources */,
+				36D583972353455200AEB84F /* 3.png in Resources */,
+				36D583D82354151500AEB84F /* 上宇林.jpg in Resources */,
+				36DC7A342356CB94009D48F5 /* 檸檬愛玉@2x.png in Resources */,
+				36D583CD2354151500AEB84F /* 自在軒@3x.png in Resources */,
+				36DC7A442356CB94009D48F5 /* 蜂蜜檸檬@2x.png in Resources */,
+				36DC7A4D2356CB94009D48F5 /* 新鮮水果茶@3x.png in Resources */,
+				36D583E92354151500AEB84F /* 自在軒.png in Resources */,
+				364F1213235839AF00988937 /* ProductBriefCell.xib in Resources */,
+				36DC7A5D2356CB94009D48F5 /* 百香愛玉@3x.png in Resources */,
+				36DC7A3E2356CB94009D48F5 /* 珍珠鮮奶茶@3x.png in Resources */,
+				36D583862352FCE000AEB84F /* 8.png in Resources */,
+				36D583D72354151500AEB84F /* Teas原味@2x.jpg in Resources */,
+				36DC7A372356CB94009D48F5 /* 珍珠鮮奶茶.png in Resources */,
+				362C482E235C8CDC0010C845 /* Icon_Favorite3.png in Resources */,
+				36D583D62354151500AEB84F /* Teas原味.jpg in Resources */,
+				36DC7A5F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png in Resources */,
+				36DC7A492356CB94009D48F5 /* 奶茶@2x.png in Resources */,
+				36DC7A4E2356CB94009D48F5 /* 百香愛玉@2x.png in Resources */,
+				36D583E22354151500AEB84F /* Teas原味@3x.jpg in Resources */,
+				36D583D32354151500AEB84F /* 五十嵐@3x.png in Resources */,
+				36D583E72354151500AEB84F /* 五十嵐@2x.png in Resources */,
+				36D583EA2354151500AEB84F /* 公館手作@3x.jpg in Resources */,
+				36DC7A302356CB94009D48F5 /* 紅茶@2x.png in Resources */,
+				36DC7A5A2356CB94009D48F5 /* 紅茶@3x.png in Resources */,
+				36DC7A312356CB94009D48F5 /* 綠茶@3x.png in Resources */,
+				36DC7A4F2356CB94009D48F5 /* 蜂蜜檸檬@3x.png in Resources */,
+				362C482A235C71040010C845 /* QuantityCell.xib in Resources */,
+				36DC79FE2356BB1E009D48F5 /* Icon_Favorite2_Button.png in Resources */,
+				36D583E32354151500AEB84F /* 柚豆.jpg in Resources */,
+				36D583DC2354151500AEB84F /* 柚豆@3x.jpg in Resources */,
+				36DC7A3F2356CB94009D48F5 /* 青茶.png in Resources */,
+				36DC7A482356CB94009D48F5 /* 珍珠觀音拿鐵@3x.png in Resources */,
+				36D583E52354151500AEB84F /* 自在軒@2x.png in Resources */,
+				36D583CE2354151500AEB84F /* 公館手作@2x.jpg in Resources */,
+				36DC7A5E2356CB94009D48F5 /* 仙草凍奶茶@3x.png in Resources */,
+				36DC7A4A2356CB94009D48F5 /* 珍珠觀音拿鐵.png in Resources */,
 				3641C74E234CCEC40058CF26 /* LaunchScreen.storyboard in Resources */,
+				36D583DA2354151500AEB84F /* 紅太陽.png in Resources */,
+				36DC7A422356CB94009D48F5 /* 紅茶.png in Resources */,
+				36DC7A592356CB94009D48F5 /* 觀音拿鐵@2x.png in Resources */,
 				3641C74B234CCEC40058CF26 /* Assets.xcassets in Resources */,
-				3641C765234DD3360058CF26 /* 7.jpg in Resources */,
-				3641C767234DD3360058CF26 /* 5.jpg in Resources */,
-				3641C764234DD3360058CF26 /* 2.jpg in Resources */,
-				3641C769234DD3360058CF26 /* 4.jpg in Resources */,
+				362C4830235C8F360010C845 /* Icon_Cart_Red.png in Resources */,
+				36DC7A562356CB94009D48F5 /* 新鮮水果茶.png in Resources */,
+				36D583E82354151500AEB84F /* 圓石@3x.jpg in Resources */,
+				36DC7A512356CB94009D48F5 /* 綠茶.png in Resources */,
+				36DC7A392356CB94009D48F5 /* 檸檬愛玉@3x.png in Resources */,
+				36D583D42354151500AEB84F /* 上宇林@2x.jpg in Resources */,
+				362C4834235C8F560010C845 /* BasicButtonCell.xib in Resources */,
+				36159C122354BEBA00664D75 /* 迷克夏.jpg in Resources */,
+				36DC7A452356CB94009D48F5 /* 綠茶@2x.png in Resources */,
+				36D583DB2354151500AEB84F /* 圓石.jpg in Resources */,
+				36D5838B2353011000AEB84F /* SelectStoreCell.xib in Resources */,
+				36DC7A432356CB94009D48F5 /* 珍珠奶茶@3x.png in Resources */,
+				36D583A723535DE300AEB84F /* Fun2Order_AppStore_Icon.png in Resources */,
+				36D5839B2353455200AEB84F /* 6.png in Resources */,
+				36DC7A5B2356CB94009D48F5 /* 鮮奶冬瓜.png in Resources */,
+				36DC7A3B2356CB94009D48F5 /* 青茶@2x.png in Resources */,
+				3614E0E92358A9D900D23BA6 /* CategorySectionView.xib in Resources */,
+				36D583CF2354151500AEB84F /* 紅太陽@3x.png in Resources */,
+				36D583982353455200AEB84F /* 1.png in Resources */,
+				36DC7A542356CB94009D48F5 /* 新鮮水果茶@2x.png in Resources */,
 				3641C746234CCEC30058CF26 /* Main.storyboard in Resources */,
-				3641C768234DD3360058CF26 /* 3.jpg in Resources */,
-				3641C76A234DD3370058CF26 /* 1.jpg in Resources */,
+				36D583D92354151500AEB84F /* 公館手作.jpg in Resources */,
+				36D583D52354151500AEB84F /* 圓石@2x.jpg in Resources */,
+				36DC7A4B2356CB94009D48F5 /* 珍珠觀音拿鐵@2x.png in Resources */,
+				36DC7A332356CB94009D48F5 /* 金桔檸檬.png in Resources */,
+				36DC7A402356CB94009D48F5 /* 觀音拿鐵.png in Resources */,
+				36159C062354386900664D75 /* BrandCollectionViewCell.xib in Resources */,
+				36D583EC2354151500AEB84F /* 上宇林@3x.jpg in Resources */,
+				36159C0C2354B9F400664D75 /* Icon_Favorite_Button.png in Resources */,
+				36D5839D2353466800AEB84F /* 2.png in Resources */,
+				362C482C235C75810010C845 /* Icon_Cup.png in Resources */,
+				36DC7A5C2356CB94009D48F5 /* 奶茶.png in Resources */,
+				36DC7A472356CB94009D48F5 /* 珍珠奶茶.png in Resources */,
+				36DC79FC2356B783009D48F5 /* ProductDetailCell.xib in Resources */,
+				36D583952353455200AEB84F /* 5.png in Resources */,
+				36DC7A3C2356CB94009D48F5 /* 金桔檸檬@3x.png in Resources */,
+				362C4822235B56550010C845 /* RecipeCell.xib in Resources */,
+				36DC7A3D2356CB94009D48F5 /* 檸檬愛玉.png in Resources */,
+				36D583E62354151500AEB84F /* 五十嵐.png in Resources */,
+				36DC7A582356CB94009D48F5 /* 鮮奶冬瓜@2x.png in Resources */,
+				36D583E12354151500AEB84F /* 丸作@3x.jpg in Resources */,
+				36D583D12354151500AEB84F /* 柚豆@2x.jpg in Resources */,
+				36DC7A4C2356CB94009D48F5 /* 奶茶@3x.png in Resources */,
+				36DC7A352356CB94009D48F5 /* 纖活綠茶.png in Resources */,
+				36D583A123534BDA00AEB84F /* 7.png in Resources */,
+				36DC7A382356CB94009D48F5 /* 珍珠奶茶@2x.png in Resources */,
+				36D583A52353599D00AEB84F /* FavoriteStoreCell.xib in Resources */,
+				36DC7A572356CB94009D48F5 /* 蜂蜜檸檬.png in Resources */,
+				36DC7A412356CB94009D48F5 /* 百香愛玉.png in Resources */,
+				36D583E42354151500AEB84F /* 茶湯會.jpg in Resources */,
+				36DC7A362356CB94009D48F5 /* 觀音拿鐵@3x.png in Resources */,
+				36DC7A462356CB94009D48F5 /* 金桔檸檬@2x.png in Resources */,
+				362C481E235B48950010C845 /* Add_Icon.png in Resources */,
+				36DC7A522356CB94009D48F5 /* 仙草凍奶茶@2x.png in Resources */,
+				36D583D22354151500AEB84F /* 丸作@2x.jpg in Resources */,
+				36DC7A3A2356CB94009D48F5 /* 青茶@3x.png in Resources */,
+				36D583E02354151500AEB84F /* 茶湯會@2x.jpg in Resources */,
+				36DC7A322356CB94009D48F5 /* 鮮奶冬瓜@3x.png in Resources */,
+				36DC7A532356CB94009D48F5 /* 纖活綠茶@2x.png in Resources */,
+				36DC7A502356CB94009D48F5 /* 仙草凍奶茶.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,16 +716,33 @@
 			files = (
 				3641C749234CCEC30058CF26 /* Fun2Order.xcdatamodeld in Sources */,
 				366E126B23502B9100BFFF45 /* FSPageViewLayout.swift in Sources */,
+				36159C162355E5ED00664D75 /* GlobalConstants.swift in Sources */,
 				366E126A23502B9100BFFF45 /* FSPagerView.swift in Sources */,
 				3641C73F234CCEC30058CF26 /* AppDelegate.swift in Sources */,
 				3641C757234CD1620058CF26 /* SceneDelegate.swift in Sources */,
+				36D583A92354038E00AEB84F /* BrandListCollectionViewController.swift in Sources */,
+				364F120F2358379100988937 /* Checkbox.swift in Sources */,
+				36159C1823569D7300664D75 /* ProductDetailTableViewController.swift in Sources */,
+				36DC79FB2356B783009D48F5 /* ProductDetailCell.swift in Sources */,
+				364F1212235839AF00988937 /* ProductBriefCell.swift in Sources */,
+				362C4833235C8F560010C845 /* BasicButtonCell.swift in Sources */,
+				362C4821235B56550010C845 /* RecipeCell.swift in Sources */,
+				36159C142355B3D500664D75 /* CommonStruct.swift in Sources */,
+				36D5838D23533D1D00AEB84F /* FavoriteTableViewController.swift in Sources */,
+				36D583842352DB7F00AEB84F /* BannerDetailViewController.swift in Sources */,
 				366E126523502B9100BFFF45 /* FSPageControl.swift in Sources */,
 				366E126C23502B9100BFFF45 /* FSPageViewTransformer.swift in Sources */,
+				3614E0E62358A8DE00D23BA6 /* CategorySectionView.swift in Sources */,
+				362C4824235B596A0010C845 /* RecipeTableViewController.swift in Sources */,
 				366E126823502B9100BFFF45 /* FSPagerViewLayoutAttributes.swift in Sources */,
+				362C4829235C71040010C845 /* QuantityCell.swift in Sources */,
 				366E126723502B9100BFFF45 /* FSPagerViewCell.swift in Sources */,
+				36159C052354386900664D75 /* BrandCollectionViewCell.swift in Sources */,
 				362B9102234F27110079A108 /* HomeViewController.swift in Sources */,
 				366E126923502B9100BFFF45 /* FSPagerCollectionView.swift in Sources */,
 				366E126623502B9100BFFF45 /* FSPagerViewObjcCompat.m in Sources */,
+				36D5838A2353011000AEB84F /* SelectStoreCell.swift in Sources */,
+				36D583A42353599D00AEB84F /* FavoriteStoreCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProductBriefCell" id="KGk-i7-Jjw" customClass="ProductBriefCell" customModule="Fun2Order" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I5E-Km-d33" customClass="Checkbox" customModule="Fun2Order" customModuleProvider="target">
+                        <rect key="frame" x="284" y="8" width="28" height="28"/>
+                        <color key="backgroundColor" red="0.14117647059999999" green="0.4431372549" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="28" id="XHi-4R-Ubw"/>
+                            <constraint firstAttribute="width" constant="28" id="vsv-04-T2O"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aKB-Ol-JFc">
+                        <rect key="frame" x="8" y="11.5" width="120" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="120" id="y1h-Wz-0vS"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bOS-B7-9DN" customClass="Checkbox" customModule="Fun2Order" customModuleProvider="target">
+                        <rect key="frame" x="248" y="8" width="28" height="28"/>
+                        <color key="backgroundColor" red="0.14117647059999999" green="0.4431372549" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="28" id="NOX-E7-Xra"/>
+                            <constraint firstAttribute="width" constant="28" id="YHp-kT-OVJ"/>
+                            <constraint firstAttribute="height" constant="28" id="pST-Tu-ORr"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="28" id="zLA-cN-Ayw"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9X8-ON-gIF" customClass="Checkbox" customModule="Fun2Order" customModuleProvider="target">
+                        <rect key="frame" x="176" y="8" width="28" height="28"/>
+                        <color key="backgroundColor" red="0.14117647059999999" green="0.4431372549" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="28" id="CQe-ZJ-Vy3"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="28" id="Vky-gS-cpe"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="28" id="Vqg-b0-522"/>
+                            <constraint firstAttribute="width" constant="28" id="da2-1Y-704"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vaz-9y-QBH" customClass="Checkbox" customModule="Fun2Order" customModuleProvider="target">
+                        <rect key="frame" x="140" y="8" width="28" height="28"/>
+                        <color key="backgroundColor" red="0.14117647059999999" green="0.4431372549" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="28" id="Cl7-ja-MVv"/>
+                            <constraint firstAttribute="width" constant="28" id="YR3-TH-dGs"/>
+                            <constraint firstAttribute="height" constant="28" id="Yxv-cq-6ov"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="28" id="zuE-qT-26p"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V1P-UU-sT9" customClass="Checkbox" customModule="Fun2Order" customModuleProvider="target">
+                        <rect key="frame" x="212" y="8" width="28" height="28"/>
+                        <color key="backgroundColor" red="0.14117647059999999" green="0.4431372549" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="28" id="ATF-Oe-jii"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="28" id="Vay-lF-hE6"/>
+                            <constraint firstAttribute="width" constant="28" id="a11-Lp-ElX"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="28" id="y8t-vA-Qmr"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="I5E-Km-d33" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="06i-5X-rmx"/>
+                    <constraint firstItem="V1P-UU-sT9" firstAttribute="leading" secondItem="9X8-ON-gIF" secondAttribute="trailing" constant="8" id="3TC-7E-EUJ"/>
+                    <constraint firstItem="I5E-Km-d33" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="G3x-ZN-Dgb"/>
+                    <constraint firstItem="bOS-B7-9DN" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="HH6-vJ-n9v"/>
+                    <constraint firstItem="aKB-Ol-JFc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="HN9-zB-zLR"/>
+                    <constraint firstItem="I5E-Km-d33" firstAttribute="leading" secondItem="bOS-B7-9DN" secondAttribute="trailing" constant="8" id="KOq-8f-wTc"/>
+                    <constraint firstItem="aKB-Ol-JFc" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="PIw-Uq-5Kp"/>
+                    <constraint firstItem="vaz-9y-QBH" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Qlc-oE-U4p"/>
+                    <constraint firstAttribute="trailing" secondItem="I5E-Km-d33" secondAttribute="trailing" constant="8" id="RWZ-AP-Bgr"/>
+                    <constraint firstAttribute="bottom" secondItem="I5E-Km-d33" secondAttribute="bottom" constant="8" id="Sdz-F9-npW"/>
+                    <constraint firstItem="I5E-Km-d33" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="VwD-fH-Jx7"/>
+                    <constraint firstAttribute="trailing" secondItem="I5E-Km-d33" secondAttribute="trailing" constant="8" id="fbo-Bn-74d"/>
+                    <constraint firstItem="V1P-UU-sT9" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="i5X-Rg-GGp"/>
+                    <constraint firstItem="bOS-B7-9DN" firstAttribute="leading" secondItem="V1P-UU-sT9" secondAttribute="trailing" constant="8" id="jyu-7C-rqR"/>
+                    <constraint firstItem="9X8-ON-gIF" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="rCh-NO-jaC"/>
+                    <constraint firstItem="9X8-ON-gIF" firstAttribute="leading" secondItem="vaz-9y-QBH" secondAttribute="trailing" constant="8" id="y5p-sF-3Ic"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="productLabel" destination="aKB-Ol-JFc" id="Piq-N1-1wk"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="122.54464285714285"/>
+        </tableViewCell>
+    </objects>
+</document>

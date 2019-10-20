@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProductDetailCell" id="KGk-i7-Jjw" customClass="ProductDetailCell" customModule="Fun2Order" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lxm-xV-aNJ">
+                        <rect key="frame" x="5" y="5" width="310" height="90"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKN-gN-nsQ">
+                        <rect key="frame" x="15" y="30" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="Qrx-W3-Fc3"/>
+                            <constraint firstAttribute="height" constant="40" id="b17-bI-3oG"/>
+                        </constraints>
+                        <state key="normal" image="Icon_Favorite2_Button.png">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                    </button>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fun2Order_AppStore_Icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="lyk-sf-fwl">
+                        <rect key="frame" x="63" y="15" width="70" height="70"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="70" id="89p-9w-jmH"/>
+                            <constraint firstAttribute="height" constant="70" id="wAz-qJ-OUR"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MGh-3N-lCG">
+                        <rect key="frame" x="141" y="25" width="42" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sY1-fe-5sg">
+                        <rect key="frame" x="141" y="60" width="31" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="25元" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="31Y-8E-zKf">
+                        <rect key="frame" x="255.5" y="25" width="44.5" height="24"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                        <color key="textColor" red="0.69411764705882351" green="0.0" blue="0.10980392156862745" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="FKN-gN-nsQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="5bq-2M-fJ3"/>
+                    <constraint firstAttribute="trailing" secondItem="31Y-8E-zKf" secondAttribute="trailing" constant="20" id="8kC-dn-uU4"/>
+                    <constraint firstAttribute="bottom" secondItem="sY1-fe-5sg" secondAttribute="bottom" constant="25" id="KSg-eI-uDA"/>
+                    <constraint firstItem="lyk-sf-fwl" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="LAZ-b0-UPH"/>
+                    <constraint firstItem="lyk-sf-fwl" firstAttribute="leading" secondItem="FKN-gN-nsQ" secondAttribute="trailing" constant="8" id="NdB-V9-v5C"/>
+                    <constraint firstItem="31Y-8E-zKf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="25" id="UXR-4w-07e"/>
+                    <constraint firstItem="MGh-3N-lCG" firstAttribute="leading" secondItem="lyk-sf-fwl" secondAttribute="trailing" constant="8" id="YQ1-DP-37K"/>
+                    <constraint firstItem="sY1-fe-5sg" firstAttribute="leading" secondItem="lyk-sf-fwl" secondAttribute="trailing" constant="8" id="bw5-6Q-LJf"/>
+                    <constraint firstItem="MGh-3N-lCG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="25" id="rpx-Ei-aj8"/>
+                    <constraint firstItem="FKN-gN-nsQ" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="v9O-5J-9s2"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="backView" destination="lxm-xV-aNJ" id="qo7-9e-zwW"/>
+                <outlet property="btnFavorite" destination="FKN-gN-nsQ" id="ylB-zg-ELh"/>
+                <outlet property="priceLabel" destination="31Y-8E-zKf" id="eCG-4P-ftN"/>
+                <outlet property="productImage" destination="lyk-sf-fwl" id="EeV-Po-4j0"/>
+                <outlet property="subTitleLabel" destination="sY1-fe-5sg" id="HbF-8n-ZLD"/>
+                <outlet property="titleLabel" destination="MGh-3N-lCG" id="DYD-hn-XkX"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="126.5625"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Fun2Order_AppStore_Icon.png" width="512" height="512"/>
+        <image name="Icon_Favorite2_Button.png" width="18" height="18"/>
+    </resources>
+</document>
