@@ -46,7 +46,7 @@ class RecipeCell: UITableViewCell {
         for index in 0...item_array.count - 1 {
             let mod_number = index%number_for_row
             rowCountIndex = (index - mod_number)/number_for_row
-            itemY = CGFloat(self.backView.frame.maxY + CGFloat((ITEM_HEIGHT_SPACE + CHECKBOX_WIDTH)*rowCountIndex))
+            itemY = CGFloat(self.backView.frame.maxY + CGFloat((ITEM_HEIGHT_SPACE + CHECKBOX_WIDTH)*rowCountIndex + 8))
             
             let chkRect = CGRect(x: CGFloat(self.backView.frame.minX + CGFloat(ITEM_WIDTH * mod_number + initMargin)), y: itemY, width: CGFloat(CHECKBOX_WIDTH), height: CGFloat(CHECKBOX_WIDTH))
             let checkBox = Checkbox(frame: chkRect)
@@ -57,14 +57,14 @@ class RecipeCell: UITableViewCell {
             itemLabel.text = item_array[index]
             self.addSubview(checkBox)
             self.addSubview(itemLabel)
-            checkBox.topAnchor.constraint(equalTo: backView.bottomAnchor, constant: 10).isActive = true
-            itemLabel.centerYAnchor.constraint(equalTo: checkBox.centerYAnchor).isActive = true
+            //checkBox.topAnchor.constraint(equalTo: backView.bottomAnchor, constant: 10).isActive = true
+            //itemLabel.centerYAnchor.constraint(equalTo: checkBox.centerYAnchor).isActive = true
         }
         
         cellTotalHeight = cellTotalHeight + (ITEM_HEIGHT_SPACE + CHECKBOX_WIDTH)*(rowCountIndex + 1)
-        print("-------------------------")
-        print("cellTotalHeight = \(cellTotalHeight)")
-        print("-------------------------")
+        //print("-------------------------")
+        //print("cellTotalHeight = \(cellTotalHeight)")
+        //print("-------------------------")
         
         self.cellHeight = cellTotalHeight
     }

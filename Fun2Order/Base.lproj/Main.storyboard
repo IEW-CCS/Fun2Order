@@ -297,6 +297,7 @@
                                 <barButtonItem title="Cart" image="ToolBar_Cart" id="l1F-HJ-0jm">
                                     <connections>
                                         <action selector="displayCartView:" destination="JCJ-j0-hzJ" id="rhP-Dp-HAg"/>
+                                        <segue destination="OJi-7X-vXB" kind="show" id="Fof-3o-hkm"/>
                                     </connections>
                                 </barButtonItem>
                             </items>
@@ -339,7 +340,11 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="LQ5-an-Qvn"/>
-                                <barButtonItem title="Cart" image="ToolBar_Cart" id="xiE-TN-mOn"/>
+                                <barButtonItem title="Cart" image="ToolBar_Cart" id="xiE-TN-mOn">
+                                    <connections>
+                                        <segue destination="OJi-7X-vXB" kind="show" id="Ue0-yi-4xJ"/>
+                                    </connections>
+                                </barButtonItem>
                             </items>
                         </toolbar>
                         <prototypes>
@@ -362,6 +367,35 @@
             </objects>
             <point key="canvasLocation" x="2465" y="256"/>
         </scene>
+        <!--Cart-->
+        <scene sceneID="NNY-xN-Qsm">
+            <objects>
+                <tableViewController storyboardIdentifier="Cart_VC" title="Cart" id="OJi-7X-vXB" customClass="CartTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="5G2-CV-mQ2">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="PKF-TP-1GC">
+                                <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PKF-TP-1GC" id="XvH-qz-tnD">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="OJi-7X-vXB" id="bhC-46-ikh"/>
+                            <outlet property="delegate" destination="OJi-7X-vXB" id="2o3-vs-jlV"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="ndV-oF-SxS"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Sv0-C4-GND" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3239" y="256"/>
+        </scene>
     </scenes>
     <resources>
         <image name="8.png" width="573" height="365"/>
@@ -371,4 +405,7 @@
         <image name="ToolBar_Menu" width="25" height="25"/>
         <image name="ToolBar_ProductDetail" width="24.5" height="25"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Fof-3o-hkm"/>
+    </inferredMetricsTieBreakers>
 </document>

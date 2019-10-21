@@ -36,6 +36,21 @@
 		3641C74B234CCEC40058CF26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3641C74A234CCEC40058CF26 /* Assets.xcassets */; };
 		3641C74E234CCEC40058CF26 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3641C74C234CCEC40058CF26 /* LaunchScreen.storyboard */; };
 		3641C757234CD1620058CF26 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3641C756234CD1620058CF26 /* SceneDelegate.swift */; };
+		3649CFAC235D3FEF00C0F2EA /* CartListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3649CFAA235D3FEF00C0F2EA /* CartListCell.swift */; };
+		3649CFAD235D3FEF00C0F2EA /* CartListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3649CFAB235D3FEF00C0F2EA /* CartListCell.xib */; };
+		3649CFB5235D430000C0F2EA /* Image_Friend4.png in Resources */ = {isa = PBXBuildFile; fileRef = 3649CFAF235D430000C0F2EA /* Image_Friend4.png */; };
+		3649CFB6235D430000C0F2EA /* Image_Friend1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3649CFB0235D430000C0F2EA /* Image_Friend1.png */; };
+		3649CFB7235D430000C0F2EA /* Image_Friend5.png in Resources */ = {isa = PBXBuildFile; fileRef = 3649CFB1235D430000C0F2EA /* Image_Friend5.png */; };
+		3649CFB8235D430000C0F2EA /* Image_Me.png in Resources */ = {isa = PBXBuildFile; fileRef = 3649CFB2235D430000C0F2EA /* Image_Me.png */; };
+		3649CFB9235D430000C0F2EA /* Image_Friend3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3649CFB3235D430000C0F2EA /* Image_Friend3.png */; };
+		3649CFBA235D430000C0F2EA /* Image_Friend2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3649CFB4235D430000C0F2EA /* Image_Friend2.png */; };
+		3649CFBC235D492900C0F2EA /* CartTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3649CFBB235D492900C0F2EA /* CartTableViewController.swift */; };
+		3649CFBF235D49DF00C0F2EA /* CartGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3649CFBD235D49DF00C0F2EA /* CartGroupCell.swift */; };
+		3649CFC0235D49DF00C0F2EA /* CartGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3649CFBE235D49DF00C0F2EA /* CartGroupCell.xib */; };
+		3649CFC6235D5E6E00C0F2EA /* Pay_LinePay.png in Resources */ = {isa = PBXBuildFile; fileRef = 3649CFC2235D5E6E00C0F2EA /* Pay_LinePay.png */; };
+		3649CFC7235D5E6E00C0F2EA /* Pay_Cash.png in Resources */ = {isa = PBXBuildFile; fileRef = 3649CFC3235D5E6E00C0F2EA /* Pay_Cash.png */; };
+		3649CFC8235D5E6E00C0F2EA /* Pay_GooglePay.png in Resources */ = {isa = PBXBuildFile; fileRef = 3649CFC4235D5E6E00C0F2EA /* Pay_GooglePay.png */; };
+		3649CFC9235D5E6E00C0F2EA /* Pay_ApplePay.png in Resources */ = {isa = PBXBuildFile; fileRef = 3649CFC5235D5E6E00C0F2EA /* Pay_ApplePay.png */; };
 		364F120F2358379100988937 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364F120E2358379100988937 /* Checkbox.swift */; };
 		364F1212235839AF00988937 /* ProductBriefCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364F1210235839AF00988937 /* ProductBriefCell.swift */; };
 		364F1213235839AF00988937 /* ProductBriefCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 364F1211235839AF00988937 /* ProductBriefCell.xib */; };
@@ -144,6 +159,8 @@
 		36DC7A5D2356CB94009D48F5 /* 百香愛玉@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A2D2356CB94009D48F5 /* 百香愛玉@3x.png */; };
 		36DC7A5E2356CB94009D48F5 /* 仙草凍奶茶@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A2E2356CB94009D48F5 /* 仙草凍奶茶@3x.png */; };
 		36DC7A5F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A2F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png */; };
+		36E8D3CE235DA7CC00AB35CB /* PayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8D3CC235DA7CC00AB35CB /* PayCell.swift */; };
+		36E8D3CF235DA7CC00AB35CB /* PayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36E8D3CD235DA7CC00AB35CB /* PayCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -178,6 +195,21 @@
 		3641C74D234CCEC40058CF26 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3641C74F234CCEC40058CF26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3641C756234CD1620058CF26 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		3649CFAA235D3FEF00C0F2EA /* CartListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartListCell.swift; sourceTree = "<group>"; };
+		3649CFAB235D3FEF00C0F2EA /* CartListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CartListCell.xib; sourceTree = "<group>"; };
+		3649CFAF235D430000C0F2EA /* Image_Friend4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image_Friend4.png; sourceTree = "<group>"; };
+		3649CFB0235D430000C0F2EA /* Image_Friend1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image_Friend1.png; sourceTree = "<group>"; };
+		3649CFB1235D430000C0F2EA /* Image_Friend5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image_Friend5.png; sourceTree = "<group>"; };
+		3649CFB2235D430000C0F2EA /* Image_Me.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image_Me.png; sourceTree = "<group>"; };
+		3649CFB3235D430000C0F2EA /* Image_Friend3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image_Friend3.png; sourceTree = "<group>"; };
+		3649CFB4235D430000C0F2EA /* Image_Friend2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image_Friend2.png; sourceTree = "<group>"; };
+		3649CFBB235D492900C0F2EA /* CartTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartTableViewController.swift; sourceTree = "<group>"; };
+		3649CFBD235D49DF00C0F2EA /* CartGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartGroupCell.swift; sourceTree = "<group>"; };
+		3649CFBE235D49DF00C0F2EA /* CartGroupCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CartGroupCell.xib; sourceTree = "<group>"; };
+		3649CFC2235D5E6E00C0F2EA /* Pay_LinePay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pay_LinePay.png; sourceTree = "<group>"; };
+		3649CFC3235D5E6E00C0F2EA /* Pay_Cash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pay_Cash.png; sourceTree = "<group>"; };
+		3649CFC4235D5E6E00C0F2EA /* Pay_GooglePay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pay_GooglePay.png; sourceTree = "<group>"; };
+		3649CFC5235D5E6E00C0F2EA /* Pay_ApplePay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pay_ApplePay.png; sourceTree = "<group>"; };
 		364F120E2358379100988937 /* Checkbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 		364F1210235839AF00988937 /* ProductBriefCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductBriefCell.swift; sourceTree = "<group>"; };
 		364F1211235839AF00988937 /* ProductBriefCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductBriefCell.xib; sourceTree = "<group>"; };
@@ -288,6 +320,8 @@
 		36DC7A2D2356CB94009D48F5 /* 百香愛玉@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "百香愛玉@3x.png"; sourceTree = "<group>"; };
 		36DC7A2E2356CB94009D48F5 /* 仙草凍奶茶@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "仙草凍奶茶@3x.png"; sourceTree = "<group>"; };
 		36DC7A2F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "珍珠鮮奶茶@2x.png"; sourceTree = "<group>"; };
+		36E8D3CC235DA7CC00AB35CB /* PayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayCell.swift; sourceTree = "<group>"; };
+		36E8D3CD235DA7CC00AB35CB /* PayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PayCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -359,6 +393,7 @@
 				36D583A82354038E00AEB84F /* BrandListCollectionViewController.swift */,
 				36159C1723569D7300664D75 /* ProductDetailTableViewController.swift */,
 				362C4823235B596A0010C845 /* RecipeTableViewController.swift */,
+				3649CFBB235D492900C0F2EA /* CartTableViewController.swift */,
 			);
 			path = Fun2Order;
 			sourceTree = "<group>";
@@ -375,12 +410,38 @@
 		3641C75C234DD30A0058CF26 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				3649CFC1235D5C7F00C0F2EA /* PayImages */,
+				3649CFAE235D42E300C0F2EA /* Member */,
 				36DC79FF2356CB7C009D48F5 /* ProductImages */,
 				36159C082354B8F300664D75 /* icons */,
 				36D583AB235414F500AEB84F /* BrandImages */,
 				36D583AA235414D900AEB84F /* TestImages */,
 			);
 			path = Images;
+			sourceTree = "<group>";
+		};
+		3649CFAE235D42E300C0F2EA /* Member */ = {
+			isa = PBXGroup;
+			children = (
+				3649CFB0235D430000C0F2EA /* Image_Friend1.png */,
+				3649CFB4235D430000C0F2EA /* Image_Friend2.png */,
+				3649CFB3235D430000C0F2EA /* Image_Friend3.png */,
+				3649CFAF235D430000C0F2EA /* Image_Friend4.png */,
+				3649CFB1235D430000C0F2EA /* Image_Friend5.png */,
+				3649CFB2235D430000C0F2EA /* Image_Me.png */,
+			);
+			path = Member;
+			sourceTree = "<group>";
+		};
+		3649CFC1235D5C7F00C0F2EA /* PayImages */ = {
+			isa = PBXGroup;
+			children = (
+				3649CFC5235D5E6E00C0F2EA /* Pay_ApplePay.png */,
+				3649CFC3235D5E6E00C0F2EA /* Pay_Cash.png */,
+				3649CFC4235D5E6E00C0F2EA /* Pay_GooglePay.png */,
+				3649CFC2235D5E6E00C0F2EA /* Pay_LinePay.png */,
+			);
+			path = PayImages;
 			sourceTree = "<group>";
 		};
 		366E125B23502B7000BFFF45 /* FSPagerView */ = {
@@ -422,6 +483,12 @@
 				362C4828235C71040010C845 /* QuantityCell.xib */,
 				362C4831235C8F560010C845 /* BasicButtonCell.swift */,
 				362C4832235C8F560010C845 /* BasicButtonCell.xib */,
+				3649CFAA235D3FEF00C0F2EA /* CartListCell.swift */,
+				3649CFAB235D3FEF00C0F2EA /* CartListCell.xib */,
+				3649CFBD235D49DF00C0F2EA /* CartGroupCell.swift */,
+				3649CFBE235D49DF00C0F2EA /* CartGroupCell.xib */,
+				36E8D3CC235DA7CC00AB35CB /* PayCell.swift */,
+				36E8D3CD235DA7CC00AB35CB /* PayCell.xib */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -609,6 +676,7 @@
 				36D583CD2354151500AEB84F /* 自在軒@3x.png in Resources */,
 				36DC7A442356CB94009D48F5 /* 蜂蜜檸檬@2x.png in Resources */,
 				36DC7A4D2356CB94009D48F5 /* 新鮮水果茶@3x.png in Resources */,
+				3649CFC0235D49DF00C0F2EA /* CartGroupCell.xib in Resources */,
 				36D583E92354151500AEB84F /* 自在軒.png in Resources */,
 				364F1213235839AF00988937 /* ProductBriefCell.xib in Resources */,
 				36DC7A5D2356CB94009D48F5 /* 百香愛玉@3x.png in Resources */,
@@ -616,12 +684,14 @@
 				36D583862352FCE000AEB84F /* 8.png in Resources */,
 				36D583D72354151500AEB84F /* Teas原味@2x.jpg in Resources */,
 				36DC7A372356CB94009D48F5 /* 珍珠鮮奶茶.png in Resources */,
+				3649CFC7235D5E6E00C0F2EA /* Pay_Cash.png in Resources */,
 				362C482E235C8CDC0010C845 /* Icon_Favorite3.png in Resources */,
 				36D583D62354151500AEB84F /* Teas原味.jpg in Resources */,
 				36DC7A5F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png in Resources */,
 				36DC7A492356CB94009D48F5 /* 奶茶@2x.png in Resources */,
 				36DC7A4E2356CB94009D48F5 /* 百香愛玉@2x.png in Resources */,
 				36D583E22354151500AEB84F /* Teas原味@3x.jpg in Resources */,
+				3649CFC8235D5E6E00C0F2EA /* Pay_GooglePay.png in Resources */,
 				36D583D32354151500AEB84F /* 五十嵐@3x.png in Resources */,
 				36D583E72354151500AEB84F /* 五十嵐@2x.png in Resources */,
 				36D583EA2354151500AEB84F /* 公館手作@3x.jpg in Resources */,
@@ -633,13 +703,16 @@
 				36DC79FE2356BB1E009D48F5 /* Icon_Favorite2_Button.png in Resources */,
 				36D583E32354151500AEB84F /* 柚豆.jpg in Resources */,
 				36D583DC2354151500AEB84F /* 柚豆@3x.jpg in Resources */,
+				3649CFC9235D5E6E00C0F2EA /* Pay_ApplePay.png in Resources */,
 				36DC7A3F2356CB94009D48F5 /* 青茶.png in Resources */,
+				36E8D3CF235DA7CC00AB35CB /* PayCell.xib in Resources */,
 				36DC7A482356CB94009D48F5 /* 珍珠觀音拿鐵@3x.png in Resources */,
 				36D583E52354151500AEB84F /* 自在軒@2x.png in Resources */,
 				36D583CE2354151500AEB84F /* 公館手作@2x.jpg in Resources */,
 				36DC7A5E2356CB94009D48F5 /* 仙草凍奶茶@3x.png in Resources */,
 				36DC7A4A2356CB94009D48F5 /* 珍珠觀音拿鐵.png in Resources */,
 				3641C74E234CCEC40058CF26 /* LaunchScreen.storyboard in Resources */,
+				3649CFB6235D430000C0F2EA /* Image_Friend1.png in Resources */,
 				36D583DA2354151500AEB84F /* 紅太陽.png in Resources */,
 				36DC7A422356CB94009D48F5 /* 紅茶.png in Resources */,
 				36DC7A592356CB94009D48F5 /* 觀音拿鐵@2x.png in Resources */,
@@ -654,6 +727,7 @@
 				36159C122354BEBA00664D75 /* 迷克夏.jpg in Resources */,
 				36DC7A452356CB94009D48F5 /* 綠茶@2x.png in Resources */,
 				36D583DB2354151500AEB84F /* 圓石.jpg in Resources */,
+				3649CFB9235D430000C0F2EA /* Image_Friend3.png in Resources */,
 				36D5838B2353011000AEB84F /* SelectStoreCell.xib in Resources */,
 				36DC7A432356CB94009D48F5 /* 珍珠奶茶@3x.png in Resources */,
 				36D583A723535DE300AEB84F /* Fun2Order_AppStore_Icon.png in Resources */,
@@ -662,9 +736,11 @@
 				36DC7A3B2356CB94009D48F5 /* 青茶@2x.png in Resources */,
 				3614E0E92358A9D900D23BA6 /* CategorySectionView.xib in Resources */,
 				36D583CF2354151500AEB84F /* 紅太陽@3x.png in Resources */,
+				3649CFB7235D430000C0F2EA /* Image_Friend5.png in Resources */,
 				36D583982353455200AEB84F /* 1.png in Resources */,
 				36DC7A542356CB94009D48F5 /* 新鮮水果茶@2x.png in Resources */,
 				3641C746234CCEC30058CF26 /* Main.storyboard in Resources */,
+				3649CFC6235D5E6E00C0F2EA /* Pay_LinePay.png in Resources */,
 				36D583D92354151500AEB84F /* 公館手作.jpg in Resources */,
 				36D583D52354151500AEB84F /* 圓石@2x.jpg in Resources */,
 				36DC7A4B2356CB94009D48F5 /* 珍珠觀音拿鐵@2x.png in Resources */,
@@ -674,6 +750,7 @@
 				36D583EC2354151500AEB84F /* 上宇林@3x.jpg in Resources */,
 				36159C0C2354B9F400664D75 /* Icon_Favorite_Button.png in Resources */,
 				36D5839D2353466800AEB84F /* 2.png in Resources */,
+				3649CFB5235D430000C0F2EA /* Image_Friend4.png in Resources */,
 				362C482C235C75810010C845 /* Icon_Cup.png in Resources */,
 				36DC7A5C2356CB94009D48F5 /* 奶茶.png in Resources */,
 				36DC7A472356CB94009D48F5 /* 珍珠奶茶.png in Resources */,
@@ -686,8 +763,10 @@
 				36DC7A582356CB94009D48F5 /* 鮮奶冬瓜@2x.png in Resources */,
 				36D583E12354151500AEB84F /* 丸作@3x.jpg in Resources */,
 				36D583D12354151500AEB84F /* 柚豆@2x.jpg in Resources */,
+				3649CFB8235D430000C0F2EA /* Image_Me.png in Resources */,
 				36DC7A4C2356CB94009D48F5 /* 奶茶@3x.png in Resources */,
 				36DC7A352356CB94009D48F5 /* 纖活綠茶.png in Resources */,
+				3649CFBA235D430000C0F2EA /* Image_Friend2.png in Resources */,
 				36D583A123534BDA00AEB84F /* 7.png in Resources */,
 				36DC7A382356CB94009D48F5 /* 珍珠奶茶@2x.png in Resources */,
 				36D583A52353599D00AEB84F /* FavoriteStoreCell.xib in Resources */,
@@ -700,6 +779,7 @@
 				36DC7A522356CB94009D48F5 /* 仙草凍奶茶@2x.png in Resources */,
 				36D583D22354151500AEB84F /* 丸作@2x.jpg in Resources */,
 				36DC7A3A2356CB94009D48F5 /* 青茶@3x.png in Resources */,
+				3649CFAD235D3FEF00C0F2EA /* CartListCell.xib in Resources */,
 				36D583E02354151500AEB84F /* 茶湯會@2x.jpg in Resources */,
 				36DC7A322356CB94009D48F5 /* 鮮奶冬瓜@3x.png in Resources */,
 				36DC7A532356CB94009D48F5 /* 纖活綠茶@2x.png in Resources */,
@@ -719,6 +799,8 @@
 				36159C162355E5ED00664D75 /* GlobalConstants.swift in Sources */,
 				366E126A23502B9100BFFF45 /* FSPagerView.swift in Sources */,
 				3641C73F234CCEC30058CF26 /* AppDelegate.swift in Sources */,
+				3649CFBF235D49DF00C0F2EA /* CartGroupCell.swift in Sources */,
+				3649CFBC235D492900C0F2EA /* CartTableViewController.swift in Sources */,
 				3641C757234CD1620058CF26 /* SceneDelegate.swift in Sources */,
 				36D583A92354038E00AEB84F /* BrandListCollectionViewController.swift in Sources */,
 				364F120F2358379100988937 /* Checkbox.swift in Sources */,
@@ -736,6 +818,8 @@
 				362C4824235B596A0010C845 /* RecipeTableViewController.swift in Sources */,
 				366E126823502B9100BFFF45 /* FSPagerViewLayoutAttributes.swift in Sources */,
 				362C4829235C71040010C845 /* QuantityCell.swift in Sources */,
+				3649CFAC235D3FEF00C0F2EA /* CartListCell.swift in Sources */,
+				36E8D3CE235DA7CC00AB35CB /* PayCell.swift in Sources */,
 				366E126723502B9100BFFF45 /* FSPagerViewCell.swift in Sources */,
 				36159C052354386900664D75 /* BrandCollectionViewCell.swift in Sources */,
 				362B9102234F27110079A108 /* HomeViewController.swift in Sources */,

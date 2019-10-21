@@ -68,9 +68,12 @@ public class Checkbox: UIView {
 
     private func setupDefaults() {
         backgroundColor = UIColor.init(white: 1, alpha: 0)
-        uncheckedBorderColor = tintColor
-        checkedBorderColor = tintColor
-        checkmarkColor = tintColor
+        //uncheckedBorderColor = tintColor
+        //checkedBorderColor = tintColor
+        //checkmarkColor = tintColor
+        uncheckedBorderColor = UIColor.lightGray
+        checkedBorderColor = UIColor.lightGray
+        checkmarkColor = UIColor.lightGray
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(recognizer:)))
         addGestureRecognizer(tapGesture)
@@ -175,7 +178,7 @@ public class Checkbox: UIView {
         bezierPath.addLine(to: CGPoint(x: rect.minX + 0.34896 * rect.width, y: rect.minY + 0.95161 * rect.height))
         bezierPath.addLine(to: CGPoint(x: rect.minX + 0.95312 * rect.width, y: rect.minY + 0.04839 * rect.height))
         checkmarkColor.setStroke()
-        bezierPath.lineWidth = checkmarkSize * 2
+        bezierPath.lineWidth = checkmarkSize * 5
         bezierPath.stroke()
     }
 

@@ -18,7 +18,6 @@ class BannerDetailViewController: UIViewController {
         super.viewDidLoad()
         self.backView.layer.cornerRadius = 6
 
-        // Do any additional setup after loading the view.
     }
 
     @IBAction func closeBanner(_ sender: UIButton) {

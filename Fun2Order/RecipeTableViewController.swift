@@ -77,6 +77,10 @@ class RecipeTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row >= self.titleArray.count {
+            if indexPath.row == self.titleArray.count  {
+                return 74
+            }
+            
             return 54
         }
         
