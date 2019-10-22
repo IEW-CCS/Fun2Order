@@ -27,6 +27,7 @@ class RecipeTableViewController: UITableViewController {
 
         let basicButtonCellViewNib: UINib = UINib(nibName: "BasicButtonCell", bundle: nil)
         self.tableView.register(basicButtonCellViewNib, forCellReuseIdentifier: "BasicButtonCell")
+        
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -75,6 +76,7 @@ class RecipeTableViewController: UITableViewController {
         return cell
     }
 
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row >= self.titleArray.count {
             if indexPath.row == self.titleArray.count  {
@@ -90,5 +92,5 @@ class RecipeTableViewController: UITableViewController {
         
         return CGFloat(cell.getCellHeight())
     }
-
+    
 }

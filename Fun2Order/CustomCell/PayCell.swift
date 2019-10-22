@@ -29,19 +29,19 @@ class PayCell: UITableViewCell {
     }
     
     @IBAction func payByApple(_ sender: UIButton) {
-        
+        NotificationCenter.default.post(name: NSNotification.Name("PayByApplePay"), object: nil)
     }
     
     @IBAction func payByGoogle(_ sender: UIButton) {
-        
+        NotificationCenter.default.post(name: NSNotification.Name("PayByGooglePay"), object: nil)
     }
     
     @IBAction func payByLine(_ sender: UIButton) {
-        
+        NotificationCenter.default.post(name: NSNotification.Name("PayByLinePay"), object: nil)
     }
     
     @IBAction func payByCash(_ sender: UIButton) {
-        
+        NotificationCenter.default.post(name: NSNotification.Name("PayByCash"), object: nil)
     }
     
 }

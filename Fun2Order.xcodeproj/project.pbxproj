@@ -62,6 +62,14 @@
 		366E126A23502B9100BFFF45 /* FSPagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E126223502B9100BFFF45 /* FSPagerView.swift */; };
 		366E126B23502B9100BFFF45 /* FSPageViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E126323502B9100BFFF45 /* FSPageViewLayout.swift */; };
 		366E126C23502B9100BFFF45 /* FSPageViewTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E126423502B9100BFFF45 /* FSPageViewTransformer.swift */; };
+		3688A0A4235EE5F0001990CE /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688A0A3235EE5F0001990CE /* QRCodeViewController.swift */; };
+		36C8C1B1235DEA13002AD40F /* OrderHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C8C1AF235DEA13002AD40F /* OrderHistoryCell.swift */; };
+		36C8C1B2235DEA13002AD40F /* OrderHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36C8C1B0235DEA13002AD40F /* OrderHistoryCell.xib */; };
+		36C8C1B5235DEC59002AD40F /* Image_Group.png in Resources */ = {isa = PBXBuildFile; fileRef = 36C8C1B3235DEC59002AD40F /* Image_Group.png */; };
+		36C8C1B6235DEC59002AD40F /* Image_Person.png in Resources */ = {isa = PBXBuildFile; fileRef = 36C8C1B4235DEC59002AD40F /* Image_Person.png */; };
+		36C8C1BA235E8A2C002AD40F /* Image_QR_Code_original.png in Resources */ = {isa = PBXBuildFile; fileRef = 36C8C1B8235E8A2C002AD40F /* Image_QR_Code_original.png */; };
+		36C8C1BC235E8AC6002AD40F /* Image_QR_Code.png in Resources */ = {isa = PBXBuildFile; fileRef = 36C8C1BB235E8AC6002AD40F /* Image_QR_Code.png */; };
+		36C8C1BE235E9B90002AD40F /* HistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C8C1BD235E9B90002AD40F /* HistoryTableViewController.swift */; };
 		36D583842352DB7F00AEB84F /* BannerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D583832352DB7F00AEB84F /* BannerDetailViewController.swift */; };
 		36D583862352FCE000AEB84F /* 8.png in Resources */ = {isa = PBXBuildFile; fileRef = 36D583852352FCE000AEB84F /* 8.png */; };
 		36D5838A2353011000AEB84F /* SelectStoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D583882353011000AEB84F /* SelectStoreCell.swift */; };
@@ -223,6 +231,14 @@
 		366E126323502B9100BFFF45 /* FSPageViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSPageViewLayout.swift; sourceTree = "<group>"; };
 		366E126423502B9100BFFF45 /* FSPageViewTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSPageViewTransformer.swift; sourceTree = "<group>"; };
 		366E126D23502BD100BFFF45 /* Fun2Order-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fun2Order-Bridging-Header.h"; sourceTree = "<group>"; };
+		3688A0A3235EE5F0001990CE /* QRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
+		36C8C1AF235DEA13002AD40F /* OrderHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderHistoryCell.swift; sourceTree = "<group>"; };
+		36C8C1B0235DEA13002AD40F /* OrderHistoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OrderHistoryCell.xib; sourceTree = "<group>"; };
+		36C8C1B3235DEC59002AD40F /* Image_Group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image_Group.png; sourceTree = "<group>"; };
+		36C8C1B4235DEC59002AD40F /* Image_Person.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image_Person.png; sourceTree = "<group>"; };
+		36C8C1B8235E8A2C002AD40F /* Image_QR_Code_original.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image_QR_Code_original.png; sourceTree = "<group>"; };
+		36C8C1BB235E8AC6002AD40F /* Image_QR_Code.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image_QR_Code.png; sourceTree = "<group>"; };
+		36C8C1BD235E9B90002AD40F /* HistoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewController.swift; sourceTree = "<group>"; };
 		36D583832352DB7F00AEB84F /* BannerDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerDetailViewController.swift; sourceTree = "<group>"; };
 		36D583852352FCE000AEB84F /* 8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8.png; sourceTree = "<group>"; };
 		36D583882353011000AEB84F /* SelectStoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectStoreCell.swift; sourceTree = "<group>"; };
@@ -347,6 +363,8 @@
 		36159C082354B8F300664D75 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				36C8C1B8235E8A2C002AD40F /* Image_QR_Code_original.png */,
+				36C8C1BB235E8AC6002AD40F /* Image_QR_Code.png */,
 				362C482B235C75810010C845 /* Icon_Cup.png */,
 				362C481D235B48950010C845 /* Add_Icon.png */,
 				36159C0B2354B9F400664D75 /* Icon_Favorite_Button.png */,
@@ -394,6 +412,8 @@
 				36159C1723569D7300664D75 /* ProductDetailTableViewController.swift */,
 				362C4823235B596A0010C845 /* RecipeTableViewController.swift */,
 				3649CFBB235D492900C0F2EA /* CartTableViewController.swift */,
+				3688A0A3235EE5F0001990CE /* QRCodeViewController.swift */,
+				36C8C1BD235E9B90002AD40F /* HistoryTableViewController.swift */,
 			);
 			path = Fun2Order;
 			sourceTree = "<group>";
@@ -429,6 +449,8 @@
 				3649CFAF235D430000C0F2EA /* Image_Friend4.png */,
 				3649CFB1235D430000C0F2EA /* Image_Friend5.png */,
 				3649CFB2235D430000C0F2EA /* Image_Me.png */,
+				36C8C1B3235DEC59002AD40F /* Image_Group.png */,
+				36C8C1B4235DEC59002AD40F /* Image_Person.png */,
 			);
 			path = Member;
 			sourceTree = "<group>";
@@ -489,6 +511,8 @@
 				3649CFBE235D49DF00C0F2EA /* CartGroupCell.xib */,
 				36E8D3CC235DA7CC00AB35CB /* PayCell.swift */,
 				36E8D3CD235DA7CC00AB35CB /* PayCell.xib */,
+				36C8C1AF235DEA13002AD40F /* OrderHistoryCell.swift */,
+				36C8C1B0235DEA13002AD40F /* OrderHistoryCell.xib */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -663,7 +687,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36C8C1B6235DEC59002AD40F /* Image_Person.png in Resources */,
 				36159C102354BEBA00664D75 /* 迷克夏@2x.jpg in Resources */,
+				36C8C1B2235DEA13002AD40F /* OrderHistoryCell.xib in Resources */,
 				36D583ED2354151500AEB84F /* 茶湯會@3x.jpg in Resources */,
 				36D583DE2354151500AEB84F /* 丸作.jpg in Resources */,
 				36DC7A552356CB94009D48F5 /* 纖活綠茶@3x.png in Resources */,
@@ -694,6 +720,7 @@
 				3649CFC8235D5E6E00C0F2EA /* Pay_GooglePay.png in Resources */,
 				36D583D32354151500AEB84F /* 五十嵐@3x.png in Resources */,
 				36D583E72354151500AEB84F /* 五十嵐@2x.png in Resources */,
+				36C8C1BC235E8AC6002AD40F /* Image_QR_Code.png in Resources */,
 				36D583EA2354151500AEB84F /* 公館手作@3x.jpg in Resources */,
 				36DC7A302356CB94009D48F5 /* 紅茶@2x.png in Resources */,
 				36DC7A5A2356CB94009D48F5 /* 紅茶@3x.png in Resources */,
@@ -729,6 +756,7 @@
 				36D583DB2354151500AEB84F /* 圓石.jpg in Resources */,
 				3649CFB9235D430000C0F2EA /* Image_Friend3.png in Resources */,
 				36D5838B2353011000AEB84F /* SelectStoreCell.xib in Resources */,
+				36C8C1B5235DEC59002AD40F /* Image_Group.png in Resources */,
 				36DC7A432356CB94009D48F5 /* 珍珠奶茶@3x.png in Resources */,
 				36D583A723535DE300AEB84F /* Fun2Order_AppStore_Icon.png in Resources */,
 				36D5839B2353455200AEB84F /* 6.png in Resources */,
@@ -765,6 +793,7 @@
 				36D583D12354151500AEB84F /* 柚豆@2x.jpg in Resources */,
 				3649CFB8235D430000C0F2EA /* Image_Me.png in Resources */,
 				36DC7A4C2356CB94009D48F5 /* 奶茶@3x.png in Resources */,
+				36C8C1BA235E8A2C002AD40F /* Image_QR_Code_original.png in Resources */,
 				36DC7A352356CB94009D48F5 /* 纖活綠茶.png in Resources */,
 				3649CFBA235D430000C0F2EA /* Image_Friend2.png in Resources */,
 				36D583A123534BDA00AEB84F /* 7.png in Resources */,
@@ -798,7 +827,9 @@
 				366E126B23502B9100BFFF45 /* FSPageViewLayout.swift in Sources */,
 				36159C162355E5ED00664D75 /* GlobalConstants.swift in Sources */,
 				366E126A23502B9100BFFF45 /* FSPagerView.swift in Sources */,
+				36C8C1BE235E9B90002AD40F /* HistoryTableViewController.swift in Sources */,
 				3641C73F234CCEC30058CF26 /* AppDelegate.swift in Sources */,
+				3688A0A4235EE5F0001990CE /* QRCodeViewController.swift in Sources */,
 				3649CFBF235D49DF00C0F2EA /* CartGroupCell.swift in Sources */,
 				3649CFBC235D492900C0F2EA /* CartTableViewController.swift in Sources */,
 				3641C757234CD1620058CF26 /* SceneDelegate.swift in Sources */,
@@ -815,6 +846,7 @@
 				366E126523502B9100BFFF45 /* FSPageControl.swift in Sources */,
 				366E126C23502B9100BFFF45 /* FSPageViewTransformer.swift in Sources */,
 				3614E0E62358A8DE00D23BA6 /* CategorySectionView.swift in Sources */,
+				36C8C1B1235DEA13002AD40F /* OrderHistoryCell.swift in Sources */,
 				362C4824235B596A0010C845 /* RecipeTableViewController.swift in Sources */,
 				366E126823502B9100BFFF45 /* FSPagerViewLayoutAttributes.swift in Sources */,
 				362C4829235C71040010C845 /* QuantityCell.swift in Sources */,

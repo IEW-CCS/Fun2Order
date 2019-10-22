@@ -57,8 +57,6 @@ class RecipeCell: UITableViewCell {
             itemLabel.text = item_array[index]
             self.addSubview(checkBox)
             self.addSubview(itemLabel)
-            //checkBox.topAnchor.constraint(equalTo: backView.bottomAnchor, constant: 10).isActive = true
-            //itemLabel.centerYAnchor.constraint(equalTo: checkBox.centerYAnchor).isActive = true
         }
         
         cellTotalHeight = cellTotalHeight + (ITEM_HEIGHT_SPACE + CHECKBOX_WIDTH)*(rowCountIndex + 1)
