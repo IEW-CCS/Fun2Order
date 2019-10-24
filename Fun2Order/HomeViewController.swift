@@ -68,9 +68,7 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPageView()
-        //self.tableView.delegate = self
-        //self.tableView.dataSource = self
-        
+
     }
     
     private func setupPageView() {

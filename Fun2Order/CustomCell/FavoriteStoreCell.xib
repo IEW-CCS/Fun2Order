@@ -53,6 +53,9 @@
                         <state key="normal" title="揪團">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
+                        <connections>
+                            <action selector="displayGroupView:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="QNf-q1-4ls"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>

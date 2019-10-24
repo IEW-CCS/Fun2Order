@@ -94,6 +94,9 @@ class FavoriteTableViewController: UITableViewController {
                      sub_title: self.favoriteStoreArray[indexPath.row].storeAddressInfo)
 
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        cell.delegate = self
+        cell.indexPath = indexPath
+
         return cell
     }
     
@@ -157,7 +160,7 @@ class FavoriteTableViewController: UITableViewController {
             return 44
         }
     }
-        
+
     @objc func headerTapped(_ sender: UITapGestureRecognizer?) {
         print("Section Header tapped")
         if self.isSelectStoreCellOpened {
@@ -171,4 +174,17 @@ class FavoriteTableViewController: UITableViewController {
         }
     }
     
+}
+
+extension FavoriteTableViewController: DisplayGroupOrderDelegate {
+    func didGroupButtonPressed(at index: IndexPath) {
+        guard let groupOrderController = self.storyboard?.instantiateViewController(withIdentifier: "GroupOrder_VC") as? GroupOrderViewController else{
+            assertionFailure("[AssertionFailure] StoryBoard: QRCode_VC can't find!! (QRCodeViewController)")
+            return
+        }
+        
+        groupOrderController.modalTransitionStyle = .crossDissolve
+        groupOrderController.modalPresentationStyle = .overFullScreen
+        navigationController?.present(groupOrderController, animated: true, completion: nil)
+    }
 }

@@ -50,7 +50,6 @@ class QRCodeViewController: UIViewController, UIGestureRecognizerDelegate {
         let scaleY = 200 / qrImage.extent.size.height
         let transformedImage = qrImage.transformed(by: CGAffineTransform(scaleX: CGFloat(scaleX), y: CGFloat(scaleY)))
         
-        
         self.qrCodeLabel.text = self.qrCodeText
         self.qrCodeImage.image = UIImage(ciImage: transformedImage)
     }

@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol DisplayGroupOrderDelegate {
+    func didGroupButtonPressed(at index: IndexPath)
+}
+
 class FavoriteStoreCell: UITableViewCell {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var brandImage: UIImageView!
@@ -15,6 +19,9 @@ class FavoriteStoreCell: UITableViewCell {
     @IBOutlet weak var txtSubTitle: UILabel!
     @IBOutlet weak var btnGroup: UIButton!
     
+    var delegate: DisplayGroupOrderDelegate??
+    var indexPath: IndexPath!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.backView.layer.borderWidth = CGFloat(1.0)
@@ -28,12 +35,15 @@ class FavoriteStoreCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
     
     func setData(brand_image: UIImage, title: String, sub_title: String) {
         txtTitle.text = title
         txtSubTitle.text = sub_title
         brandImage.image = brand_image
+    }
+    
+    @IBAction func displayGroupView(_ sender: UIButton) {
+        delegate??.didGroupButtonPressed(at: indexPath)
     }
 }

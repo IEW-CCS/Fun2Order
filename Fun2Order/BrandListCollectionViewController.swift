@@ -29,7 +29,6 @@ class BrandListCollectionViewController: UICollectionViewController {
 
         let cellViewNib: UINib = UINib(nibName: "BrandCollectionViewCell", bundle: nil)
         self.collectionView.register(cellViewNib, forCellWithReuseIdentifier: "BrandCollectionViewCell")
-        //self.collectionView!.register(BrandCollectionViewCell.self, forCellWithReuseIdentifier: "BrandCollectionViewCell")
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.minimumInteritemSpacing = 4
         layout.minimumLineSpacing = 5
@@ -41,7 +40,6 @@ class BrandListCollectionViewController: UICollectionViewController {
         return 1
     }
 
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.brandImages.count
     }
@@ -50,8 +48,6 @@ class BrandListCollectionViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BrandCollectionViewCell", for: indexPath) as! BrandCollectionViewCell
     
         cell.setData(text: self.brandTitles[indexPath.row], image: self.brandImages[indexPath.row])
-        //cell.layer.borderColor = UIColor.black.cgColor
-        //cell.layer.borderWidth = 1
         
         return cell
     }

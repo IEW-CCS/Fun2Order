@@ -27,7 +27,6 @@ class RecipeTableViewController: UITableViewController {
 
         let basicButtonCellViewNib: UINib = UINib(nibName: "BasicButtonCell", bundle: nil)
         self.tableView.register(basicButtonCellViewNib, forCellReuseIdentifier: "BasicButtonCell")
-        
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
