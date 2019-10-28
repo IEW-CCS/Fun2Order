@@ -32,8 +32,10 @@ class RecipeCell: UITableViewCell {
         let LABEL_WIDTH = 80
         let ITEM_WIDTH_SPACE = 5
         let ITEM_HEIGHT_SPACE = 5
+        let CELL_MARGIN_HEIGHT = 15
         let ITEM_WIDTH = CHECKBOX_WIDTH + ITEM_WIDTH_SPACE + LABEL_WIDTH
         var cellTotalHeight: Int = 0
+        
 
         titleLabel.centerXAnchor.constraint(equalTo: backView.centerXAnchor).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: backView.centerYAnchor).isActive = true
@@ -64,7 +66,7 @@ class RecipeCell: UITableViewCell {
         //print("cellTotalHeight = \(cellTotalHeight)")
         //print("-------------------------")
         
-        self.cellHeight = cellTotalHeight
+        self.cellHeight = cellTotalHeight + CELL_MARGIN_HEIGHT
     }
     
     func getCellHeight() -> Int {

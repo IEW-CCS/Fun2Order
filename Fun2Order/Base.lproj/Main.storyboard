@@ -265,35 +265,37 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wk5-cH-Ltx">
-                                <rect key="frame" x="67" y="68" width="280" height="310"/>
+                                <rect key="frame" x="67" y="293" width="280" height="310"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ABC1234567890" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aad-O8-6Yt">
+                                        <rect key="frame" x="61" y="281" width="158" height="24"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="aad-O8-6Yt" secondAttribute="bottom" constant="5" id="BBA-wy-Nyp"/>
                                     <constraint firstAttribute="width" constant="280" id="QMF-3J-7Kh"/>
+                                    <constraint firstItem="aad-O8-6Yt" firstAttribute="centerX" secondItem="Wk5-cH-Ltx" secondAttribute="centerX" id="fGr-Qs-oHF"/>
                                     <constraint firstAttribute="height" constant="310" id="tHI-m0-B10"/>
                                 </constraints>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image_QR_Code_original.png" translatesAutoresizingMaskIntoConstraints="NO" id="OAM-8G-vo7">
-                                <rect key="frame" x="87" y="88" width="240" height="240"/>
+                                <rect key="frame" x="87" y="328" width="240" height="240"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="240" id="4ks-nf-dCu"/>
                                     <constraint firstAttribute="width" constant="240" id="Eqi-Qs-REU"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ABC1234567890" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aad-O8-6Yt">
-                                <rect key="frame" x="128" y="341" width="158" height="24"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.80166416952054798" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="aad-O8-6Yt" firstAttribute="top" secondItem="OAM-8G-vo7" secondAttribute="bottom" constant="13" id="Dwu-XX-O6s"/>
-                            <constraint firstItem="Wk5-cH-Ltx" firstAttribute="centerX" secondItem="E5w-9W-kuB" secondAttribute="centerX" id="KPy-XI-aKu"/>
-                            <constraint firstItem="OAM-8G-vo7" firstAttribute="centerX" secondItem="E5w-9W-kuB" secondAttribute="centerX" id="KcR-oL-fV5"/>
-                            <constraint firstItem="OAM-8G-vo7" firstAttribute="top" secondItem="7aD-EY-UnX" secondAttribute="top" constant="44" id="VnP-Ip-qqr"/>
-                            <constraint firstItem="Wk5-cH-Ltx" firstAttribute="top" secondItem="7aD-EY-UnX" secondAttribute="top" constant="24" id="blk-Go-EQJ"/>
-                            <constraint firstItem="aad-O8-6Yt" firstAttribute="centerX" secondItem="E5w-9W-kuB" secondAttribute="centerX" id="nfh-Li-FIG"/>
+                            <constraint firstItem="OAM-8G-vo7" firstAttribute="centerX" secondItem="E5w-9W-kuB" secondAttribute="centerX" id="4WM-Ws-R9Q"/>
+                            <constraint firstItem="OAM-8G-vo7" firstAttribute="centerY" secondItem="E5w-9W-kuB" secondAttribute="centerY" id="9eI-Mm-JAP"/>
+                            <constraint firstItem="Wk5-cH-Ltx" firstAttribute="centerX" secondItem="E5w-9W-kuB" secondAttribute="centerX" id="ngk-mk-yBH"/>
+                            <constraint firstItem="Wk5-cH-Ltx" firstAttribute="centerY" secondItem="E5w-9W-kuB" secondAttribute="centerY" id="pBG-3M-rqK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="7aD-EY-UnX"/>
                     </view>
@@ -537,6 +539,6 @@
         <image name="ToolBar_ProductDetail" width="24.5" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Ue0-yi-4xJ"/>
+        <segue reference="Fof-3o-hkm"/>
     </inferredMetricsTieBreakers>
 </document>

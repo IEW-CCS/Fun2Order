@@ -15,7 +15,7 @@ class RecipeTableViewController: UITableViewController {
                                 ["去冰", "微冰", "少冰", "正常", "去冰", "微冰", "少冰", "正常"],
                                 ["珍珠", "波霸", "椰果", "仙草","珍珠", "波霸", "椰果", "仙草"]]
 
-    var itemHeight = [Int]()
+    var itemHeight = [Int]();
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +27,8 @@ class RecipeTableViewController: UITableViewController {
 
         let basicButtonCellViewNib: UINib = UINib(nibName: "BasicButtonCell", bundle: nil)
         self.tableView.register(basicButtonCellViewNib, forCellReuseIdentifier: "BasicButtonCell")
+        
+        itemHeight = Array(repeating: 0, count: titleArray.count)
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -69,7 +71,7 @@ class RecipeTableViewController: UITableViewController {
         
         cell.setItemData(title: titleArray[indexPath.row], item_array: itemData[indexPath.row], number_for_row: 3)
         cell.cellHeight = cell.getCellHeight()
-        
+        itemHeight[indexPath.row] = cell.getCellHeight()
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         
         return cell
@@ -85,11 +87,7 @@ class RecipeTableViewController: UITableViewController {
             return 54
         }
         
-        guard let cell = tableView.cellForRow(at: indexPath) as? RecipeCell else {
-            return 130
-        }
-        
-        return CGFloat(cell.getCellHeight())
+        return CGFloat(itemHeight[indexPath.row])
     }
     
 }
