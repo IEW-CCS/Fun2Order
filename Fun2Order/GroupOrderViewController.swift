@@ -30,7 +30,7 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
 
         let layout = groupCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.minimumInteritemSpacing = 4
-        layout.minimumLineSpacing = 5
+        layout.minimumLineSpacing = 8
         groupCollectionView.collectionViewLayout = layout
 
         let gesTap = UITapGestureRecognizer(target: self, action:#selector(self.handleTapGesture(_:)))

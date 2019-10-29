@@ -403,6 +403,7 @@
 		3641C73D234CCEC30058CF26 /* Fun2Order */ = {
 			isa = PBXGroup;
 			children = (
+				366D615E2367BAF30014AC09 /* Entity */,
 				36159C07235493C100664D75 /* StructDefinition */,
 				36D58387235300D100AEB84F /* CustomCell */,
 				366E125B23502B7000BFFF45 /* FSPagerView */,
@@ -410,7 +411,6 @@
 				3641C73E234CCEC30058CF26 /* AppDelegate.swift */,
 				3641C74C234CCEC40058CF26 /* LaunchScreen.storyboard */,
 				3641C74F234CCEC40058CF26 /* Info.plist */,
-				3641C747234CCEC30058CF26 /* Fun2Order.xcdatamodeld */,
 				3641C75B234DD2F40058CF26 /* Resources */,
 				3641C744234CCEC30058CF26 /* Main.storyboard */,
 				362B9101234F27110079A108 /* HomeViewController.swift */,
@@ -473,6 +473,14 @@
 				3649CFC2235D5E6E00C0F2EA /* Pay_LinePay.png */,
 			);
 			path = PayImages;
+			sourceTree = "<group>";
+		};
+		366D615E2367BAF30014AC09 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				3641C747234CCEC30058CF26 /* Fun2Order.xcdatamodeld */,
+			);
+			path = Entity;
 			sourceTree = "<group>";
 		};
 		366E125B23502B7000BFFF45 /* FSPagerView */ = {

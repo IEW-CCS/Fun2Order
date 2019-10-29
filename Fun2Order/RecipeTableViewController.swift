@@ -70,14 +70,13 @@ class RecipeTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as! RecipeCell
         
         cell.setItemData(title: titleArray[indexPath.row], item_array: itemData[indexPath.row], number_for_row: 3)
-        cell.cellHeight = cell.getCellHeight()
+
         itemHeight[indexPath.row] = cell.getCellHeight()
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         
         return cell
     }
 
-    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row >= self.titleArray.count {
             if indexPath.row == self.titleArray.count  {
