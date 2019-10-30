@@ -12,9 +12,16 @@ class HomeTabBar : UITabBarController
 {
     override func viewDidLoad() {
         super .viewDidLoad()
+        navigationController?.viewControllers = [self]
+        
     }
     
+     override func viewWillAppear(_ animated: Bool) {
+        
+       
+    }
     
-    
-
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+         navigationController?.setNavigationBarHidden(false, animated: false)
+    }
 }

@@ -39,8 +39,7 @@ class EntryViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-        
+        navigationController?.setNavigationBarHidden(true, animated: false)
         if(Auth.auth().currentUser?.uid != nil)
         {
            // print(Auth.auth().currentUser?.phoneNumber)
