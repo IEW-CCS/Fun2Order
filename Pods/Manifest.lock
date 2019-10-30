@@ -164,7 +164,7 @@ DEPENDENCIES:
   - GoogleSignIn
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - ABOtpView
     - AppAuth
     - BoringSSL-GRPC
@@ -224,4 +224,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: c4b43239a815fc68b739a77ce07d7c38b505a320
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.4
