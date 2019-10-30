@@ -1,0 +1,6 @@
+framework module ABOtpView {
+  umbrella header "ABOtpView-umbrella.h"
+
+  export *
+  module * { export * }
+}

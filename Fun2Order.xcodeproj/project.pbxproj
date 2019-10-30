@@ -173,6 +173,15 @@
 		36DC7A5F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A2F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png */; };
 		36E8D3CE235DA7CC00AB35CB /* PayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8D3CC235DA7CC00AB35CB /* PayCell.swift */; };
 		36E8D3CF235DA7CC00AB35CB /* PayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36E8D3CD235DA7CC00AB35CB /* PayCell.xib */; };
+		DE56692C2136C50433FBBAC5 /* Pods_Fun2Order.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB291C2335559C1835EB614 /* Pods_Fun2Order.framework */; };
+		F505DDE623692AC900E3F681 /* SignUpMailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F505DDE123692AC900E3F681 /* SignUpMailController.swift */; };
+		F505DDE723692AC900E3F681 /* VerifyPhNoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F505DDE223692AC900E3F681 /* VerifyPhNoController.swift */; };
+		F505DDE823692AC900E3F681 /* ForgotPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F505DDE323692AC900E3F681 /* ForgotPasswordController.swift */; };
+		F505DDE923692AC900E3F681 /* OTPVerificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F505DDE423692AC900E3F681 /* OTPVerificationController.swift */; };
+		F505DDEA23692AC900E3F681 /* VerifyMailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F505DDE523692AC900E3F681 /* VerifyMailController.swift */; };
+		F505DDEC23692AE300E3F681 /* HomeTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F505DDEB23692AE300E3F681 /* HomeTabBar.swift */; };
+		F505DDEE23692AEF00E3F681 /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F505DDED23692AEF00E3F681 /* EntryViewController.swift */; };
+		F505DDF223696BF900E3F681 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F505DDF123696BF900E3F681 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -346,6 +355,17 @@
 		36DC7A2F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "珍珠鮮奶茶@2x.png"; sourceTree = "<group>"; };
 		36E8D3CC235DA7CC00AB35CB /* PayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayCell.swift; sourceTree = "<group>"; };
 		36E8D3CD235DA7CC00AB35CB /* PayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PayCell.xib; sourceTree = "<group>"; };
+		6F23F293F87D0CFC6266BEB4 /* Pods-Fun2Order.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fun2Order.debug.xcconfig"; path = "Target Support Files/Pods-Fun2Order/Pods-Fun2Order.debug.xcconfig"; sourceTree = "<group>"; };
+		7DD41DAEB12A610C33F8EFF7 /* Pods-Fun2Order.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fun2Order.release.xcconfig"; path = "Target Support Files/Pods-Fun2Order/Pods-Fun2Order.release.xcconfig"; sourceTree = "<group>"; };
+		9CB291C2335559C1835EB614 /* Pods_Fun2Order.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Fun2Order.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F505DDE123692AC900E3F681 /* SignUpMailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpMailController.swift; sourceTree = "<group>"; };
+		F505DDE223692AC900E3F681 /* VerifyPhNoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyPhNoController.swift; sourceTree = "<group>"; };
+		F505DDE323692AC900E3F681 /* ForgotPasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordController.swift; sourceTree = "<group>"; };
+		F505DDE423692AC900E3F681 /* OTPVerificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPVerificationController.swift; sourceTree = "<group>"; };
+		F505DDE523692AC900E3F681 /* VerifyMailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyMailController.swift; sourceTree = "<group>"; };
+		F505DDEB23692AE300E3F681 /* HomeTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTabBar.swift; sourceTree = "<group>"; };
+		F505DDED23692AEF00E3F681 /* EntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
+		F505DDF123696BF900E3F681 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -353,12 +373,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE56692C2136C50433FBBAC5 /* Pods_Fun2Order.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B6B870D30FB82D00D657113 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9CB291C2335559C1835EB614 /* Pods_Fun2Order.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		36159C07235493C100664D75 /* StructDefinition */ = {
 			isa = PBXGroup;
 			children = (
@@ -388,6 +417,8 @@
 			children = (
 				3641C73D234CCEC30058CF26 /* Fun2Order */,
 				3641C73C234CCEC30058CF26 /* Products */,
+				DA91B7B53FD106FD941D566B /* Pods */,
+				1B6B870D30FB82D00D657113 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
@@ -403,6 +434,7 @@
 		3641C73D234CCEC30058CF26 /* Fun2Order */ = {
 			isa = PBXGroup;
 			children = (
+				F505DDDF23692A9100E3F681 /* Controlles */,
 				366D615E2367BAF30014AC09 /* Entity */,
 				36159C07235493C100664D75 /* StructDefinition */,
 				36D58387235300D100AEB84F /* CustomCell */,
@@ -414,7 +446,10 @@
 				3641C75B234DD2F40058CF26 /* Resources */,
 				3641C744234CCEC30058CF26 /* Main.storyboard */,
 				362B9101234F27110079A108 /* HomeViewController.swift */,
+				F505DDEB23692AE300E3F681 /* HomeTabBar.swift */,
+				F505DDED23692AEF00E3F681 /* EntryViewController.swift */,
 				36D583832352DB7F00AEB84F /* BannerDetailViewController.swift */,
+				F505DDF123696BF900E3F681 /* GoogleService-Info.plist */,
 				36D5838C23533D1D00AEB84F /* FavoriteTableViewController.swift */,
 				36D583A82354038E00AEB84F /* BrandListCollectionViewController.swift */,
 				36159C1723569D7300664D75 /* ProductDetailTableViewController.swift */,
@@ -648,6 +683,35 @@
 			path = ProductImages;
 			sourceTree = "<group>";
 		};
+		DA91B7B53FD106FD941D566B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6F23F293F87D0CFC6266BEB4 /* Pods-Fun2Order.debug.xcconfig */,
+				7DD41DAEB12A610C33F8EFF7 /* Pods-Fun2Order.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		F505DDDF23692A9100E3F681 /* Controlles */ = {
+			isa = PBXGroup;
+			children = (
+				F505DDE023692AB000E3F681 /* LoginController */,
+			);
+			path = Controlles;
+			sourceTree = "<group>";
+		};
+		F505DDE023692AB000E3F681 /* LoginController */ = {
+			isa = PBXGroup;
+			children = (
+				F505DDE323692AC900E3F681 /* ForgotPasswordController.swift */,
+				F505DDE423692AC900E3F681 /* OTPVerificationController.swift */,
+				F505DDE123692AC900E3F681 /* SignUpMailController.swift */,
+				F505DDE523692AC900E3F681 /* VerifyMailController.swift */,
+				F505DDE223692AC900E3F681 /* VerifyPhNoController.swift */,
+			);
+			path = LoginController;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -655,9 +719,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3641C752234CCEC40058CF26 /* Build configuration list for PBXNativeTarget "Fun2Order" */;
 			buildPhases = (
+				453531E4F4AEFAD48E5ED3BB /* [CP] Check Pods Manifest.lock */,
 				3641C737234CCEC30058CF26 /* Sources */,
 				3641C738234CCEC30058CF26 /* Frameworks */,
 				3641C739234CCEC30058CF26 /* Resources */,
+				731196FE03616B9C919A63D1 /* [CP] Embed Pods Frameworks */,
+				9DB57F0AAA919F66C5745923 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -796,6 +863,7 @@
 				36DC7A332356CB94009D48F5 /* 金桔檸檬.png in Resources */,
 				36DC7A402356CB94009D48F5 /* 觀音拿鐵.png in Resources */,
 				36159C062354386900664D75 /* BrandCollectionViewCell.xib in Resources */,
+				F505DDF223696BF900E3F681 /* GoogleService-Info.plist in Resources */,
 				36D583EC2354151500AEB84F /* 上宇林@3x.jpg in Resources */,
 				36159C0C2354B9F400664D75 /* Icon_Favorite_Button.png in Resources */,
 				36D5839D2353466800AEB84F /* 2.png in Resources */,
@@ -839,6 +907,65 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		453531E4F4AEFAD48E5ED3BB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Fun2Order-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		731196FE03616B9C919A63D1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Fun2Order/Pods-Fun2Order-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Fun2Order/Pods-Fun2Order-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Fun2Order/Pods-Fun2Order-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9DB57F0AAA919F66C5745923 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Fun2Order/Pods-Fun2Order-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Fun2Order/Pods-Fun2Order-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Fun2Order/Pods-Fun2Order-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3641C737234CCEC30058CF26 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -861,26 +988,33 @@
 				364F1212235839AF00988937 /* ProductBriefCell.swift in Sources */,
 				362C4833235C8F560010C845 /* BasicButtonCell.swift in Sources */,
 				362C4821235B56550010C845 /* RecipeCell.swift in Sources */,
+				F505DDEC23692AE300E3F681 /* HomeTabBar.swift in Sources */,
 				36159C142355B3D500664D75 /* CommonStruct.swift in Sources */,
 				36D5838D23533D1D00AEB84F /* FavoriteTableViewController.swift in Sources */,
 				36D583842352DB7F00AEB84F /* BannerDetailViewController.swift in Sources */,
+				F505DDE923692AC900E3F681 /* OTPVerificationController.swift in Sources */,
 				366E126523502B9100BFFF45 /* FSPageControl.swift in Sources */,
 				3688A0A9235F460A001990CE /* GroupCell.swift in Sources */,
 				3688A0A7235F3A8B001990CE /* GroupOrderViewController.swift in Sources */,
 				366E126C23502B9100BFFF45 /* FSPageViewTransformer.swift in Sources */,
 				3614E0E62358A8DE00D23BA6 /* CategorySectionView.swift in Sources */,
 				36C8C1B1235DEA13002AD40F /* OrderHistoryCell.swift in Sources */,
+				F505DDE623692AC900E3F681 /* SignUpMailController.swift in Sources */,
 				362C4824235B596A0010C845 /* RecipeTableViewController.swift in Sources */,
 				366E126823502B9100BFFF45 /* FSPagerViewLayoutAttributes.swift in Sources */,
 				362C4829235C71040010C845 /* QuantityCell.swift in Sources */,
 				3649CFAC235D3FEF00C0F2EA /* CartListCell.swift in Sources */,
+				F505DDE823692AC900E3F681 /* ForgotPasswordController.swift in Sources */,
 				36E8D3CE235DA7CC00AB35CB /* PayCell.swift in Sources */,
 				366E126723502B9100BFFF45 /* FSPagerViewCell.swift in Sources */,
+				F505DDE723692AC900E3F681 /* VerifyPhNoController.swift in Sources */,
 				36159C052354386900664D75 /* BrandCollectionViewCell.swift in Sources */,
 				362B9102234F27110079A108 /* HomeViewController.swift in Sources */,
 				3688A0AD235FDB9C001990CE /* MemberCell.swift in Sources */,
 				366E126923502B9100BFFF45 /* FSPagerCollectionView.swift in Sources */,
+				F505DDEE23692AEF00E3F681 /* EntryViewController.swift in Sources */,
 				366E126623502B9100BFFF45 /* FSPagerViewObjcCompat.m in Sources */,
+				F505DDEA23692AC900E3F681 /* VerifyMailController.swift in Sources */,
 				36D5838A2353011000AEB84F /* SelectStoreCell.swift in Sources */,
 				36D583A42353599D00AEB84F /* FavoriteStoreCell.swift in Sources */,
 			);
@@ -1024,18 +1158,19 @@
 		};
 		3641C753234CCEC40058CF26 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F23F293F87D0CFC6266BEB4 /* Pods-Fun2Order.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 34KF2N2J26;
+				DEVELOPMENT_TEAM = 79SKVS6TTS;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = TeamPlus.Fun2Order;
+				PRODUCT_BUNDLE_IDENTIFIER = TeamPlus.Fun2Orderc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Fun2Order/FSPagerView/Fun2Order-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1046,18 +1181,19 @@
 		};
 		3641C754234CCEC40058CF26 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7DD41DAEB12A610C33F8EFF7 /* Pods-Fun2Order.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 34KF2N2J26;
+				DEVELOPMENT_TEAM = 79SKVS6TTS;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = TeamPlus.Fun2Order;
+				PRODUCT_BUNDLE_IDENTIFIER = TeamPlus.Fun2Orderc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Fun2Order/FSPagerView/Fun2Order-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
