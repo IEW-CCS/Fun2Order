@@ -11,18 +11,18 @@ import UIKit
 class BrandListCollectionViewController: UICollectionViewController {
 
     let brandImages: [UIImage] = [
+        UIImage(named: "五十嵐@3x.png")!,
+        UIImage(named: "柚豆@3x.jpg")!,
         UIImage(named: "上宇林@3x.jpg")!,
         UIImage(named: "丸作@3x.jpg")!,
-        UIImage(named: "五十嵐@3x.png")!,
         UIImage(named: "公館手作@3x.jpg")!,
         UIImage(named: "迷克夏@3x.jpg")!,
         UIImage(named: "自在軒@3x.png")!,
-        UIImage(named: "柚豆@3x.jpg")!,
         UIImage(named: "紅太陽@3x.png")!,
         UIImage(named: "茶湯會@3x.jpg")!,
         UIImage(named: "圓石@3x.jpg")!,
         UIImage(named: "Teas原味@3x.jpg")!]
-    let brandTitles: [String] = ["上宇林", "丸作", "五十嵐", "公館手作", "迷克夏", "自在軒", "柚豆", "紅太陽", "茶湯會", "圓石", "Teas原味"]
+    let brandTitles: [String] = ["五十嵐", "柚豆", "上宇林", "丸作", "公館手作", "迷克夏", "自在軒", "紅太陽", "茶湯會", "圓石", "Teas原味"]
     
     override func viewDidLoad() {
         super.viewDidLoad()

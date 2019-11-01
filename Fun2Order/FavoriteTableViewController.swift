@@ -13,6 +13,7 @@ class FavoriteTableViewController: UITableViewController {
 
     var favoriteStoreArray = [FavoriteStoreInfo]()
     var isSelectStoreCellOpened: Bool = false
+    var brandProfileList: BrandProfile!
 
     @IBOutlet weak var menuBarItem: UIBarButtonItem!
     
@@ -41,8 +42,63 @@ class FavoriteTableViewController: UITableViewController {
             object: nil
         )
 
+        requestBrandProfileList()
     }
 
+    func requestBrandProfileList() {
+        let sessionConf = URLSessionConfiguration.default
+        sessionConf.timeoutIntervalForRequest = HTTP_REQUEST_TIMEOUT
+        sessionConf.timeoutIntervalForResource = HTTP_REQUEST_TIMEOUT
+        let sessionHttp = URLSession(configuration: sessionConf)
+
+        let temp = getFirebaseUrlForRequest(uri: "BrandProfile/五十嵐")
+        let urlString = temp.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let urlRequest = URLRequest(url: URL(string: urlString)!)
+
+        print("requestBrandProfileList")
+        let task = sessionHttp.dataTask(with: urlRequest) {(data, response, error) in
+            do {
+                if error != nil{
+                    DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    let httpAlert = alert(message: error!.localizedDescription, title: "Http Error")
+                    self.present(httpAlert, animated : false, completion : nil)
+                }
+                else{
+                    guard let httpResponse = response as? HTTPURLResponse,
+                        (200...299).contains(httpResponse.statusCode) else {
+                            let errorResponse = response as? HTTPURLResponse
+                            let message: String = String(errorResponse!.statusCode) + " - " + HTTPURLResponse.localizedString(forStatusCode: errorResponse!.statusCode)
+                            DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                            let httpAlert = alert(message: message, title: "Http Error")
+                            self.present(httpAlert, animated : false, completion : nil)
+                            return
+                    }
+                    
+                    DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    let outputStr  = String(data: data!, encoding: String.Encoding.utf8) as String?
+                    let jsonData = outputStr!.data(using: String.Encoding.utf8, allowLossyConversion: true)
+                    let decoder = JSONDecoder()
+                    self.brandProfileList = try decoder.decode(BrandProfile.self, from: jsonData!)
+                    //if !self.brandProfileList.isEmpty {
+                    //    self.updateBrandProfileToCoreData()
+                    //}
+              }
+            } catch {
+                print(error.localizedDescription)
+                let httpalert = alert(message: error.localizedDescription, title: "Request BrandProfile Error")
+                self.present(httpalert, animated : false, completion : nil)
+                return
+            }
+        }
+        task.resume()
+        
+        return
+    }
+
+    func updateBrandProfileToCoreData() {
+        
+    }
+    
     @objc func receiveBrandInfo(_ notification: Notification) {
         if let brandIndex = notification.object as? Int {
             print("FavoriteTableViewController received brand name: \(self.brandTitles[brandIndex])")

@@ -67,6 +67,8 @@
 		3688A0A9235F460A001990CE /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688A0A8235F460A001990CE /* GroupCell.swift */; };
 		3688A0AD235FDB9C001990CE /* MemberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688A0AB235FDB9C001990CE /* MemberCell.swift */; };
 		3688A0AE235FDB9C001990CE /* MemberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3688A0AC235FDB9C001990CE /* MemberCell.xib */; };
+		36C0B371236A784500B56C75 /* WebQueryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C0B370236A784500B56C75 /* WebQueryInterface.swift */; };
+		36C0B374236A8E4100B56C75 /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C0B373236A8E4100B56C75 /* UtilityFunctions.swift */; };
 		36C8C1B1235DEA13002AD40F /* OrderHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C8C1AF235DEA13002AD40F /* OrderHistoryCell.swift */; };
 		36C8C1B2235DEA13002AD40F /* OrderHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36C8C1B0235DEA13002AD40F /* OrderHistoryCell.xib */; };
 		36C8C1B5235DEC59002AD40F /* Image_Group.png in Resources */ = {isa = PBXBuildFile; fileRef = 36C8C1B3235DEC59002AD40F /* Image_Group.png */; };
@@ -249,6 +251,8 @@
 		3688A0A8235F460A001990CE /* GroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
 		3688A0AB235FDB9C001990CE /* MemberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberCell.swift; sourceTree = "<group>"; };
 		3688A0AC235FDB9C001990CE /* MemberCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MemberCell.xib; sourceTree = "<group>"; };
+		36C0B370236A784500B56C75 /* WebQueryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebQueryInterface.swift; sourceTree = "<group>"; };
+		36C0B373236A8E4100B56C75 /* UtilityFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityFunctions.swift; sourceTree = "<group>"; };
 		36C8C1AF235DEA13002AD40F /* OrderHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderHistoryCell.swift; sourceTree = "<group>"; };
 		36C8C1B0235DEA13002AD40F /* OrderHistoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OrderHistoryCell.xib; sourceTree = "<group>"; };
 		36C8C1B3235DEC59002AD40F /* Image_Group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image_Group.png; sourceTree = "<group>"; };
@@ -434,6 +438,8 @@
 		3641C73D234CCEC30058CF26 /* Fun2Order */ = {
 			isa = PBXGroup;
 			children = (
+				36C0B372236A8E2500B56C75 /* CommonFunctions */,
+				36C0B36F236A781200B56C75 /* JsonStruct */,
 				F505DDDF23692A9100E3F681 /* Controlles */,
 				366D615E2367BAF30014AC09 /* Entity */,
 				36159C07235493C100664D75 /* StructDefinition */,
@@ -443,13 +449,13 @@
 				3641C73E234CCEC30058CF26 /* AppDelegate.swift */,
 				3641C74C234CCEC40058CF26 /* LaunchScreen.storyboard */,
 				3641C74F234CCEC40058CF26 /* Info.plist */,
+				F505DDF123696BF900E3F681 /* GoogleService-Info.plist */,
 				3641C75B234DD2F40058CF26 /* Resources */,
 				3641C744234CCEC30058CF26 /* Main.storyboard */,
 				362B9101234F27110079A108 /* HomeViewController.swift */,
 				F505DDEB23692AE300E3F681 /* HomeTabBar.swift */,
 				F505DDED23692AEF00E3F681 /* EntryViewController.swift */,
 				36D583832352DB7F00AEB84F /* BannerDetailViewController.swift */,
-				F505DDF123696BF900E3F681 /* GoogleService-Info.plist */,
 				36D5838C23533D1D00AEB84F /* FavoriteTableViewController.swift */,
 				36D583A82354038E00AEB84F /* BrandListCollectionViewController.swift */,
 				36159C1723569D7300664D75 /* ProductDetailTableViewController.swift */,
@@ -533,6 +539,22 @@
 				366E126D23502BD100BFFF45 /* Fun2Order-Bridging-Header.h */,
 			);
 			path = FSPagerView;
+			sourceTree = "<group>";
+		};
+		36C0B36F236A781200B56C75 /* JsonStruct */ = {
+			isa = PBXGroup;
+			children = (
+				36C0B370236A784500B56C75 /* WebQueryInterface.swift */,
+			);
+			path = JsonStruct;
+			sourceTree = "<group>";
+		};
+		36C0B372236A8E2500B56C75 /* CommonFunctions */ = {
+			isa = PBXGroup;
+			children = (
+				36C0B373236A8E4100B56C75 /* UtilityFunctions.swift */,
+			);
+			path = CommonFunctions;
 			sourceTree = "<group>";
 		};
 		36D58387235300D100AEB84F /* CustomCell */ = {
@@ -978,6 +1000,7 @@
 				36C8C1BE235E9B90002AD40F /* HistoryTableViewController.swift in Sources */,
 				3641C73F234CCEC30058CF26 /* AppDelegate.swift in Sources */,
 				3688A0A4235EE5F0001990CE /* QRCodeViewController.swift in Sources */,
+				36C0B371236A784500B56C75 /* WebQueryInterface.swift in Sources */,
 				3649CFBF235D49DF00C0F2EA /* CartGroupCell.swift in Sources */,
 				3649CFBC235D492900C0F2EA /* CartTableViewController.swift in Sources */,
 				3641C757234CD1620058CF26 /* SceneDelegate.swift in Sources */,
@@ -1000,6 +1023,7 @@
 				3614E0E62358A8DE00D23BA6 /* CategorySectionView.swift in Sources */,
 				36C8C1B1235DEA13002AD40F /* OrderHistoryCell.swift in Sources */,
 				F505DDE623692AC900E3F681 /* SignUpMailController.swift in Sources */,
+				36C0B374236A8E4100B56C75 /* UtilityFunctions.swift in Sources */,
 				362C4824235B596A0010C845 /* RecipeTableViewController.swift in Sources */,
 				366E126823502B9100BFFF45 /* FSPagerViewLayoutAttributes.swift in Sources */,
 				362C4829235C71040010C845 /* QuantityCell.swift in Sources */,
@@ -1163,14 +1187,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 79SKVS6TTS;
+				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = TeamPlus.Fun2Orderc;
+				PRODUCT_BUNDLE_IDENTIFIER = TeamPlus.Fun2Order;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Fun2Order/FSPagerView/Fun2Order-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1186,14 +1210,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 79SKVS6TTS;
+				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = TeamPlus.Fun2Orderc;
+				PRODUCT_BUNDLE_IDENTIFIER = TeamPlus.Fun2Order;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Fun2Order/FSPagerView/Fun2Order-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+let HTTP_REQUEST_TIMEOUT = 5.0
 
 let BASIC_FRAME_BORDER_COLOR_GREEN = UIColor(red: 51/255, green: 205/255, blue: 30/255, alpha: 1.0)
 let BASIC_FRAME_BORDER_COLOR_CYAN = UIColor(red: 128/255, green: 222/255, blue: 234/255, alpha: 1.0)
