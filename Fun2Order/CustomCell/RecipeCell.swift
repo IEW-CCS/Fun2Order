@@ -36,7 +36,6 @@ class RecipeCell: UITableViewCell {
         let ITEM_WIDTH = CHECKBOX_WIDTH + ITEM_WIDTH_SPACE + LABEL_WIDTH
         var cellTotalHeight: Int = 0
         
-
         titleLabel.centerXAnchor.constraint(equalTo: backView.centerXAnchor).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: backView.centerYAnchor).isActive = true
         
@@ -62,6 +61,7 @@ class RecipeCell: UITableViewCell {
         }
         
         cellTotalHeight = cellTotalHeight + (ITEM_HEIGHT_SPACE + CHECKBOX_WIDTH)*(rowCountIndex + 1)
+
         //print("-------------------------")
         //print("cellTotalHeight = \(cellTotalHeight)")
         //print("-------------------------")

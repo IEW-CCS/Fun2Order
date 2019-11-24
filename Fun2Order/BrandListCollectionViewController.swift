@@ -7,22 +7,16 @@
 //
 
 import UIKit
+import CoreData
 
 class BrandListCollectionViewController: UICollectionViewController {
 
-    let brandImages: [UIImage] = [
-        UIImage(named: "五十嵐@3x.png")!,
-        UIImage(named: "柚豆@3x.jpg")!,
-        UIImage(named: "上宇林@3x.jpg")!,
-        UIImage(named: "丸作@3x.jpg")!,
-        UIImage(named: "公館手作@3x.jpg")!,
-        UIImage(named: "迷克夏@3x.jpg")!,
-        UIImage(named: "自在軒@3x.png")!,
-        UIImage(named: "紅太陽@3x.png")!,
-        UIImage(named: "茶湯會@3x.jpg")!,
-        UIImage(named: "圓石@3x.jpg")!,
-        UIImage(named: "Teas原味@3x.jpg")!]
-    let brandTitles: [String] = ["五十嵐", "柚豆", "上宇林", "丸作", "公館手作", "迷克夏", "自在軒", "紅太陽", "茶湯會", "圓石", "Teas原味"]
+    var brandImages = [UIImage]()
+    var brandTitles = [String]()
+    var brandIDs = [Int]()
+    
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,8 +28,31 @@ class BrandListCollectionViewController: UICollectionViewController {
         layout.minimumLineSpacing = 5
         collectionView.collectionViewLayout = layout
         self.tabBarController?.title = self.title
+        
+        vc = app.persistentContainer.viewContext
+        retrieveBrandProfiles()
     }
 
+    func retrieveBrandProfiles() {
+        let fetchSortRequest: NSFetchRequest<BRAND_PROFILE> = BRAND_PROFILE.fetchRequest()
+        let sort = NSSortDescriptor(key: "brandID", ascending: true)
+        fetchSortRequest.sortDescriptors = [sort]
+
+        do {
+            let profile_list = try vc.fetch(fetchSortRequest)
+            for profile_data in profile_list {
+                self.brandImages.append(UIImage(data: profile_data.brandIconImage!)!)
+                self.brandTitles.append(profile_data.brandName!)
+                self.brandIDs.append(Int(profile_data.brandID))
+            }
+        } catch {
+            print(error.localizedDescription)
+            let httpAlert = alert(message: error.localizedDescription, title: "Retrieve Brand Profile from CoreData Error")
+            self.present(httpAlert, animated : false, completion : nil)
+            return
+        }
+    }
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -53,8 +70,10 @@ class BrandListCollectionViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Select: \(self.brandTitles[indexPath.row])")
-        NotificationCenter.default.post(name: NSNotification.Name("BrandInfo"), object: Int(indexPath.row))
+        print("Selected Brand ID: \(self.brandIDs[indexPath.row])")
+        //NotificationCenter.default.post(name: NSNotification.Name("BrandInfo"), object: Int(indexPath.row))
+        updateSelectedBrandID(brand_id: self.brandIDs[indexPath.row])
+        NotificationCenter.default.post(name: NSNotification.Name("BrandInfo"), object: self.brandIDs[indexPath.row])
         dismiss(animated: true, completion: nil)
     }
     
@@ -62,6 +81,6 @@ class BrandListCollectionViewController: UICollectionViewController {
 
 extension BrandListCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 90, height: 115)
+        return CGSize(width: 100, height: 125)
     }
 }

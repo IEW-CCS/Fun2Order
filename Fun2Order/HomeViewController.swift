@@ -7,12 +7,25 @@
 //
 
 import UIKit
+import CoreData
+import Firebase
+
 
 class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDelegate {
     @IBOutlet weak var pageControl: FSPageControl!
     
     @IBOutlet weak var pagerView: FSPagerView!
+
+    var updateInformation: UpdateInformation!
+    var brandProfileList: BrandProfileList!
+    var codeTableList: CodeTableList!
+    var productInformationList: ProductInformationList!
+    var storeInformationList: StoreInformationList!
+    var productRecipeList: ProductRecipeList!
     
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+
     let imageNames = ["1.png","2.png","3.png","4.png","5.png","6.png","7.png", "8.png"]
     let imageTitles = ["嵐山", "車折神社", "清水寺", "直指庵", "圓光寺", "高台寺", "北野天滿宮", "高雄神護寺"]
     let imageDescription = [
@@ -63,12 +76,16 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
             }
         }
     }
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupPageView()
+        vc = app.persistentContainer.viewContext
 
+        setupPageView()
+        requestUpdateDateTime()
+        print("sqlite path --> \(app.persistentContainer.persistentStoreDescriptions)")
     }
     
     private func setupPageView() {
@@ -128,32 +145,469 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
         self.pageControl.currentPage = pagerView.currentIndex
     }
 
-}
-/*
-extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
+    func requestUpdateDateTime() {
+        let sessionConf = URLSessionConfiguration.default
+        sessionConf.timeoutIntervalForRequest = HTTP_REQUEST_TIMEOUT
+        sessionConf.timeoutIntervalForResource = HTTP_REQUEST_TIMEOUT
+        let sessionHttp = URLSession(configuration: sessionConf)
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        let temp = getFirebaseUrlForRequest(uri: "UpdateInformation")
+        let urlString = temp.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let urlRequest = URLRequest(url: URL(string: urlString)!)
+
+        print("requestUpdateDateTime")
+        let task = sessionHttp.dataTask(with: urlRequest) {(data, response, error) in
+            do {
+                if error != nil{
+                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    let httpAlert = alert(message: error!.localizedDescription, title: "Http Error")
+                    self.present(httpAlert, animated : false, completion : nil)
+                } else {
+                    guard let httpResponse = response as? HTTPURLResponse,
+                        (200...299).contains(httpResponse.statusCode) else {
+                            let errorResponse = response as? HTTPURLResponse
+                            let message: String = String(errorResponse!.statusCode) + " - " + HTTPURLResponse.localizedString(forStatusCode: errorResponse!.statusCode)
+                            //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                            let httpAlert = alert(message: message, title: "Http Error")
+                            self.present(httpAlert, animated : false, completion : nil)
+                            return
+                    }
+                    
+                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    
+                    let outputStr  = String(data: data!, encoding: String.Encoding.utf8) as String?
+                    let jsonData = outputStr!.data(using: String.Encoding.utf8, allowLossyConversion: true)
+                    let decoder = JSONDecoder()
+                    self.updateInformation = try decoder.decode(UpdateInformation.self, from: jsonData!)
+                    self.checkUpdateInformation()
+                }
+            } catch {
+                print(error.localizedDescription)
+                let httpAlert = alert(message: error.localizedDescription, title: "Request UpdateInformation Error")
+                self.present(httpAlert, animated : false, completion : nil)
+                return
+            }
+        }
+        task.resume()
+        
+        return
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProductBriefCell", for: indexPath) as! ProductBriefCell
-        cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            tableView.deleteRows(at: [indexPath], with: .fade)
+    func checkUpdateInformation() {
+        var sysUpdateDT = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = .current
+        dateFormatter.dateFormat = DATETIME_FORMATTER
+        sysUpdateDT = dateFormatter.date(from: self.updateInformation.systemUpdateDateTime)!
+        let lastQueryDT = getLastQueryTime()
+        
+        if lastQueryDT >= sysUpdateDT {
+            print("No need to update basic data.")
+            updateLastQueryTime()
+            print("LastSystemQueryTime is \(getLastQueryTime())")
+        } else {
+            print("Server updated information, start to request necessary data.")
+            deleteAllBrandProfiles()
+            deleteAllCodeTable()
+            deleteAllProductInformation()
+            deleteAllProductRecipe()
+            deleteAllStoreInformation()
+
+            requestBrandProfile()
+            requestCodeTable()
+            requestProductInformation()
+            requestProductRecipe()
+            requestStoreInformation()
+            
+            updateLastQueryTime()
+            print("LastSystemQueryTime is \(getLastQueryTime())")
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44
+    func requestCodeTable() {
+        let sessionConf = URLSessionConfiguration.default
+        sessionConf.timeoutIntervalForRequest = HTTP_REQUEST_TIMEOUT
+        sessionConf.timeoutIntervalForResource = HTTP_REQUEST_TIMEOUT
+        let sessionHttp = URLSession(configuration: sessionConf)
+
+        let temp = getFirebaseUrlForRequest(uri: "CODE_TABLE")
+        let urlString = temp.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let urlRequest = URLRequest(url: URL(string: urlString)!)
+
+        print("requestCodeTable")
+        let task = sessionHttp.dataTask(with: urlRequest) {(data, response, error) in
+            do {
+                if error != nil{
+                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    let httpAlert = alert(message: error!.localizedDescription, title: "Http Error")
+                    self.present(httpAlert, animated : false, completion : nil)
+                } else {
+                    guard let httpResponse = response as? HTTPURLResponse,
+                        (200...299).contains(httpResponse.statusCode) else {
+                            let errorResponse = response as? HTTPURLResponse
+                            let message: String = String(errorResponse!.statusCode) + " - " + HTTPURLResponse.localizedString(forStatusCode: errorResponse!.statusCode)
+                            //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                            let httpAlert = alert(message: message, title: "Http Error")
+                            self.present(httpAlert, animated : false, completion : nil)
+                            return
+                    }
+                    
+                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    
+                    let outputStr  = String(data: data!, encoding: String.Encoding.utf8) as String?
+                    let jsonData = outputStr!.data(using: String.Encoding.utf8, allowLossyConversion: true)
+                    let decoder = JSONDecoder()
+                    self.codeTableList = try decoder.decode(CodeTableList.self, from: jsonData!)
+
+                    if self.codeTableList.CODE_TABLE.count > 0 {
+                        print("Code Table Count = \(self.codeTableList.CODE_TABLE.count)")
+                        self.updateCodeTableToCoreData()
+                    }
+                }
+            } catch {
+                print(error.localizedDescription)
+                let httpAlert = alert(message: error.localizedDescription, title: "Request Code Table Error")
+                self.present(httpAlert, animated : false, completion : nil)
+                return
+            }
+        }
+        task.resume()
+        
+        return
+    }
+    
+    func updateCodeTableToCoreData() {
+        for i in 0...self.codeTableList.CODE_TABLE.count - 1 {
+            let codeData = NSEntityDescription.insertNewObject(forEntityName: "CODE_TABLE", into: vc) as! CODE_TABLE
+            codeData.codeCategory = self.codeTableList.CODE_TABLE[i].codeCategory
+            codeData.code = self.codeTableList.CODE_TABLE[i].code
+            codeData.subCode = self.codeTableList.CODE_TABLE[i].subCode
+            codeData.codeExtension = self.codeTableList.CODE_TABLE[i].codeExtension
+            codeData.index = Int32(self.codeTableList.CODE_TABLE[i].index)
+            codeData.codeDescription = self.codeTableList.CODE_TABLE[i].codeDescription
+            codeData.subItem = self.codeTableList.CODE_TABLE[i].subItem
+            codeData.extension1 = self.codeTableList.CODE_TABLE[i].extension1
+            codeData.extension2 = self.codeTableList.CODE_TABLE[i].extension2
+            codeData.extension3 = self.codeTableList.CODE_TABLE[i].extension3
+            codeData.extension4 = self.codeTableList.CODE_TABLE[i].extension4
+            codeData.extension5 = self.codeTableList.CODE_TABLE[i].extension5
+        }
+        self.app.saveContext()
+        updateLastQueryTime()
+    }
+
+    func requestProductInformation() {
+        let sessionConf = URLSessionConfiguration.default
+        sessionConf.timeoutIntervalForRequest = HTTP_REQUEST_TIMEOUT
+        sessionConf.timeoutIntervalForResource = HTTP_REQUEST_TIMEOUT
+        let sessionHttp = URLSession(configuration: sessionConf)
+
+        let temp = getFirebaseUrlForRequest(uri: "PRODUCT_INFORMATION")
+        let urlString = temp.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let urlRequest = URLRequest(url: URL(string: urlString)!)
+
+        print("requestProductInformation")
+        let task = sessionHttp.dataTask(with: urlRequest) {(data, response, error) in
+            do {
+                if error != nil{
+                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    let httpAlert = alert(message: error!.localizedDescription, title: "Http Error")
+                    self.present(httpAlert, animated : false, completion : nil)
+                } else {
+                    guard let httpResponse = response as? HTTPURLResponse,
+                        (200...299).contains(httpResponse.statusCode) else {
+                            let errorResponse = response as? HTTPURLResponse
+                            let message: String = String(errorResponse!.statusCode) + " - " + HTTPURLResponse.localizedString(forStatusCode: errorResponse!.statusCode)
+                            //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                            let httpAlert = alert(message: message, title: "Http Error")
+                            self.present(httpAlert, animated : false, completion : nil)
+                            return
+                    }
+                    
+                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    
+                    let outputStr  = String(data: data!, encoding: String.Encoding.utf8) as String?
+                    let jsonData = outputStr!.data(using: String.Encoding.utf8, allowLossyConversion: true)
+                    let decoder = JSONDecoder()
+                    self.productInformationList = try decoder.decode(ProductInformationList.self, from: jsonData!)
+
+                    if self.productInformationList.PRODUCT_INFORMATION.count > 0 {
+                        print("Product Information Count = \(self.self.productInformationList.PRODUCT_INFORMATION.count)")
+                        self.updateProductInformationToCoreData()
+                    }
+                }
+            } catch {
+                print(error.localizedDescription)
+                let httpAlert = alert(message: error.localizedDescription, title: "Request Product Information Error")
+                self.present(httpAlert, animated : false, completion : nil)
+                return
+            }
+        }
+        task.resume()
+        
+        return
+    }
+    
+    func updateProductInformationToCoreData() {
+        let storage = Storage.storage()
+
+        for i in 0...self.productInformationList.PRODUCT_INFORMATION.count - 1 {
+            let productData = NSEntityDescription.insertNewObject(forEntityName: "PRODUCT_INFORMATION", into: vc) as! PRODUCT_INFORMATION
+            productData.brandID = Int16(self.productInformationList.PRODUCT_INFORMATION[i].brandID)
+            productData.productID = Int16(self.productInformationList.PRODUCT_INFORMATION[i].productID)
+            productData.productCategory = self.productInformationList.PRODUCT_INFORMATION[i].productCategory
+            productData.productName = self.productInformationList.PRODUCT_INFORMATION[i].productName
+            productData.productDescription = self.productInformationList.PRODUCT_INFORMATION[i].productDescription
+            productData.recommand = self.productInformationList.PRODUCT_INFORMATION[i].recommand
+            productData.popularity = self.productInformationList.PRODUCT_INFORMATION[i].popularity
+            productData.limit = self.productInformationList.PRODUCT_INFORMATION[i].limit
+
+            let pathReference = storage.reference(withPath: "Product_Image/\(self.productInformationList.PRODUCT_INFORMATION[i].productImage)")
+            pathReference.getData(maxSize: 1 * 1024 * 1024) { data, error in
+                if let error = error {
+                    print(error.localizedDescription)
+                    DispatchQueue.main.async {
+                        let httpAlert = alert(message: error.localizedDescription, title: "Request Product Image Error")
+                        self.present(httpAlert, animated : false, completion : nil)
+                        return
+                    }
+                } else {
+                    print("Get Product Image: \(self.productInformationList.PRODUCT_INFORMATION[i].productImage) from Firebase")
+                    productData.productImage = data!
+                    self.app.saveContext()
+                }
+            }
+        }
+        updateLastQueryTime()
+    }
+    
+    func requestProductRecipe() {
+        let sessionConf = URLSessionConfiguration.default
+        sessionConf.timeoutIntervalForRequest = HTTP_REQUEST_TIMEOUT * 2
+        sessionConf.timeoutIntervalForResource = HTTP_REQUEST_TIMEOUT * 2
+        let sessionHttp = URLSession(configuration: sessionConf)
+
+        let temp = getFirebaseUrlForRequest(uri: "PRODUCT_RECIPE")
+        let urlString = temp.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let urlRequest = URLRequest(url: URL(string: urlString)!)
+
+        print("requestProductRecipe")
+        let task = sessionHttp.dataTask(with: urlRequest) {(data, response, error) in
+            do {
+                if error != nil{
+                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    let httpAlert = alert(message: error!.localizedDescription, title: "Http Error")
+                    self.present(httpAlert, animated : false, completion : nil)
+                } else {
+                    guard let httpResponse = response as? HTTPURLResponse,
+                        (200...299).contains(httpResponse.statusCode) else {
+                            let errorResponse = response as? HTTPURLResponse
+                            let message: String = String(errorResponse!.statusCode) + " - " + HTTPURLResponse.localizedString(forStatusCode: errorResponse!.statusCode)
+                            //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                            let httpAlert = alert(message: message, title: "Http Error")
+                            self.present(httpAlert, animated : false, completion : nil)
+                            return
+                    }
+                    
+                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    
+                    let outputStr  = String(data: data!, encoding: String.Encoding.utf8) as String?
+                    let jsonData = outputStr!.data(using: String.Encoding.utf8, allowLossyConversion: true)
+                    let decoder = JSONDecoder()
+                    self.productRecipeList = try decoder.decode(ProductRecipeList.self, from: jsonData!)
+
+                    if self.productRecipeList.PRODUCT_RECIPE.count > 0 {
+                        print("Product Recipe Count = \(self.productRecipeList.PRODUCT_RECIPE.count)")
+                        self.updateProductRecipeToCoreData()
+                    }
+                }
+            } catch {
+                print(error.localizedDescription)
+                let httpAlert = alert(message: error.localizedDescription, title: "Request Product Recipe Error")
+                self.present(httpAlert, animated : false, completion : nil)
+                return
+            }
+        }
+        task.resume()
+        
+        return
+    }
+    
+    func updateProductRecipeToCoreData() {
+        for i in 0...self.productRecipeList.PRODUCT_RECIPE.count - 1 {
+            let productRecipeData = NSEntityDescription.insertNewObject(forEntityName: "PRODUCT_RECIPE", into: vc) as! PRODUCT_RECIPE
+            
+            productRecipeData.brandID = Int16(self.productRecipeList.PRODUCT_RECIPE[i].brandID)
+            productRecipeData.storeID = Int16(self.productRecipeList.PRODUCT_RECIPE[i].storeID)
+            productRecipeData.productID = Int16(self.productRecipeList.PRODUCT_RECIPE[i].productID)
+            productRecipeData.recipe1 = self.productRecipeList.PRODUCT_RECIPE[i].recipe1
+            productRecipeData.recipe2 = self.productRecipeList.PRODUCT_RECIPE[i].recipe2
+            productRecipeData.recipe3 = self.productRecipeList.PRODUCT_RECIPE[i].recipe3
+            productRecipeData.recipe4 = self.productRecipeList.PRODUCT_RECIPE[i].recipe4
+            productRecipeData.recipe5 = self.productRecipeList.PRODUCT_RECIPE[i].recipe5
+            productRecipeData.recipe6 = self.productRecipeList.PRODUCT_RECIPE[i].recipe6
+            productRecipeData.recipe7 = self.productRecipeList.PRODUCT_RECIPE[i].recipe7
+            productRecipeData.recipe8 = self.productRecipeList.PRODUCT_RECIPE[i].recipe8
+            productRecipeData.recipe9 = self.productRecipeList.PRODUCT_RECIPE[i].recipe9
+            productRecipeData.recipe10 = self.productRecipeList.PRODUCT_RECIPE[i].recipe10
+        }
+
+        self.app.saveContext()
+        updateLastQueryTime()
+    }
+    
+    func requestStoreInformation() {
+        let sessionConf = URLSessionConfiguration.default
+        sessionConf.timeoutIntervalForRequest = HTTP_REQUEST_TIMEOUT
+        sessionConf.timeoutIntervalForResource = HTTP_REQUEST_TIMEOUT
+        let sessionHttp = URLSession(configuration: sessionConf)
+
+        let temp = getFirebaseUrlForRequest(uri: "STORE_INFORMATION")
+        let urlString = temp.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let urlRequest = URLRequest(url: URL(string: urlString)!)
+
+        print("requestStoreInformation")
+        let task = sessionHttp.dataTask(with: urlRequest) {(data, response, error) in
+            do {
+                if error != nil{
+                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    let httpAlert = alert(message: error!.localizedDescription, title: "Http Error")
+                    self.present(httpAlert, animated : false, completion : nil)
+                } else {
+                    guard let httpResponse = response as? HTTPURLResponse,
+                        (200...299).contains(httpResponse.statusCode) else {
+                            let errorResponse = response as? HTTPURLResponse
+                            let message: String = String(errorResponse!.statusCode) + " - " + HTTPURLResponse.localizedString(forStatusCode: errorResponse!.statusCode)
+                            //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                            let httpAlert = alert(message: message, title: "Http Error")
+                            self.present(httpAlert, animated : false, completion : nil)
+                            return
+                    }
+                    
+                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    
+                    let outputStr  = String(data: data!, encoding: String.Encoding.utf8) as String?
+                    let jsonData = outputStr!.data(using: String.Encoding.utf8, allowLossyConversion: true)
+                    let decoder = JSONDecoder()
+                    self.storeInformationList = try decoder.decode(StoreInformationList.self, from: jsonData!)
+
+                    if self.storeInformationList.STORE_INFORMATION.count > 0 {
+                        print("Store Information Count = \(self.storeInformationList.STORE_INFORMATION.count)")
+                        self.updateStoreInformationToCoreData()
+                    }
+                }
+            } catch {
+                print(error.localizedDescription)
+                let httpAlert = alert(message: error.localizedDescription, title: "Request Store Information Error")
+                self.present(httpAlert, animated : false, completion : nil)
+                return
+            }
+        }
+        task.resume()
+        
+        return
+    }
+    
+    func updateStoreInformationToCoreData() {
+        for i in 0...self.storeInformationList.STORE_INFORMATION.count - 1 {
+            let storeData = NSEntityDescription.insertNewObject(forEntityName: "STORE_INFORMATION", into: vc) as! STORE_INFORMATION
+            
+            storeData.brandID = Int16(self.storeInformationList.STORE_INFORMATION[i].brandID)
+            storeData.storeID = Int16(self.storeInformationList.STORE_INFORMATION[i].storeID)
+            storeData.storeCategory = self.storeInformationList.STORE_INFORMATION[i].storeCategory
+            storeData.storeSubCategory = self.storeInformationList.STORE_INFORMATION[i].storeSubCategory
+            storeData.storeName = self.storeInformationList.STORE_INFORMATION[i].storeName
+            storeData.storeDescription = self.storeInformationList.STORE_INFORMATION[i].storeDescription
+            storeData.storeAddress = self.storeInformationList.STORE_INFORMATION[i].storeAddress
+            storeData.storePhoneNumber = self.storeInformationList.STORE_INFORMATION[i].storePhoneNumber
+            storeData.deliveryService = self.storeInformationList.STORE_INFORMATION[i].deliveryService
+        }
+
+        self.app.saveContext()
+        updateLastQueryTime()
+    }
+    
+    func requestBrandProfile() {
+        let sessionConf = URLSessionConfiguration.default
+        sessionConf.timeoutIntervalForRequest = HTTP_REQUEST_TIMEOUT
+        sessionConf.timeoutIntervalForResource = HTTP_REQUEST_TIMEOUT
+        let sessionHttp = URLSession(configuration: sessionConf)
+
+        let temp = getFirebaseUrlForRequest(uri: "BRAND_PROFILE")
+        let urlString = temp.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let urlRequest = URLRequest(url: URL(string: urlString)!)
+
+        print("requestBrandProfile")
+        let task = sessionHttp.dataTask(with: urlRequest) {(data, response, error) in
+            do {
+                if error != nil{
+                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    let httpAlert = alert(message: error!.localizedDescription, title: "Http Error")
+                    self.present(httpAlert, animated : false, completion : nil)
+                } else {
+                    guard let httpResponse = response as? HTTPURLResponse,
+                        (200...299).contains(httpResponse.statusCode) else {
+                            let errorResponse = response as? HTTPURLResponse
+                            let message: String = String(errorResponse!.statusCode) + " - " + HTTPURLResponse.localizedString(forStatusCode: errorResponse!.statusCode)
+                            //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                            let httpAlert = alert(message: message, title: "Http Error")
+                            self.present(httpAlert, animated : false, completion : nil)
+                            return
+                    }
+                    
+                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    
+                    let outputStr  = String(data: data!, encoding: String.Encoding.utf8) as String?
+                    let jsonData = outputStr!.data(using: String.Encoding.utf8, allowLossyConversion: true)
+                    let decoder = JSONDecoder()
+                    self.brandProfileList = try decoder.decode(BrandProfileList.self, from: jsonData!)
+
+                    if self.brandProfileList.BRAND_PROFILE.count > 0 {
+                        print("Brand Profiles Count = \(self.brandProfileList.BRAND_PROFILE.count)")
+                        self.updateBrandProfileToCoreData()
+                    }
+                }
+            } catch {
+                print(error.localizedDescription)
+                let httpAlert = alert(message: error.localizedDescription, title: "Request Brand Profile Error")
+                self.present(httpAlert, animated : false, completion : nil)
+                return
+            }
+        }
+        task.resume()
+        
+        return
+    }
+    
+    func updateBrandProfileToCoreData() {
+        let storage = Storage.storage()
+        
+        for i in 0...self.brandProfileList.BRAND_PROFILE.count - 1 {
+            let brandData = NSEntityDescription.insertNewObject(forEntityName: "BRAND_PROFILE", into: vc) as! BRAND_PROFILE
+            brandData.brandID = Int16(self.brandProfileList.BRAND_PROFILE[i].brandID)
+            brandData.brandName = self.brandProfileList.BRAND_PROFILE[i].brandName
+            brandData.brandCategory = self.brandProfileList.BRAND_PROFILE[i].brandCategory
+            brandData.brandSubCategory = self.brandProfileList.BRAND_PROFILE[i].brandSubCategory
+            brandData.brandDescription = self.brandProfileList.BRAND_PROFILE[i].brandDescription
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = DATETIME_FORMATTER
+            brandData.brandUpdateDateTime = dateFormatter.date(from: self.brandProfileList.BRAND_PROFILE[i].brandUpdateDateTime)
+            let pathReference = storage.reference(withPath: "Brand_Image/\(self.brandProfileList.BRAND_PROFILE[i].brandIconImage)")
+            pathReference.getData(maxSize: 1 * 1024 * 1024) { data, error in
+                if let error = error {
+                    print(error.localizedDescription)
+                    DispatchQueue.main.async {
+                        let httpAlert = alert(message: error.localizedDescription, title: "Request Brand Image Error")
+                        self.present(httpAlert, animated : false, completion : nil)
+                        return
+                    }
+                } else {
+                    print("Get Brand Image: \(self.brandProfileList.BRAND_PROFILE[i].brandIconImage) from Firebase")
+                    brandData.brandIconImage = data!
+                    self.app.saveContext()
+                }
+            }
+        }
+        updateLastQueryTime()
     }
 }
-*/

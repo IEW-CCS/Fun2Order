@@ -21,6 +21,46 @@ func getFirebaseUrlForRequest(uri: String) -> String {
     return url
 }
 
+func getLastQueryTime() -> Date {
+    let path = NSHomeDirectory() + "/Documents/AppConfig.plist"
+    let plist = NSMutableDictionary(contentsOfFile: path)
+    let lastTime = plist!["LastSystemQueryTime"] as! Date
+    
+    return lastTime
+}
+
+func updateLastQueryTime() {
+    let path = NSHomeDirectory() + "/Documents/AppConfig.plist"
+    if let plist = NSMutableDictionary(contentsOfFile: path) {
+        plist["LastSystemQueryTime"] = Date()
+        if plist.write(toFile: path, atomically: true) {
+            print("Write LastSystemQueryTime to AppConfig.plist successfule.")
+        } else {
+            print("Write LastSystemQueryTime to AppConfig.plist failed.")
+        }
+    }
+}
+
+func getSelectedBrandID() -> Int {
+    let path = NSHomeDirectory() + "/Documents/AppConfig.plist"
+    let plist = NSMutableDictionary(contentsOfFile: path)
+    let selectedBrandID = plist!["SelectedBrandID"] as! Int
+    
+    return selectedBrandID
+}
+
+func updateSelectedBrandID(brand_id: Int) {
+    let path = NSHomeDirectory() + "/Documents/AppConfig.plist"
+    if let plist = NSMutableDictionary(contentsOfFile: path) {
+        plist["SelectedBrandID"] = brand_id
+        if plist.write(toFile: path, atomically: true) {
+            print("Write SelectedBrandID to AppConfig.plist successfule.")
+        } else {
+            print("Write SelectedBrandID to AppConfig.plist failed.")
+        }
+    }
+}
+
 func alert(message: String, title: String )-> UIAlertController {
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
     let OKAction = UIAlertAction(title: "OK", style: .default, handler: nil)

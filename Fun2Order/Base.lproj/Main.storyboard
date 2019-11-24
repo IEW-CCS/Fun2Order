@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="myY-7K-WVh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="myY-7K-WVh">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -84,7 +84,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="qWc-St-5Ko"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Home" image="TabBar_Home" selectedImage="TabBar_Home" id="soO-e0-16j"/>
+                    <tabBarItem key="tabBarItem" title="首頁" image="TabBar_Home" selectedImage="TabBar_Home" id="soO-e0-16j"/>
                     <connections>
                         <outlet property="pageControl" destination="aVt-MN-yk4" id="8eV-8W-ubR"/>
                         <outlet property="pagerView" destination="P5F-Pv-Ibf" id="TFl-q2-Tgo"/>
@@ -212,7 +212,7 @@
                             <outlet property="delegate" destination="xqA-34-jxq" id="1UY-uA-WEB"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Favorite" image="TabBar_Favorite" selectedImage="TabBar_Favorite" id="a6w-QE-UMX" userLabel="Favorite"/>
+                    <tabBarItem key="tabBarItem" title="我的最愛" image="TabBar_Favorite" selectedImage="TabBar_Favorite" id="a6w-QE-UMX" userLabel="Favorite"/>
                     <connections>
                         <outlet property="menuBarItem" destination="p65-rg-b43" id="o89-ys-7MZ"/>
                     </connections>
@@ -221,7 +221,7 @@
             </objects>
             <point key="canvasLocation" x="765" y="256"/>
         </scene>
-        <!--History-->
+        <!--歷史訂單-->
         <scene sceneID="uMw-ne-tbo">
             <objects>
                 <tableViewController id="BkH-ek-Dwa" customClass="HistoryTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
@@ -234,7 +234,7 @@
                             <outlet property="delegate" destination="BkH-ek-Dwa" id="SNr-IV-Ihd"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="History" image="TabBar_History" selectedImage="TabBar_History" id="QcF-56-Ro9"/>
+                    <tabBarItem key="tabBarItem" title="歷史訂單" image="TabBar_History" selectedImage="TabBar_History" id="QcF-56-Ro9"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KAv-H2-Tc3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1056,6 +1056,6 @@
         <image name="ToolBar_ProductDetail" width="24.5" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Ue0-yi-4xJ"/>
+        <segue reference="Fof-3o-hkm"/>
     </inferredMetricsTieBreakers>
 </document>

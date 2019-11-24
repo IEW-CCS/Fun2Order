@@ -8,82 +8,120 @@
 
 import Foundation
 
-
-struct StoreItem: Codable {
-    let storeID: Int
-    let storeName: String
-    let storeDescription: String
-    let storeAddress: String
-    let storePhoneNumber: String
+struct UpdateInformation: Codable {
+    var systemUpdateDateTime: String
 }
 
-struct StoreSubCategoryItem: Codable {
-    let storeSubCatogory: String
-    let storeList: [StoreItem]
+struct CodeTableList: Codable {
+    var CODE_TABLE: [CodeTable]
 }
 
-struct StoreCategoryItem: Codable {
-    let storeCategory: String
-    let storeSubCategoryList: [StoreSubCategoryItem]
-}
-
-struct IngredientItem: Codable {
-    let ingredient: String
-    let ingredientPrice: Int
-    /*
-    init(from decoder: Decoder) throws {
-        var arrayContrainer = try decoder.unkeyedContainer()
-        self.ingredient = try arrayContrainer.decode(String.self)
-        self.ingredientPrice = try arrayContrainer.decode(Int.self)
-    }*/
-}
-
-struct ProductItem: Codable {
-    let productCategory: String
-    let productDescription: String
-    let productImage: String
-    let productName: String
-    let productPrice: Int
-    let availableIngredient: [IngredientItem]
-    let availableSize: [String]
-    let availableTemperature: [String]
-    let availableSuger: [String]
-    let availableIce: [String]
-    
-    /*
-    init(from decoder: Decoder) throws {
-        var arrayContainer = try decoder.unkeyedContainer()
-        self.productCategory = try arrayContainer.decode(String.self)
-        self.productDescription = try arrayContainer.decode(String.self)
-        self.productImage = try arrayContainer.decode(String.self)
-        self.productName = try arrayContainer.decode(String.self)
-        self.productPrice = try arrayContainer.decode(Int.self)
-        self.availableIngredient = try arrayContainer.decode([IngredientItem].self)
-    }*/
-}
-
-struct BrandProfile: Codable {
-    let brandID: Int
-    let brandName: String
-    let brandIconImage: String
-    let brandDescription: String
-    let brandUpdateDateTime: String
-    let brandStoreList: [StoreCategoryItem]
-    let productList: [ProductItem]
-    
-    /*
-    init(from decoder: Decoder) throws {
-        var arrayContainer = try decoder.unkeyedContainer()
-        self.brandID = try arrayContainer.decode(Int.self)
-        self.brandName = try arrayContainer.decode(String.self)
-        self.brandIconImage = try arrayContainer.decode(String.self)
-        self.brandDescription = try arrayContainer.decode(String.self)
-        self.brandUpdateDateTime = try arrayContainer.decode(String.self)
-        self.productList = try arrayContainer.decode([ProductItem].self)
-    }*/
+struct CodeTable: Codable {
+    var codeCategory: String
+    var code: String
+    var subCode: String?
+    var codeExtension: String?
+    var index: Int
+    var codeDescription: String?
+    var subItem: String?
+    var extension1: String?
+    var extension2: String?
+    var extension3: String?
+    var extension4: String?
+    var extension5: String?
 }
 
 struct BrandProfileList: Codable {
-    //let brandTitle: String
-    //let brandProfile: [BrandProfile]
+    var BRAND_PROFILE: [BrandProfile]
+}
+
+struct BrandProfile: Codable {
+    var brandID: Int
+    var brandName: String
+    var brandIconImage: String
+    var brandCategory: String
+    var brandSubCategory: String?
+    var brandDescription: String?
+    var brandUpdateDateTime: String
+}
+
+struct ProductInformationList: Codable {
+    var PRODUCT_INFORMATION: [ProductInformation]
+}
+
+struct ProductInformation: Codable {
+    var brandID: Int
+    var productID: Int
+    var productCategory: String
+    var productName: String
+    var productDescription: String?
+    var productImage: String
+    var recommand: String?
+    var popularity: String?
+    var limit: String?
+}
+
+struct StoreInformationList: Codable {
+    var STORE_INFORMATION: [StoreInformation]
+}
+
+struct StoreInformation: Codable {
+    var brandID: Int
+    var storeID: Int
+    var storeCategory: String
+    var storeSubCategory: String
+    var storeName: String
+    var storeDescription: String
+    var storeAddress: String
+    var storePhoneNumber: String
+    var deliveryService: String
+}
+
+struct StoreBusinessHoursList: Codable {
+    var STORE_BUSINESS_HOURS: [StoreBusinessHours]
+}
+
+struct StoreBusinessHours: Codable {
+    var brandID: Int
+    var storeID: Int
+    var monday: String
+    var tuesday: String
+    var wednesday: String
+    var thursday: String
+    var friday: String
+    var saturday: String
+    var sunday: String
+}
+
+struct ProductRecipeList: Codable {
+    var PRODUCT_RECIPE: [ProductRecipe]
+}
+
+struct ProductRecipe: Codable {
+    var brandID: Int
+    var storeID: Int
+    var productID: Int
+    var recipe1: String?
+    var recipe2: String?
+    var recipe3: String?
+    var recipe4: String?
+    var recipe5: String?
+    var recipe6: String?
+    var recipe7: String?
+    var recipe8: String?
+    var recipe9: String?
+    var recipe10: String?
+}
+
+struct ProductRecipePriceList: Codable {
+    var PRODUCT_RECIPE_PRICE: [ProductRecipePrice]
+}
+
+struct ProductRecipePrice: Codable {
+    var brandID: Int
+    var storeID: Int
+    var productID: Int
+    var recipeCode: String
+    var recipeSubCode: String
+    var price: Int
 }

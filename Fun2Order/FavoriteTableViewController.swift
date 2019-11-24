@@ -7,13 +7,16 @@
 //
 
 import UIKit
+import CoreData
+import Firebase
 
 class FavoriteTableViewController: UITableViewController {
-    let brandTitles: [String] = ["上宇林", "丸作", "五十嵐", "公館手作", "迷克夏", "自在軒", "柚豆", "紅太陽", "茶湯會", "圓石", "Teas原味"]
-
     var favoriteStoreArray = [FavoriteStoreInfo]()
     var isSelectStoreCellOpened: Bool = false
-    var brandProfileList: BrandProfile!
+    var brandProfileList =  [BrandProfile]()
+    var brandTitle = String()
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
 
     @IBOutlet weak var menuBarItem: UIBarButtonItem!
     
@@ -21,6 +24,8 @@ class FavoriteTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.tabBarController?.title = self.title
+
+        vc = app.persistentContainer.viewContext
 
         let cellViewNib: UINib = UINib(nibName: "SelectStoreCell", bundle: nil)
         self.tableView.register(cellViewNib, forCellReuseIdentifier: "SelectStoreCell")
@@ -42,74 +47,44 @@ class FavoriteTableViewController: UITableViewController {
             object: nil
         )
 
-        requestBrandProfileList()
+        getDefaultBrandData()
+        self.favoriteStoreArray = retrieveFavoriteStore()
     }
-
-    func requestBrandProfileList() {
-        let sessionConf = URLSessionConfiguration.default
-        sessionConf.timeoutIntervalForRequest = HTTP_REQUEST_TIMEOUT
-        sessionConf.timeoutIntervalForResource = HTTP_REQUEST_TIMEOUT
-        let sessionHttp = URLSession(configuration: sessionConf)
-
-        let temp = getFirebaseUrlForRequest(uri: "BrandProfile/五十嵐")
-        let urlString = temp.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        let urlRequest = URLRequest(url: URL(string: urlString)!)
-
-        print("requestBrandProfileList")
-        let task = sessionHttp.dataTask(with: urlRequest) {(data, response, error) in
-            do {
-                if error != nil{
-                    DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
-                    let httpAlert = alert(message: error!.localizedDescription, title: "Http Error")
-                    self.present(httpAlert, animated : false, completion : nil)
-                }
-                else{
-                    guard let httpResponse = response as? HTTPURLResponse,
-                        (200...299).contains(httpResponse.statusCode) else {
-                            let errorResponse = response as? HTTPURLResponse
-                            let message: String = String(errorResponse!.statusCode) + " - " + HTTPURLResponse.localizedString(forStatusCode: errorResponse!.statusCode)
-                            DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
-                            let httpAlert = alert(message: message, title: "Http Error")
-                            self.present(httpAlert, animated : false, completion : nil)
-                            return
-                    }
-                    
-                    DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
-                    let outputStr  = String(data: data!, encoding: String.Encoding.utf8) as String?
-                    let jsonData = outputStr!.data(using: String.Encoding.utf8, allowLossyConversion: true)
-                    let decoder = JSONDecoder()
-                    self.brandProfileList = try decoder.decode(BrandProfile.self, from: jsonData!)
-                    //if !self.brandProfileList.isEmpty {
-                    //    self.updateBrandProfileToCoreData()
-                    //}
-              }
-            } catch {
-                print(error.localizedDescription)
-                let httpalert = alert(message: error.localizedDescription, title: "Request BrandProfile Error")
-                self.present(httpalert, animated : false, completion : nil)
-                return
-            }
+    
+    func getDefaultBrandData() {
+        let selectedBrandID = getSelectedBrandID()
+        if selectedBrandID == 0 {
+            return
         }
-        task.resume()
         
-        return
-    }
-
-    func updateBrandProfileToCoreData() {
+        let brand_data = retrieveBrandProfile(brand_id: selectedBrandID)
+        if brand_data == nil {
+            return
+        }
         
+        self.brandTitle = brand_data!.brandName!
+        self.tabBarController?.title = self.brandTitle
     }
     
     @objc func receiveBrandInfo(_ notification: Notification) {
         if let brandIndex = notification.object as? Int {
-            print("FavoriteTableViewController received brand name: \(self.brandTitles[brandIndex])")
-            self.tabBarController?.title = self.brandTitles[brandIndex]
+            let brand_data = retrieveBrandProfile(brand_id: brandIndex)
+            if brand_data == nil {
+                return
+            }
+
+            self.brandTitle = brand_data!.brandName!
+            print("FavoriteTableViewController received brand name: \(self.brandTitle)")
+            self.tabBarController?.title = self.brandTitle
+            self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
     }
     
     @objc func addToFavorite(_ notification: Notification) {
         if let storeInfo = notification.object as? FavoriteStoreInfo {
             print("FavoriteTableViewController received store name: \(storeInfo.storeName)")
-            print("FavoriteTableViewController received store addr: \(storeInfo.storeAddressInfo)")
+            print("FavoriteTableViewController received store addr: \(storeInfo.storeDescription)")
+            insertFavoriteStore(info: storeInfo)
             self.favoriteStoreArray.append(storeInfo)
             print("self.favoriteStoreArray.count = \(self.favoriteStoreArray.count)")
             let indexPath = IndexPath(row: self.favoriteStoreArray.count - 1 , section: 1)
@@ -147,7 +122,7 @@ class FavoriteTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteStoreCell", for: indexPath) as! FavoriteStoreCell
         cell.setData(brand_image: self.favoriteStoreArray[indexPath.row].storeBrandImage,
                      title: self.favoriteStoreArray[indexPath.row].storeName,
-                     sub_title: self.favoriteStoreArray[indexPath.row].storeAddressInfo)
+                     sub_title: self.favoriteStoreArray[indexPath.row].storeDescription)
 
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         cell.delegate = self
@@ -159,6 +134,7 @@ class FavoriteTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
             if editingStyle == .delete {
+                deleteFavoriteStore(brand_id: self.favoriteStoreArray[indexPath.row].brandID, store_id: self.favoriteStoreArray[indexPath.row].storeID)
                 self.favoriteStoreArray.remove(at: indexPath.row )
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
@@ -175,7 +151,8 @@ class FavoriteTableViewController: UITableViewController {
             sectionView.backgroundColor = UIColor(red: 179/255, green: 229/255, blue: 252/255, alpha: 1.0)
             //let sectionTitle = UILabel(frame: sectionView.layer.frame)
             let sectionTitle = UILabel(frame: CGRect(x: 5, y: 0, width: tableView.frame.width - 10, height: 44))
-            sectionTitle.text = "Select Store"
+            
+            sectionTitle.text = "選擇 \(self.brandTitle) 最愛店家"
             sectionTitle.textAlignment = .center
             sectionView.addSubview(sectionTitle)
             
@@ -183,6 +160,7 @@ class FavoriteTableViewController: UITableViewController {
                 target: self,
                 action: #selector(self.headerTapped(_:))
             )
+            
             sectionView.addGestureRecognizer(tapGestureRecognizer)
             return sectionView
         }
@@ -202,9 +180,11 @@ class FavoriteTableViewController: UITableViewController {
         if indexPath.section != 0 {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             guard let vc = storyboard.instantiateViewController(withIdentifier: "ProductList_VC") as? ProductDetailTableViewController else{
-                assertionFailure("[AssertionFailure] StoryBoard: pickerStoryboard can't find!! (ViewController)")
+                assertionFailure("[AssertionFailure] StoryBoard: ProductList_VC can't find!! (ViewController)")
                 return
             }
+
+            vc.favoriteStoreInfo = self.favoriteStoreArray[indexPath.row]
             show(vc, sender: self)
         }
     }

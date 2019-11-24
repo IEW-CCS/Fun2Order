@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         writeFirebaseConfig()
+        writeAppConfig()
 
         FirebaseApp.configure()
 
@@ -55,7 +56,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try! fm.copyItem(atPath: src!, toPath: dst)
         }
     }
-    
+
+    func writeAppConfig() {
+        let fm = FileManager.default
+        let src = Bundle.main.path(forResource: "AppConfig", ofType: "plist")
+        let dst = NSHomeDirectory() + "/Documents/AppConfig.plist"
+        
+        if !fm.fileExists(atPath: dst) {
+            try! fm.copyItem(atPath: src!, toPath: dst)
+        }
+    }
+
     // MARK: UISceneSession Lifecycle
 
     @available(iOS 13, *)
@@ -112,7 +123,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nserror = error as NSError
+                print(error.localizedDescription)
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                
             }
         }
     }

@@ -7,36 +7,17 @@
 //
 
 import UIKit
+import CoreData
+import Firebase
 
 class ProductDetailTableViewController: UITableViewController {
-
-    let productImages: [[UIImage]] =
-        [[UIImage(named: "紅茶@3x.png")!,
-            UIImage(named: "綠茶@3x.png")!,
-            UIImage(named: "青茶@3x.png")!,
-            UIImage(named: "百香愛玉@3x.png")!,
-            UIImage(named: "金桔檸檬@3x.png")!,
-            UIImage(named: "新鮮水果茶@3x.png")!,
-            UIImage(named: "蜂蜜檸檬@3x.png")!,
-            UIImage(named: "檸檬愛玉@3x.png")!,
-            UIImage(named: "纖活綠茶@3x.png")!],
-        [UIImage(named: "仙草凍奶茶@3x.png")!,
-            UIImage(named: "奶茶@3x.png")!,
-            UIImage(named: "珍珠奶茶@3x.png")!,
-            UIImage(named: "珍珠鮮奶茶@3x.png")!,
-            UIImage(named: "珍珠觀音拿鐵@3x.png")!,
-            UIImage(named: "鮮奶冬瓜@3x.png")!,
-            UIImage(named: "觀音拿鐵@3x.png")!]]
-
-    let productTitles: [[String]] = [["紅茶", "綠茶", "青茶", "百香愛玉", "金桔檸檬", "新鮮水果茶", "蜂蜜檸檬" ,"檸檬愛玉", "纖活綠茶"],
-                                  ["仙草凍奶茶", "奶茶", "珍珠奶茶", "珍珠鮮奶茶", "珍珠觀音拿鐵", "鮮奶冬瓜", "觀音拿鐵"]]
-    let productSubTitles: [[String]] = [["紅茶_描述文字", "綠茶_描述文字", "青茶_描述文字", "百香愛玉_描述文字", "金桔檸檬_描述文字", "新鮮水果茶_描述文字", "蜂蜜檸檬_描述文字" ,"檸檬愛玉_描述文字", "纖活綠茶_描述文字"],
-                                  ["仙草凍奶茶_描述文字", "奶茶_描述文字", "珍珠奶茶_描述文字", "珍珠鮮奶茶_描述文字", "珍珠觀音拿鐵_描述文字", "鮮奶冬瓜_描述文字", "觀音拿鐵_描述文字"]]
-    let productPrice: [[String]] = [["25元", "25元", "30元", "50元", "50元", "70元", "60元", "60元", "50元"],
-                                 ["75元", "60元", "70元", "70元", "75元", "70元", "75元"]]
+    var productCategories = [String]()
+    var productList = [ProductInformation]()
+    var storeProductList = [StoreProductRecipe]()
+    var favoriteStoreInfo = FavoriteStoreInfo()
     
-    let productFavoriteFlag: [[Bool]] = [[false, false, true, false, false, false, false, true, false],
-                                     [true, false, false, false, true, false, true]]
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
 
     var selectedCategory: Int = 0
     var detailProductFlag: Bool = true
@@ -56,6 +37,18 @@ class ProductDetailTableViewController: UITableViewController {
         
         let sectionViewNib: UINib = UINib(nibName: "CategorySectionView", bundle: nil)
         self.tableView.register(sectionViewNib, forHeaderFooterViewReuseIdentifier: "CategorySectionView")
+        
+        vc = app.persistentContainer.viewContext
+
+        retrieveCategoryInformation()
+        retrieveProductInfo()
+
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("Title = \(self.favoriteStoreInfo.brandName)  \(self.favoriteStoreInfo.storeName) 產品列表")
+        self.title = "\(self.favoriteStoreInfo.brandName)  \(self.favoriteStoreInfo.storeName) 產品列表"
+        //self.tabBarController?.title = "\(self.favoriteStoreInfo.brandName)  \(self.favoriteStoreInfo.storeName) 產品列表"
     }
 
     @IBAction func changeProductListView(_ sender: UIBarButtonItem) {
@@ -79,22 +72,125 @@ class ProductDetailTableViewController: UITableViewController {
     
     @IBAction func selectCategory(_ sender: UISegmentedControl) {
         self.selectedCategory = self.categorySegment.selectedSegmentIndex
+        retrieveProductInfo()
         self.tableView.reloadData()
+    }
+    
+    func retrieveCategoryInformation() {
+        if self.favoriteStoreInfo.brandID == 0 || self.favoriteStoreInfo.storeID == 0 {
+            print("ProductDetailTableViewController retrieveCategoryInformation --> brandID or storeID is 0")
+            return
+        }
+        
+        self.productCategories.removeAll()
+        
+        let fetchSortRequest: NSFetchRequest<CODE_TABLE> = CODE_TABLE.fetchRequest()
+        let predicateString = "codeCategory == \"\(CODE_PRODUCT_CATEGORY)\" AND codeExtension == \(self.favoriteStoreInfo.brandID)"
+        print("retrieveCategoryInformation predicateString = \(predicateString)")
+        let predicate = NSPredicate(format: predicateString)
+        fetchSortRequest.predicate = predicate
+        let sort = NSSortDescriptor(key: "index", ascending: true)
+        fetchSortRequest.sortDescriptors = [sort]
+        
+        do {
+            let code_list = try vc.fetch(fetchSortRequest)
+            for code_data in code_list {
+                self.productCategories.append(code_data.code!)
+            }
+            refreshProductCategorySegment()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func refreshProductCategorySegment() {
+        self.categorySegment.removeAllSegments()
+        for i in 0...(self.productCategories.count - 1) {
+            self.categorySegment.insertSegment(withTitle: self.productCategories[i], at: i, animated: true)
+        }
+        self.categorySegment.selectedSegmentIndex = 0
+    }
+    
+    func retrieveProductInfo() {
+        self.storeProductList.removeAll()
+        
+        let prod_recipe_list = retrieveProductRecipe(brand_id: self.favoriteStoreInfo.brandID, store_id: self.favoriteStoreInfo.storeID)!
+        
+        for prod_recipe in prod_recipe_list {
+            let fetchRequest: NSFetchRequest<PRODUCT_INFORMATION> = PRODUCT_INFORMATION.fetchRequest()
+            let predicateString = "brandID == \(self.favoriteStoreInfo.brandID) AND productID == \(prod_recipe.productID)"
+            print("retrieveCategoryInformation predicateString = \(predicateString)")
+            let predicate = NSPredicate(format: predicateString)
+            fetchRequest.predicate = predicate
+
+            do {
+                let product_data = try vc.fetch(fetchRequest).first
+
+                if product_data?.productCategory != self.productCategories[self.selectedCategory] {
+                    continue
+                }
+                
+                var tmpProduct = StoreProductRecipe()
+                tmpProduct.brandID = Int(product_data!.brandID)
+                tmpProduct.storeID = Int(self.favoriteStoreInfo.storeID)
+                tmpProduct.productID = Int(product_data!.productID)
+                tmpProduct.recipe.append(prod_recipe.recipe1)
+                tmpProduct.recipe.append(prod_recipe.recipe2)
+                tmpProduct.recipe.append(prod_recipe.recipe3)
+                tmpProduct.recipe.append(prod_recipe.recipe4)
+                tmpProduct.recipe.append(prod_recipe.recipe5)
+                tmpProduct.recipe.append(prod_recipe.recipe6)
+                tmpProduct.recipe.append(prod_recipe.recipe7)
+                tmpProduct.recipe.append(prod_recipe.recipe8)
+                tmpProduct.recipe.append(prod_recipe.recipe9)
+                tmpProduct.recipe.append(prod_recipe.recipe10)
+                tmpProduct.brandName = self.favoriteStoreInfo.brandName
+                tmpProduct.storeName = self.favoriteStoreInfo.storeName
+                tmpProduct.productCategory = product_data!.productCategory!
+                tmpProduct.productName = product_data!.productName!
+                tmpProduct.productDescription = product_data!.productDescription!
+                tmpProduct.productImage = UIImage(data: product_data!.productImage!)!
+                tmpProduct.recommand = product_data!.recommand!
+                tmpProduct.popularity = product_data!.popularity!
+                tmpProduct.limit = product_data!.limit!
+                
+                self.storeProductList.append(tmpProduct)
+                
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func getCategoryCounnt(cate_id: String) -> Int {
+        var cateCount: Int = 0
+        
+        for i in 0...self.storeProductList.count - 1 {
+            if self.storeProductList[i].productCategory == cate_id {
+                cateCount = cateCount + 1
+            }
+        }
+        
+        print("Category: [\(cate_id)] count is \(cateCount)")
+        return cateCount
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         if self.detailProductFlag {
             return 1
         } else {
-            return 2
+            //return 2
+            return self.productCategories.count
         }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.detailProductFlag {
-            return self.productTitles[self.selectedCategory].count
+            //return self.productTitles[self.selectedCategory].count
+            return getCategoryCounnt(cate_id: self.productCategories[self.selectedCategory])
         } else {
-            return self.productTitles[section].count
+            //return self.productTitles[section].count
+            return getCategoryCounnt(cate_id: self.productCategories[section])
         }
     }
 
@@ -102,17 +198,17 @@ class ProductDetailTableViewController: UITableViewController {
         if self.detailProductFlag {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProductDetailCell", for: indexPath) as! ProductDetailCell
 
-            cell.setData(favorite: self.productFavoriteFlag[self.selectedCategory][indexPath.row],
-                         image: self.productImages[self.selectedCategory][indexPath.row],
-                         title: self.productTitles[self.selectedCategory][indexPath.row],
-                         sub_title: self.productSubTitles[self.selectedCategory][indexPath.row],
-                         price: self.productPrice[self.selectedCategory][indexPath.row])
+            cell.setData(favorite: self.storeProductList[indexPath.row].favorite,
+                         image: self.storeProductList[indexPath.row].productImage!,
+                         title: self.storeProductList[indexPath.row].productName,
+                         sub_title: self.storeProductList[indexPath.row].productDescription!,
+                         price: "30元")
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProductBriefCell", for: indexPath) as! ProductBriefCell
-            cell.setData(favorite: self.productFavoriteFlag[indexPath.section][indexPath.row],
-                         product_name: self.productTitles[indexPath.section][indexPath.row])
+            //cell.setData(favorite: self.productFavoriteFlag[indexPath.section][indexPath.row],
+            //             product_name: self.productTitles[indexPath.section][indexPath.row])
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
         }
@@ -130,12 +226,7 @@ class ProductDetailTableViewController: UITableViewController {
         if !self.detailProductFlag {
             let sectionView: CategorySectionView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CategorySectionView") as! CategorySectionView
             
-            if section == 0 {
-                sectionView.setData(catetory: "Tea")
-            } else {
-                sectionView.setData(catetory: "Milk Tea")
-            }
-            
+            sectionView.setData(catetory: self.productCategories[section])
             return sectionView
         } else {
             let sectionView = super.tableView(tableView, viewForHeaderInSection: section) as! CategorySectionView
@@ -155,9 +246,10 @@ class ProductDetailTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: "Recipe_VC") as? RecipeTableViewController else{
-            assertionFailure("[AssertionFailure] StoryBoard: pickerStoryboard can't find!! (ViewController)")
+            assertionFailure("[AssertionFailure] StoryBoard: Recipe_VC can't find!! (ViewController)")
             return
         }
+        
         show(vc, sender: self)
     }
 
