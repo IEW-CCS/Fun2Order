@@ -18,6 +18,8 @@
 		36159C142355B3D500664D75 /* CommonStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36159C132355B3D500664D75 /* CommonStruct.swift */; };
 		36159C162355E5ED00664D75 /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36159C152355E5ED00664D75 /* GlobalConstants.swift */; };
 		36159C1823569D7300664D75 /* ProductDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36159C1723569D7300664D75 /* ProductDetailTableViewController.swift */; };
+		36225999238EAD9A00B637D0 /* ShadowGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36225998238EAD9A00B637D0 /* ShadowGradientView.swift */; };
+		3622599B238F45F200B637D0 /* DashboardGlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3622599A238F45F100B637D0 /* DashboardGlobalConstants.swift */; };
 		362B9102234F27110079A108 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362B9101234F27110079A108 /* HomeViewController.swift */; };
 		362C481E235B48950010C845 /* Add_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 362C481D235B48950010C845 /* Add_Icon.png */; };
 		362C4821235B56550010C845 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362C481F235B56550010C845 /* RecipeCell.swift */; };
@@ -216,6 +218,8 @@
 		36159C132355B3D500664D75 /* CommonStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonStruct.swift; sourceTree = "<group>"; };
 		36159C152355E5ED00664D75 /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
 		36159C1723569D7300664D75 /* ProductDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailTableViewController.swift; sourceTree = "<group>"; };
+		36225998238EAD9A00B637D0 /* ShadowGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowGradientView.swift; sourceTree = "<group>"; };
+		3622599A238F45F100B637D0 /* DashboardGlobalConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardGlobalConstants.swift; sourceTree = "<group>"; };
 		362B9101234F27110079A108 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		362C481D235B48950010C845 /* Add_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Add_Icon.png; sourceTree = "<group>"; };
 		362C481F235B56550010C845 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
@@ -431,6 +435,7 @@
 		36159C07235493C100664D75 /* StructDefinition */ = {
 			isa = PBXGroup;
 			children = (
+				3622599A238F45F100B637D0 /* DashboardGlobalConstants.swift */,
 				36159C132355B3D500664D75 /* CommonStruct.swift */,
 				36159C152355E5ED00664D75 /* GlobalConstants.swift */,
 			);
@@ -614,6 +619,7 @@
 		36D58387235300D100AEB84F /* CustomCell */ = {
 			isa = PBXGroup;
 			children = (
+				36225998238EAD9A00B637D0 /* ShadowGradientView.swift */,
 				364F120E2358379100988937 /* Checkbox.swift */,
 				36D583882353011000AEB84F /* SelectStoreCell.swift */,
 				36D583892353011000AEB84F /* SelectStoreCell.xib */,
@@ -1106,10 +1112,12 @@
 				3675ED3E2388D15F003A94B7 /* STORE_BUSINESS_HOURS+CoreDataClass copy.swift in Sources */,
 				366E126923502B9100BFFF45 /* FSPagerCollectionView.swift in Sources */,
 				F505DDEE23692AEF00E3F681 /* EntryViewController.swift in Sources */,
+				36225999238EAD9A00B637D0 /* ShadowGradientView.swift in Sources */,
 				366E126623502B9100BFFF45 /* FSPagerViewObjcCompat.m in Sources */,
 				F505DDEA23692AC900E3F681 /* VerifyMailController.swift in Sources */,
 				36D5838A2353011000AEB84F /* SelectStoreCell.swift in Sources */,
 				3675ED412388D15F003A94B7 /* PRODUCT_INFORMATION+CoreDataClass copy.swift in Sources */,
+				3622599B238F45F200B637D0 /* DashboardGlobalConstants.swift in Sources */,
 				3675ED3C2388D15F003A94B7 /* STORE_INFORMATION+CoreDataProperties copy.swift in Sources */,
 				36D583A42353599D00AEB84F /* FavoriteStoreCell.swift in Sources */,
 				3675ED3D2388D15F003A94B7 /* PRODUCT_RECIPE+CoreDataClass copy.swift in Sources */,

@@ -10,6 +10,27 @@ import Foundation
 import UIKit
 import CoreData
 
+func retrieveCodeCategory(code_category: String, code_extension: String) -> [CODE_TABLE]? {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+    let fetchSortRequest: NSFetchRequest<CODE_TABLE> = CODE_TABLE.fetchRequest()
+    let predicateString = "codeCategory == \"\(code_category)\" AND codeExtension == \"\(code_extension)\""
+    print("retrieveCodeCategory predicateString = \(predicateString)")
+    let predicate = NSPredicate(format: predicateString)
+    fetchSortRequest.predicate = predicate
+    let sort = NSSortDescriptor(key: "index", ascending: true)
+    fetchSortRequest.sortDescriptors = [sort]
+    
+    do {
+        let code_list = try vc.fetch(fetchSortRequest)
+        return code_list
+    } catch {
+        print(error.localizedDescription)
+        return nil
+    }
+}
 
 func retrieveBrandProfile(brand_id: Int) -> BRAND_PROFILE? {
 

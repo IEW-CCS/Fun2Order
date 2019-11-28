@@ -26,14 +26,18 @@ class RecipeCell: UITableViewCell {
 
     }
     
-    func setItemData(title: String, item_array: [String], number_for_row: Int) {
-        self.titleLabel.text = title
-        let CHECKBOX_WIDTH = 24
-        let LABEL_WIDTH = 80
+    func setData(recipe_data: FavoriteProductRecipe, number_for_row: Int) {
+        //self.titleLabel.text = "選擇 \(recipe_data.recipeCategory)"
+        self.titleLabel.text = recipe_data.recipeCategory
+        
+        var isMainCateCreated: Bool = false
+
+        let ITEM_HEIGHT = 36
+        let LABEL_WIDTH = 90
         let ITEM_WIDTH_SPACE = 5
         let ITEM_HEIGHT_SPACE = 5
         let CELL_MARGIN_HEIGHT = 15
-        let ITEM_WIDTH = CHECKBOX_WIDTH + ITEM_WIDTH_SPACE + LABEL_WIDTH
+        let ITEM_WIDTH = ITEM_WIDTH_SPACE + LABEL_WIDTH
         var cellTotalHeight: Int = 0
         
         titleLabel.centerXAnchor.constraint(equalTo: backView.centerXAnchor).isActive = true
@@ -42,30 +46,56 @@ class RecipeCell: UITableViewCell {
         cellTotalHeight = Int(backView.frame.height)
         
         var rowCountIndex: Int = 0
+        var totalRowCount: Int = 0
         let initMargin: Int = 15
-        var itemY: CGFloat = 0
-        for index in 0...item_array.count - 1 {
-            let mod_number = index%number_for_row
-            rowCountIndex = (index - mod_number)/number_for_row
-            itemY = CGFloat(self.backView.frame.maxY + CGFloat((ITEM_HEIGHT_SPACE + CHECKBOX_WIDTH)*rowCountIndex + 8))
+        var itemY1: CGFloat = 0
+        var itemY2: CGFloat = 0
+        
+        for i in 0...recipe_data.recipeSubCategoryDetail.count - 1 {
+            if recipe_data.recipeSubCategoryDetail.count > 1 {
+                isMainCateCreated = false
+            } else {
+                isMainCateCreated = true
+            }
             
-            let chkRect = CGRect(x: CGFloat(self.backView.frame.minX + CGFloat(ITEM_WIDTH * mod_number + initMargin)), y: itemY, width: CGFloat(CHECKBOX_WIDTH), height: CGFloat(CHECKBOX_WIDTH))
-            let checkBox = Checkbox(frame: chkRect)
+            for j in 0...recipe_data.recipeSubCategoryDetail[i].count - 1 {
+                if !isMainCateCreated {
+                    itemY1 = CGFloat(self.backView.frame.maxY + CGFloat((ITEM_HEIGHT_SPACE + ITEM_HEIGHT)*totalRowCount + 8))
+
+                    let lblMainCateRect = CGRect(x: CGFloat(self.backView.frame.minX + CGFloat(ITEM_WIDTH_SPACE + initMargin)), y: CGFloat(itemY1), width: CGFloat(LABEL_WIDTH), height: CGFloat(ITEM_HEIGHT))
+                    let lblMainCate = UILabel(frame: lblMainCateRect)
+                    lblMainCate.text = recipe_data.recipeSubCategoryDetail[i][j].recipeMainCategory
+                    totalRowCount = totalRowCount + 1
+                    self.addSubview(lblMainCate)
+                    isMainCateCreated = true
+                    print("******* Add category label: \(lblMainCate.text!) and totalRowCount = \(totalRowCount)")
+                }
+                
+                for index in 0...recipe_data.recipeSubCategoryDetail[i][j].recipeDetail.count - 1 {
+                    let mod_number = index%number_for_row
+                    rowCountIndex = totalRowCount
+                    print("Item: \(recipe_data.recipeSubCategoryDetail[i][j].recipeDetail[index].recipeName), rowCountIndex = \(rowCountIndex)")
+                    itemY2 = CGFloat(self.backView.frame.maxY + CGFloat((ITEM_HEIGHT_SPACE + ITEM_HEIGHT)*rowCountIndex + 8))
+                    let itemRect = CGRect(x: CGFloat(self.backView.frame.minX + CGFloat(ITEM_WIDTH_SPACE + ITEM_WIDTH * mod_number + initMargin)), y: CGFloat(itemY2), width: CGFloat(LABEL_WIDTH), height: CGFloat(ITEM_HEIGHT))
+                    let itemLabel = ShadowGradientView(frame: itemRect)
+                    itemLabel.labelText = recipe_data.recipeSubCategoryDetail[i][j].recipeDetail[index].recipeName
+
+                    self.addSubview(itemLabel)
+
+                    if (mod_number == (number_for_row - 1)) {
+                        if !(index == (recipe_data.recipeSubCategoryDetail[i][j].recipeDetail.count - 1)  && (j == recipe_data.recipeSubCategoryDetail[i].count - 1 )) {
+                            totalRowCount = totalRowCount + 1
+                        }
+                    }
+                    print("******* Add item: \(itemLabel.labelText), rowCountIndex: \(rowCountIndex)")
+                }
+            }
             
-            let lblRect = CGRect(x: CGFloat(self.backView.frame.minX + CGFloat(CHECKBOX_WIDTH + ITEM_WIDTH_SPACE + ITEM_WIDTH * mod_number + initMargin)), y: itemY, width: CGFloat(LABEL_WIDTH), height: CGFloat(CHECKBOX_WIDTH))
-            let itemLabel = UILabel(frame: lblRect)
-            
-            itemLabel.text = item_array[index]
-            self.addSubview(checkBox)
-            self.addSubview(itemLabel)
+            totalRowCount = totalRowCount + 1
+            print("RecipeCell --> totalRowCounnt = \(totalRowCount)")
         }
         
-        cellTotalHeight = cellTotalHeight + (ITEM_HEIGHT_SPACE + CHECKBOX_WIDTH)*(rowCountIndex + 1)
-
-        //print("-------------------------")
-        //print("cellTotalHeight = \(cellTotalHeight)")
-        //print("-------------------------")
-        
+        cellTotalHeight = cellTotalHeight + (ITEM_HEIGHT_SPACE + ITEM_HEIGHT)*(totalRowCount)
         self.cellHeight = cellTotalHeight + CELL_MARGIN_HEIGHT
     }
     

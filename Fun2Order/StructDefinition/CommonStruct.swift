@@ -69,9 +69,42 @@ struct FavoriteProduct: Codable {
     var productID: Int
 }
 
-struct FavoriteProductRecipe: Codable {
+struct RecipeItem {
+    var recipeName: String
+    var checkedFlag: Bool
+    
+    init() {
+        self.recipeName = ""
+        self.checkedFlag = false
+    }
+}
+
+struct RecipeSubCategory {
+    var recipeMainCategory: String
+    var recipeSubCategory: String
+    //var recipeDetail: [String]
+    var recipeDetail: [RecipeItem]
+    
+    init() {
+        self.recipeMainCategory = ""
+        self.recipeSubCategory = ""
+        //self.recipeDetail = [String]()
+        self.recipeDetail = [RecipeItem]()
+    }
+}
+
+struct FavoriteProductRecipe {
     var brandID: Int
     var storeID: Int
     var productID: Int
-    var recipe: [String]
+    var recipeCategory: String
+    var recipeSubCategoryDetail: [[RecipeSubCategory]]
+    
+    init() {
+        self.brandID = 0
+        self.storeID = 0
+        self.productID = 0
+        self.recipeCategory = ""
+        self.recipeSubCategoryDetail = [[RecipeSubCategory]]()
+    }
 }

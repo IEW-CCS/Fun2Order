@@ -78,7 +78,7 @@ class SelectStoreCell: UITableViewCell {
         self.subCategories.removeAll()
         
         let fetchSortRequest: NSFetchRequest<CODE_TABLE> = CODE_TABLE.fetchRequest()
-        let predicateString = "codeCategory == \"\(CODE_STORE_CATEGORY)\" AND codeExtension == \(selectedBrandID)"
+        let predicateString = "codeCategory == \"\(CODE_STORE_CATEGORY)\" AND codeExtension == \"\(selectedBrandID)\""
         print("retrieveCategoryInformation predicateString = \(predicateString)")
         let predicate = NSPredicate(format: predicateString)
         fetchSortRequest.predicate = predicate

@@ -46,9 +46,8 @@ class ProductDetailTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("Title = \(self.favoriteStoreInfo.brandName)  \(self.favoriteStoreInfo.storeName) 產品列表")
+        //print("Title = \(self.favoriteStoreInfo.brandName)  \(self.favoriteStoreInfo.storeName) 產品列表")
         self.title = "\(self.favoriteStoreInfo.brandName)  \(self.favoriteStoreInfo.storeName) 產品列表"
-        //self.tabBarController?.title = "\(self.favoriteStoreInfo.brandName)  \(self.favoriteStoreInfo.storeName) 產品列表"
     }
 
     @IBAction func changeProductListView(_ sender: UIBarButtonItem) {
@@ -250,6 +249,7 @@ class ProductDetailTableViewController: UITableViewController {
             return
         }
         
+        vc.storeProductRecipe = self.storeProductList[indexPath.row]
         show(vc, sender: self)
     }
 
