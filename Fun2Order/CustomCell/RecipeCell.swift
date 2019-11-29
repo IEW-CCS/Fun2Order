@@ -12,6 +12,9 @@ class RecipeCell: UITableViewCell {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     var cellHeight: Int = 0
+    var itemsControlTable = [RecipeItemControl]()
+    var itemViewArray = [ShadowGradientView]()
+    var favoriteProductRecipe = FavoriteProductRecipe()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -26,8 +29,8 @@ class RecipeCell: UITableViewCell {
 
     }
     
-    func setData(recipe_data: FavoriteProductRecipe, number_for_row: Int) {
-        //self.titleLabel.text = "選擇 \(recipe_data.recipeCategory)"
+    func setData(row_index: Int, recipe_data: FavoriteProductRecipe, number_for_row: Int) {
+        self.favoriteProductRecipe = recipe_data
         self.titleLabel.text = recipe_data.recipeCategory
         
         var isMainCateCreated: Bool = false
@@ -78,10 +81,25 @@ class RecipeCell: UITableViewCell {
                     itemY2 = CGFloat(self.backView.frame.maxY + CGFloat((ITEM_HEIGHT_SPACE + ITEM_HEIGHT)*rowCountIndex + 8))
                     let itemRect = CGRect(x: CGFloat(self.backView.frame.minX + CGFloat(ITEM_WIDTH_SPACE + ITEM_WIDTH * mod_number + initMargin)), y: CGFloat(itemY2), width: CGFloat(LABEL_WIDTH), height: CGFloat(ITEM_HEIGHT))
                     let itemLabel = ShadowGradientView(frame: itemRect)
+                    itemLabel.gradientBorderColor = .lightGray
+                    itemLabel.gradientBorderWidth = Double(1.5)
                     itemLabel.labelText = recipe_data.recipeSubCategoryDetail[i][j].recipeDetail[index].recipeName
+
+                    var tmpControl = RecipeItemControl()
+                    tmpControl.rowIndex = row_index
+                    tmpControl.mainCategoryIndex = i
+                    tmpControl.subCategoryIndex = j
+                    tmpControl.itemIndex = index
+                    self.itemViewArray.append(itemLabel)
+                    
+                    itemLabel.setRecipeItemIndex(item_index: tmpControl)
+                    self.itemsControlTable.append(tmpControl)
 
                     self.addSubview(itemLabel)
 
+                    let tapGesture = UITapGestureRecognizer(target: self, action:#selector(self.itemClicked(_:)))
+                    itemLabel.addGestureRecognizer(tapGesture)
+                    
                     if (mod_number == (number_for_row - 1)) {
                         if !(index == (recipe_data.recipeSubCategoryDetail[i][j].recipeDetail.count - 1)  && (j == recipe_data.recipeSubCategoryDetail[i].count - 1 )) {
                             totalRowCount = totalRowCount + 1
@@ -101,5 +119,71 @@ class RecipeCell: UITableViewCell {
     
     func getCellHeight() -> Int {
         return self.cellHeight
+    }
+    
+    @objc func itemClicked(_ sender: UITapGestureRecognizer) {
+        print("Recipe Item clicked!!")
+        let selectedItem = sender.view as! ShadowGradientView
+        let index = selectedItem.getRecipeItemIndex()
+    self.favoriteProductRecipe.recipeSubCategoryDetail[index.mainCategoryIndex][index.subCategoryIndex].recipeDetail[index.itemIndex].checkedFlag = true
+        
+        selectedItem.setSelected()
+
+        print("selected index: \(index)")
+        updateRecipeItemStatus(selected_index: index)
+    }
+    
+    func updateRecipeItemStatus(selected_index: RecipeItemControl) {
+        var mainIndex: Int = 0
+        var subIndex: Int = 0
+        
+        for i in 0...self.itemsControlTable.count - 1 {
+            mainIndex = self.itemsControlTable[i].mainCategoryIndex
+        }
+        
+        for i in 0...self.itemsControlTable.count - 1 {
+            if self.itemsControlTable[i].mainCategoryIndex == selected_index.mainCategoryIndex {
+                subIndex = self.itemsControlTable[i].subCategoryIndex
+            }
+        }
+        
+        if mainIndex > 0 {
+            for i in 0...self.itemsControlTable.count - 1 {
+                if self.itemsControlTable[i].mainCategoryIndex != selected_index.mainCategoryIndex {
+                self.favoriteProductRecipe.recipeSubCategoryDetail[self.itemsControlTable[i].mainCategoryIndex][self.itemsControlTable[i].subCategoryIndex].recipeDetail[self.itemsControlTable[i].itemIndex].checkedFlag = false
+                    self.itemViewArray[i].setUnSelected()
+                } else {
+                    if subIndex > 0 {
+                        if self.itemsControlTable[i].subCategoryIndex == selected_index.subCategoryIndex {
+                            if self.itemsControlTable[i].itemIndex != selected_index.itemIndex {
+                            self.favoriteProductRecipe.recipeSubCategoryDetail[self.itemsControlTable[i].mainCategoryIndex][self.itemsControlTable[i].subCategoryIndex].recipeDetail[self.itemsControlTable[i].itemIndex].checkedFlag = false
+                                self.itemViewArray[i].setUnSelected()
+                            }
+                        }
+                    } else { //subIndex == 0
+                        if self.itemsControlTable[i].itemIndex != selected_index.itemIndex {
+                        self.favoriteProductRecipe.recipeSubCategoryDetail[self.itemsControlTable[i].mainCategoryIndex][self.itemsControlTable[i].subCategoryIndex].recipeDetail[self.itemsControlTable[i].itemIndex].checkedFlag = false
+                            self.itemViewArray[i].setUnSelected()
+                        }
+                    }
+                }
+            }
+        } else { //mainIndex == 0
+            for i in 0...self.itemsControlTable.count - 1 {
+                if subIndex > 0 {
+                    if self.itemsControlTable[i].subCategoryIndex == selected_index.subCategoryIndex {
+                        if self.itemsControlTable[i].itemIndex != selected_index.itemIndex {
+                        self.favoriteProductRecipe.recipeSubCategoryDetail[self.itemsControlTable[i].mainCategoryIndex][self.itemsControlTable[i].subCategoryIndex].recipeDetail[self.itemsControlTable[i].itemIndex].checkedFlag = false
+                            self.itemViewArray[i].setUnSelected()
+                        }
+                    }
+                } else { //subIndex == 0
+                    if self.itemsControlTable[i].itemIndex != selected_index.itemIndex {
+                    self.favoriteProductRecipe.recipeSubCategoryDetail[self.itemsControlTable[i].mainCategoryIndex][self.itemsControlTable[i].subCategoryIndex].recipeDetail[self.itemsControlTable[i].itemIndex].checkedFlag = false
+                        self.itemViewArray[i].setUnSelected()
+                    }
+                }
+            }
+        }
     }
 }

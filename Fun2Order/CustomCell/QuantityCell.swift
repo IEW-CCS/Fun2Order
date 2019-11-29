@@ -12,6 +12,7 @@ class QuantityCell: UITableViewCell {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var quantityStepprt: UIStepper!
     @IBOutlet weak var quantityLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

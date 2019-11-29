@@ -199,7 +199,7 @@ class RecipeTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as! RecipeCell
         
         //cell.setItemData(title: titleArray[indexPath.row], item_array: itemData[indexPath.row], number_for_row: 3)
-        cell.setData(recipe_data: self.favoriteProductRecipes[indexPath.row], number_for_row: 3)
+        cell.setData(row_index: indexPath.row, recipe_data: self.favoriteProductRecipes[indexPath.row], number_for_row: 3)
         itemHeight[indexPath.row] = cell.getCellHeight()
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         

@@ -12,6 +12,7 @@ import Foundation
     private var didSetupConstraints = false
     private var gradientLayer: CAGradientLayer!
     private var label: UILabel!
+    private var recipeItemIndex = RecipeItemControl()
     
     // Set default gradient color to be Green
     @IBInspectable var gradientColor: Int = 4 {
@@ -26,7 +27,7 @@ import Foundation
         }
     }
 
-    @IBInspectable var gradientBorderWidth: Int = 1 {
+    @IBInspectable var gradientBorderWidth: Double = 1.0 {
         didSet {
             updateGradient()
         }
@@ -92,20 +93,43 @@ import Foundation
         installLabel()
     }
     
-    public func AdjustAutoLayout()
-    {
-        installShadow()
-    
-        let ori = self.gradientLayer.frame
-        self.gradientLayer.frame = ori.AdjustCAGradientLayer(width: self.layer.frame.width-10)
-        self.label.frame = self.gradientLayer.frame
-        self.label.textAlignment = .center
-        self.label.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        print("ori.width: \(ori.width), self.layer.frame.width: \(self.layer.frame.width)")
-        //updateShadow()
-    }
+    /*
+     public func AdjustAutoLayout()
+     {
+         installShadow()
+     
+         let ori = self.gradientLayer.frame
+         self.gradientLayer.frame = ori.AdjustCAGradientLayer(width: self.layer.frame.width-10)
+         self.label.frame = self.gradientLayer.frame
+         self.label.textAlignment = .center
+         self.label.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+         self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+         print("ori.width: \(ori.width), self.layer.frame.width: \(self.layer.frame.width)")
+         //updateShadow()
+     }
+     */
 
+
+    public func setRecipeItemIndex(item_index: RecipeItemControl) {
+        self.recipeItemIndex = item_index
+    }
+    
+    public func getRecipeItemIndex() -> RecipeItemControl {
+        return self.recipeItemIndex
+    }
+    
+    public func setSelected() {
+        self.gradientColor = 3
+        self.label.textColor = .white
+        updateGradient()
+    }
+    
+    public func setUnSelected() {
+        self.gradientColor = 4
+        self.label.textColor = .black
+        updateGradient()
+    }
+    
     private func installShadow() {
         self.backgroundColor = UIColor.clear
         self.layer.cornerRadius = cornerRadius

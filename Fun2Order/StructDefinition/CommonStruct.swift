@@ -108,3 +108,11 @@ struct FavoriteProductRecipe {
         self.recipeSubCategoryDetail = [[RecipeSubCategory]]()
     }
 }
+
+struct RecipeItemControl {
+    var rowIndex: Int = 0
+    var mainCategoryIndex: Int = 0
+    var subCategoryIndex: Int = 0
+    var itemIndex: Int = 0
+    //var shadowView = ShadowGradientView()
+}
