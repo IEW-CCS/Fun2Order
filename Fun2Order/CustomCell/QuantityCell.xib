@@ -32,20 +32,20 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="Qu3-Jl-vUO">
-                        <rect key="frame" x="137" y="21" width="94" height="32"/>
+                        <rect key="frame" x="123.5" y="21" width="94" height="32"/>
                         <color key="tintColor" red="0.20000000000000001" green="0.80392156859999997" blue="0.1176470588" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
                             <action selector="changeQuantity:" destination="KGk-i7-Jjw" eventType="valueChanged" id="oIs-sf-2C7"/>
                         </connections>
                     </stepper>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FOk-bx-ULr">
-                        <rect key="frame" x="111.5" y="24" width="10.5" height="26.5"/>
+                        <rect key="frame" x="104" y="24" width="10.5" height="26.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                         <color key="textColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100 元" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c6h-1K-hdE">
-                        <rect key="frame" x="243" y="24" width="65" height="26.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9999 元" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c6h-1K-hdE">
+                        <rect key="frame" x="226.5" y="24" width="81.5" height="26.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                         <color key="textColor" red="0.69411764710000001" green="0.0" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -56,8 +56,8 @@
                     <constraint firstItem="FOk-bx-ULr" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="DIJ-PS-D5N"/>
                     <constraint firstItem="Kdo-bl-to9" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="TNJ-ly-eWZ"/>
                     <constraint firstItem="Qu3-Jl-vUO" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="YYl-Wi-LJx"/>
-                    <constraint firstItem="c6h-1K-hdE" firstAttribute="leading" secondItem="Qu3-Jl-vUO" secondAttribute="trailing" constant="12" id="gAe-OU-nsQ"/>
-                    <constraint firstItem="Qu3-Jl-vUO" firstAttribute="leading" secondItem="FOk-bx-ULr" secondAttribute="trailing" constant="15" id="iPB-HM-2hO"/>
+                    <constraint firstItem="c6h-1K-hdE" firstAttribute="leading" secondItem="Qu3-Jl-vUO" secondAttribute="trailing" constant="9" id="gAe-OU-nsQ"/>
+                    <constraint firstItem="Qu3-Jl-vUO" firstAttribute="leading" secondItem="FOk-bx-ULr" secondAttribute="trailing" constant="9" id="iPB-HM-2hO"/>
                     <constraint firstItem="c6h-1K-hdE" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="l3Y-sX-xSE"/>
                     <constraint firstItem="gqV-bR-WVv" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ll4-A6-giZ"/>
                     <constraint firstAttribute="trailing" secondItem="c6h-1K-hdE" secondAttribute="trailing" constant="12" id="rwU-oh-LQR"/>

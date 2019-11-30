@@ -33,6 +33,7 @@ struct StoreProductRecipe {
     var brandID: Int
     var storeID: Int
     var productID: Int
+    var favorite: Bool
     var recipe: [String?]
     var brandName: String
     var storeName: String
@@ -40,10 +41,10 @@ struct StoreProductRecipe {
     var productName: String
     var productDescription: String?
     var productImage: UIImage?
+    var defaultPrice: String
     var recommand: String?
     var popularity: String?
     var limit: String?
-    var favorite: Bool
     
     init() {
         self.brandID = 0
@@ -56,6 +57,7 @@ struct StoreProductRecipe {
         self.productName = ""
         self.productDescription = ""
         self.productImage = UIImage()
+        self.defaultPrice = ""
         self.recommand = ""
         self.popularity = ""
         self.limit = ""
@@ -63,10 +65,18 @@ struct StoreProductRecipe {
     }
 }
 
-struct FavoriteProduct: Codable {
-    var brandID: Int
-    var storeID: Int
-    var productID: Int
+struct FavoriteProduct {
+    var brandID: Int = 0
+    var storeID: Int = 0
+    var productID: Int = 0
+}
+
+struct FavoriteProductRecipe {
+    var brandID: Int = 0
+    var storeID: Int = 0
+    var productID: Int = 0
+    var recipeCode: String = ""
+    var recipeSubCode: String = ""
 }
 
 struct RecipeItem {
@@ -88,15 +98,16 @@ struct RecipeSubCategory {
     init() {
         self.recipeMainCategory = ""
         self.recipeSubCategory = ""
-        //self.recipeDetail = [String]()
         self.recipeDetail = [RecipeItem]()
     }
 }
 
-struct FavoriteProductRecipe {
+struct ProductRecipeInformation {
     var brandID: Int
     var storeID: Int
     var productID: Int
+    //var favoriteFlag: Bool
+    var rowIndex: Int
     var recipeCategory: String
     var recipeSubCategoryDetail: [[RecipeSubCategory]]
     
@@ -104,6 +115,8 @@ struct FavoriteProductRecipe {
         self.brandID = 0
         self.storeID = 0
         self.productID = 0
+        //self.favoriteFlag = false
+        self.rowIndex = 0
         self.recipeCategory = ""
         self.recipeSubCategoryDetail = [[RecipeSubCategory]]()
     }
@@ -114,5 +127,6 @@ struct RecipeItemControl {
     var mainCategoryIndex: Int = 0
     var subCategoryIndex: Int = 0
     var itemIndex: Int = 0
-    //var shadowView = ShadowGradientView()
 }
+
+

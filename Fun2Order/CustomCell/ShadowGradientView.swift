@@ -121,12 +121,14 @@ import Foundation
     public func setSelected() {
         self.gradientColor = 3
         self.label.textColor = .white
+        self.gradientBorderColor = .red
         updateGradient()
     }
     
     public func setUnSelected() {
         self.gradientColor = 4
         self.label.textColor = .black
+        self.gradientBorderColor = .lightGray
         updateGradient()
     }
     

@@ -14,7 +14,7 @@ class RecipeCell: UITableViewCell {
     var cellHeight: Int = 0
     var itemsControlTable = [RecipeItemControl]()
     var itemViewArray = [ShadowGradientView]()
-    var favoriteProductRecipe = FavoriteProductRecipe()
+    var favoriteProductRecipe = ProductRecipeInformation()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,7 +29,7 @@ class RecipeCell: UITableViewCell {
 
     }
     
-    func setData(row_index: Int, recipe_data: FavoriteProductRecipe, number_for_row: Int) {
+    func setData(recipe_data: ProductRecipeInformation, number_for_row: Int) {
         self.favoriteProductRecipe = recipe_data
         self.titleLabel.text = recipe_data.recipeCategory
         
@@ -84,9 +84,13 @@ class RecipeCell: UITableViewCell {
                     itemLabel.gradientBorderColor = .lightGray
                     itemLabel.gradientBorderWidth = Double(1.5)
                     itemLabel.labelText = recipe_data.recipeSubCategoryDetail[i][j].recipeDetail[index].recipeName
+                    
+                    if recipe_data.recipeSubCategoryDetail[i][j].recipeDetail[index].checkedFlag {
+                        itemLabel.setSelected()
+                    }
 
                     var tmpControl = RecipeItemControl()
-                    tmpControl.rowIndex = row_index
+                    tmpControl.rowIndex = self.favoriteProductRecipe.rowIndex
                     tmpControl.mainCategoryIndex = i
                     tmpControl.subCategoryIndex = j
                     tmpControl.itemIndex = index
@@ -125,12 +129,19 @@ class RecipeCell: UITableViewCell {
         print("Recipe Item clicked!!")
         let selectedItem = sender.view as! ShadowGradientView
         let index = selectedItem.getRecipeItemIndex()
-    self.favoriteProductRecipe.recipeSubCategoryDetail[index.mainCategoryIndex][index.subCategoryIndex].recipeDetail[index.itemIndex].checkedFlag = true
-        
-        selectedItem.setSelected()
+   
+        if self.favoriteProductRecipe.recipeSubCategoryDetail[index.mainCategoryIndex][index.subCategoryIndex].recipeDetail[index.itemIndex].checkedFlag {
+            self.favoriteProductRecipe.recipeSubCategoryDetail[index.mainCategoryIndex][index.subCategoryIndex].recipeDetail[index.itemIndex].checkedFlag = false
+            selectedItem.setUnSelected()
+        } else {
+            self.favoriteProductRecipe.recipeSubCategoryDetail[index.mainCategoryIndex][index.subCategoryIndex].recipeDetail[index.itemIndex].checkedFlag = true
+            
+            selectedItem.setSelected()
+        }
 
         print("selected index: \(index)")
         updateRecipeItemStatus(selected_index: index)
+        NotificationCenter.default.post(name: NSNotification.Name("ProductPriceUpdate"), object: self.favoriteProductRecipe)
     }
     
     func updateRecipeItemStatus(selected_index: RecipeItemControl) {

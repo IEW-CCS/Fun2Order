@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3600BC8523926D2D00BC6D84 /* FAVORITE_PRODUCT+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3600BC8323926D2D00BC6D84 /* FAVORITE_PRODUCT+CoreDataClass.swift */; };
+		3600BC8623926D2D00BC6D84 /* FAVORITE_PRODUCT+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3600BC8423926D2D00BC6D84 /* FAVORITE_PRODUCT+CoreDataProperties.swift */; };
 		3614E0E62358A8DE00D23BA6 /* CategorySectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3614E0E52358A8DE00D23BA6 /* CategorySectionView.swift */; };
 		3614E0E92358A9D900D23BA6 /* CategorySectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3614E0E82358A9D900D23BA6 /* CategorySectionView.xib */; };
 		36159C052354386900664D75 /* BrandCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36159C032354386900664D75 /* BrandCollectionViewCell.swift */; };
@@ -20,6 +22,8 @@
 		36159C1823569D7300664D75 /* ProductDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36159C1723569D7300664D75 /* ProductDetailTableViewController.swift */; };
 		36225999238EAD9A00B637D0 /* ShadowGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36225998238EAD9A00B637D0 /* ShadowGradientView.swift */; };
 		3622599B238F45F200B637D0 /* DashboardGlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3622599A238F45F100B637D0 /* DashboardGlobalConstants.swift */; };
+		362259A023926B7100B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3622599D23926B7000B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataClass.swift */; };
+		362259A223926B7100B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3622599F23926B7100B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataProperties.swift */; };
 		362B9102234F27110079A108 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362B9101234F27110079A108 /* HomeViewController.swift */; };
 		362C481E235B48950010C845 /* Add_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 362C481D235B48950010C845 /* Add_Icon.png */; };
 		362C4821235B56550010C845 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362C481F235B56550010C845 /* RecipeCell.swift */; };
@@ -207,6 +211,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3600BC8323926D2D00BC6D84 /* FAVORITE_PRODUCT+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "FAVORITE_PRODUCT+CoreDataClass.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/FAVORITE_PRODUCT+CoreDataClass.swift"; sourceTree = "<absolute>"; };
+		3600BC8423926D2D00BC6D84 /* FAVORITE_PRODUCT+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "FAVORITE_PRODUCT+CoreDataProperties.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/FAVORITE_PRODUCT+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
 		3614E0E52358A8DE00D23BA6 /* CategorySectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySectionView.swift; sourceTree = "<group>"; };
 		3614E0E82358A9D900D23BA6 /* CategorySectionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategorySectionView.xib; sourceTree = "<group>"; };
 		36159C032354386900664D75 /* BrandCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -220,6 +226,8 @@
 		36159C1723569D7300664D75 /* ProductDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailTableViewController.swift; sourceTree = "<group>"; };
 		36225998238EAD9A00B637D0 /* ShadowGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowGradientView.swift; sourceTree = "<group>"; };
 		3622599A238F45F100B637D0 /* DashboardGlobalConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardGlobalConstants.swift; sourceTree = "<group>"; };
+		3622599D23926B7000B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "FAVORITE_PRODUCT_RECIPE+CoreDataClass.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/FAVORITE_PRODUCT_RECIPE+CoreDataClass.swift"; sourceTree = "<absolute>"; };
+		3622599F23926B7100B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "FAVORITE_PRODUCT_RECIPE+CoreDataProperties.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/FAVORITE_PRODUCT_RECIPE+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
 		362B9101234F27110079A108 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		362C481D235B48950010C845 /* Add_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Add_Icon.png; sourceTree = "<group>"; };
 		362C481F235B56550010C845 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
@@ -561,6 +569,10 @@
 		366D615E2367BAF30014AC09 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				3600BC8323926D2D00BC6D84 /* FAVORITE_PRODUCT+CoreDataClass.swift */,
+				3600BC8423926D2D00BC6D84 /* FAVORITE_PRODUCT+CoreDataProperties.swift */,
+				3622599D23926B7000B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataClass.swift */,
+				3622599F23926B7100B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataProperties.swift */,
 				3675ED47238ABE93003A94B7 /* FAVORITE_STORE+CoreDataClass.swift */,
 				3675ED46238ABE93003A94B7 /* FAVORITE_STORE+CoreDataProperties.swift */,
 				3675ED252388D15C003A94B7 /* PRODUCT_RECIPE_PRICE+CoreDataClass copy.swift */,
@@ -1057,6 +1069,7 @@
 				3641C749234CCEC30058CF26 /* Fun2Order.xcdatamodeld in Sources */,
 				366E126B23502B9100BFFF45 /* FSPageViewLayout.swift in Sources */,
 				36159C162355E5ED00664D75 /* GlobalConstants.swift in Sources */,
+				3600BC8623926D2D00BC6D84 /* FAVORITE_PRODUCT+CoreDataProperties.swift in Sources */,
 				366E126A23502B9100BFFF45 /* FSPagerView.swift in Sources */,
 				3675ED3A2388D15F003A94B7 /* PRODUCT_INFORMATION+CoreDataProperties copy.swift in Sources */,
 				3675ED3F2388D15F003A94B7 /* PRODUCT_RECIPE_PRICE+CoreDataProperties copy.swift in Sources */,
@@ -1079,9 +1092,11 @@
 				364F1212235839AF00988937 /* ProductBriefCell.swift in Sources */,
 				3675ED352388D15F003A94B7 /* PRODUCT_RECIPE_PRICE+CoreDataClass copy.swift in Sources */,
 				3675ED432388D15F003A94B7 /* CODE_TABLE+CoreDataClass copy.swift in Sources */,
+				362259A023926B7100B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataClass.swift in Sources */,
 				362C4833235C8F560010C845 /* BasicButtonCell.swift in Sources */,
 				362C4821235B56550010C845 /* RecipeCell.swift in Sources */,
 				F505DDEC23692AE300E3F681 /* HomeTabBar.swift in Sources */,
+				3600BC8523926D2D00BC6D84 /* FAVORITE_PRODUCT+CoreDataClass.swift in Sources */,
 				36159C142355B3D500664D75 /* CommonStruct.swift in Sources */,
 				36D5838D23533D1D00AEB84F /* FavoriteTableViewController.swift in Sources */,
 				36D583842352DB7F00AEB84F /* BannerDetailViewController.swift in Sources */,
@@ -1107,6 +1122,7 @@
 				36159C052354386900664D75 /* BrandCollectionViewCell.swift in Sources */,
 				3675ED3B2388D15F003A94B7 /* STORE_INFORMATION+CoreDataClass copy.swift in Sources */,
 				3675ED382388D15F003A94B7 /* CODE_TABLE+CoreDataProperties copy.swift in Sources */,
+				362259A223926B7100B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataProperties.swift in Sources */,
 				362B9102234F27110079A108 /* HomeViewController.swift in Sources */,
 				3688A0AD235FDB9C001990CE /* MemberCell.swift in Sources */,
 				3675ED3E2388D15F003A94B7 /* STORE_BUSINESS_HOURS+CoreDataClass copy.swift in Sources */,

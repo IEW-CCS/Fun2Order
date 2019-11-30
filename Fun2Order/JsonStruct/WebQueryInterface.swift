@@ -118,10 +118,10 @@ struct ProductRecipePriceList: Codable {
 }
 
 struct ProductRecipePrice: Codable {
-    var brandID: Int
-    var storeID: Int
-    var productID: Int
-    var recipeCode: String
-    var recipeSubCode: String
-    var price: Int
+    var brandID: Int = 0
+    var storeID: Int = 0
+    var productID: Int = 0
+    var recipeCode: String = ""
+    var recipeSubCode: String = ""
+    var price: String = ""
 }

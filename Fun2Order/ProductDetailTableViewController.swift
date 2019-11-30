@@ -15,6 +15,7 @@ class ProductDetailTableViewController: UITableViewController {
     var productList = [ProductInformation]()
     var storeProductList = [StoreProductRecipe]()
     var favoriteStoreInfo = FavoriteStoreInfo()
+    var productRecipePriceList: ProductRecipePriceList!
     
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
@@ -42,12 +43,12 @@ class ProductDetailTableViewController: UITableViewController {
 
         retrieveCategoryInformation()
         retrieveProductInfo()
-
+        requestProductRecipePrice()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        //print("Title = \(self.favoriteStoreInfo.brandName)  \(self.favoriteStoreInfo.storeName) 產品列表")
         self.title = "\(self.favoriteStoreInfo.brandName)  \(self.favoriteStoreInfo.storeName) 產品列表"
+        //self.tableView.reloadData()
     }
 
     @IBAction func changeProductListView(_ sender: UIBarButtonItem) {
@@ -133,6 +134,7 @@ class ProductDetailTableViewController: UITableViewController {
                 tmpProduct.brandID = Int(product_data!.brandID)
                 tmpProduct.storeID = Int(self.favoriteStoreInfo.storeID)
                 tmpProduct.productID = Int(product_data!.productID)
+                tmpProduct.favorite = getProductFavoriteFlag(brand_id: Int(product_data!.brandID), store_id: Int(self.favoriteStoreInfo.storeID), product_id: Int(product_data!.productID))
                 tmpProduct.recipe.append(prod_recipe.recipe1)
                 tmpProduct.recipe.append(prod_recipe.recipe2)
                 tmpProduct.recipe.append(prod_recipe.recipe3)
@@ -173,12 +175,88 @@ class ProductDetailTableViewController: UITableViewController {
         print("Category: [\(cate_id)] count is \(cateCount)")
         return cateCount
     }
+
+    func getProductFavoriteFlag(brand_id: Int, store_id: Int, product_id: Int) -> Bool {
+        let fetchRequest: NSFetchRequest<FAVORITE_PRODUCT> = FAVORITE_PRODUCT.fetchRequest()
+        let predicateString = "brandID == \(brand_id) AND storeID == \(store_id) AND productID == \(product_id)"
+        print("getProductFavoriteFlag predicateString = \(predicateString)")
+        let predicate = NSPredicate(format: predicateString)
+        fetchRequest.predicate = predicate
+
+        do {
+            let product_data = try vc.fetch(fetchRequest).first
+            if product_data == nil {
+                return false
+            } else {
+                return true
+            }
+        } catch {
+            print(error.localizedDescription)
+            return false
+        }
+    }
     
+    func requestProductRecipePrice() {
+        if self.favoriteStoreInfo.brandID == 0 || self.favoriteStoreInfo.storeID == 0 {
+            let httpAlert = alert(message: "requestProductRecipePrice: Can't Get Brand ID and Store ID", title: "System Error")
+            self.present(httpAlert, animated : false, completion : nil)
+            return
+        }
+        
+        let sessionConf = URLSessionConfiguration.default
+        sessionConf.timeoutIntervalForRequest = HTTP_REQUEST_TIMEOUT
+        sessionConf.timeoutIntervalForResource = HTTP_REQUEST_TIMEOUT
+        let sessionHttp = URLSession(configuration: sessionConf)
+
+        let uriString = "PRODUCT_RECIPE_PRICE/\(self.favoriteStoreInfo.brandID)/\(self.favoriteStoreInfo.storeID)"
+        print("requestProductRecipePrice -> uriString = \(uriString)")
+        
+        let temp = getFirebaseUrlForRequest(uri: uriString)
+        let urlString = temp.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let urlRequest = URLRequest(url: URL(string: urlString)!)
+
+        print("requestProductRecipePrice")
+        let task = sessionHttp.dataTask(with: urlRequest) {(data, response, error) in
+            do {
+                if error != nil{
+                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    let httpAlert = alert(message: error!.localizedDescription, title: "Http Error")
+                    self.present(httpAlert, animated : false, completion : nil)
+                } else {
+                    guard let httpResponse = response as? HTTPURLResponse,
+                        (200...299).contains(httpResponse.statusCode) else {
+                            let errorResponse = response as? HTTPURLResponse
+                            let message: String = String(errorResponse!.statusCode) + " - " + HTTPURLResponse.localizedString(forStatusCode: errorResponse!.statusCode)
+                            //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                            let httpAlert = alert(message: message, title: "Http Error")
+                            self.present(httpAlert, animated : false, completion : nil)
+                            return
+                    }
+                    
+                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
+                    
+                    let outputStr  = String(data: data!, encoding: String.Encoding.utf8) as String?
+                    let jsonData = outputStr!.data(using: String.Encoding.utf8, allowLossyConversion: true)
+                    let decoder = JSONDecoder()
+                    self.productRecipePriceList = try decoder.decode(ProductRecipePriceList.self, from: jsonData!)
+                    print("requestProductRecipePrice finished!")
+                }
+            } catch {
+                print(error.localizedDescription)
+                let httpAlert = alert(message: error.localizedDescription, title: "Request Product Recipe Price Error")
+                self.present(httpAlert, animated : false, completion : nil)
+                return
+            }
+        }
+        task.resume()
+        
+        return
+    }
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         if self.detailProductFlag {
             return 1
         } else {
-            //return 2
             return self.productCategories.count
         }
     }
@@ -243,13 +321,26 @@ class ProductDetailTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if self.productRecipePriceList == nil {
+            return
+        }
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: "Recipe_VC") as? RecipeTableViewController else{
             assertionFailure("[AssertionFailure] StoryBoard: Recipe_VC can't find!! (ViewController)")
             return
         }
         
+        var tmpPriceList = [ProductRecipePrice]()
+        
+        for i in 0...self.productRecipePriceList.PRODUCT_RECIPE_PRICE.count - 1 {
+            if self.productRecipePriceList.PRODUCT_RECIPE_PRICE[i].productID == self.storeProductList[indexPath.row].productID {
+                tmpPriceList.append(self.productRecipePriceList.PRODUCT_RECIPE_PRICE[i])
+            }
+        }
+        
         vc.storeProductRecipe = self.storeProductList[indexPath.row]
+        vc.priceListArray = tmpPriceList
         show(vc, sender: self)
     }
 

@@ -23,9 +23,16 @@
         <attribute name="subCode" optional="YES" attributeType="String"/>
         <attribute name="subItem" optional="YES" attributeType="String"/>
     </entity>
-    <entity name="FAVORITE_PRODUCT" representedClassName="FAVORITE_PRODUCT" syncable="YES" codeGenerationType="class">
+    <entity name="FAVORITE_PRODUCT" representedClassName="FAVORITE_PRODUCT" syncable="YES">
         <attribute name="brandID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="productID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="storeID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="FAVORITE_PRODUCT_RECIPE" representedClassName="FAVORITE_PRODUCT_RECIPE" syncable="YES">
+        <attribute name="brandID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="productID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="recipeCode" optional="YES" attributeType="String"/>
+        <attribute name="recipeSubCode" optional="YES" attributeType="String"/>
         <attribute name="storeID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="FAVORITE_STORE" representedClassName="FAVORITE_STORE" syncable="YES">
@@ -97,12 +104,13 @@
     <elements>
         <element name="BRAND_PROFILE" positionX="459.91796875" positionY="-101.6640625" width="128" height="148"/>
         <element name="CODE_TABLE" positionX="295.97265625" positionY="-107.38671875" width="128" height="223"/>
+        <element name="FAVORITE_PRODUCT" positionX="198" positionY="63" width="128" height="88"/>
+        <element name="FAVORITE_PRODUCT_RECIPE" positionX="180" positionY="45" width="128" height="118"/>
         <element name="FAVORITE_STORE" positionX="225" positionY="90" width="128" height="148"/>
         <element name="PRODUCT_INFORMATION" positionX="296.66015625" positionY="127.80078125" width="128" height="178"/>
         <element name="PRODUCT_RECIPE" positionX="140.94140625" positionY="59.00390625" width="128" height="238"/>
         <element name="PRODUCT_RECIPE_PRICE" positionX="135.07421875" positionY="-94.15234375" width="128" height="133"/>
         <element name="STORE_BUSINESS_HOURS" positionX="-16.67578125" positionY="115.625" width="128" height="178"/>
         <element name="STORE_INFORMATION" positionX="-25.1015625" positionY="-90.71484375" width="128" height="178"/>
-        <element name="FAVORITE_PRODUCT" positionX="198" positionY="63" width="128" height="88"/>
     </elements>
 </model>

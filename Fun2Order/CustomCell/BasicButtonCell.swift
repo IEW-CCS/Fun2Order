@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class BasicButtonCell: UITableViewCell {
     @IBOutlet weak var backView: UIView!
@@ -30,6 +31,6 @@ class BasicButtonCell: UITableViewCell {
     }
     
     @IBAction func addToFavorite(_ sender: UIButton) {
-        
+        NotificationCenter.default.post(name: NSNotification.Name("AddFavoriteProduct"), object: nil)
     }
 }

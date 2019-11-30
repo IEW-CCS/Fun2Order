@@ -226,6 +226,7 @@ func retrieveFavoriteStore() -> [FavoriteStoreInfo] {
             tmp.insertDateTime = favorite_data.insertDateTime!
             tmp.storeBrandImage = UIImage(data: favorite_data.storeBrandImage!)!
             returnList.append(tmp)
+            print("Favorite Store: brand id: \(tmp.brandID), store id: \(tmp.storeID)")
         }
     } catch {
         print(error.localizedDescription)

@@ -13,13 +13,16 @@ class QuantityCell: UITableViewCell {
     @IBOutlet weak var quantityStepprt: UIStepper!
     @IBOutlet weak var quantityLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
+    var singlePrice: Int = 0
+    var quantity: Int = 0
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.backView.layer.borderWidth = CGFloat(1.5)
         self.backView.layer.borderColor = BASIC_FRAME_BORDER_COLOR_GREEN.cgColor
         self.backView.layer.cornerRadius = 6
-
+        self.priceLabel.text = "0 元"
+        self.quantityLabel.text = "0"
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -28,7 +31,14 @@ class QuantityCell: UITableViewCell {
     }
     
     @IBAction func changeQuantity(_ sender: UIStepper) {
-        let quantity = Int(sender.value)
-        self.quantityLabel.text = String(quantity)
+        self.quantity = Int(sender.value)
+        self.quantityLabel.text = String(self.quantity)
+        self.priceLabel.text = String(self.singlePrice * self.quantity)  + " 元"
+    }
+    
+    func setSinglePrice(price: Int) {
+        self.singlePrice = price
+        
+        self.priceLabel.text = String(self.singlePrice * self.quantity) + " 元"
     }
 }
