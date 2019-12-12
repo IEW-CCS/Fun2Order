@@ -41,4 +41,26 @@ class QuantityCell: UITableViewCell {
         
         self.priceLabel.text = String(self.singlePrice * self.quantity) + " 元"
     }
+    
+    func getSinglePrice() -> Int {
+        return self.singlePrice
+    }
+    
+    func getQuantity() -> Int {
+        return self.quantity
+    }
+    
+    func setQuantity(prod_quantity: Int) {
+        self.quantity = prod_quantity
+        self.quantityLabel.text = String(prod_quantity)
+        self.quantityStepprt.value = Double(prod_quantity)
+    }
+    
+    func getTotalPrice() -> Int {
+        return (self.singlePrice * self.quantity)
+    }
+    
+    func setTotalPrice(total_price: Int) {
+        self.priceLabel.text = String(total_price)  + " 元"
+    }
 }

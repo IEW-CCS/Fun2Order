@@ -88,7 +88,6 @@ class SelectStoreCell: UITableViewCell {
         do {
             let code_list = try vc.fetch(fetchSortRequest)
             for code_data in code_list {
-                //print("Fetched code: \(code_data.code!), subCode: \(code_data.subCode!), desc: \(code_data.codeDescription!)")
                 if self.mainCategories.isEmpty {
                     self.mainCategories.append(code_data.code!)
                     var tmpSubCategories = [String]()
@@ -113,8 +112,6 @@ class SelectStoreCell: UITableViewCell {
                     }
                 }
             }
-            //print("self.mainCategories = \(self.mainCategories)")
-            //print("self.subCategories = \(self.subCategories)")
             refreshRegionSegment()
         } catch {
             print(error.localizedDescription)
@@ -146,7 +143,6 @@ class SelectStoreCell: UITableViewCell {
                 let fetchSortRequest: NSFetchRequest<STORE_INFORMATION> = STORE_INFORMATION.fetchRequest()
                 let predicateString = "brandID == \(selectedBrandID) AND storeCategory == \"\(self.mainCategories[i])\" AND storeSubCategory == \"\(self.subCategories[i][j])\""
 
-                //print("retrieveStoreInformation predicateString: \(predicateString)")
                 let predicate = NSPredicate(format: predicateString)
                 fetchSortRequest.predicate = predicate
                 let sort = NSSortDescriptor(key: "storeID", ascending: true)
@@ -157,7 +153,6 @@ class SelectStoreCell: UITableViewCell {
                         tmpTitles.append(store_data.storeName!)
                         tmpSubTitles.append(store_data.storeDescription!)
                         tmpStoreIDs.append(Int(store_data.storeID))
-                        //print("Store Description: \(store_data.storeDescription!)")
                     }
                 } catch {
                     print(error.localizedDescription)
@@ -289,15 +284,9 @@ extension SelectStoreCell: UIPickerViewDataSource, UIPickerViewDelegate {
                 return 0
             }
             
-            //let indexSub = self.storePicker.selectedRow(inComponent: 0)
-            //let indexSub = self.selectedRegionIndex
-            //if indexSub == 0 {
-            //    return self.storeTitles[indexSub].count
-            //} else {
             let storeIndex = getStoreIndex(index1: self.selectedRegionIndex, index2: self.selectedCountyIndex)
-            //print("numberOfRowsInComponent self.storeTitles[storeIndex].count = \(self.storeTitles[storeIndex].count)")
+
             return self.storeTitles[storeIndex].count
-            //}
         }
     }
     

@@ -147,6 +147,7 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
 
     func requestUpdateDateTime() {
         let sessionConf = URLSessionConfiguration.default
+
         sessionConf.timeoutIntervalForRequest = HTTP_REQUEST_TIMEOUT
         sessionConf.timeoutIntervalForResource = HTTP_REQUEST_TIMEOUT
         let sessionHttp = URLSession(configuration: sessionConf)

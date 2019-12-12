@@ -179,13 +179,13 @@ class FavoriteTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section != 0 {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            guard let vc = storyboard.instantiateViewController(withIdentifier: "ProductList_VC") as? ProductDetailTableViewController else{
+            guard let product_vc = storyboard.instantiateViewController(withIdentifier: "ProductList_VC") as? ProductDetailTableViewController else{
                 assertionFailure("[AssertionFailure] StoryBoard: ProductList_VC can't find!! (ViewController)")
                 return
             }
 
-            vc.favoriteStoreInfo = self.favoriteStoreArray[indexPath.row]
-            show(vc, sender: self)
+            product_vc.favoriteStoreInfo = self.favoriteStoreArray[indexPath.row]
+            show(product_vc, sender: self)
         }
     }
     

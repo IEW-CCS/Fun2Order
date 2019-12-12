@@ -61,6 +61,16 @@ func updateSelectedBrandID(brand_id: Int) {
     }
 }
 
+func generateOrderNumber(type: String, day_code: String, brand_id: Int, store_id: Int, serial: Int) -> String{
+    let formattedBrandID = String(format: "%04d", brand_id)
+    let formattedStoreID = String(format: "%04d", store_id)
+    let formattedSerial = String(format: "%06d", serial)
+    
+    let orderNumber = "\(type)\(day_code)\(formattedBrandID)\(formattedStoreID)-\(formattedSerial)"
+    
+    return orderNumber
+}
+
 func alert(message: String, title: String )-> UIAlertController {
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
     let OKAction = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -79,4 +89,32 @@ func Activityalert( title: String )-> UIAlertController {
     _Activityalert.view.addSubview(_loadingIndicator)
     
     return _Activityalert
+}
+
+func getOrderStatusDescription(status_code: String) -> String {
+    switch status_code {
+    case ORDER_STATUS_INIT:
+        return "初始狀態"
+        
+    case ORDER_STATUS_CREATE:
+        return "訂單成立"
+        
+    case ORDER_STATUS_CONFIRM:
+        return "已接單"
+
+    case ORDER_STATUS_MAKE:
+        return "製作中"
+        
+    case ORDER_STATUS_READY:
+        return "製作完畢"
+        
+    case ORDER_STATUS_DELIVERY:
+        return "運送中"
+        
+    case ORDER_STATUS_FINISH:
+        return "已取餐"
+
+    default:
+        return ""
+    }
 }

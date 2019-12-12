@@ -92,23 +92,6 @@ import Foundation
         installGradient()
         installLabel()
     }
-    
-    /*
-     public func AdjustAutoLayout()
-     {
-         installShadow()
-     
-         let ori = self.gradientLayer.frame
-         self.gradientLayer.frame = ori.AdjustCAGradientLayer(width: self.layer.frame.width-10)
-         self.label.frame = self.gradientLayer.frame
-         self.label.textAlignment = .center
-         self.label.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-         self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-         print("ori.width: \(ori.width), self.layer.frame.width: \(self.layer.frame.width)")
-         //updateShadow()
-     }
-     */
-
 
     public func setRecipeItemIndex(item_index: RecipeItemControl) {
         self.recipeItemIndex = item_index

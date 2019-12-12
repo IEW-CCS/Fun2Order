@@ -125,3 +125,15 @@ struct ProductRecipePrice: Codable {
     var recipeSubCode: String = ""
     var price: String = ""
 }
+
+struct OrderSerialList: Codable {
+    var ORDER_SERIAL: [OrderSerial] = [OrderSerial]()
+}
+
+struct OrderSerial: Codable {
+    var orderType: String = ""
+    var brandID: Int = 0
+    var storeID: Int = 0
+    var dayCode: String = ""
+    var serialNumber: Int = 0
+}

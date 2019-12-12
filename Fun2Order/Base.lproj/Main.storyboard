@@ -30,6 +30,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yvh-aR-Y2Y">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.14901960784313725" green="0.65098039215686276" blue="0.60392156862745094" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <connections>
                         <segue destination="sLV-zI-7Tj" kind="relationship" relationship="rootViewController" id="1A5-Zz-kbV"/>
@@ -174,8 +175,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="tintColor" red="0.20000000000000001" green="0.80392156862745101" blue="0.11764705882352941" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
-                        <color key="selectedImageTintColor" red="0.20000000000000001" green="0.80392156862745101" blue="0.11764705882352941" alpha="0.84705882352941175" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="0.14901960784313725" green="0.65098039215686276" blue="0.60392156862745094" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                        <color key="selectedImageTintColor" red="0.14901960784313725" green="0.65098039215686276" blue="0.60392156862745094" alpha="0.84705882352941175" colorSpace="calibratedRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="lhU-FT-xtp" kind="relationship" relationship="viewControllers" id="AVp-gP-UWj"/>
@@ -204,8 +205,14 @@
                                         <segue destination="vnr-TV-y70" kind="presentation" id="Bsd-j6-7dL"/>
                                     </connections>
                                 </barButtonItem>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="KVK-4v-KIW"/>
+                                <barButtonItem title="Cart" image="ToolBar_Cart" id="n1p-Ni-b1L">
+                                    <connections>
+                                        <segue destination="OJi-7X-vXB" kind="show" id="c2M-Dl-3EI"/>
+                                    </connections>
+                                </barButtonItem>
                             </items>
-                            <color key="tintColor" red="0.20000000000000001" green="0.80392156859999997" blue="0.1176470588" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.14901960784313725" green="0.65098039215686276" blue="0.60392156862745094" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
                         </toolbar>
                         <connections>
                             <outlet property="dataSource" destination="xqA-34-jxq" id="kFH-gT-Fq0"/>
@@ -389,11 +396,6 @@
                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
-                                <barButtonItem title="List" image="ToolBar_ProductDetail" id="eBL-eO-APm">
-                                    <connections>
-                                        <action selector="changeProductListView:" destination="JCJ-j0-hzJ" id="KBG-UE-e4t"/>
-                                    </connections>
-                                </barButtonItem>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="9Ab-Oa-ET7"/>
                                 <barButtonItem style="plain" id="1xf-UD-wyp">
                                     <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="W3C-H7-OWe">
@@ -416,6 +418,7 @@
                                     </connections>
                                 </barButtonItem>
                             </items>
+                            <color key="tintColor" red="0.14901960784313725" green="0.65098039215686276" blue="0.60392156862745094" alpha="1" colorSpace="calibratedRGB"/>
                         </toolbar>
                         <connections>
                             <outlet property="dataSource" destination="JCJ-j0-hzJ" id="14a-Ju-952"/>
@@ -425,7 +428,6 @@
                     <toolbarItems/>
                     <connections>
                         <outlet property="categorySegment" destination="W3C-H7-OWe" id="Dio-M4-PLM"/>
-                        <outlet property="productListBarButton" destination="eBL-eO-APm" id="QyX-CS-evM"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RAu-t5-8Xk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -451,6 +453,7 @@
                                     </connections>
                                 </barButtonItem>
                             </items>
+                            <color key="tintColor" red="0.14901960784313725" green="0.65098039215686276" blue="0.60392156862745094" alpha="1" colorSpace="calibratedRGB"/>
                         </toolbar>
                         <connections>
                             <outlet property="dataSource" destination="GSZ-TY-Uez" id="7F1-Ih-mXW"/>
@@ -1053,9 +1056,8 @@
         <image name="TabBar_Home" width="25" height="25"/>
         <image name="ToolBar_Cart" width="25" height="21"/>
         <image name="ToolBar_Menu" width="25" height="25"/>
-        <image name="ToolBar_ProductDetail" width="24.5" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Fof-3o-hkm"/>
+        <segue reference="Ue0-yi-4xJ"/>
     </inferredMetricsTieBreakers>
 </document>

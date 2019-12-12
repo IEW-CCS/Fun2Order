@@ -21,11 +21,11 @@ class ProductDetailTableViewController: UITableViewController {
     var vc: NSManagedObjectContext!
 
     var selectedCategory: Int = 0
-    var detailProductFlag: Bool = true
-    var menuImages: [UIImage] = [UIImage(imageLiteralResourceName: "ToolBar_ProductDetail"), UIImage(imageLiteralResourceName: "ToolBar_ProductBrief")]
+    //var detailProductFlag: Bool = true
+    //var menuImages: [UIImage] = [UIImage(imageLiteralResourceName: "ToolBar_ProductDetail"), UIImage(imageLiteralResourceName: "ToolBar_ProductBrief")]
     
     @IBOutlet weak var categorySegment: UISegmentedControl!
-    @IBOutlet weak var productListBarButton: UIBarButtonItem!
+    //@IBOutlet weak var productListBarButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,21 +51,6 @@ class ProductDetailTableViewController: UITableViewController {
         //self.tableView.reloadData()
     }
 
-    @IBAction func changeProductListView(_ sender: UIBarButtonItem) {
-        self.detailProductFlag = !self.detailProductFlag
-        if self.detailProductFlag {
-            self.productListBarButton.image = UIImage(imageLiteralResourceName: "ToolBar_ProductDetail")
-            self.categorySegment.isHidden = false
-            self.categorySegment.isEnabled = true
-        } else {
-            self.productListBarButton.image = UIImage(imageLiteralResourceName: "ToolBar_ProductBrief")
-            self.categorySegment.isHidden = true
-            self.categorySegment.isEnabled = false
-        }
-        
-        self.tableView.reloadData()
-    }
-    
     @IBAction func displayCartView(_ sender: UIBarButtonItem) {
         print("Click displayCartView menu item")
     }
@@ -219,7 +204,6 @@ class ProductDetailTableViewController: UITableViewController {
         let task = sessionHttp.dataTask(with: urlRequest) {(data, response, error) in
             do {
                 if error != nil{
-                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
                     let httpAlert = alert(message: error!.localizedDescription, title: "Http Error")
                     self.present(httpAlert, animated : false, completion : nil)
                 } else {
@@ -227,13 +211,10 @@ class ProductDetailTableViewController: UITableViewController {
                         (200...299).contains(httpResponse.statusCode) else {
                             let errorResponse = response as? HTTPURLResponse
                             let message: String = String(errorResponse!.statusCode) + " - " + HTTPURLResponse.localizedString(forStatusCode: errorResponse!.statusCode)
-                            //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
                             let httpAlert = alert(message: message, title: "Http Error")
                             self.present(httpAlert, animated : false, completion : nil)
                             return
                     }
-                    
-                    //DispatchQueue.main.async {self.presentedViewController?.dismiss(animated: false, completion: nil)}
                     
                     let outputStr  = String(data: data!, encoding: String.Encoding.utf8) as String?
                     let jsonData = outputStr!.data(using: String.Encoding.utf8, allowLossyConversion: true)
@@ -254,70 +235,38 @@ class ProductDetailTableViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if self.detailProductFlag {
-            return 1
-        } else {
-            return self.productCategories.count
-        }
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.detailProductFlag {
-            //return self.productTitles[self.selectedCategory].count
-            return getCategoryCounnt(cate_id: self.productCategories[self.selectedCategory])
-        } else {
-            //return self.productTitles[section].count
-            return getCategoryCounnt(cate_id: self.productCategories[section])
-        }
+        return getCategoryCounnt(cate_id: self.productCategories[self.selectedCategory])
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if self.detailProductFlag {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ProductDetailCell", for: indexPath) as! ProductDetailCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProductDetailCell", for: indexPath) as! ProductDetailCell
 
-            cell.setData(favorite: self.storeProductList[indexPath.row].favorite,
-                         image: self.storeProductList[indexPath.row].productImage!,
-                         title: self.storeProductList[indexPath.row].productName,
-                         sub_title: self.storeProductList[indexPath.row].productDescription!,
-                         price: "30元")
-            cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ProductBriefCell", for: indexPath) as! ProductBriefCell
-            //cell.setData(favorite: self.productFavoriteFlag[indexPath.section][indexPath.row],
-            //             product_name: self.productTitles[indexPath.section][indexPath.row])
-            cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            return cell
-        }
+        cell.setData(favorite: self.storeProductList[indexPath.row].favorite,
+                     image: self.storeProductList[indexPath.row].productImage!,
+                     title: self.storeProductList[indexPath.row].productName,
+                     sub_title: self.storeProductList[indexPath.row].productDescription!,
+                     price: "30元")
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if self.detailProductFlag {
-            return 100
-        } else {
-            return 44
-        }
+        return 100
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if !self.detailProductFlag {
-            let sectionView: CategorySectionView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CategorySectionView") as! CategorySectionView
-            
-            sectionView.setData(catetory: self.productCategories[section])
-            return sectionView
-        } else {
-            let sectionView = super.tableView(tableView, viewForHeaderInSection: section) as! CategorySectionView
-            
-            return sectionView
-        }
+        let sectionView: CategorySectionView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CategorySectionView") as! CategorySectionView
+        
+        sectionView.setData(catetory: self.productCategories[section])
+        return sectionView
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if self.detailProductFlag {
-            return 0
-        } else {
-            return 44
-        }
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -326,7 +275,7 @@ class ProductDetailTableViewController: UITableViewController {
         }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let vc = storyboard.instantiateViewController(withIdentifier: "Recipe_VC") as? RecipeTableViewController else{
+        guard let recipe_vc = storyboard.instantiateViewController(withIdentifier: "Recipe_VC") as? RecipeTableViewController else{
             assertionFailure("[AssertionFailure] StoryBoard: Recipe_VC can't find!! (ViewController)")
             return
         }
@@ -339,9 +288,12 @@ class ProductDetailTableViewController: UITableViewController {
             }
         }
         
-        vc.storeProductRecipe = self.storeProductList[indexPath.row]
-        vc.priceListArray = tmpPriceList
-        show(vc, sender: self)
+        recipe_vc.storeProductRecipe = self.storeProductList[indexPath.row]
+        recipe_vc.priceListArray = tmpPriceList
+        recipe_vc.oType = "S"
+        recipe_vc.isEditFlag = false
+        //show(recipe_vc, sender: self)
+        self.navigationController?.pushViewController(recipe_vc, animated: true)
     }
 
 }

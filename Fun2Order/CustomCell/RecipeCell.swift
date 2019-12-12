@@ -21,7 +21,7 @@ class RecipeCell: UITableViewCell {
         self.backView.layer.borderWidth = CGFloat(1.0)
         self.backView.layer.borderColor = UIColor.darkGray.cgColor
         self.backView.layer.cornerRadius = 6
-
+        self.itemViewArray.removeAll()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -42,6 +42,8 @@ class RecipeCell: UITableViewCell {
         let CELL_MARGIN_HEIGHT = 15
         let ITEM_WIDTH = ITEM_WIDTH_SPACE + LABEL_WIDTH
         var cellTotalHeight: Int = 0
+        
+        self.itemViewArray.removeAll()
         
         titleLabel.centerXAnchor.constraint(equalTo: backView.centerXAnchor).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: backView.centerYAnchor).isActive = true

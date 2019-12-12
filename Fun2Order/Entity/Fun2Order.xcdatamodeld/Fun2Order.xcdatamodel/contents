@@ -23,6 +23,10 @@
         <attribute name="subCode" optional="YES" attributeType="String"/>
         <attribute name="subItem" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="FAVORITE_ADDRESS" representedClassName="FAVORITE_ADDRESS" syncable="YES">
+        <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="favoriteAddress" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="FAVORITE_PRODUCT" representedClassName="FAVORITE_PRODUCT" syncable="YES">
         <attribute name="brandID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="productID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -43,6 +47,42 @@
         <attribute name="storeDescription" optional="YES" attributeType="String"/>
         <attribute name="storeID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="storeName" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="ORDER_CONTENT_ITEM" representedClassName="ORDER_CONTENT_ITEM" syncable="YES">
+        <attribute name="itemComments" optional="YES" attributeType="String"/>
+        <attribute name="itemCreateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="itemFinalPrice" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="itemNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="itemOwnerImage" optional="YES" attributeType="Binary"/>
+        <attribute name="itemOwnerName" optional="YES" attributeType="String"/>
+        <attribute name="itemQuantity" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="itemSinglePrice" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="orderNumber" optional="YES" attributeType="String"/>
+        <attribute name="productID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="productName" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="ORDER_INFORMATION" representedClassName="ORDER_INFORMATION" syncable="YES">
+        <attribute name="brandID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="brandName" optional="YES" attributeType="String"/>
+        <attribute name="deliveryAddress" optional="YES" attributeType="String"/>
+        <attribute name="deliveryType" optional="YES" attributeType="String"/>
+        <attribute name="orderCreateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="orderImage" optional="YES" attributeType="Binary"/>
+        <attribute name="orderNumber" optional="YES" attributeType="String"/>
+        <attribute name="orderOwner" optional="YES" attributeType="String"/>
+        <attribute name="orderStatus" optional="YES" attributeType="String"/>
+        <attribute name="orderTotalPrice" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="orderTotalQuantity" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="orderType" optional="YES" attributeType="String"/>
+        <attribute name="storeID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="storeName" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="ORDER_PRODUCT_RECIPE" representedClassName="ORDER_PRODUCT_RECIPE" syncable="YES">
+        <attribute name="itemNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="orderNumber" optional="YES" attributeType="String"/>
+        <attribute name="productID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="recipeCode" optional="YES" attributeType="String"/>
+        <attribute name="recipeSubCode" optional="YES" attributeType="String"/>
     </entity>
     <entity name="PRODUCT_INFORMATION" representedClassName="PRODUCT_INFORMATION" syncable="YES">
         <attribute name="brandID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -104,13 +144,17 @@
     <elements>
         <element name="BRAND_PROFILE" positionX="459.91796875" positionY="-101.6640625" width="128" height="148"/>
         <element name="CODE_TABLE" positionX="295.97265625" positionY="-107.38671875" width="128" height="223"/>
-        <element name="FAVORITE_PRODUCT" positionX="198" positionY="63" width="128" height="88"/>
-        <element name="FAVORITE_PRODUCT_RECIPE" positionX="180" positionY="45" width="128" height="118"/>
-        <element name="FAVORITE_STORE" positionX="225" positionY="90" width="128" height="148"/>
-        <element name="PRODUCT_INFORMATION" positionX="296.66015625" positionY="127.80078125" width="128" height="178"/>
-        <element name="PRODUCT_RECIPE" positionX="140.94140625" positionY="59.00390625" width="128" height="238"/>
+        <element name="FAVORITE_PRODUCT" positionX="136.8359375" positionY="53.92578125" width="128" height="88"/>
+        <element name="FAVORITE_PRODUCT_RECIPE" positionX="129.0390625" positionY="165.54296875" width="128" height="118"/>
+        <element name="FAVORITE_STORE" positionX="292.28125" positionY="140.04296875" width="128" height="148"/>
+        <element name="ORDER_CONTENT_ITEM" positionX="458.171875" positionY="278.82421875" width="128" height="208"/>
+        <element name="ORDER_INFORMATION" positionX="459.72265625" positionY="72.046875" width="128" height="253"/>
+        <element name="ORDER_PRODUCT_RECIPE" positionX="294.3359375" positionY="322.8359375" width="128" height="118"/>
+        <element name="PRODUCT_INFORMATION" positionX="131.2265625" positionY="313.52734375" width="128" height="178"/>
+        <element name="PRODUCT_RECIPE" positionX="-12.4296875" positionY="312.859375" width="128" height="238"/>
         <element name="PRODUCT_RECIPE_PRICE" positionX="135.07421875" positionY="-94.15234375" width="128" height="133"/>
         <element name="STORE_BUSINESS_HOURS" positionX="-16.67578125" positionY="115.625" width="128" height="178"/>
         <element name="STORE_INFORMATION" positionX="-25.1015625" positionY="-90.71484375" width="128" height="178"/>
+        <element name="FAVORITE_ADDRESS" positionX="180" positionY="45" width="128" height="73"/>
     </elements>
 </model>

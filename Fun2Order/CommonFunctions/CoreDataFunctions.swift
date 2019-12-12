@@ -275,3 +275,61 @@ func deleteFavoriteStore(brand_id: Int, store_id: Int) {
 
     app.saveContext()
 }
+
+func retrieveOrderInformation(brand_id: Int, store_id: Int) -> ORDER_INFORMATION? {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchRequest: NSFetchRequest<ORDER_INFORMATION> = ORDER_INFORMATION.fetchRequest()
+    let predicateString = "brandID == \(brand_id) AND storeID == \(store_id) AND orderStatus == \"\(ORDER_STATUS_INIT)\""
+    print("retrieveOrderInformation predicateString = \(predicateString)")
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let order_data = try vc.fetch(fetchRequest).first
+        return order_data
+    } catch {
+        print(error.localizedDescription)
+        return nil
+    }
+}
+
+func updateOrderData(brand_id: Int, store_id: Int) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let order_data = retrieveOrderInformation(brand_id: brand_id, store_id: store_id)
+    var totalPrice: Int = 0
+    var totalQuantity: Int = 0
+    var orderNumber: String = ""
+    
+    if order_data != nil {
+        orderNumber = order_data!.orderNumber!
+        print("updateOrderData -> orderNumber is \(orderNumber)")
+        
+        let fetchRequest: NSFetchRequest<ORDER_CONTENT_ITEM> = ORDER_CONTENT_ITEM.fetchRequest()
+        let predicateString = "orderNumber == \"\(orderNumber)\""
+        print("updateOrderData predicateString = \(predicateString)")
+        let predicate = NSPredicate(format: predicateString)
+        fetchRequest.predicate = predicate
+
+        do {
+            let item_list = try vc.fetch(fetchRequest)
+            for item_data in item_list {
+                totalPrice = totalPrice + Int(item_data.itemFinalPrice)
+                totalQuantity = totalQuantity + Int(item_data.itemQuantity)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        order_data?.setValue(Int16(totalPrice), forKey: "orderTotalPrice")
+        order_data?.setValue(Int16(totalQuantity), forKey: "orderTotalQuantity")
+        app.saveContext()
+    }
+}

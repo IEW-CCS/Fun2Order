@@ -13,6 +13,7 @@ class BasicButtonCell: UITableViewCell {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var iconImage: UIImageView!
+    var actionType: String = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,12 +26,24 @@ class BasicButtonCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func setData(icon: UIImage, button_text: String) {
+    func setData(icon: UIImage, button_text: String, action_type: String) {
         self.favoriteButton.setTitle(button_text, for: .normal)
         self.iconImage.image = icon
+        self.actionType = action_type
     }
     
     @IBAction func addToFavorite(_ sender: UIButton) {
-        NotificationCenter.default.post(name: NSNotification.Name("AddFavoriteProduct"), object: nil)
+        switch self.actionType {
+        case BUTTON_ACTION_FAVORITE:
+            NotificationCenter.default.post(name: NSNotification.Name("AddFavoriteProduct"), object: nil)
+            break
+                
+        case BUTTON_ACTION_CART:
+            NotificationCenter.default.post(name: NSNotification.Name("AddToCart"), object: nil)
+            break
+            
+        default:
+            break
+        }
     }
 }

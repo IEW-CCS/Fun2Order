@@ -7,43 +7,123 @@
 //
 
 import UIKit
+import CoreData
 
 class HistoryTableViewController: UITableViewController {
 
-    let titlesArray: [String] = ["五十嵐  台南民族店", "柚豆  善化一店", "迷克夏  新市店"]
-    let brandImages: [UIImage] = [UIImage(named: "五十嵐.png")!,
-                                UIImage(named: "柚豆.jpg")!,
-                                UIImage(named: "迷克夏.jpg")!,]
-    let groupFlags: [Bool] = [false, true, false]
-    let orderTimeArray: [String] = ["2019年10月18日 14:03:05", "2019年10月19日 11:33:05", "2019年10月20日 18:42:33"]
-    let orderNoArray: [String] = ["ABC1234567890", "ABC1234567891", "ABC1234567892"]
-    let orderContentArray: [String] = ["@  紅茶 半糖 少冰 大杯 @  綠茶 微糖 微冰 大杯 @  紅茶 半糖 少冰 大杯", "@  紅茶 半糖 少冰 大杯 @  綠茶 微糖 微冰 大杯 @  紅茶 半糖 少冰 大杯", "@  紅茶 半糖 少冰 大杯 @  綠茶 微糖 微冰 大杯 @  紅茶 半糖 少冰 大杯"]
-    let statusArray: [String] = ["已取餐", "製作中", "訂單成立"]
+    var orderList: [OrderInformation] = [OrderInformation]()
     
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let historyCellViewNib: UINib = UINib(nibName: "OrderHistoryCell", bundle: nil)
         self.tableView.register(historyCellViewNib, forCellReuseIdentifier: "OrderHistoryCell")
 
+        vc = app.persistentContainer.viewContext
+
+        retrieveHistoryOrderList()
     }
 
+    func retrieveHistoryOrderList() {
+        self.orderList.removeAll()
+        
+        let fetchOrder: NSFetchRequest<ORDER_INFORMATION> = ORDER_INFORMATION.fetchRequest()
+        let pOrderString = "orderStatus != \"\(ORDER_STATUS_INIT)\""
+        print("retrieveOrderList pOrderString = \(pOrderString)")
+        let predicate1 = NSPredicate(format: pOrderString)
+        fetchOrder.predicate = predicate1
+        let sort = NSSortDescriptor(key: "orderCreateTime", ascending: true)
+        fetchOrder.sortDescriptors = [sort]
+
+        do {
+            let order_list = try vc.fetch(fetchOrder)
+            for order_data in order_list {
+                var tmpOrderInfo: OrderInformation = OrderInformation()
+                tmpOrderInfo.orderNumber = order_data.orderNumber!
+                tmpOrderInfo.orderType = order_data.orderType!
+                tmpOrderInfo.orderStatus = order_data.orderStatus!
+                tmpOrderInfo.deliveryType = order_data.deliveryType ?? ""
+                tmpOrderInfo.deliveryAddress = order_data.deliveryAddress ?? ""
+                tmpOrderInfo.orderImage = UIImage(data: order_data.orderImage!)!
+                tmpOrderInfo.orderCreateTime = order_data.orderCreateTime!
+                tmpOrderInfo.orderOwner = order_data.orderOwner ?? ""
+                tmpOrderInfo.orderTotalQuantity = Int(order_data.orderTotalQuantity)
+                tmpOrderInfo.orderTotalPrice = Int(order_data.orderTotalPrice)
+                tmpOrderInfo.brandID = Int(order_data.brandID)
+                tmpOrderInfo.brandName = order_data.brandName!
+                tmpOrderInfo.storeID = Int(order_data.storeID)
+                tmpOrderInfo.storeName = order_data.storeName!
+                
+                let fetchProductItem: NSFetchRequest<ORDER_CONTENT_ITEM> = ORDER_CONTENT_ITEM.fetchRequest()
+                let pProductString = "orderNumber == \"\(order_data.orderNumber!)\""
+                print("retrieveOrderList pProductString = \(pProductString)")
+                let predicate2 = NSPredicate(format: pProductString)
+                fetchProductItem.predicate = predicate2
+                let sort = NSSortDescriptor(key: "itemCreateTime", ascending: true)
+                fetchProductItem.sortDescriptors = [sort]
+
+                do {
+                    let product_list = try vc.fetch(fetchProductItem)
+                    for product_data in product_list {
+                        var tmpProductItem: OrderContentItem = OrderContentItem()
+                        tmpProductItem.orderNumber = product_data.orderNumber!
+                        tmpProductItem.itemNumber = Int(product_data.itemNumber)
+                        tmpProductItem.productID = Int(product_data.productID)
+                        tmpProductItem.productName = product_data.productName!
+                        //tmpProductItem.itemOwnerName = product_data.itemOwnerName!
+                        //tmpProductItem.itemOwnerImage = UIImage(data: product_data.itemOwnerImage!)!
+                        tmpProductItem.itemCreateTime = product_data.itemCreateTime!
+                        tmpProductItem.itemQuantity = Int(product_data.itemQuantity)
+                        tmpProductItem.itemSinglePrice = Int(product_data.itemSinglePrice)
+                        tmpProductItem.itemFinalPrice = Int(product_data.itemFinalPrice)
+                        tmpProductItem.itemComments = product_data.itemComments!
+
+                        let fetchRecipeItem: NSFetchRequest<ORDER_PRODUCT_RECIPE> = ORDER_PRODUCT_RECIPE.fetchRequest()
+                        let pRecipeString = "orderNumber == \"\(product_data.orderNumber!)\" AND itemNumber == \(Int(product_data.itemNumber)) AND productID == \(Int(product_data.productID))"
+                        print("retrieveOrderList pRecipeString = \(pRecipeString)")
+                        let predicate3 = NSPredicate(format: pRecipeString)
+                        fetchRecipeItem.predicate = predicate3
+
+                        do {
+                            let recipe_list = try vc.fetch(fetchRecipeItem)
+                            for recipe_data in recipe_list {
+                                var tmpRecipeItem: OrderProductRecipe = OrderProductRecipe()
+                                tmpRecipeItem.orderNumber = recipe_data.orderNumber!
+                                tmpRecipeItem.itemNumber = Int(recipe_data.itemNumber)
+                                tmpRecipeItem.productID = Int(recipe_data.productID)
+                                tmpRecipeItem.recipeCode = recipe_data.recipeCode!
+                                tmpRecipeItem.recipeSubCode = recipe_data.recipeSubCode!
+                                tmpProductItem.itemRecipe.append(tmpRecipeItem)
+                            }
+                        } catch {
+                            print(error.localizedDescription)
+                        }
+                        tmpOrderInfo.contentList.append(tmpProductItem)
+                    }
+                } catch {
+                    print(error.localizedDescription)
+                }
+                self.orderList.append(tmpOrderInfo)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return self.orderList.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "OrderHistoryCell", for: indexPath) as! OrderHistoryCell
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        cell.setTitle(title: self.titlesArray[indexPath.row], brand: self.brandImages[indexPath.row])
-        cell.setOrderContent(group_order: self.groupFlags[indexPath.row],
-                             order_time: self.orderTimeArray[indexPath.row],
-                             order_no: self.orderNoArray[indexPath.row],
-                             order_content: self.orderContentArray[indexPath.row],
-                             status: self.statusArray[indexPath.row])
+        cell.setData(order_info: self.orderList[indexPath.row])
+        
         cell.delegate = self
         cell.indexPath = indexPath
         return cell
@@ -62,7 +142,7 @@ extension HistoryTableViewController: DisplayQRCodeDelegate {
             return
         }
         
-        qrCodeController.setQRCodeText(code: self.orderNoArray[index.row])
+        qrCodeController.setQRCodeText(code: self.orderList[index.row].orderNumber)
         qrCodeController.modalTransitionStyle = .crossDissolve
         qrCodeController.modalPresentationStyle = .overFullScreen
         navigationController?.present(qrCodeController, animated: true, completion: nil)

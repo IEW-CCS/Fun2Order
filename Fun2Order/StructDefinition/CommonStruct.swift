@@ -79,6 +79,11 @@ struct FavoriteProductRecipe {
     var recipeSubCode: String = ""
 }
 
+struct FavoriteAddress {
+    var createTime: Date = Date()
+    var favoriteAddress: String = ""
+}
+
 struct RecipeItem {
     var recipeName: String
     var checkedFlag: Bool
@@ -129,4 +134,52 @@ struct RecipeItemControl {
     var itemIndex: Int = 0
 }
 
+struct OrderProductRecipe {
+    var orderNumber: String = ""
+    var itemNumber: Int = 0
+    var productID: Int = 0
+    var recipeCode: String = ""
+    var recipeSubCode: String = ""
+}
 
+struct OrderContentItem {
+    var orderNumber: String = ""
+    var itemNumber: Int = 0
+    var productID: Int = 0
+    var productName: String = ""
+    var itemOwnerName: String = ""
+    var itemOwnerImage: UIImage = UIImage()
+    var itemCreateTime: Date = Date()
+    var itemQuantity: Int = 0
+    var itemSinglePrice: Int = 0
+    var itemFinalPrice: Int = 0
+    var itemComments: String = ""
+    var itemRecipe: [OrderProductRecipe] = [OrderProductRecipe]()
+}
+
+struct OrderInformation {
+    // orderNumber naming rule:
+    // Sample: SYYMMDD11112222-333333
+    // S: orderType -> S/G
+    // YY: Last 2 digit of Year
+    // MM: Month
+    // DD: Day
+    // 1111: Brand ID
+    // 2222: Store ID
+    // 333333: Order serial number by day
+    var orderNumber: String = ""
+    var orderType: String = ""
+    var orderStatus: String = ""
+    var deliveryType: String = ""
+    var deliveryAddress: String = ""
+    var orderImage: UIImage = UIImage()
+    var orderCreateTime: Date = Date()
+    var orderOwner: String = ""
+    var orderTotalQuantity: Int = 0
+    var orderTotalPrice: Int = 0
+    var brandID: Int = 0
+    var brandName: String = ""
+    var storeID: Int = 0
+    var storeName: String = ""
+    var contentList: [OrderContentItem] = [OrderContentItem]()
+}
