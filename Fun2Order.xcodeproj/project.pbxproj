@@ -75,6 +75,8 @@
 		3666F6FE239F840000729E43 /* FAVORITE_ADDRESS+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3666F6FB239F840000729E43 /* FAVORITE_ADDRESS+CoreDataClass.swift */; };
 		3666F70523A1DB6000729E43 /* ORDER_INFORMATION+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3666F70423A1DB5F00729E43 /* ORDER_INFORMATION+CoreDataProperties.swift */; };
 		3666F70623A1DB6000729E43 /* ORDER_INFORMATION+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3666F70323A1DB5F00729E43 /* ORDER_INFORMATION+CoreDataClass.swift */; };
+		3666F70823A2199800729E43 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3666F70723A2199800729E43 /* MyProfileViewController.swift */; };
+		3666F70C23A22A5800729E43 /* Image_Default_Member.png in Resources */ = {isa = PBXBuildFile; fileRef = 3666F70B23A22A5800729E43 /* Image_Default_Member.png */; };
 		366E126523502B9100BFFF45 /* FSPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E125C23502B9100BFFF45 /* FSPageControl.swift */; };
 		366E126623502B9100BFFF45 /* FSPagerViewObjcCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = 366E125D23502B9100BFFF45 /* FSPagerViewObjcCompat.m */; };
 		366E126723502B9100BFFF45 /* FSPagerViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E125E23502B9100BFFF45 /* FSPagerViewCell.swift */; };
@@ -295,6 +297,8 @@
 		3666F6FC239F840000729E43 /* FAVORITE_ADDRESS+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "FAVORITE_ADDRESS+CoreDataProperties.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/FAVORITE_ADDRESS+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
 		3666F70323A1DB5F00729E43 /* ORDER_INFORMATION+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ORDER_INFORMATION+CoreDataClass.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/ORDER_INFORMATION+CoreDataClass.swift"; sourceTree = "<absolute>"; };
 		3666F70423A1DB5F00729E43 /* ORDER_INFORMATION+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ORDER_INFORMATION+CoreDataProperties.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/ORDER_INFORMATION+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
+		3666F70723A2199800729E43 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
+		3666F70B23A22A5800729E43 /* Image_Default_Member.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image_Default_Member.png; sourceTree = "<group>"; };
 		366E125C23502B9100BFFF45 /* FSPageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSPageControl.swift; sourceTree = "<group>"; };
 		366E125D23502B9100BFFF45 /* FSPagerViewObjcCompat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSPagerViewObjcCompat.m; sourceTree = "<group>"; };
 		366E125E23502B9100BFFF45 /* FSPagerViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSPagerViewCell.swift; sourceTree = "<group>"; };
@@ -542,6 +546,7 @@
 				3688A0A3235EE5F0001990CE /* QRCodeViewController.swift */,
 				36C8C1BD235E9B90002AD40F /* HistoryTableViewController.swift */,
 				3688A0A6235F3A8B001990CE /* GroupOrderViewController.swift */,
+				3666F70723A2199800729E43 /* MyProfileViewController.swift */,
 			);
 			path = Fun2Order;
 			sourceTree = "<group>";
@@ -571,6 +576,7 @@
 		3649CFAE235D42E300C0F2EA /* Member */ = {
 			isa = PBXGroup;
 			children = (
+				3666F70B23A22A5800729E43 /* Image_Default_Member.png */,
 				3649CFB0235D430000C0F2EA /* Image_Friend1.png */,
 				3649CFB4235D430000C0F2EA /* Image_Friend2.png */,
 				3649CFB3235D430000C0F2EA /* Image_Friend3.png */,
@@ -966,6 +972,7 @@
 				3649CFB6235D430000C0F2EA /* Image_Friend1.png in Resources */,
 				36D583DA2354151500AEB84F /* 紅太陽.png in Resources */,
 				36DC7A422356CB94009D48F5 /* 紅茶.png in Resources */,
+				3666F70C23A22A5800729E43 /* Image_Default_Member.png in Resources */,
 				36DC7A592356CB94009D48F5 /* 觀音拿鐵@2x.png in Resources */,
 				3641C74B234CCEC40058CF26 /* Assets.xcassets in Resources */,
 				362C4830235C8F360010C845 /* Icon_Cart_Red.png in Resources */,
@@ -1111,6 +1118,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3666F70823A2199800729E43 /* MyProfileViewController.swift in Sources */,
 				3641C749234CCEC30058CF26 /* Fun2Order.xcdatamodeld in Sources */,
 				366E126B23502B9100BFFF45 /* FSPageViewLayout.swift in Sources */,
 				36159C162355E5ED00664D75 /* GlobalConstants.swift in Sources */,

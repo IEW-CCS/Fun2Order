@@ -26,6 +26,12 @@ class HistoryTableViewController: UITableViewController {
         retrieveHistoryOrderList()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        self.title = "訂單歷史紀錄"
+        self.navigationController?.title = "訂單歷史紀錄"
+        self.tabBarController?.title = "訂單歷史紀錄"
+    }
+
     func retrieveHistoryOrderList() {
         self.orderList.removeAll()
         

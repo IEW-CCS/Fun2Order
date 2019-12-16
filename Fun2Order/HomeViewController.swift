@@ -86,6 +86,13 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
         setupPageView()
         requestUpdateDateTime()
         print("sqlite path --> \(app.persistentContainer.persistentStoreDescriptions)")
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.title = "首頁"
+        self.navigationController?.title = "首頁"
+        self.tabBarController?.title = "首頁"
     }
     
     private func setupPageView() {

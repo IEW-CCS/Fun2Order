@@ -51,6 +51,12 @@ class FavoriteTableViewController: UITableViewController {
         self.favoriteStoreArray = retrieveFavoriteStore()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.title = "選擇我的最愛"
+        self.navigationController?.title = "選擇我的最愛"
+        self.tabBarController?.title = "選擇我的最愛"
+    }
+    
     func getDefaultBrandData() {
         let selectedBrandID = getSelectedBrandID()
         if selectedBrandID == 0 {
@@ -75,7 +81,7 @@ class FavoriteTableViewController: UITableViewController {
 
             self.brandTitle = brand_data!.brandName!
             print("FavoriteTableViewController received brand name: \(self.brandTitle)")
-            self.tabBarController?.title = self.brandTitle
+            //self.tabBarController?.title = self.brandTitle
             self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
     }

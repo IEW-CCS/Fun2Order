@@ -71,12 +71,14 @@ class CartTableViewController: UITableViewController {
         retrieveOrderList()
     }
 
-    //override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
     //    self.viewWillAppear(animated)
-        
+        self.title = "我的訂單"
+        self.tabBarController?.title = "我的訂單"
+        self.navigationController?.title = "我的訂單"
         //retrieveOrderList()
         //self.tableView.reloadData()
-    //}
+    }
     
     func retrieveOrderList() {
         self.orderList.removeAll()

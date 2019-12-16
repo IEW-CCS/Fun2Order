@@ -23,6 +23,7 @@ let BASIC_FRAME_BORDER_COLOR_ORANGE = UIColor(red: 255/255, green: 112/255, blue
 let COLOR_PEPPER_RED = UIColor(red: 177/255, green: 0/255, blue: 28/255, alpha: 1.0)
 
 let CUSTOM_COLOR_EMERALD_GREEN = UIColor(red: 38/255, green: 166/255, blue: 154/255, alpha: 1.0)
+let CUSTOM_COLOR_LIGHT_ORANGE = UIColor(red: 255/255, green: 112/255, blue: 67/255, alpha: 1.0)
 
 let CODE_STORE_CATEGORY: String = "STORE_CATEGORY"
 let CODE_PRODUCT_CATEGORY: String = "PRODUCT_CATEGORY"
