@@ -17,6 +17,13 @@ class MyProfileViewController: UIViewController {
         super.viewDidLoad()
         setupSegment()
         self.imageMyPhoto.layer.cornerRadius = 40
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.receivePageChange(_:)),
+            name: NSNotification.Name(rawValue: "PageChange"),
+            object: nil
+        )
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -34,9 +41,7 @@ class MyProfileViewController: UIViewController {
         let numberOfSegments = CGFloat(self.segmentControl.numberOfSegments)
         let segmentWidth = CGFloat((self.segmentControl.layer.frame.maxX - self.segmentControl.layer.frame.minX)/numberOfSegments)
 
-        print("Before self.segmentIndicator.constraints = \(self.segmentIndicator.constraints.count)")
         self.segmentIndicator.removeConstraints(self.segmentIndicator.constraints)
-        print("After self.segmentIndicator.constraints = \(self.segmentIndicator.constraints.count)")
 
         self.segmentIndicator.topAnchor.constraint(equalTo: self.segmentControl.bottomAnchor, constant: 3).isActive = true
         self.segmentIndicator.heightAnchor.constraint(equalToConstant: 2).isActive = true
@@ -46,18 +51,17 @@ class MyProfileViewController: UIViewController {
         print("self.segmentControl.selectedSegmentIndex = \(self.segmentControl.selectedSegmentIndex)")
         self.segmentIndicator.centerXAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].centerXAnchor).isActive = true
 
-        self.segmentIndicator.updateConstraints()
-        //UIView.animate(withDuration: 0.1, animations: {
-        //    self.view.layoutIfNeeded()
-        //})
+        //self.segmentIndicator.leftAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].leftAnchor, constant: 10).isActive = true
+        //self.segmentIndicator.updateConstraints()
+        //self.segmentIndicator.layoutIfNeeded()
+        UIView.animate(withDuration: 0.1, animations: {
+            self.view.layoutIfNeeded()
+        })
     }
     
     func setupSegmentIndicator() {
         let numberOfSegments = CGFloat(self.segmentControl.numberOfSegments)
-        let segmentWidth = CGFloat((self.segmentControl.layer.frame.maxX - self.segmentControl.layer.frame.minX)/numberOfSegments)
-
-        //print("numberOfSegments = \(numberOfSegments)")
-        //print("segmentWidth = \(segmentWidth)")
+        let segmentWidth = CGFloat((self.segmentControl.layer.frame.maxX - self.segmentControl.layer.frame.minX)/numberOfSegments - 20)
 
         self.segmentIndicator.translatesAutoresizingMaskIntoConstraints = false
         self.segmentIndicator.backgroundColor = CUSTOM_COLOR_LIGHT_ORANGE
@@ -66,10 +70,12 @@ class MyProfileViewController: UIViewController {
         self.segmentIndicator.topAnchor.constraint(equalTo: self.segmentControl.bottomAnchor, constant: 3).isActive = true
         self.segmentIndicator.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
-        self.segmentIndicator.widthAnchor.constraint(equalToConstant: CGFloat(segmentWidth - 20)).isActive = true
+        self.segmentIndicator.widthAnchor.constraint(equalToConstant: CGFloat(segmentWidth)).isActive = true
         
         print("self.segmentControl.selectedSegmentIndex = \(self.segmentControl.selectedSegmentIndex)")
         self.segmentIndicator.centerXAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].centerXAnchor).isActive = true
+        //self.segmentIndicator.leftAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].leftAnchor, constant: 10).isActive = true
+        //self.segmentIndicator.layoutIfNeeded()
     }
     
     func getSubViewIndex() -> Int {
@@ -88,7 +94,6 @@ class MyProfileViewController: UIViewController {
         }
         
         //print("indexArray Before sorting: \(indexArray)")
-        
         let result = indexArray.sorted { $0.centerX < $1.centerX }
         //print("indexArray After sorting: \(result)")
         //print("-----------------------------------------")
@@ -104,6 +109,8 @@ class MyProfileViewController: UIViewController {
         self.segmentControl.tintColor = .clear
         //self.segmentControl.tintColor = CUSTOM_COLOR_LIGHT_ORANGE
         
+        self.segmentControl.translatesAutoresizingMaskIntoConstraints = false
+        
         self.segmentControl.setTitleTextAttributes([NSAttributedString.Key.font : UIFont(name: "AvenirNextCondensed-Medium", size: 18)!, NSAttributedString.Key.foregroundColor: UIColor.lightGray], for: .normal)
         
         self.segmentControl.setTitleTextAttributes([NSAttributedString.Key.font : UIFont(name: "AvenirNextCondensed-Medium", size: 20)!, NSAttributedString.Key.foregroundColor: CUSTOM_COLOR_LIGHT_ORANGE], for: .selected)
@@ -111,4 +118,27 @@ class MyProfileViewController: UIViewController {
         self.segmentControl.selectedSegmentIndex = 0
     }
 
+    @objc func receivePageChange(_ notification: Notification) {
+        if let pageIndex = notification.object as? Int {
+            print("MyProfileViewController received PageChange notification for page[\(pageIndex)]")
+            self.segmentControl.selectedSegmentIndex = pageIndex
+            self.segmentIndicator.centerXAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].centerXAnchor).isActive = true
+            UIView.animate(withDuration: 0.1, animations: {
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
 }
+
+/*
+extension MyProfileViewController: UIPageViewControllerDelegate {
+    func pageViewController(pageViewController: UIPageViewController, didUpdatePageIndex index: Int) {
+        print("MyProfileViewController received PageChange notification for page[\(index)]")
+        self.segmentControl.selectedSegmentIndex = index
+        self.segmentIndicator.centerXAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].centerXAnchor).isActive = true
+        UIView.animate(withDuration: 0.1, animations: {
+            self.view.layoutIfNeeded()
+        })
+    }
+}
+*/

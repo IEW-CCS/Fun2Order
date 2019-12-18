@@ -107,6 +107,10 @@
 		3688A0A9235F460A001990CE /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688A0A8235F460A001990CE /* GroupCell.swift */; };
 		3688A0AD235FDB9C001990CE /* MemberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688A0AB235FDB9C001990CE /* MemberCell.swift */; };
 		3688A0AE235FDB9C001990CE /* MemberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3688A0AC235FDB9C001990CE /* MemberCell.xib */; };
+		36973AB923A88889008804C5 /* BasicInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973AB823A88889008804C5 /* BasicInformationViewController.swift */; };
+		36973ABB23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973ABA23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift */; };
+		36973ABF23A88955008804C5 /* MemberGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973ABE23A88955008804C5 /* MemberGroupViewController.swift */; };
+		36973AC123A88C32008804C5 /* FunctionsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973AC023A88C32008804C5 /* FunctionsPageViewController.swift */; };
 		36C0B371236A784500B56C75 /* WebQueryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C0B370236A784500B56C75 /* WebQueryInterface.swift */; };
 		36C0B374236A8E4100B56C75 /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C0B373236A8E4100B56C75 /* UtilityFunctions.swift */; };
 		36C8C1B1235DEA13002AD40F /* OrderHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C8C1AF235DEA13002AD40F /* OrderHistoryCell.swift */; };
@@ -331,6 +335,10 @@
 		3688A0A8235F460A001990CE /* GroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
 		3688A0AB235FDB9C001990CE /* MemberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberCell.swift; sourceTree = "<group>"; };
 		3688A0AC235FDB9C001990CE /* MemberCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MemberCell.xib; sourceTree = "<group>"; };
+		36973AB823A88889008804C5 /* BasicInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicInformationViewController.swift; sourceTree = "<group>"; };
+		36973ABA23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigMyFavoriteTableViewController.swift; sourceTree = "<group>"; };
+		36973ABE23A88955008804C5 /* MemberGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberGroupViewController.swift; sourceTree = "<group>"; };
+		36973AC023A88C32008804C5 /* FunctionsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionsPageViewController.swift; sourceTree = "<group>"; };
 		36C0B370236A784500B56C75 /* WebQueryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebQueryInterface.swift; sourceTree = "<group>"; };
 		36C0B373236A8E4100B56C75 /* UtilityFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityFunctions.swift; sourceTree = "<group>"; };
 		36C8C1AF235DEA13002AD40F /* OrderHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderHistoryCell.swift; sourceTree = "<group>"; };
@@ -547,6 +555,10 @@
 				36C8C1BD235E9B90002AD40F /* HistoryTableViewController.swift */,
 				3688A0A6235F3A8B001990CE /* GroupOrderViewController.swift */,
 				3666F70723A2199800729E43 /* MyProfileViewController.swift */,
+				36973AC023A88C32008804C5 /* FunctionsPageViewController.swift */,
+				36973AB823A88889008804C5 /* BasicInformationViewController.swift */,
+				36973ABA23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift */,
+				36973ABE23A88955008804C5 /* MemberGroupViewController.swift */,
 			);
 			path = Fun2Order;
 			sourceTree = "<group>";
@@ -1120,6 +1132,7 @@
 			files = (
 				3666F70823A2199800729E43 /* MyProfileViewController.swift in Sources */,
 				3641C749234CCEC30058CF26 /* Fun2Order.xcdatamodeld in Sources */,
+				36973AB923A88889008804C5 /* BasicInformationViewController.swift in Sources */,
 				366E126B23502B9100BFFF45 /* FSPageViewLayout.swift in Sources */,
 				36159C162355E5ED00664D75 /* GlobalConstants.swift in Sources */,
 				3600BC8623926D2D00BC6D84 /* FAVORITE_PRODUCT+CoreDataProperties.swift in Sources */,
@@ -1142,6 +1155,7 @@
 				3675ED1B23837834003A94B7 /* CoreDataFunctions.swift in Sources */,
 				364F120F2358379100988937 /* Checkbox.swift in Sources */,
 				3675ED402388D15F003A94B7 /* BRAND_PROFILE+CoreDataProperties copy.swift in Sources */,
+				36973ABB23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift in Sources */,
 				36159C1823569D7300664D75 /* ProductDetailTableViewController.swift in Sources */,
 				3600BCA52396486500BC6D84 /* ORDER_CONTENT_ITEM+CoreDataProperties.swift in Sources */,
 				36DC79FB2356B783009D48F5 /* ProductDetailCell.swift in Sources */,
@@ -1158,6 +1172,7 @@
 				36D583842352DB7F00AEB84F /* BannerDetailViewController.swift in Sources */,
 				F505DDE923692AC900E3F681 /* OTPVerificationController.swift in Sources */,
 				366E126523502B9100BFFF45 /* FSPageControl.swift in Sources */,
+				36973ABF23A88955008804C5 /* MemberGroupViewController.swift in Sources */,
 				3688A0A9235F460A001990CE /* GroupCell.swift in Sources */,
 				3688A0A7235F3A8B001990CE /* GroupOrderViewController.swift in Sources */,
 				3675ED392388D15F003A94B7 /* PRODUCT_RECIPE+CoreDataProperties copy.swift in Sources */,
@@ -1197,6 +1212,7 @@
 				3600BC8D2394012800BC6D84 /* ORDER_PRODUCT_RECIPE+CoreDataClass.swift in Sources */,
 				3600BC8F2394012800BC6D84 /* ORDER_PRODUCT_RECIPE+CoreDataProperties.swift in Sources */,
 				3675ED412388D15F003A94B7 /* PRODUCT_INFORMATION+CoreDataClass copy.swift in Sources */,
+				36973AC123A88C32008804C5 /* FunctionsPageViewController.swift in Sources */,
 				3622599B238F45F200B637D0 /* DashboardGlobalConstants.swift in Sources */,
 				3675ED3C2388D15F003A94B7 /* STORE_INFORMATION+CoreDataProperties copy.swift in Sources */,
 				36D583A42353599D00AEB84F /* FavoriteStoreCell.swift in Sources */,
