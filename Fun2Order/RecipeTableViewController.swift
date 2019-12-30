@@ -264,6 +264,7 @@ class RecipeTableViewController: UITableViewController {
             self.finalPrice = price
             
             let row_index = IndexPath(row: self.productRecipes.count + 1, section: 0)
+            print("receivePriceUpdate -> row_index.row = \(row_index.row)")
             let cell = self.tableView.cellForRow(at: row_index) as! QuantityCell
             cell.setSinglePrice(price: self.finalPrice)
         }
@@ -272,7 +273,9 @@ class RecipeTableViewController: UITableViewController {
     @objc func receiveAddFavoriteProduct(_ notification: Notification) {
         print("Receive AddFavoriteProduct notification.")
         
-        deleteFavoriteRecipeItem(brand_id: self.storeProductRecipe.brandID, store_id: self.storeProductRecipe.storeID, product_id: self.storeProductRecipe.productID)
+        if deleteSingleFavoriteProduct(brand_id: self.storeProductRecipe.brandID, store_id: self.storeProductRecipe.storeID, product_id: self.storeProductRecipe.productID) {
+            deleteFavoriteRecipeItem(brand_id: self.storeProductRecipe.brandID, store_id: self.storeProductRecipe.storeID, product_id: self.storeProductRecipe.productID)
+        }
         
         let productData = NSEntityDescription.insertNewObject(forEntityName: "FAVORITE_PRODUCT", into: vc) as! FAVORITE_PRODUCT
         productData.brandID = Int16(self.storeProductRecipe.brandID)

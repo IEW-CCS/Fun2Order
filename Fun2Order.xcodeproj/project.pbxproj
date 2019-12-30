@@ -71,6 +71,15 @@
 		364F120F2358379100988937 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364F120E2358379100988937 /* Checkbox.swift */; };
 		364F1212235839AF00988937 /* ProductBriefCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364F1210235839AF00988937 /* ProductBriefCell.swift */; };
 		364F1213235839AF00988937 /* ProductBriefCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 364F1211235839AF00988937 /* ProductBriefCell.xib */; };
+		3659704523B04D90008CDD57 /* BirthdayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3659704423B04D90008CDD57 /* BirthdayViewController.swift */; };
+		3659704C23B06A49008CDD57 /* ConfigFavoriteProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3659704A23B06A49008CDD57 /* ConfigFavoriteProductCell.swift */; };
+		3659704D23B06A49008CDD57 /* ConfigFavoriteProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3659704B23B06A49008CDD57 /* ConfigFavoriteProductCell.xib */; };
+		3659705023B06A6C008CDD57 /* ConfigFavoriteStoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3659704E23B06A6C008CDD57 /* ConfigFavoriteStoreCell.swift */; };
+		3659705123B06A6C008CDD57 /* ConfigFavoriteStoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3659704F23B06A6C008CDD57 /* ConfigFavoriteStoreCell.xib */; };
+		3659705323B07F11008CDD57 /* Icon_Gender.png in Resources */ = {isa = PBXBuildFile; fileRef = 3659705223B07F11008CDD57 /* Icon_Gender.png */; };
+		3659705523B07FD4008CDD57 /* Icon_Password.png in Resources */ = {isa = PBXBuildFile; fileRef = 3659705423B07FD4008CDD57 /* Icon_Password.png */; };
+		3659705823B0A0BA008CDD57 /* ConfigFavoriteAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3659705623B0A0BA008CDD57 /* ConfigFavoriteAddressCell.swift */; };
+		3659705923B0A0BA008CDD57 /* ConfigFavoriteAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3659705723B0A0BA008CDD57 /* ConfigFavoriteAddressCell.xib */; };
 		3666F6FD239F840000729E43 /* FAVORITE_ADDRESS+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3666F6FC239F840000729E43 /* FAVORITE_ADDRESS+CoreDataProperties.swift */; };
 		3666F6FE239F840000729E43 /* FAVORITE_ADDRESS+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3666F6FB239F840000729E43 /* FAVORITE_ADDRESS+CoreDataClass.swift */; };
 		3666F70523A1DB6000729E43 /* ORDER_INFORMATION+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3666F70423A1DB5F00729E43 /* ORDER_INFORMATION+CoreDataProperties.swift */; };
@@ -104,13 +113,36 @@
 		3675ED49238ABE93003A94B7 /* FAVORITE_STORE+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675ED47238ABE93003A94B7 /* FAVORITE_STORE+CoreDataClass.swift */; };
 		3688A0A4235EE5F0001990CE /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688A0A3235EE5F0001990CE /* QRCodeViewController.swift */; };
 		3688A0A7235F3A8B001990CE /* GroupOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688A0A6235F3A8B001990CE /* GroupOrderViewController.swift */; };
-		3688A0A9235F460A001990CE /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688A0A8235F460A001990CE /* GroupCell.swift */; };
 		3688A0AD235FDB9C001990CE /* MemberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688A0AB235FDB9C001990CE /* MemberCell.swift */; };
 		3688A0AE235FDB9C001990CE /* MemberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3688A0AC235FDB9C001990CE /* MemberCell.xib */; };
-		36973AB923A88889008804C5 /* BasicInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973AB823A88889008804C5 /* BasicInformationViewController.swift */; };
 		36973ABB23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973ABA23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift */; };
 		36973ABF23A88955008804C5 /* MemberGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973ABE23A88955008804C5 /* MemberGroupViewController.swift */; };
 		36973AC123A88C32008804C5 /* FunctionsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973AC023A88C32008804C5 /* FunctionsPageViewController.swift */; };
+		36973AC323AB54A0008804C5 /* BasicInformationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973AC223AB54A0008804C5 /* BasicInformationTableViewController.swift */; };
+		36973AD023AB7343008804C5 /* Icon_Birthday.png in Resources */ = {isa = PBXBuildFile; fileRef = 36973AC823AB7342008804C5 /* Icon_Birthday.png */; };
+		36973AD123AB7343008804C5 /* Icon_Address.png in Resources */ = {isa = PBXBuildFile; fileRef = 36973AC923AB7342008804C5 /* Icon_Address.png */; };
+		36973AD223AB7343008804C5 /* Icon_eMail.png in Resources */ = {isa = PBXBuildFile; fileRef = 36973ACA23AB7342008804C5 /* Icon_eMail.png */; };
+		36973AD323AB7343008804C5 /* Icon_Phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 36973ACB23AB7342008804C5 /* Icon_Phone.png */; };
+		36973AD423AB7343008804C5 /* Icon_Name.png in Resources */ = {isa = PBXBuildFile; fileRef = 36973ACC23AB7343008804C5 /* Icon_Name.png */; };
+		36973AD523AB7343008804C5 /* Icon_UserAccount.png in Resources */ = {isa = PBXBuildFile; fileRef = 36973ACD23AB7343008804C5 /* Icon_UserAccount.png */; };
+		36973AD823ADA91A008804C5 /* Icon_QRCode.png in Resources */ = {isa = PBXBuildFile; fileRef = 36973AD723ADA91A008804C5 /* Icon_QRCode.png */; };
+		36973ADA23AE5F19008804C5 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973AD923AE5F19008804C5 /* ChangePasswordViewController.swift */; };
+		36973ADC23AF2792008804C5 /* GenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973ADB23AF2792008804C5 /* GenderViewController.swift */; };
+		36B80C7323B2074F004359E4 /* ConfigFavoriteProductTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B80C7223B2074F004359E4 /* ConfigFavoriteProductTableViewController.swift */; };
+		36B80C7523B4991B004359E4 /* Icon_Add_Member.png in Resources */ = {isa = PBXBuildFile; fileRef = 36B80C7423B4991B004359E4 /* Icon_Add_Member.png */; };
+		36B80C7823B4A4CA004359E4 /* Icon_Delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 36B80C7723B4A4CA004359E4 /* Icon_Delete.png */; };
+		36B80C7A23B4EAED004359E4 /* GroupEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B80C7923B4EAED004359E4 /* GroupEditViewController.swift */; };
+		36B80C7D23B4ED9E004359E4 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B80C7B23B4ED9E004359E4 /* GroupCell.swift */; };
+		36B80C7E23B4ED9E004359E4 /* GroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36B80C7C23B4ED9E004359E4 /* GroupCell.xib */; };
+		36B80C8D23B5E41E004359E4 /* GROUP_TABLE+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B80C8B23B5E41E004359E4 /* GROUP_TABLE+CoreDataProperties.swift */; };
+		36B80C8E23B5E41E004359E4 /* GROUP_MEMBER+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B80C8C23B5E41E004359E4 /* GROUP_MEMBER+CoreDataProperties.swift */; };
+		36B80C8F23B5E41E004359E4 /* GROUP_TABLE+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B80C8A23B5E41E004359E4 /* GROUP_TABLE+CoreDataClass.swift */; };
+		36B80C9023B5E41E004359E4 /* GROUP_MEMBER+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B80C8923B5E41E004359E4 /* GROUP_MEMBER+CoreDataClass.swift */; };
+		36B80C9223B5E78B004359E4 /* Icon_Default_Group.png in Resources */ = {isa = PBXBuildFile; fileRef = 36B80C9123B5E78B004359E4 /* Icon_Default_Group.png */; };
+		36B80C9823B63C57004359E4 /* Image_Default_Group.png in Resources */ = {isa = PBXBuildFile; fileRef = 36B80C9723B63C57004359E4 /* Image_Default_Group.png */; };
+		36B80C9B23B876DF004359E4 /* ScanQRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B80C9A23B876DF004359E4 /* ScanQRCodeViewController.swift */; };
+		36B80C9D23B99453004359E4 /* Icon_Add_Group.png in Resources */ = {isa = PBXBuildFile; fileRef = 36B80C9C23B99453004359E4 /* Icon_Add_Group.png */; };
+		36B80CA123B9B715004359E4 /* MyProfile.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36B80CA023B9B715004359E4 /* MyProfile.plist */; };
 		36C0B371236A784500B56C75 /* WebQueryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C0B370236A784500B56C75 /* WebQueryInterface.swift */; };
 		36C0B374236A8E4100B56C75 /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C0B373236A8E4100B56C75 /* UtilityFunctions.swift */; };
 		36C8C1B1235DEA13002AD40F /* OrderHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C8C1AF235DEA13002AD40F /* OrderHistoryCell.swift */; };
@@ -297,6 +329,15 @@
 		364F120E2358379100988937 /* Checkbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 		364F1210235839AF00988937 /* ProductBriefCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductBriefCell.swift; sourceTree = "<group>"; };
 		364F1211235839AF00988937 /* ProductBriefCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductBriefCell.xib; sourceTree = "<group>"; };
+		3659704423B04D90008CDD57 /* BirthdayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayViewController.swift; sourceTree = "<group>"; };
+		3659704A23B06A49008CDD57 /* ConfigFavoriteProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFavoriteProductCell.swift; sourceTree = "<group>"; };
+		3659704B23B06A49008CDD57 /* ConfigFavoriteProductCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfigFavoriteProductCell.xib; sourceTree = "<group>"; };
+		3659704E23B06A6C008CDD57 /* ConfigFavoriteStoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFavoriteStoreCell.swift; sourceTree = "<group>"; };
+		3659704F23B06A6C008CDD57 /* ConfigFavoriteStoreCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfigFavoriteStoreCell.xib; sourceTree = "<group>"; };
+		3659705223B07F11008CDD57 /* Icon_Gender.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Gender.png; sourceTree = "<group>"; };
+		3659705423B07FD4008CDD57 /* Icon_Password.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Password.png; sourceTree = "<group>"; };
+		3659705623B0A0BA008CDD57 /* ConfigFavoriteAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFavoriteAddressCell.swift; sourceTree = "<group>"; };
+		3659705723B0A0BA008CDD57 /* ConfigFavoriteAddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfigFavoriteAddressCell.xib; sourceTree = "<group>"; };
 		3666F6FB239F840000729E43 /* FAVORITE_ADDRESS+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "FAVORITE_ADDRESS+CoreDataClass.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/FAVORITE_ADDRESS+CoreDataClass.swift"; sourceTree = "<absolute>"; };
 		3666F6FC239F840000729E43 /* FAVORITE_ADDRESS+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "FAVORITE_ADDRESS+CoreDataProperties.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/FAVORITE_ADDRESS+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
 		3666F70323A1DB5F00729E43 /* ORDER_INFORMATION+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ORDER_INFORMATION+CoreDataClass.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/ORDER_INFORMATION+CoreDataClass.swift"; sourceTree = "<absolute>"; };
@@ -332,13 +373,36 @@
 		3675ED47238ABE93003A94B7 /* FAVORITE_STORE+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "FAVORITE_STORE+CoreDataClass.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/FAVORITE_STORE+CoreDataClass.swift"; sourceTree = "<absolute>"; };
 		3688A0A3235EE5F0001990CE /* QRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
 		3688A0A6235F3A8B001990CE /* GroupOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOrderViewController.swift; sourceTree = "<group>"; };
-		3688A0A8235F460A001990CE /* GroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
 		3688A0AB235FDB9C001990CE /* MemberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberCell.swift; sourceTree = "<group>"; };
 		3688A0AC235FDB9C001990CE /* MemberCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MemberCell.xib; sourceTree = "<group>"; };
-		36973AB823A88889008804C5 /* BasicInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicInformationViewController.swift; sourceTree = "<group>"; };
 		36973ABA23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigMyFavoriteTableViewController.swift; sourceTree = "<group>"; };
 		36973ABE23A88955008804C5 /* MemberGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberGroupViewController.swift; sourceTree = "<group>"; };
 		36973AC023A88C32008804C5 /* FunctionsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionsPageViewController.swift; sourceTree = "<group>"; };
+		36973AC223AB54A0008804C5 /* BasicInformationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicInformationTableViewController.swift; sourceTree = "<group>"; };
+		36973AC823AB7342008804C5 /* Icon_Birthday.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Birthday.png; sourceTree = "<group>"; };
+		36973AC923AB7342008804C5 /* Icon_Address.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Address.png; sourceTree = "<group>"; };
+		36973ACA23AB7342008804C5 /* Icon_eMail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_eMail.png; sourceTree = "<group>"; };
+		36973ACB23AB7342008804C5 /* Icon_Phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Phone.png; sourceTree = "<group>"; };
+		36973ACC23AB7343008804C5 /* Icon_Name.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Name.png; sourceTree = "<group>"; };
+		36973ACD23AB7343008804C5 /* Icon_UserAccount.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_UserAccount.png; sourceTree = "<group>"; };
+		36973AD723ADA91A008804C5 /* Icon_QRCode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_QRCode.png; sourceTree = "<group>"; };
+		36973AD923AE5F19008804C5 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		36973ADB23AF2792008804C5 /* GenderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderViewController.swift; sourceTree = "<group>"; };
+		36B80C7223B2074F004359E4 /* ConfigFavoriteProductTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFavoriteProductTableViewController.swift; sourceTree = "<group>"; };
+		36B80C7423B4991B004359E4 /* Icon_Add_Member.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Add_Member.png; sourceTree = "<group>"; };
+		36B80C7723B4A4CA004359E4 /* Icon_Delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Delete.png; sourceTree = "<group>"; };
+		36B80C7923B4EAED004359E4 /* GroupEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupEditViewController.swift; sourceTree = "<group>"; };
+		36B80C7B23B4ED9E004359E4 /* GroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
+		36B80C7C23B4ED9E004359E4 /* GroupCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupCell.xib; sourceTree = "<group>"; };
+		36B80C8923B5E41E004359E4 /* GROUP_MEMBER+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "GROUP_MEMBER+CoreDataClass.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/GROUP_MEMBER+CoreDataClass.swift"; sourceTree = "<absolute>"; };
+		36B80C8A23B5E41E004359E4 /* GROUP_TABLE+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "GROUP_TABLE+CoreDataClass.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/GROUP_TABLE+CoreDataClass.swift"; sourceTree = "<absolute>"; };
+		36B80C8B23B5E41E004359E4 /* GROUP_TABLE+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "GROUP_TABLE+CoreDataProperties.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/GROUP_TABLE+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
+		36B80C8C23B5E41E004359E4 /* GROUP_MEMBER+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "GROUP_MEMBER+CoreDataProperties.swift"; path = "/Users/lofangchou/Projects/Fun2Order/Fun2Order/Entity/GROUP_MEMBER+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
+		36B80C9123B5E78B004359E4 /* Icon_Default_Group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Default_Group.png; sourceTree = "<group>"; };
+		36B80C9723B63C57004359E4 /* Image_Default_Group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image_Default_Group.png; sourceTree = "<group>"; };
+		36B80C9A23B876DF004359E4 /* ScanQRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRCodeViewController.swift; sourceTree = "<group>"; };
+		36B80C9C23B99453004359E4 /* Icon_Add_Group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Add_Group.png; sourceTree = "<group>"; };
+		36B80CA023B9B715004359E4 /* MyProfile.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MyProfile.plist; sourceTree = "<group>"; };
 		36C0B370236A784500B56C75 /* WebQueryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebQueryInterface.swift; sourceTree = "<group>"; };
 		36C0B373236A8E4100B56C75 /* UtilityFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityFunctions.swift; sourceTree = "<group>"; };
 		36C8C1AF235DEA13002AD40F /* OrderHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderHistoryCell.swift; sourceTree = "<group>"; };
@@ -493,6 +557,18 @@
 		36159C082354B8F300664D75 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				36973AC923AB7342008804C5 /* Icon_Address.png */,
+				36973AC823AB7342008804C5 /* Icon_Birthday.png */,
+				36973ACA23AB7342008804C5 /* Icon_eMail.png */,
+				36973ACC23AB7343008804C5 /* Icon_Name.png */,
+				3659705223B07F11008CDD57 /* Icon_Gender.png */,
+				36973ACB23AB7342008804C5 /* Icon_Phone.png */,
+				36973ACD23AB7343008804C5 /* Icon_UserAccount.png */,
+				3659705423B07FD4008CDD57 /* Icon_Password.png */,
+				36B80C9123B5E78B004359E4 /* Icon_Default_Group.png */,
+				36B80C9C23B99453004359E4 /* Icon_Add_Group.png */,
+				36B80C7423B4991B004359E4 /* Icon_Add_Member.png */,
+				36B80C7723B4A4CA004359E4 /* Icon_Delete.png */,
 				36C8C1B8235E8A2C002AD40F /* Image_QR_Code_original.png */,
 				36C8C1BB235E8AC6002AD40F /* Image_QR_Code.png */,
 				362C482B235C75810010C845 /* Icon_Cup.png */,
@@ -500,6 +576,7 @@
 				36159C0B2354B9F400664D75 /* Icon_Favorite_Button.png */,
 				36DC79FD2356BB1E009D48F5 /* Icon_Favorite2_Button.png */,
 				362C482D235C8CDC0010C845 /* Icon_Favorite3.png */,
+				36973AD723ADA91A008804C5 /* Icon_QRCode.png */,
 				362C482F235C8F360010C845 /* Icon_Cart_Red.png */,
 			);
 			path = icons;
@@ -539,6 +616,7 @@
 				3641C74C234CCEC40058CF26 /* LaunchScreen.storyboard */,
 				3641C74F234CCEC40058CF26 /* Info.plist */,
 				363D9D262371C2180038E136 /* AppConfig.plist */,
+				36B80CA023B9B715004359E4 /* MyProfile.plist */,
 				F505DDF123696BF900E3F681 /* GoogleService-Info.plist */,
 				3641C75B234DD2F40058CF26 /* Resources */,
 				3641C744234CCEC30058CF26 /* Main.storyboard */,
@@ -556,9 +634,15 @@
 				3688A0A6235F3A8B001990CE /* GroupOrderViewController.swift */,
 				3666F70723A2199800729E43 /* MyProfileViewController.swift */,
 				36973AC023A88C32008804C5 /* FunctionsPageViewController.swift */,
-				36973AB823A88889008804C5 /* BasicInformationViewController.swift */,
+				36973AC223AB54A0008804C5 /* BasicInformationTableViewController.swift */,
 				36973ABA23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift */,
+				36B80C7223B2074F004359E4 /* ConfigFavoriteProductTableViewController.swift */,
 				36973ABE23A88955008804C5 /* MemberGroupViewController.swift */,
+				36973AD923AE5F19008804C5 /* ChangePasswordViewController.swift */,
+				36973ADB23AF2792008804C5 /* GenderViewController.swift */,
+				3659704423B04D90008CDD57 /* BirthdayViewController.swift */,
+				36B80C7923B4EAED004359E4 /* GroupEditViewController.swift */,
+				36B80C9A23B876DF004359E4 /* ScanQRCodeViewController.swift */,
 			);
 			path = Fun2Order;
 			sourceTree = "<group>";
@@ -589,6 +673,7 @@
 			isa = PBXGroup;
 			children = (
 				3666F70B23A22A5800729E43 /* Image_Default_Member.png */,
+				36B80C9723B63C57004359E4 /* Image_Default_Group.png */,
 				3649CFB0235D430000C0F2EA /* Image_Friend1.png */,
 				3649CFB4235D430000C0F2EA /* Image_Friend2.png */,
 				3649CFB3235D430000C0F2EA /* Image_Friend3.png */,
@@ -643,6 +728,10 @@
 				3675ED312388D15F003A94B7 /* PRODUCT_INFORMATION+CoreDataClass copy.swift */,
 				3675ED322388D15F003A94B7 /* BRAND_PROFILE+CoreDataClass copy.swift */,
 				3675ED332388D15F003A94B7 /* CODE_TABLE+CoreDataClass copy.swift */,
+				36B80C8923B5E41E004359E4 /* GROUP_MEMBER+CoreDataClass.swift */,
+				36B80C8C23B5E41E004359E4 /* GROUP_MEMBER+CoreDataProperties.swift */,
+				36B80C8A23B5E41E004359E4 /* GROUP_TABLE+CoreDataClass.swift */,
+				36B80C8B23B5E41E004359E4 /* GROUP_TABLE+CoreDataProperties.swift */,
 				3641C747234CCEC30058CF26 /* Fun2Order.xcdatamodeld */,
 			);
 			path = Entity;
@@ -719,9 +808,16 @@
 				36E8D3CD235DA7CC00AB35CB /* PayCell.xib */,
 				36C8C1AF235DEA13002AD40F /* OrderHistoryCell.swift */,
 				36C8C1B0235DEA13002AD40F /* OrderHistoryCell.xib */,
-				3688A0A8235F460A001990CE /* GroupCell.swift */,
+				36B80C7B23B4ED9E004359E4 /* GroupCell.swift */,
+				36B80C7C23B4ED9E004359E4 /* GroupCell.xib */,
 				3688A0AB235FDB9C001990CE /* MemberCell.swift */,
 				3688A0AC235FDB9C001990CE /* MemberCell.xib */,
+				3659704E23B06A6C008CDD57 /* ConfigFavoriteStoreCell.swift */,
+				3659704F23B06A6C008CDD57 /* ConfigFavoriteStoreCell.xib */,
+				3659704A23B06A49008CDD57 /* ConfigFavoriteProductCell.swift */,
+				3659704B23B06A49008CDD57 /* ConfigFavoriteProductCell.xib */,
+				3659705623B0A0BA008CDD57 /* ConfigFavoriteAddressCell.swift */,
+				3659705723B0A0BA008CDD57 /* ConfigFavoriteAddressCell.xib */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -948,6 +1044,7 @@
 				364F1213235839AF00988937 /* ProductBriefCell.xib in Resources */,
 				36DC7A5D2356CB94009D48F5 /* 百香愛玉@3x.png in Resources */,
 				36DC7A3E2356CB94009D48F5 /* 珍珠鮮奶茶@3x.png in Resources */,
+				3659704D23B06A49008CDD57 /* ConfigFavoriteProductCell.xib in Resources */,
 				36D583862352FCE000AEB84F /* 8.png in Resources */,
 				36D583D72354151500AEB84F /* Teas原味@2x.jpg in Resources */,
 				36DC7A372356CB94009D48F5 /* 珍珠鮮奶茶.png in Resources */,
@@ -955,6 +1052,7 @@
 				362C482E235C8CDC0010C845 /* Icon_Favorite3.png in Resources */,
 				36D583D62354151500AEB84F /* Teas原味.jpg in Resources */,
 				36DC7A5F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png in Resources */,
+				3659705323B07F11008CDD57 /* Icon_Gender.png in Resources */,
 				36DC7A492356CB94009D48F5 /* 奶茶@2x.png in Resources */,
 				36DC7A4E2356CB94009D48F5 /* 百香愛玉@2x.png in Resources */,
 				36D583E22354151500AEB84F /* Teas原味@3x.jpg in Resources */,
@@ -981,11 +1079,13 @@
 				36DC7A5E2356CB94009D48F5 /* 仙草凍奶茶@3x.png in Resources */,
 				36DC7A4A2356CB94009D48F5 /* 珍珠觀音拿鐵.png in Resources */,
 				3641C74E234CCEC40058CF26 /* LaunchScreen.storyboard in Resources */,
+				36973AD423AB7343008804C5 /* Icon_Name.png in Resources */,
 				3649CFB6235D430000C0F2EA /* Image_Friend1.png in Resources */,
 				36D583DA2354151500AEB84F /* 紅太陽.png in Resources */,
 				36DC7A422356CB94009D48F5 /* 紅茶.png in Resources */,
 				3666F70C23A22A5800729E43 /* Image_Default_Member.png in Resources */,
 				36DC7A592356CB94009D48F5 /* 觀音拿鐵@2x.png in Resources */,
+				36973AD323AB7343008804C5 /* Icon_Phone.png in Resources */,
 				3641C74B234CCEC40058CF26 /* Assets.xcassets in Resources */,
 				362C4830235C8F360010C845 /* Icon_Cart_Red.png in Resources */,
 				36DC7A562356CB94009D48F5 /* 新鮮水果茶.png in Resources */,
@@ -1000,9 +1100,11 @@
 				3649CFB9235D430000C0F2EA /* Image_Friend3.png in Resources */,
 				36D5838B2353011000AEB84F /* SelectStoreCell.xib in Resources */,
 				36C8C1B5235DEC59002AD40F /* Image_Group.png in Resources */,
+				36B80C9223B5E78B004359E4 /* Icon_Default_Group.png in Resources */,
 				36DC7A432356CB94009D48F5 /* 珍珠奶茶@3x.png in Resources */,
 				36D583A723535DE300AEB84F /* Fun2Order_AppStore_Icon.png in Resources */,
 				36D5839B2353455200AEB84F /* 6.png in Resources */,
+				36B80CA123B9B715004359E4 /* MyProfile.plist in Resources */,
 				36DC7A5B2356CB94009D48F5 /* 鮮奶冬瓜.png in Resources */,
 				36DC7A3B2356CB94009D48F5 /* 青茶@2x.png in Resources */,
 				363D9D272371C2180038E136 /* AppConfig.plist in Resources */,
@@ -1012,6 +1114,7 @@
 				3649CFB7235D430000C0F2EA /* Image_Friend5.png in Resources */,
 				36D583982353455200AEB84F /* 1.png in Resources */,
 				36DC7A542356CB94009D48F5 /* 新鮮水果茶@2x.png in Resources */,
+				36B80C7523B4991B004359E4 /* Icon_Add_Member.png in Resources */,
 				3641C746234CCEC30058CF26 /* Main.storyboard in Resources */,
 				3649CFC6235D5E6E00C0F2EA /* Pay_LinePay.png in Resources */,
 				36D583D92354151500AEB84F /* 公館手作.jpg in Resources */,
@@ -1020,26 +1123,32 @@
 				36DC7A332356CB94009D48F5 /* 金桔檸檬.png in Resources */,
 				36DC7A402356CB94009D48F5 /* 觀音拿鐵.png in Resources */,
 				36159C062354386900664D75 /* BrandCollectionViewCell.xib in Resources */,
+				36973AD523AB7343008804C5 /* Icon_UserAccount.png in Resources */,
 				F505DDF223696BF900E3F681 /* GoogleService-Info.plist in Resources */,
 				36D583EC2354151500AEB84F /* 上宇林@3x.jpg in Resources */,
 				36159C0C2354B9F400664D75 /* Icon_Favorite_Button.png in Resources */,
 				36D5839D2353466800AEB84F /* 2.png in Resources */,
 				3649CFB5235D430000C0F2EA /* Image_Friend4.png in Resources */,
+				3659705123B06A6C008CDD57 /* ConfigFavoriteStoreCell.xib in Resources */,
 				362C482C235C75810010C845 /* Icon_Cup.png in Resources */,
 				36DC7A5C2356CB94009D48F5 /* 奶茶.png in Resources */,
 				36DC7A472356CB94009D48F5 /* 珍珠奶茶.png in Resources */,
 				36DC79FC2356B783009D48F5 /* ProductDetailCell.xib in Resources */,
+				36B80C9823B63C57004359E4 /* Image_Default_Group.png in Resources */,
 				36D583952353455200AEB84F /* 5.png in Resources */,
+				3659705923B0A0BA008CDD57 /* ConfigFavoriteAddressCell.xib in Resources */,
 				36DC7A3C2356CB94009D48F5 /* 金桔檸檬@3x.png in Resources */,
 				362C4822235B56550010C845 /* RecipeCell.xib in Resources */,
 				36DC7A3D2356CB94009D48F5 /* 檸檬愛玉.png in Resources */,
 				36D583E62354151500AEB84F /* 五十嵐.png in Resources */,
 				36DC7A582356CB94009D48F5 /* 鮮奶冬瓜@2x.png in Resources */,
+				36973AD123AB7343008804C5 /* Icon_Address.png in Resources */,
 				36D583E12354151500AEB84F /* 丸作@3x.jpg in Resources */,
 				36D583D12354151500AEB84F /* 柚豆@2x.jpg in Resources */,
 				3649CFB8235D430000C0F2EA /* Image_Me.png in Resources */,
 				36DC7A4C2356CB94009D48F5 /* 奶茶@3x.png in Resources */,
 				36C8C1BA235E8A2C002AD40F /* Image_QR_Code_original.png in Resources */,
+				3659705523B07FD4008CDD57 /* Icon_Password.png in Resources */,
 				361C0BA023993B9E0086BB65 /* CartOrderCell.xib in Resources */,
 				36DC7A352356CB94009D48F5 /* 纖活綠茶.png in Resources */,
 				3649CFBA235D430000C0F2EA /* Image_Friend2.png in Resources */,
@@ -1047,10 +1156,15 @@
 				36DC7A382356CB94009D48F5 /* 珍珠奶茶@2x.png in Resources */,
 				36D583A52353599D00AEB84F /* FavoriteStoreCell.xib in Resources */,
 				36DC7A572356CB94009D48F5 /* 蜂蜜檸檬.png in Resources */,
+				36973AD223AB7343008804C5 /* Icon_eMail.png in Resources */,
 				36DC7A412356CB94009D48F5 /* 百香愛玉.png in Resources */,
 				36D583E42354151500AEB84F /* 茶湯會.jpg in Resources */,
+				36B80C7823B4A4CA004359E4 /* Icon_Delete.png in Resources */,
+				36973AD023AB7343008804C5 /* Icon_Birthday.png in Resources */,
 				36DC7A362356CB94009D48F5 /* 觀音拿鐵@3x.png in Resources */,
+				36B80C9D23B99453004359E4 /* Icon_Add_Group.png in Resources */,
 				36DC7A462356CB94009D48F5 /* 金桔檸檬@2x.png in Resources */,
+				36973AD823ADA91A008804C5 /* Icon_QRCode.png in Resources */,
 				362C481E235B48950010C845 /* Add_Icon.png in Resources */,
 				36DC7A522356CB94009D48F5 /* 仙草凍奶茶@2x.png in Resources */,
 				36D583D22354151500AEB84F /* 丸作@2x.jpg in Resources */,
@@ -1059,6 +1173,7 @@
 				36D583E02354151500AEB84F /* 茶湯會@2x.jpg in Resources */,
 				36DC7A322356CB94009D48F5 /* 鮮奶冬瓜@3x.png in Resources */,
 				36DC7A532356CB94009D48F5 /* 纖活綠茶@2x.png in Resources */,
+				36B80C7E23B4ED9E004359E4 /* GroupCell.xib in Resources */,
 				36DC7A502356CB94009D48F5 /* 仙草凍奶茶.png in Resources */,
 				361C0BA4239AA50C0086BB65 /* CartOrderItemCell.xib in Resources */,
 			);
@@ -1132,10 +1247,10 @@
 			files = (
 				3666F70823A2199800729E43 /* MyProfileViewController.swift in Sources */,
 				3641C749234CCEC30058CF26 /* Fun2Order.xcdatamodeld in Sources */,
-				36973AB923A88889008804C5 /* BasicInformationViewController.swift in Sources */,
 				366E126B23502B9100BFFF45 /* FSPageViewLayout.swift in Sources */,
 				36159C162355E5ED00664D75 /* GlobalConstants.swift in Sources */,
 				3600BC8623926D2D00BC6D84 /* FAVORITE_PRODUCT+CoreDataProperties.swift in Sources */,
+				3659704523B04D90008CDD57 /* BirthdayViewController.swift in Sources */,
 				366E126A23502B9100BFFF45 /* FSPagerView.swift in Sources */,
 				3675ED3A2388D15F003A94B7 /* PRODUCT_INFORMATION+CoreDataProperties copy.swift in Sources */,
 				361C0BA3239AA50C0086BB65 /* CartOrderItemCell.swift in Sources */,
@@ -1155,25 +1270,31 @@
 				3675ED1B23837834003A94B7 /* CoreDataFunctions.swift in Sources */,
 				364F120F2358379100988937 /* Checkbox.swift in Sources */,
 				3675ED402388D15F003A94B7 /* BRAND_PROFILE+CoreDataProperties copy.swift in Sources */,
+				36B80C9023B5E41E004359E4 /* GROUP_MEMBER+CoreDataClass.swift in Sources */,
 				36973ABB23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift in Sources */,
+				36B80C8F23B5E41E004359E4 /* GROUP_TABLE+CoreDataClass.swift in Sources */,
 				36159C1823569D7300664D75 /* ProductDetailTableViewController.swift in Sources */,
 				3600BCA52396486500BC6D84 /* ORDER_CONTENT_ITEM+CoreDataProperties.swift in Sources */,
 				36DC79FB2356B783009D48F5 /* ProductDetailCell.swift in Sources */,
 				364F1212235839AF00988937 /* ProductBriefCell.swift in Sources */,
 				3675ED352388D15F003A94B7 /* PRODUCT_RECIPE_PRICE+CoreDataClass copy.swift in Sources */,
+				36B80C7323B2074F004359E4 /* ConfigFavoriteProductTableViewController.swift in Sources */,
 				3675ED432388D15F003A94B7 /* CODE_TABLE+CoreDataClass copy.swift in Sources */,
 				362259A023926B7100B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataClass.swift in Sources */,
 				362C4833235C8F560010C845 /* BasicButtonCell.swift in Sources */,
+				36973ADA23AE5F19008804C5 /* ChangePasswordViewController.swift in Sources */,
 				362C4821235B56550010C845 /* RecipeCell.swift in Sources */,
 				F505DDEC23692AE300E3F681 /* HomeTabBar.swift in Sources */,
 				3600BC8523926D2D00BC6D84 /* FAVORITE_PRODUCT+CoreDataClass.swift in Sources */,
 				36159C142355B3D500664D75 /* CommonStruct.swift in Sources */,
+				36B80C7D23B4ED9E004359E4 /* GroupCell.swift in Sources */,
 				36D5838D23533D1D00AEB84F /* FavoriteTableViewController.swift in Sources */,
 				36D583842352DB7F00AEB84F /* BannerDetailViewController.swift in Sources */,
+				36B80C8E23B5E41E004359E4 /* GROUP_MEMBER+CoreDataProperties.swift in Sources */,
 				F505DDE923692AC900E3F681 /* OTPVerificationController.swift in Sources */,
 				366E126523502B9100BFFF45 /* FSPageControl.swift in Sources */,
 				36973ABF23A88955008804C5 /* MemberGroupViewController.swift in Sources */,
-				3688A0A9235F460A001990CE /* GroupCell.swift in Sources */,
+				36B80C8D23B5E41E004359E4 /* GROUP_TABLE+CoreDataProperties.swift in Sources */,
 				3688A0A7235F3A8B001990CE /* GroupOrderViewController.swift in Sources */,
 				3675ED392388D15F003A94B7 /* PRODUCT_RECIPE+CoreDataProperties copy.swift in Sources */,
 				366E126C23502B9100BFFF45 /* FSPageViewTransformer.swift in Sources */,
@@ -1182,12 +1303,14 @@
 				F505DDE623692AC900E3F681 /* SignUpMailController.swift in Sources */,
 				36C0B374236A8E4100B56C75 /* UtilityFunctions.swift in Sources */,
 				362C4824235B596A0010C845 /* RecipeTableViewController.swift in Sources */,
+				3659704C23B06A49008CDD57 /* ConfigFavoriteProductCell.swift in Sources */,
 				3675ED48238ABE93003A94B7 /* FAVORITE_STORE+CoreDataProperties.swift in Sources */,
 				366E126823502B9100BFFF45 /* FSPagerViewLayoutAttributes.swift in Sources */,
 				362C4829235C71040010C845 /* QuantityCell.swift in Sources */,
 				3600BCA42396486500BC6D84 /* ORDER_CONTENT_ITEM+CoreDataClass.swift in Sources */,
 				3649CFAC235D3FEF00C0F2EA /* CartListCell.swift in Sources */,
 				F505DDE823692AC900E3F681 /* ForgotPasswordController.swift in Sources */,
+				3659705823B0A0BA008CDD57 /* ConfigFavoriteAddressCell.swift in Sources */,
 				36E8D3CE235DA7CC00AB35CB /* PayCell.swift in Sources */,
 				366E126723502B9100BFFF45 /* FSPagerViewCell.swift in Sources */,
 				F505DDE723692AC900E3F681 /* VerifyPhNoController.swift in Sources */,
@@ -1195,6 +1318,7 @@
 				3675ED3B2388D15F003A94B7 /* STORE_INFORMATION+CoreDataClass copy.swift in Sources */,
 				3666F6FD239F840000729E43 /* FAVORITE_ADDRESS+CoreDataProperties.swift in Sources */,
 				3675ED382388D15F003A94B7 /* CODE_TABLE+CoreDataProperties copy.swift in Sources */,
+				3659705023B06A6C008CDD57 /* ConfigFavoriteStoreCell.swift in Sources */,
 				3666F70623A1DB6000729E43 /* ORDER_INFORMATION+CoreDataClass.swift in Sources */,
 				362259A223926B7100B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataProperties.swift in Sources */,
 				362B9102234F27110079A108 /* HomeViewController.swift in Sources */,
@@ -1202,19 +1326,23 @@
 				3675ED3E2388D15F003A94B7 /* STORE_BUSINESS_HOURS+CoreDataClass copy.swift in Sources */,
 				3666F70523A1DB6000729E43 /* ORDER_INFORMATION+CoreDataProperties.swift in Sources */,
 				366E126923502B9100BFFF45 /* FSPagerCollectionView.swift in Sources */,
+				36973AC323AB54A0008804C5 /* BasicInformationTableViewController.swift in Sources */,
 				361C0B9F23993B9E0086BB65 /* CartOrderCell.swift in Sources */,
 				F505DDEE23692AEF00E3F681 /* EntryViewController.swift in Sources */,
 				36225999238EAD9A00B637D0 /* ShadowGradientView.swift in Sources */,
 				361C0B9B2398AA2C0086BB65 /* CommentsCell.swift in Sources */,
 				366E126623502B9100BFFF45 /* FSPagerViewObjcCompat.m in Sources */,
+				36B80C7A23B4EAED004359E4 /* GroupEditViewController.swift in Sources */,
 				F505DDEA23692AC900E3F681 /* VerifyMailController.swift in Sources */,
 				36D5838A2353011000AEB84F /* SelectStoreCell.swift in Sources */,
 				3600BC8D2394012800BC6D84 /* ORDER_PRODUCT_RECIPE+CoreDataClass.swift in Sources */,
+				36B80C9B23B876DF004359E4 /* ScanQRCodeViewController.swift in Sources */,
 				3600BC8F2394012800BC6D84 /* ORDER_PRODUCT_RECIPE+CoreDataProperties.swift in Sources */,
 				3675ED412388D15F003A94B7 /* PRODUCT_INFORMATION+CoreDataClass copy.swift in Sources */,
 				36973AC123A88C32008804C5 /* FunctionsPageViewController.swift in Sources */,
 				3622599B238F45F200B637D0 /* DashboardGlobalConstants.swift in Sources */,
 				3675ED3C2388D15F003A94B7 /* STORE_INFORMATION+CoreDataProperties copy.swift in Sources */,
+				36973ADC23AF2792008804C5 /* GenderViewController.swift in Sources */,
 				36D583A42353599D00AEB84F /* FavoriteStoreCell.swift in Sources */,
 				3675ED3D2388D15F003A94B7 /* PRODUCT_RECIPE+CoreDataClass copy.swift in Sources */,
 			);

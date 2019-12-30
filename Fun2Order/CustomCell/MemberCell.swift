@@ -11,13 +11,12 @@ import UIKit
 class MemberCell: UITableViewCell {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var memberImage: UIImageView!
-    @IBOutlet weak var checkBodAttend: Checkbox!
     @IBOutlet weak var memberLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.backView.layer.borderWidth = CGFloat(1.5)
-        self.backView.layer.borderColor = UIColor.darkGray.cgColor
+        self.backView.layer.borderWidth = CGFloat(1.0)
+        self.backView.layer.borderColor = UIColor.systemBlue.cgColor
         self.backView.layer.cornerRadius = 6
     }
 

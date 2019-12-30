@@ -137,12 +137,21 @@ class FavoriteTableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.section == 0 {
+            return false
+        }
+        
+        return true
+    }
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
             if editingStyle == .delete {
-                deleteFavoriteStore(brand_id: self.favoriteStoreArray[indexPath.row].brandID, store_id: self.favoriteStoreArray[indexPath.row].storeID)
-                self.favoriteStoreArray.remove(at: indexPath.row )
-                tableView.deleteRows(at: [indexPath], with: .fade)
+                if deleteFavoriteStore(brand_id: self.favoriteStoreArray[indexPath.row].brandID, store_id: self.favoriteStoreArray[indexPath.row].storeID) {
+                    self.favoriteStoreArray.remove(at: indexPath.row )
+                    tableView.deleteRows(at: [indexPath], with: .fade)
+                }
             }
         } else {
             return

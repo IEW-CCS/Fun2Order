@@ -148,6 +148,7 @@ func deleteAllCodeTable() {
     app.saveContext()
 }
 
+
 func deleteAllStoreInformation() {
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
@@ -254,7 +255,7 @@ func insertFavoriteStore(info: FavoriteStoreInfo) {
     app.saveContext()
 }
 
-func deleteFavoriteStore(brand_id: Int, store_id: Int) {
+func deleteFavoriteStore(brand_id: Int, store_id: Int) -> Bool {
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
     
@@ -269,6 +270,253 @@ func deleteFavoriteStore(brand_id: Int, store_id: Int) {
     do {
         let store_data = try vc.fetch(fetchRequest).first
         vc.delete(store_data!)
+    } catch {
+        print(error.localizedDescription)
+        return false
+    }
+
+    app.saveContext()
+    return true
+}
+
+func retrieveFavoriteProductID(brand_id: Int, store_id: Int) -> [FavoriteProduct] {
+    var returnList = [FavoriteProduct]()
+    
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchRequest: NSFetchRequest<FAVORITE_PRODUCT> = FAVORITE_PRODUCT.fetchRequest()
+    let predicateString = "brandID == \(brand_id) AND storeID == \(store_id)"
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let product_list = try vc.fetch(fetchRequest)
+        for product_data in product_list {
+            var tmp = FavoriteProduct()
+            tmp.brandID = Int(product_data.brandID)
+            tmp.storeID = Int(product_data.storeID)
+            tmp.productID = Int(product_data.productID)
+
+            returnList.append(tmp)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+
+    return returnList
+}
+
+func retrieveFavoriteProductRecipe(brand_id: Int, store_id: Int, product_id: Int) -> [FAVORITE_PRODUCT_RECIPE]? {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<FAVORITE_PRODUCT_RECIPE> = FAVORITE_PRODUCT_RECIPE.fetchRequest()
+    let predicateString = "brandID == \(brand_id) AND storeID == \(store_id) AND productID = \(product_id)"
+    print("retrieveFavoriteProductRecipe predicateString = \(predicateString)")
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let productRecipe_list = try vc.fetch(fetchRequest)
+        return productRecipe_list
+    } catch {
+        print(error.localizedDescription)
+        return nil
+    }
+}
+
+func retrieveFavoriteProductDetail(brand_id: Int, store_id: Int, product_id: Int) -> FavoriteProductDetail {
+    var favoriteProductDetail: FavoriteProductDetail = FavoriteProductDetail()
+    
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<PRODUCT_INFORMATION> = PRODUCT_INFORMATION.fetchRequest()
+    let predicateString = "brandID == \(brand_id) AND productID == \(product_id)"
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let product_data = try vc.fetch(fetchRequest).first
+        if product_data != nil {
+            favoriteProductDetail.brandID = brand_id
+            favoriteProductDetail.productID = product_id
+            favoriteProductDetail.productName = product_data!.productName!
+            favoriteProductDetail.productImage = UIImage(data: product_data!.productImage!)!
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    let fetchRecipeRequest: NSFetchRequest<FAVORITE_PRODUCT_RECIPE> = FAVORITE_PRODUCT_RECIPE.fetchRequest()
+    let predicateRecipeString = "brandID == \(brand_id) AND storeID == \(store_id) AND productID = \(product_id)"
+    print("retrieveFavoriteProductRecipe predicateString = \(predicateRecipeString)")
+    let predicateRecipe = NSPredicate(format: predicateRecipeString)
+    fetchRecipeRequest.predicate = predicateRecipe
+
+    do {
+        let recipe_list = try vc.fetch(fetchRecipeRequest)
+        var recipeString: String = ""
+        for recipe_data in recipe_list {
+            recipeString = recipeString + recipe_data.recipeSubCode! + " "
+        }
+        
+        favoriteProductDetail.productRecipeString = recipeString
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    return favoriteProductDetail
+}
+
+func deleteSingleFavoriteProduct(brand_id: Int, store_id: Int, product_id: Int) -> Bool {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<FAVORITE_PRODUCT> = FAVORITE_PRODUCT.fetchRequest()
+    let predicateString = "brandID == \(brand_id) AND storeID == \(store_id) AND productID = \(product_id)"
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+    
+    do {
+        let product_data = try vc.fetch(fetchRequest).first
+        if product_data != nil {
+            vc.delete(product_data!)
+        }
+    } catch {
+        print(error.localizedDescription)
+        return false
+    }
+
+    let recipeRequest: NSFetchRequest<FAVORITE_PRODUCT_RECIPE> = FAVORITE_PRODUCT_RECIPE.fetchRequest()
+    let recipeString = "brandID == \(brand_id) AND storeID == \(store_id) AND productID = \(product_id)"
+    
+    let recipePredicate = NSPredicate(format: recipeString)
+    recipeRequest.predicate = recipePredicate
+    
+    do {
+        let recipe_list = try vc.fetch(recipeRequest)
+        for recipe_data in recipe_list {
+            vc.delete(recipe_data)
+        }
+    } catch {
+        print(error.localizedDescription)
+        return false
+    }
+    
+    app.saveContext()
+    
+    return true
+}
+
+func deleteStoreFavoriteProduct(brand_id: Int, store_id: Int) -> Bool {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<FAVORITE_PRODUCT> = FAVORITE_PRODUCT.fetchRequest()
+    let predicateString = "brandID == \(brand_id) AND storeID == \(store_id)"
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+    
+    do {
+        let product_list = try vc.fetch(fetchRequest)
+        for product_data in product_list {
+            let recipeRequest: NSFetchRequest<FAVORITE_PRODUCT_RECIPE> = FAVORITE_PRODUCT_RECIPE.fetchRequest()
+            let recipeString = "brandID == \(brand_id) AND storeID == \(store_id) AND productID = \(product_data.productID)"
+            
+            let recipePredicate = NSPredicate(format: recipeString)
+            recipeRequest.predicate = recipePredicate
+            
+            do {
+                let recipe_list = try vc.fetch(recipeRequest)
+                for recipe_data in recipe_list {
+                    vc.delete(recipe_data)
+                }
+            } catch {
+                print(error.localizedDescription)
+                return false
+            }
+            vc.delete(product_data)
+        }
+    } catch {
+        print(error.localizedDescription)
+        return false
+    }
+    
+    app.saveContext()
+    
+    return true
+}
+
+func retrieveFavoriteAddress() -> [FavoriteAddress] {
+    var returnList = [FavoriteAddress]()
+
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchAddress: NSFetchRequest<FAVORITE_ADDRESS> = FAVORITE_ADDRESS.fetchRequest()
+
+    do {
+        let address_list = try vc.fetch(fetchAddress)
+        for address_data in address_list {
+            var tmpAddress = FavoriteAddress()
+            tmpAddress.createTime = address_data.createTime!
+            tmpAddress.favoriteAddress = address_data.favoriteAddress!
+            returnList.append(tmpAddress)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    return returnList
+}
+
+func insertFavoriteAddress(favorite_address: String) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let addressData = NSEntityDescription.insertNewObject(forEntityName: "FAVORITE_ADDRESS", into: vc) as! FAVORITE_ADDRESS
+    addressData.createTime = Date()
+    addressData.favoriteAddress = favorite_address
+    app.saveContext()
+}
+
+func deleteFavoriteAddress(favorite_address: String) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchRequest: NSFetchRequest<FAVORITE_ADDRESS> = FAVORITE_ADDRESS.fetchRequest()
+    let predicateString = "favoriteAddress == \"\(favorite_address)\""
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+    
+    do {
+        let address_data = try vc.fetch(fetchRequest).first
+        if address_data != nil {
+            vc.delete(address_data!)
+        }
     } catch {
         print(error.localizedDescription)
     }
@@ -332,4 +580,57 @@ func updateOrderData(brand_id: Int, store_id: Int) {
         order_data?.setValue(Int16(totalQuantity), forKey: "orderTotalQuantity")
         app.saveContext()
     }
+}
+
+func retrieveGroupList() -> [Group] {
+    var returnList = [Group]()
+
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchGroup: NSFetchRequest<GROUP_TABLE> = GROUP_TABLE.fetchRequest()
+
+    do {
+        let group_list = try vc.fetch(fetchGroup)
+        for group_data in group_list {
+            var tmpGroup = Group()
+            tmpGroup.groupID = Int(group_data.groupID)
+            tmpGroup.groupName = group_data.groupName!
+            tmpGroup.groupImage = UIImage(data: group_data.groupImage!)!
+            tmpGroup.groupDescription = group_data.groupDescription!
+            tmpGroup.groupCreateTime = group_data.groupCreateTime!
+
+            returnList.append(tmpGroup)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    return returnList
+}
+
+func deleteGroup(group_id: Int) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchRequest: NSFetchRequest<GROUP_TABLE> = GROUP_TABLE.fetchRequest()
+    let predicateString = "groupID == \"\(group_id)\""
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+    
+    do {
+        let group_data = try vc.fetch(fetchRequest).first
+        if group_data != nil {
+            vc.delete(group_data!)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+
+    app.saveContext()
 }

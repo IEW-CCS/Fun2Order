@@ -12,6 +12,7 @@ import UIKit
 let DATETIME_FORMATTER: String = "yyyyMMddHHmmssSSS"
 let DATETIME_FORMATTER2: String = "yyyyMMddHHmmss"
 let TAIWAN_DATETIME_FORMATTER: String = "yyyy年MM月dd日 HH:mm:ss"
+let DATE_FORMATTER: String = "yyyy年MM月dd日"
 
 let HTTP_REQUEST_TIMEOUT: Double = 5.0
 

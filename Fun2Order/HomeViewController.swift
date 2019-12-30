@@ -302,6 +302,8 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
         }
         self.app.saveContext()
         updateLastQueryTime()
+        
+        Thread.sleep(forTimeInterval: 1)
     }
 
     func requestProductInformation() {
@@ -387,6 +389,7 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
             }
         }
         updateLastQueryTime()
+        Thread.sleep(forTimeInterval: 1)
     }
     
     func requestProductRecipe() {
@@ -462,6 +465,7 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
 
         self.app.saveContext()
         updateLastQueryTime()
+        Thread.sleep(forTimeInterval: 1)
     }
     
     func requestStoreInformation() {
@@ -533,6 +537,7 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
 
         self.app.saveContext()
         updateLastQueryTime()
+        Thread.sleep(forTimeInterval: 1)
     }
     
     func requestBrandProfile() {

@@ -23,6 +23,20 @@ class FunctionsPageViewController: UIPageViewController, UIPageViewControllerDat
         if let firstViewController = self.functionViewControllers.first {
             setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
         }
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.receiveIndexChange(_:)),
+            name: NSNotification.Name(rawValue: "IndexChange"),
+            object: nil
+        )
+    }
+    
+    @objc func receiveIndexChange(_ notification: Notification) {
+        if let pageIndex = notification.object as? Int {
+            print("FunctionsPageViewController received IndexChange notification for index[\(pageIndex)]")
+            self.setViewControllers([self.functionViewControllers[pageIndex]], direction: .forward, animated: true, completion: nil)
+        }
     }
     
     private func getViewController(identifier: String) -> UIViewController {
@@ -61,7 +75,6 @@ class FunctionsPageViewController: UIPageViewController, UIPageViewControllerDat
         if let firstViewController = viewControllers?.first,
             let index = functionViewControllers.firstIndex(of: firstViewController) {
                 NotificationCenter.default.post(name: NSNotification.Name("PageChange"), object: index)
-                //pageDelegate?.pageViewController(pageViewController: self, didUpdatePageIndex: index)
             }
     }
     

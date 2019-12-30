@@ -66,7 +66,7 @@ extension GroupOrderViewController: UICollectionViewDelegate, UICollectionViewDa
         cell.layer.borderWidth = 1.5
         cell.layer.cornerRadius = 6
 
-        cell.setData(group: self.groupTitles[indexPath.row])
+        //cell.setData(group: self.groupTitles[indexPath.row])
         return cell
     }
 

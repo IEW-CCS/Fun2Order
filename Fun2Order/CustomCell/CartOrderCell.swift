@@ -65,7 +65,7 @@ class CartOrderCell: UITableViewCell {
 
         vc = app.persistentContainer.viewContext
         
-        retrieveFavoriteAddress()
+        self.favoriteAddr = retrieveFavoriteAddress()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -122,6 +122,7 @@ class CartOrderCell: UITableViewCell {
         }
     }
 
+    /*
     func retrieveFavoriteAddress() {
         self.favoriteAddr.removeAll()
         
@@ -138,7 +139,7 @@ class CartOrderCell: UITableViewCell {
         } catch {
             print(error.localizedDescription)
         }
-    }
+    }*/
     
     @IBAction func takeOut(_ sender: UIButton) {
         self.labelDeliveryWay.text = "自取"
@@ -160,7 +161,8 @@ class CartOrderCell: UITableViewCell {
         self.orderInformation.deliveryType = DELIVERY_TYPE_DELIVERY
 
         updateButtonState(takeout_flag: false)
-        retrieveFavoriteAddress()
+        self.favoriteAddr.removeAll()
+        self.favoriteAddr = retrieveFavoriteAddress()
         
         if !self.favoriteAddr.isEmpty {
             let controller = UIAlertController(title: "請選擇外送地址", message: nil, preferredStyle: .alert)
@@ -189,7 +191,7 @@ class CartOrderCell: UITableViewCell {
                 print("Add to favorite address!")
                 let address_string = controller.textFields?[0].text
                 print("New added favorite address = \(address_string!)")
-                self.insertFavoriteAddress(favorite_address: address_string!)
+                insertFavoriteAddress(favorite_address: address_string!)
                 self.labelAddress.text = address_string!
                 self.orderInformation.deliveryAddress = address_string!
                 self.updateOrderAddress()
@@ -210,7 +212,7 @@ class CartOrderCell: UITableViewCell {
             print("Add to favorite address!")
             let address_string = textController.textFields?[0].text
             print("New added favorite address = \(address_string!)")
-            self.insertFavoriteAddress(favorite_address: address_string!)
+            insertFavoriteAddress(favorite_address: address_string!)
             self.labelAddress.text = address_string!
             self.orderInformation.deliveryAddress = address_string!
             self.updateOrderAddress()
@@ -231,13 +233,6 @@ class CartOrderCell: UITableViewCell {
             self.buttonDelivery.backgroundColor = CUSTOM_COLOR_EMERALD_GREEN
             self.buttonDelivery.isSelected = true
         }
-    }
-    
-    func insertFavoriteAddress(favorite_address: String) {
-        let addressData = NSEntityDescription.insertNewObject(forEntityName: "FAVORITE_ADDRESS", into: vc) as! FAVORITE_ADDRESS
-        addressData.createTime = Date()
-        addressData.favoriteAddress = favorite_address
-        app.saveContext()
     }
     
     func updateOrderAddress() {

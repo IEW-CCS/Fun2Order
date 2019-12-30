@@ -42,7 +42,7 @@ class EntryViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: false)
         if(Auth.auth().currentUser?.uid != nil)
         {
-           // print(Auth.auth().currentUser?.phoneNumber)
+            //print(Auth.auth().currentUser?.phoneNumber)
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             let nextViewController = storyBoard.instantiateViewController(withIdentifier: "HomeTabBar") as! UITabBarController
             navigationController?.pushViewController(nextViewController, animated: true)

@@ -7,7 +7,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "673C5B6C-7026-44FE-8580-F6506CA598F0"
+            uuid = "38E1B550-D431-4621-BE7F-965529017158"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -17,22 +17,6 @@
             startingLineNumber = "266"
             endingLineNumber = "266"
             landmarkName = "receivePriceUpdate(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3A3E7F03-2251-4223-8F94-E69A7157248C"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Fun2Order/CustomCell/RecipeCell.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
-            landmarkName = "itemClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

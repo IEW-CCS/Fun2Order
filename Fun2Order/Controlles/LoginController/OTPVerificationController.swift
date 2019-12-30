@@ -33,12 +33,11 @@ class OTPVerificationController: UIViewController,ABOtpViewDelegate {
                 
             }
             else
-                
             {
+                
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 let nextViewController = storyBoard.instantiateViewController(withIdentifier: "HomeTabBar") as! UITabBarController
                 self.navigationController?.pushViewController(nextViewController, animated: true)
-                
                 
             }
         }            

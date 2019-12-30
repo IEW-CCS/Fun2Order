@@ -183,3 +183,26 @@ struct OrderInformation {
     var storeName: String = ""
     var contentList: [OrderContentItem] = [OrderContentItem]()
 }
+
+struct FavoriteProductDetail {
+    var brandID: Int = 0
+    var productID: Int = 0
+    var productName: String = ""
+    var productImage: UIImage = UIImage()
+    var productRecipeString: String = ""
+}
+
+struct Group {
+    var groupID: Int = 0
+    var groupName: String = ""
+    var groupDescription: String = ""
+    var groupImage: UIImage = UIImage()
+    var groupCreateTime: Date = Date()
+}
+
+struct GroupMember {
+    var groupID: Int = 0
+    var memberID: String = ""
+    var memberName: String = ""
+    var memberImage: UIImage = UIImage()
+}

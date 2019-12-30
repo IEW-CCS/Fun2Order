@@ -7,23 +7,41 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class MyProfileViewController: UIViewController {
     @IBOutlet weak var imageMyPhoto: UIImageView!
-    @IBOutlet weak var segmentControl: UISegmentedControl!
+    @IBOutlet weak var labelUserName: UILabel!
+    @IBOutlet weak var labelUserID: UILabel!
+    @IBOutlet weak var segmentControl: UISegmentedControl!    
+    
     var segmentIndicator = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSegment()
+        //setupSegmentIndicator()
         self.imageMyPhoto.layer.cornerRadius = 40
         
+        //saveUserImage(user_image: self.imageMyPhoto.image!)
+        loadUserID()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleImageTap(_:)))
+        self.imageMyPhoto.addGestureRecognizer(tapGesture)
+        self.imageMyPhoto.isUserInteractionEnabled = true
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.receivePageChange(_:)),
             name: NSNotification.Name(rawValue: "PageChange"),
             object: nil
         )
+
+        print("Auth.uid = \(Auth.auth().currentUser?.uid)")
+        print("Auth.phoneNumber = \(Auth.auth().currentUser?.phoneNumber)")
+        print("Auth.email = \(Auth.auth().currentUser?.email)")
+        print("Auth.displayName = \(Auth.auth().currentUser?.displayName)")
+        print("Auth.description = \(Auth.auth().currentUser?.description)")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -35,6 +53,48 @@ class MyProfileViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         print("**************  viewDidLayoutSubviews to setupSegmentIndicator")
         setupSegmentIndicator()
+    }
+    
+    @objc func handleImageTap(_ sender: UITapGestureRecognizer) {
+        print("Group Image View is tapped")
+        let controller = UIAlertController(title: "選取照片來源", message: nil, preferredStyle: .actionSheet)
+        
+        let photoAction = UIAlertAction(title: "相簿", style: .default) { (_) in
+            // Add code to pick a photo from Album
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.sourceType = .photoLibrary
+                imagePicker.allowsEditing = true
+                imagePicker.delegate = self
+                
+                self.show(imagePicker, sender: self)
+            }
+        }
+        
+        photoAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+        controller.addAction(photoAction)
+        
+        let cameraAction = UIAlertAction(title: "相機", style: .default) { (_) in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.sourceType = .camera
+                imagePicker.allowsEditing = true
+                imagePicker.delegate = self
+                
+                self.show(imagePicker, sender: self)
+            }
+        }
+        
+        cameraAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+        controller.addAction(cameraAction)
+        
+        let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
+           print("Cancel update")
+        }
+        cancelAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+        controller.addAction(cancelAction)
+        
+        present(controller, animated: true, completion: nil)
     }
     
     @IBAction func selectFunctions(_ sender: UISegmentedControl) {
@@ -50,13 +110,12 @@ class MyProfileViewController: UIViewController {
         
         print("self.segmentControl.selectedSegmentIndex = \(self.segmentControl.selectedSegmentIndex)")
         self.segmentIndicator.centerXAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].centerXAnchor).isActive = true
-
-        //self.segmentIndicator.leftAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].leftAnchor, constant: 10).isActive = true
-        //self.segmentIndicator.updateConstraints()
-        //self.segmentIndicator.layoutIfNeeded()
-        UIView.animate(withDuration: 0.1, animations: {
+        
+        UIView.animate(withDuration: 0.05, animations: {
             self.view.layoutIfNeeded()
         })
+        
+        NotificationCenter.default.post(name: NSNotification.Name("IndexChange"), object: self.segmentControl.selectedSegmentIndex)
     }
     
     func setupSegmentIndicator() {
@@ -74,8 +133,6 @@ class MyProfileViewController: UIViewController {
         
         print("self.segmentControl.selectedSegmentIndex = \(self.segmentControl.selectedSegmentIndex)")
         self.segmentIndicator.centerXAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].centerXAnchor).isActive = true
-        //self.segmentIndicator.leftAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].leftAnchor, constant: 10).isActive = true
-        //self.segmentIndicator.layoutIfNeeded()
     }
     
     func getSubViewIndex() -> Int {
@@ -93,21 +150,14 @@ class MyProfileViewController: UIViewController {
             indexArray.append(tmp)
         }
         
-        //print("indexArray Before sorting: \(indexArray)")
         let result = indexArray.sorted { $0.centerX < $1.centerX }
-        //print("indexArray After sorting: \(result)")
-        //print("-----------------------------------------")
-        //print("self.segmentControl.selectedSegmentIndex = \(self.segmentControl.selectedSegmentIndex)")
-        //print("getSubViewIndex return index = \(result[self.segmentControl.selectedSegmentIndex].index)")
-        //print("result X value = \(result[self.segmentControl.selectedSegmentIndex].centerX)")
-        //print("-----------------------------------------")
+
         return result[self.segmentControl.selectedSegmentIndex].index
     }
     
     func setupSegment() {
         self.segmentControl.backgroundColor = .clear
         self.segmentControl.tintColor = .clear
-        //self.segmentControl.tintColor = CUSTOM_COLOR_LIGHT_ORANGE
         
         self.segmentControl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -118,6 +168,32 @@ class MyProfileViewController: UIViewController {
         self.segmentControl.selectedSegmentIndex = 0
     }
 
+    func loadUserID() {
+        let path = NSHomeDirectory() + "/Documents/MyProfile.plist"
+        if let plist = NSMutableDictionary(contentsOfFile: path) {
+            if let userID = plist["UserID"] {labelUserID.text = userID as? String}
+            if let userName = plist["UserName"] {labelUserName.text = userName as? String}
+            //if let userImage = plist["UserImage"] {imageMyPhoto.image = UIImage(data: userImage as! Data)!}
+            let userImage = plist["UserImage"] as! Data
+            if userImage.isEmpty {
+                //self.imageMyPhoto.image = UIImage(named: "Image_Default.Member.png")!
+            } else {
+                self.imageMyPhoto.image = UIImage(data: userImage)!
+            }
+        }
+    }
+    
+    func saveUserImage(user_image: UIImage) {
+        let path = NSHomeDirectory() + "/Documents/MyProfile.plist"
+        if let plist = NSMutableDictionary(contentsOfFile: path) {
+            plist["UserImage"] = user_image.pngData()!
+            
+            if !plist.write(toFile: path, atomically: true) {
+                print("Save MyProfile.plist failed")
+            }
+        }
+    }
+    
     @objc func receivePageChange(_ notification: Notification) {
         if let pageIndex = notification.object as? Int {
             print("MyProfileViewController received PageChange notification for page[\(pageIndex)]")
@@ -130,15 +206,12 @@ class MyProfileViewController: UIViewController {
     }
 }
 
-/*
-extension MyProfileViewController: UIPageViewControllerDelegate {
-    func pageViewController(pageViewController: UIPageViewController, didUpdatePageIndex index: Int) {
-        print("MyProfileViewController received PageChange notification for page[\(index)]")
-        self.segmentControl.selectedSegmentIndex = index
-        self.segmentIndicator.centerXAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].centerXAnchor).isActive = true
-        UIView.animate(withDuration: 0.1, animations: {
-            self.view.layoutIfNeeded()
-        })
+extension MyProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
+        let newImage = resizeImage(image: image, width: 320)
+        self.imageMyPhoto.image = newImage
+        self.saveUserImage(user_image: newImage)
+        dismiss(animated: true, completion: nil)
     }
 }
-*/

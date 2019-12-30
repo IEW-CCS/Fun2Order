@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         writeFirebaseConfig()
         writeAppConfig()
-
+        writeSetupConfig()
         FirebaseApp.configure()
 
         return true
@@ -67,6 +67,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    func writeSetupConfig() {
+        let fm = FileManager.default
+        let src = Bundle.main.path(forResource: "MyProfile", ofType: "plist")
+        let dst = NSHomeDirectory() + "/Documents/MyProfile.plist"
+        
+        if !fm.fileExists(atPath: dst) {
+            try! fm.copyItem(atPath: src!, toPath: dst)
+        }
+    }
+    
+    
     // MARK: UISceneSession Lifecycle
 
     @available(iOS 13, *)

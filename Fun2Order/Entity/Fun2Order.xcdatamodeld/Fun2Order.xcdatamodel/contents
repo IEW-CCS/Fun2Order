@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="19B88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19C57" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="BRAND_PROFILE" representedClassName="BRAND_PROFILE" syncable="YES">
         <attribute name="brandCategory" optional="YES" attributeType="String"/>
         <attribute name="brandDescription" optional="YES" attributeType="String"/>
@@ -47,6 +47,19 @@
         <attribute name="storeDescription" optional="YES" attributeType="String"/>
         <attribute name="storeID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="storeName" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="GROUP_MEMBER" representedClassName="GROUP_MEMBER" syncable="YES">
+        <attribute name="groupID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="memberID" optional="YES" attributeType="String"/>
+        <attribute name="memberImage" optional="YES" attributeType="Binary"/>
+        <attribute name="memberName" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="GROUP_TABLE" representedClassName="GROUP_TABLE" syncable="YES">
+        <attribute name="groupCreateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="groupDescription" optional="YES" attributeType="String"/>
+        <attribute name="groupID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="groupImage" optional="YES" attributeType="Binary"/>
+        <attribute name="groupName" optional="YES" attributeType="String"/>
     </entity>
     <entity name="ORDER_CONTENT_ITEM" representedClassName="ORDER_CONTENT_ITEM" syncable="YES">
         <attribute name="itemComments" optional="YES" attributeType="String"/>
@@ -144,6 +157,7 @@
     <elements>
         <element name="BRAND_PROFILE" positionX="459.91796875" positionY="-101.6640625" width="128" height="148"/>
         <element name="CODE_TABLE" positionX="295.97265625" positionY="-107.38671875" width="128" height="223"/>
+        <element name="FAVORITE_ADDRESS" positionX="180" positionY="45" width="128" height="73"/>
         <element name="FAVORITE_PRODUCT" positionX="136.8359375" positionY="53.92578125" width="128" height="88"/>
         <element name="FAVORITE_PRODUCT_RECIPE" positionX="129.0390625" positionY="165.54296875" width="128" height="118"/>
         <element name="FAVORITE_STORE" positionX="292.28125" positionY="140.04296875" width="128" height="148"/>
@@ -155,6 +169,7 @@
         <element name="PRODUCT_RECIPE_PRICE" positionX="135.07421875" positionY="-94.15234375" width="128" height="133"/>
         <element name="STORE_BUSINESS_HOURS" positionX="-16.67578125" positionY="115.625" width="128" height="178"/>
         <element name="STORE_INFORMATION" positionX="-25.1015625" positionY="-90.71484375" width="128" height="178"/>
-        <element name="FAVORITE_ADDRESS" positionX="180" positionY="45" width="128" height="73"/>
+        <element name="GROUP_TABLE" positionX="180" positionY="45" width="128" height="118"/>
+        <element name="GROUP_MEMBER" positionX="189" positionY="54" width="128" height="103"/>
     </elements>
 </model>
