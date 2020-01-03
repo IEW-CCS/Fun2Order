@@ -14,15 +14,10 @@ class MemberGroupViewController: UIViewController {
     @IBOutlet weak var memberTableView: UITableView!
     
     var groupList: [Group] = [Group]()
+    var memberList: [GroupMember] = [GroupMember]()
     var addIndex: Int = 0
-    
-    let memberImages: [UIImage] = [UIImage(named: "Image_Friend1.png")!,
-                                UIImage(named: "Image_Friend2.png")!,
-                                UIImage(named: "Image_Friend3.png")!,
-                                UIImage(named: "Image_Friend4.png")!,
-                                UIImage(named: "Image_Friend5.png")!]
-    let memberNames: [String] = ["熱帶魚", "河馬", "火雞", "青蛙弟", "章魚哥"]
-    
+    var selectedGroupIndex: Int = -1
+        
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -51,15 +46,40 @@ class MemberGroupViewController: UIViewController {
             object: nil
         )
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.addMember),
+            name: NSNotification.Name(rawValue: "AddMember"),
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.addMember),
+            name: NSNotification.Name(rawValue: "RefreshMember"),
+            object: nil
+        )
+
         self.groupList = retrieveGroupList()
         if self.groupList.isEmpty {
             self.addIndex = 0
         } else {
+            self.selectedGroupIndex = 0
             self.addIndex = self.groupList.count
+        }
+        
+        if self.selectedGroupIndex >= 0 {
+            self.memberList.removeAll()
+            self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
+            self.memberTableView.reloadData()
         }
     }
     
     @IBAction func scanMemberCode(_ sender: UIButton) {
+        if self.selectedGroupIndex < 0 {
+            return
+        }
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let qrcode_vc = storyboard.instantiateViewController(withIdentifier: "SCAN_QRCODE_VC") as? ScanQRCodeViewController else{
             assertionFailure("[AssertionFailure] StoryBoard: GROUP_EDIT_VC can't find!! (ViewController)")
@@ -80,6 +100,25 @@ class MemberGroupViewController: UIViewController {
         self.collectionGroup.reloadData()
     }
 
+    @objc func refreshMember(_ notification: Notification) {
+        self.memberList.removeAll()
+        self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
+        self.memberTableView.reloadData()
+    }
+    
+    @objc func addMember(_ notification: Notification) {
+        print("MemberGroupViewController received AddMember notification")
+        if var memberInfo = notification.object as? GroupMember {
+            print("memberInfo.memberID = \(memberInfo.memberID)")
+            memberInfo.groupID = self.groupList[selectedGroupIndex].groupID
+            print("memberInfo = \(memberInfo)")
+            insertGroupMember(member_info: memberInfo)
+            self.memberList.removeAll()
+            self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
+            self.memberTableView.reloadData()
+        }
+    }
+    
     @objc func handleLongPressGroupCell(_ sender: UILongPressGestureRecognizer) {
         if(sender.state == .began) {
             if sender.view!.tag == self.groupList.count {
@@ -87,7 +126,12 @@ class MemberGroupViewController: UIViewController {
             }
             
             print("Long pressed the group cell [\(sender.view!.tag)]")
-            let controller = UIAlertController(title: "群組動作", message: nil, preferredStyle: .actionSheet)
+            self.selectedGroupIndex = sender.view!.tag
+            self.memberList.removeAll()
+            self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
+            self.memberTableView.reloadData()
+            
+            let controller = UIAlertController(title: "編輯群組動作", message: nil, preferredStyle: .actionSheet)
             
             let editAction = UIAlertAction(title: "編輯群組", style: .default) { (_) in
                 print("Edit Group Information")
@@ -112,14 +156,64 @@ class MemberGroupViewController: UIViewController {
                 let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
                     print("Confirm to delete this geoup")
                     deleteGroup(group_id: self.groupList[sender.view!.tag].groupID)
+                    deleteMemberByGroup(group_id: self.groupList[sender.view!.tag].groupID)
+                    //self.selectedGroupIndex = self.selectedGroupIndex - 1
                     self.groupList = retrieveGroupList()
                     if self.groupList.isEmpty {
                         self.addIndex = 0
                     } else {
                         self.addIndex = self.groupList.count
+                        if self.selectedGroupIndex != 0 {
+                            self.selectedGroupIndex = self.selectedGroupIndex - 1
+                        }
                     }
                     
                     self.collectionGroup.reloadData()
+                    
+                    self.memberList.removeAll()
+                    if self.selectedGroupIndex >= 0 {
+                        self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
+                        self.memberTableView.reloadData()
+                    }
+                }
+                
+                alertController.addAction(okAction)
+                let cancelDeleteAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+                alertController.addAction(cancelDeleteAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
+            
+            deleteAction.setValue(UIColor.red, forKey: "titleTextColor")
+            controller.addAction(deleteAction)
+            
+            let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
+               print("Cancel update")
+            }
+            cancelAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+            controller.addAction(cancelAction)
+            
+            present(controller, animated: true, completion: nil)
+        }
+    }
+    
+    @objc func handleLongPressMemberCell(_ sender: UILongPressGestureRecognizer) {
+        if(sender.state == .began) {
+            print("Long pressed the member cell [\(sender.view!.tag)]")
+            let controller = UIAlertController(title: "編輯會員動作", message: nil, preferredStyle: .actionSheet)
+            
+            let deleteAction = UIAlertAction(title: "刪除會員", style: .default) { (_) in
+                print("Delete Member[\(sender.view!.tag)] Information")
+                let alertController = UIAlertController(title: "刪除會員資訊", message: "確定要刪除此會員資訊嗎？", preferredStyle: .alert)
+
+                let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                    print("Confirm to delete this member")
+                    deleteMember(group_id: self.memberList[sender.view!.tag].groupID, member_id: self.memberList[sender.view!.tag].memberID)
+
+                    self.memberList.removeAll()
+                    if self.selectedGroupIndex >= 0 {
+                        self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
+                        self.memberTableView.reloadData()
+                    }
                 }
                 
                 alertController.addAction(okAction)
@@ -141,7 +235,6 @@ class MemberGroupViewController: UIViewController {
         }
     }
 
-    
 }
 
 extension MemberGroupViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate {
@@ -192,9 +285,11 @@ extension MemberGroupViewController: UICollectionViewDataSource, UICollectionVie
             navigationController?.show(group_vc, sender: self)
         } else {
             print("Select group name = [\(self.groupList[indexPath.row].groupName)]")
-            
+            self.selectedGroupIndex = indexPath.row
             //List the members information in the group
-            
+            self.memberList.removeAll()
+            self.memberList = retrieveMemberList(group_id: self.groupList[indexPath.row].groupID)
+            self.memberTableView.reloadData()
         }
         
         /*
@@ -227,13 +322,24 @@ extension MemberGroupViewController: UITableViewDelegate, UITableViewDataSource 
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.memberNames.count
+        if self.memberList.isEmpty {
+            return 0
+        }
+        
+        return self.memberList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MemberCell", for: indexPath) as! MemberCell
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        cell.setData(image: self.memberImages[indexPath.row], name: self.memberNames[indexPath.row])
+        //cell.setData(image: self.memberImages[indexPath.row], name: self.memberNames[indexPath.row])
+        cell.setData(image: self.memberList[indexPath.row].memberImage, name: self.memberList[indexPath.row].memberName)
+        cell.tag = indexPath.row
+
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPressMemberCell(_:)))
+        longPressGesture.delegate = self
+        cell.addGestureRecognizer(longPressGesture)
+
         return cell
     }
 

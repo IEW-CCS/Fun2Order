@@ -15,7 +15,8 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
     @IBOutlet weak var pageControl: FSPageControl!
     
     @IBOutlet weak var pagerView: FSPagerView!
-
+    let semaphore = DispatchSemaphore(value: 2)
+    
     var updateInformation: UpdateInformation!
     var brandProfileList: BrandProfileList!
     var codeTableList: CodeTableList!
@@ -300,10 +301,15 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
             codeData.extension4 = self.codeTableList.CODE_TABLE[i].extension4
             codeData.extension5 = self.codeTableList.CODE_TABLE[i].extension5
         }
-        self.app.saveContext()
-        updateLastQueryTime()
         
-        Thread.sleep(forTimeInterval: 1)
+        DispatchQueue.main.async {
+            let result = self.semaphore.wait(timeout: DispatchTime.distantFuture)
+            print(result)
+            self.app.saveContext()
+            self.semaphore.signal()
+        }
+        
+        updateLastQueryTime()
     }
 
     func requestProductInformation() {
@@ -384,12 +390,17 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
                 } else {
                     print("Get Product Image: \(self.productInformationList.PRODUCT_INFORMATION[i].productImage) from Firebase")
                     productData.productImage = data!
-                    self.app.saveContext()
+                    DispatchQueue.main.async {
+                        let result = self.semaphore.wait(timeout: DispatchTime.distantFuture)
+                        print(result)
+                        self.app.saveContext()
+                        self.semaphore.signal()
+                    }
                 }
             }
         }
+        
         updateLastQueryTime()
-        Thread.sleep(forTimeInterval: 1)
     }
     
     func requestProductRecipe() {
@@ -463,9 +474,14 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
             productRecipeData.recipe10 = self.productRecipeList.PRODUCT_RECIPE[i].recipe10
         }
 
-        self.app.saveContext()
+        DispatchQueue.main.async {
+            let result = self.semaphore.wait(timeout: DispatchTime.distantFuture)
+            print(result)
+            self.app.saveContext()
+            self.semaphore.signal()
+        }
+
         updateLastQueryTime()
-        Thread.sleep(forTimeInterval: 1)
     }
     
     func requestStoreInformation() {
@@ -535,9 +551,14 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
             storeData.deliveryService = self.storeInformationList.STORE_INFORMATION[i].deliveryService
         }
 
-        self.app.saveContext()
+        DispatchQueue.main.async {
+            let result = self.semaphore.wait(timeout: DispatchTime.distantFuture)
+            print(result)
+            self.app.saveContext()
+            self.semaphore.signal()
+        }
+
         updateLastQueryTime()
-        Thread.sleep(forTimeInterval: 1)
     }
     
     func requestBrandProfile() {
@@ -617,10 +638,16 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
                 } else {
                     print("Get Brand Image: \(self.brandProfileList.BRAND_PROFILE[i].brandIconImage) from Firebase")
                     brandData.brandIconImage = data!
-                    self.app.saveContext()
+                    DispatchQueue.main.async {
+                        let result = self.semaphore.wait(timeout: DispatchTime.distantFuture)
+                        print(result)
+                        self.app.saveContext()
+                        self.semaphore.signal()
+                    }
                 }
             }
         }
+        
         updateLastQueryTime()
     }
 }

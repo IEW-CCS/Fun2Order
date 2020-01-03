@@ -23,9 +23,6 @@ class VerifyPhNoController: UIViewController {
         PhoneNumberTextField.layer.cornerRadius = 20
         PhoneNumberTextField.layer.borderWidth = 2
         PhoneNumberTextField.layer.borderColor = UIColor.clear.cgColor
-        
-      
-        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -39,8 +36,6 @@ class VerifyPhNoController: UIViewController {
         navigationController?.pushViewController(nextViewController, animated: true)
     }
     
-
-
     @IBAction func nextButton(_ sender: Any) {
         
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)

@@ -137,3 +137,12 @@ struct OrderSerial: Codable {
     var dayCode: String = ""
     var serialNumber: Int = 0
 }
+
+struct UserProfile: Codable {
+    var userID: String = ""
+    var userName: String = ""
+    var userPhotoUrl: String = ""
+    var gender: String = ""
+    var birthday: String = ""
+    var address: String = ""
+}

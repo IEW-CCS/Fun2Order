@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-    
+        
     func writeFirebaseConfig() {
         let fm = FileManager.default
         let src = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")

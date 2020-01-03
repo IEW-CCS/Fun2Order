@@ -8,12 +8,11 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 class BasicInformationTableViewController: UITableViewController {
     @IBOutlet weak var labelPhoneNumber: UILabel!
-    @IBOutlet weak var labelEMail: UILabel!
-    @IBOutlet weak var labelUserAccount: UILabel!
-    @IBOutlet weak var labelPassword: UILabel!
     @IBOutlet weak var labelUserName: UILabel!
     @IBOutlet weak var labelGender: UILabel!
     @IBOutlet weak var labelBirthday: UILabel!
@@ -43,8 +42,8 @@ class BasicInformationTableViewController: UITableViewController {
         if let plist = NSMutableDictionary(contentsOfFile: path) {
             if let userID = plist["UserID"] {self.myUserID = (userID as? String)!}
             if let phoneNumber = plist["PhoneNumber"] {labelPhoneNumber.text = phoneNumber as? String}
-            if let emailAddress = plist["EmailAddress"] {labelEMail.text = emailAddress as? String}
-            if let userAccount = plist["UserAccount"]{ labelUserAccount.text = userAccount as? String }
+            //if let emailAddress = plist["EmailAddress"] {labelEMail.text = emailAddress as? String}
+            //if let userAccount = plist["UserAccount"]{ labelUserAccount.text = userAccount as? String }
             if let userName = plist["UserName"] {labelUserName.text = userName as? String}
             if let gender = plist["Gender"] {labelGender.text = gender as? String}
             if let birthday = plist["Birthday"] {labelBirthday.text = birthday as? String}
@@ -56,8 +55,8 @@ class BasicInformationTableViewController: UITableViewController {
         let path = NSHomeDirectory() + "/Documents/MyProfile.plist"
         if let plist = NSMutableDictionary(contentsOfFile: path) {
             plist["PhoneNumber"] = labelPhoneNumber.text
-            plist["EmailAddress"] = labelEMail.text
-            plist["UserAccount"] = labelUserAccount.text
+            //plist["EmailAddress"] = labelEMail.text
+            //plist["UserAccount"] = labelUserAccount.text
             plist["UserName"] = labelUserName.text
             plist["Gender"] = labelGender.text
             plist["Birthday"] = labelBirthday.text
@@ -65,10 +64,23 @@ class BasicInformationTableViewController: UITableViewController {
             
             if !plist.write(toFile: path, atomically: true) {
                 print("Save MyProfile.plist failed")
+                return
             }
+            
+            let changeRequest = Auth.auth().currentUser!.createProfileChangeRequest()
+            changeRequest.displayName = self.labelUserName.text
+            changeRequest.commitChanges(completion: { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                    return
+                }
+            })
+
+            NotificationCenter.default.post(name: NSNotification.Name("UpdateProfile"), object: self.labelUserName.text)
         }
     }
     
+    /*
     func updateEMailAddress() {
         let controller = UIAlertController(title: "請輸入電子郵件地址", message: nil, preferredStyle: .alert)
         controller.addTextField { (textField) in
@@ -112,6 +124,7 @@ class BasicInformationTableViewController: UITableViewController {
         
         present(controller, animated: true, completion: nil)
     }
+    */
     
     func updateUserName() {
         let controller = UIAlertController(title: "請輸入姓名", message: nil, preferredStyle: .alert)
@@ -122,12 +135,15 @@ class BasicInformationTableViewController: UITableViewController {
         let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
             print("Cancel to update user name!")
         }
+        
         cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
         controller.addAction(cancelAction)
         
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             let username_string = controller.textFields?[0].text
             self.labelUserName.text = username_string!
+            //self.saveSetupConfig()
+            NotificationCenter.default.post(name: NSNotification.Name("RefreshProfile"), object: self.labelUserName.text)
         }
         okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
         controller.addAction(okAction)
@@ -157,6 +173,7 @@ class BasicInformationTableViewController: UITableViewController {
         present(controller, animated: true, completion: nil)
     }
     
+    /*
     func updatePassword() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let password_vc = storyboard.instantiateViewController(withIdentifier: "CHANGE_PWD_VC") as? ChangePasswordViewController else{
@@ -166,7 +183,7 @@ class BasicInformationTableViewController: UITableViewController {
         
         self.navigationController?.pushViewController(password_vc, animated: true)
     }
-    
+    */
     func displayQRCode() {
         guard let qrCodeController = self.storyboard?.instantiateViewController(withIdentifier: "QRCode_VC") as? QRCodeViewController else{
             assertionFailure("[AssertionFailure] StoryBoard: QRCode_VC can't find!! (QRCodeViewController)")
@@ -245,7 +262,37 @@ class BasicInformationTableViewController: UITableViewController {
     @IBAction func deleteProfile(_ sender: UIButton) {
         do {
             try Auth.auth().signOut()
-           
+            let path = NSHomeDirectory() + "/Documents/MyProfile.plist"
+            if let plist = NSMutableDictionary(contentsOfFile: path) {
+                plist["UserID"] = ""
+                plist["PhoneNumber"] = ""
+                plist["EmailAddress"] = ""
+                plist["UserAccount"] = ""
+                plist["UserPassword"] = ""
+                plist["UserName"] = ""
+                plist["Gender"] = ""
+                plist["Birthday"] = ""
+                plist["Address"] = ""
+                plist["UserImage"] = UIImage(named: "Image_Default_Member.png")!.pngData()
+
+                if !plist.write(toFile: path, atomically: true) {
+                    print("Save MyProfile.plist failed")
+                }
+                
+                let databaseRef = Database.database().reference()
+                let profilePathString = "USER_PROFILE/\(self.myUserID)"
+                databaseRef.child(profilePathString).removeValue()
+                
+                let storageRef = Storage.storage().reference()
+                //let imagePath = "UserProfile_Photo/\(self.myUserID).png"
+                let imagePath = getUserPhotoStoragePath(u_id: self.myUserID)
+                storageRef.child(imagePath).delete(completion: nil)
+                
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "EntryViewController") as! EntryViewController
+                navigationController?.pushViewController(nextViewController, animated: true)
+
+            }
         } catch {
             print(error.localizedDescription)
         }
@@ -273,18 +320,6 @@ class BasicInformationTableViewController: UITableViewController {
             switch indexPath.row {
             case 0:
                 displayQRCode()
-                break
-                
-            case 2:
-                updateEMailAddress()
-                break
-                
-            case 3:
-                updateUserAccount()
-                break
-                
-            case 4:
-                updatePassword()
                 break
                 
             default:
@@ -316,4 +351,5 @@ class BasicInformationTableViewController: UITableViewController {
         }
 
     }
+    
 }

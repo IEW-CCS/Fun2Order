@@ -130,3 +130,13 @@ func resizeImage(image: UIImage, width: CGFloat) -> UIImage {
    }
    return newImage
 }
+
+func getProfileDatabasePath(u_id: String, key_value: String) -> String {
+    let path: String = "USER_PROFILE/\(u_id)/\(key_value)"
+    return path
+}
+
+func getUserPhotoStoragePath(u_id: String) -> String {
+    let path: String = "UserProfile_Photo/\(u_id).png"
+    return path
+}

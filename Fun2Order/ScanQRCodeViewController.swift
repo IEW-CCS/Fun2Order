@@ -8,11 +8,16 @@
 
 import UIKit
 import AVFoundation
+import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 class ScanQRCodeViewController: UIViewController {
     @IBOutlet weak var viewPreview: UIView!
     @IBOutlet weak var labelMemberName: UILabel!
-    
+    var memberID: String = ""
+    var memberUserName: String = ""
+    var memberUserImage: UIImage = UIImage()
     
     var captureSession = AVCaptureSession()
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
@@ -27,14 +32,49 @@ class ScanQRCodeViewController: UIViewController {
     }
     
     @IBAction func addToGroup(_ sender: UIButton) {
+        let databaseRef = Database.database().reference()
+        let profileDatabasePath = "USER_PROFILE/\(self.memberID)"
         
+        databaseRef.child(profileDatabasePath).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                var tmpMemberInfo = GroupMember()
+                let value = snapshot.value as? NSDictionary
+                let userName = value?["userName"] as! String
+                let photoUrl = value?["photoURL"] as! String
+                self.memberUserName = userName
+                print("userName = \(userName)")
+                print("photoUrl = \(photoUrl)")
+                tmpMemberInfo.memberID = self.memberID
+                tmpMemberInfo.memberName = userName
+                
+                let storageRef = Storage.storage().reference()
+                storageRef.child(photoUrl).getData(maxSize: 1 * 1024 * 1024, completion: { (data, error) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                        DispatchQueue.main.async {
+                            let httpAlert = alert(message: error.localizedDescription, title: "存取會員頭像錯誤")
+                            self.present(httpAlert, animated : false, completion : nil)
+                            return
+                        }
+                    }
+                    
+                    tmpMemberInfo.memberImage = UIImage(data: data!)!
+                    NotificationCenter.default.post(name: NSNotification.Name("AddMember"), object: tmpMemberInfo)
+                    self.navigationController?.popViewController(animated: true)
+                })
+            } else {
+                let memberAlert = alert(message: "不存在的會員條碼或條碼格式錯誤，請再重試一次", title: "條碼錯誤")
+                self.present(memberAlert, animated : false, completion : nil)
+                return
+            }
+            
+        }) { (error) in
+            print(error.localizedDescription)
+        }
     }
     
     func configScanner() {
-        //let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera], mediaType: AVMediaType.video, position: .back)
         guard let captureDevice = AVCaptureDevice.default(for: .video) else {
-        //guard let captureDevice = AVCaptureDevice.default(AVCaptureDevice.DeviceType.builtInDualCamera, for: AVMediaType.video, position: .back) else {
-        //guard let captureDevice = deviceDiscoverySession.devices.first else {
             print("Failed to get the camera device")
             return
         }
@@ -89,6 +129,7 @@ extension ScanQRCodeViewController: AVCaptureMetadataOutputObjectsDelegate {
             
             if metadataObj.stringValue != nil {
                 self.labelMemberName.text = metadataObj.stringValue
+                self.memberID = metadataObj.stringValue!
             }
         }
     }

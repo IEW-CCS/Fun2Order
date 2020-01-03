@@ -206,3 +206,4 @@ struct GroupMember {
     var memberName: String = ""
     var memberImage: UIImage = UIImage()
 }
+

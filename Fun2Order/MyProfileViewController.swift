@@ -7,7 +7,10 @@
 //
 
 import UIKit
+import Firebase
 import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 class MyProfileViewController: UIViewController {
     @IBOutlet weak var imageMyPhoto: UIImageView!
@@ -37,11 +40,19 @@ class MyProfileViewController: UIViewController {
             object: nil
         )
 
-        print("Auth.uid = \(Auth.auth().currentUser?.uid)")
-        print("Auth.phoneNumber = \(Auth.auth().currentUser?.phoneNumber)")
-        print("Auth.email = \(Auth.auth().currentUser?.email)")
-        print("Auth.displayName = \(Auth.auth().currentUser?.displayName)")
-        print("Auth.description = \(Auth.auth().currentUser?.description)")
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.refreshProfile(_:)),
+            name: NSNotification.Name(rawValue: "RefreshProfile"),
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.updateProfile(_:)),
+            name: NSNotification.Name(rawValue: "UpdateProfile"),
+            object: nil
+        )
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -174,23 +185,61 @@ class MyProfileViewController: UIViewController {
             if let userID = plist["UserID"] {labelUserID.text = userID as? String}
             if let userName = plist["UserName"] {labelUserName.text = userName as? String}
             //if let userImage = plist["UserImage"] {imageMyPhoto.image = UIImage(data: userImage as! Data)!}
-            let userImage = plist["UserImage"] as! Data
-            if userImage.isEmpty {
-                //self.imageMyPhoto.image = UIImage(named: "Image_Default.Member.png")!
-            } else {
-                self.imageMyPhoto.image = UIImage(data: userImage)!
+            /*
+             let userImage = plist["UserImage"] as! Data
+             if userImage.isEmpty {
+                 self.imageMyPhoto.image = UIImage(named: "Image_Default.Member.png")!
+             } else {
+                 self.imageMyPhoto.image = UIImage(data: userImage)!
+             }
+              */
+            
+            guard let userImage = plist["UserImage"] as? Data else {
+                self.imageMyPhoto.image = UIImage(named: "Image_Default.Member.png")!
+                return
             }
+            self.imageMyPhoto.image = UIImage(data: userImage)!
         }
     }
     
-    func saveUserImage(user_image: UIImage) {
+    func saveUserInfo(user_image: UIImage) {
         let path = NSHomeDirectory() + "/Documents/MyProfile.plist"
         if let plist = NSMutableDictionary(contentsOfFile: path) {
             plist["UserImage"] = user_image.pngData()!
+            plist["UserName"] = self.labelUserName.text
             
             if !plist.write(toFile: path, atomically: true) {
                 print("Save MyProfile.plist failed")
             }
+            
+            let pathString = "UserProfile_Photo/\(Auth.auth().currentUser!.uid).png"
+            print("pathString = \(pathString)")
+            let storageRef = Storage.storage().reference().child(pathString)
+            let uploadData = user_image.pngData()!
+            storageRef.putData(uploadData, metadata: nil, completion: { (data, error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                    return
+                }
+                
+                let photoFullPath = storageRef.fullPath
+                print("photoFullPath = \(photoFullPath)")
+                
+                let changeRequest = Auth.auth().currentUser!.createProfileChangeRequest()
+                changeRequest.photoURL = URL(string: storageRef.fullPath)
+                changeRequest.commitChanges(completion: { (error) in
+                    if error != nil {
+                        print(error!.localizedDescription)
+                        return
+                    }
+                })
+            })
+            
+            let databaseRef = Database.database().reference()
+            let profilePath = getProfileDatabasePath(u_id: self.labelUserID.text!, key_value: "userName")
+            databaseRef.child(profilePath).setValue(self.labelUserName.text)
+            let photoUrlPath = getProfileDatabasePath(u_id: self.labelUserID.text!, key_value: "photoURL")
+            databaseRef.child(photoUrlPath).setValue(pathString)
         }
     }
     
@@ -204,6 +253,20 @@ class MyProfileViewController: UIViewController {
             })
         }
     }
+    
+    @objc func refreshProfile(_ notification: Notification) {
+        print("MyProfileViewController received RefreshProfile notification")
+        //loadUserID()
+        if let userName = notification.object as? String {
+            self.labelUserName.text = userName
+        }
+    }
+
+    @objc func updateProfile(_ notification: Notification) {
+        print("MyProfileViewController received UpdateProfile notification")
+        self.saveUserInfo(user_image: self.imageMyPhoto.image!)
+    }
+
 }
 
 extension MyProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -211,7 +274,7 @@ extension MyProfileViewController: UIImagePickerControllerDelegate, UINavigation
         let image = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
         let newImage = resizeImage(image: image, width: 320)
         self.imageMyPhoto.image = newImage
-        self.saveUserImage(user_image: newImage)
+        //self.saveUserImage(user_image: newImage)
         dismiss(animated: true, completion: nil)
     }
 }

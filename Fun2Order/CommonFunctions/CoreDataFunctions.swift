@@ -634,3 +634,98 @@ func deleteGroup(group_id: Int) {
 
     app.saveContext()
 }
+
+func retrieveMemberList(group_id: Int) -> [GroupMember] {
+    var returnList = [GroupMember]()
+
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchMember: NSFetchRequest<GROUP_MEMBER> = GROUP_MEMBER.fetchRequest()
+    let predicateString = "groupID == \(group_id)"
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchMember.predicate = predicate
+
+    do {
+        let member_list = try vc.fetch(fetchMember)
+        for member_data in member_list {
+            var tmpMember = GroupMember()
+            tmpMember.groupID = Int(member_data.groupID)
+            tmpMember.memberID = member_data.memberID!
+            tmpMember.memberName = member_data.memberName!
+            tmpMember.memberImage = UIImage(data: member_data.memberImage!)!
+
+            returnList.append(tmpMember)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    return returnList
+}
+
+func insertGroupMember(member_info: GroupMember) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let memberData = NSEntityDescription.insertNewObject(forEntityName: "GROUP_MEMBER", into: vc) as! GROUP_MEMBER
+    memberData.groupID = Int16(member_info.groupID)
+    memberData.memberID = member_info.memberID
+    memberData.memberName = member_info.memberName
+    memberData.memberImage = member_info.memberImage.pngData()!
+    
+    app.saveContext()
+}
+
+func deleteMember(group_id: Int, member_id: String) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchRequest: NSFetchRequest<GROUP_MEMBER> = GROUP_MEMBER.fetchRequest()
+    let predicateString = "groupID == \(group_id) AND memberID == \"\(member_id)\""
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+    
+    do {
+        let member_data = try vc.fetch(fetchRequest).first
+        if member_data != nil {
+            vc.delete(member_data!)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+
+    app.saveContext()
+}
+
+func deleteMemberByGroup(group_id: Int) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchRequest: NSFetchRequest<GROUP_MEMBER> = GROUP_MEMBER.fetchRequest()
+    let predicateString = "groupID == \(group_id)"
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+    
+    do {
+        let member_list = try vc.fetch(fetchRequest)
+        for member_data in member_list {
+            vc.delete(member_data)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+
+    app.saveContext()
+}
