@@ -33,10 +33,6 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
         layout.minimumLineSpacing = 8
         groupCollectionView.collectionViewLayout = layout
 
-        let gesTap = UITapGestureRecognizer(target: self, action:#selector(self.handleTapGesture(_:)))
-        gesTap.delegate = self
-        self.view.addGestureRecognizer(gesTap)
-
         self.tabBarController?.title = self.title
 
         self.groupCollectionView.delegate = self
@@ -46,9 +42,6 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
         self.memberTableView.dataSource = self
     }
     
-    @objc private func handleTapGesture(_ sender: UITapGestureRecognizer) {
-        dismiss(animated: true, completion: nil)
-    }
 }
 
 extension GroupOrderViewController: UICollectionViewDelegate, UICollectionViewDataSource {

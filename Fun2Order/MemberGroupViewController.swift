@@ -110,6 +110,15 @@ class MemberGroupViewController: UIViewController {
         print("MemberGroupViewController received AddMember notification")
         if var memberInfo = notification.object as? GroupMember {
             print("memberInfo.memberID = \(memberInfo.memberID)")
+            for memberData in self.memberList {
+                if memberData.memberID == memberInfo.memberID {
+                    let memberAlert = alert(message: "此會員已加入群組中", title: "加入錯誤")
+                    self.present(memberAlert, animated : false, completion : nil)
+
+                    return
+                }
+            }
+            
             memberInfo.groupID = self.groupList[selectedGroupIndex].groupID
             print("memberInfo = \(memberInfo)")
             insertGroupMember(member_info: memberInfo)
