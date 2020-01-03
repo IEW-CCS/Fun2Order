@@ -193,12 +193,15 @@ class MyProfileViewController: UIViewController {
                  self.imageMyPhoto.image = UIImage(data: userImage)!
              }
               */
-            
-            guard let userImage = plist["UserImage"] as? Data else {
-                self.imageMyPhoto.image = UIImage(named: "Image_Default.Member.png")!
-                return
-            }
-            self.imageMyPhoto.image = UIImage(data: userImage)!
+             let userImage = plist["UserImage"] as? Data
+             if (userImage == nil || userImage?.count == 0)
+             {
+                self.imageMyPhoto.image = UIImage(named: "Image_Default_Member.png")!
+             }
+            else
+             {
+                self.imageMyPhoto.image = UIImage(data: userImage!)
+             }
         }
     }
     
