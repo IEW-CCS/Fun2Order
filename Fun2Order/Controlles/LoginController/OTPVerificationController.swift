@@ -8,19 +8,17 @@
 
 
 import UIKit
-import ABOtpView
 import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
 
-class OTPVerificationController: UIViewController,ABOtpViewDelegate {
+class OTPVerificationController: UIViewController,OtpViewDelegate {
     
     var phoneString = ""
     var _verificationID = ""
     
-    
-    func didEnterOTP(otp: String) {
+    func EnterOTP(otp: String) {
       
         Auth.auth().settings!.isAppVerificationDisabledForTesting = true
         
@@ -86,11 +84,27 @@ class OTPVerificationController: UIViewController,ABOtpViewDelegate {
     @IBOutlet var otpView: UIView!
     @IBOutlet var otpNumber: UIView!
 
+    @IBAction func ResendOTP(_ sender: Any) {
+        
+        PhoneAuthProvider.provider().verifyPhoneNumber(phoneString, uiDelegate: nil) { verificationID, error in
+            if (error == nil) {
+                self._verificationID = verificationID!
+                print(" varifying PhoneNumber OK !!")
+            } else {
+                print("error varifying PhoneNumber: \(String(describing: error))")
+                
+                let alert = UIAlertController(title: "ERROR Varifying", message: String(describing: error?.localizedDescription), preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                
+            }
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         let frm: CGRect = otpNumber.frame
         
-        otpNumber = ABOtpView(frame: CGRect(x: frm.origin.x , y: frm.origin.y + 20, width: frm.size.width, height: frm.size.height), numberOfDigits: 6,  borderType: .ROUND, borderColor: .gray,delegate:self)
+        otpNumber = OtpView(frame: CGRect(x: frm.origin.x , y: frm.origin.y + 20, width: frm.size.width, height: frm.size.height), numberOfDigits: 6,  borderType: .ROUND, borderColor: .gray,keyboardType: .phonePad,delegate:self)
         
         self.otpView.addSubview(otpNumber)
        
@@ -100,6 +114,11 @@ class OTPVerificationController: UIViewController,ABOtpViewDelegate {
                 print(" varifying PhoneNumber OK !!")
             } else {
                 print("error varifying PhoneNumber: \(String(describing: error))")
+                
+                let alert = UIAlertController(title: "ERROR Varifying", message: String(describing: error?.localizedDescription), preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                
             }
         }
     }
