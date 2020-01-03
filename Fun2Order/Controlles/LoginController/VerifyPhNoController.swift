@@ -15,7 +15,8 @@ class VerifyPhNoController: UIViewController {
 
     
     @IBOutlet  var PhoneNumberTextField: FPNTextField!
-
+    @IBOutlet weak var buttonEMail: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
@@ -29,8 +30,7 @@ class VerifyPhNoController: UIViewController {
         PhoneNumberTextField.resignFirstResponder()
     }
     
-    
-    @IBAction func loginEmailButton(_ sender: Any) {
+    @IBAction func loginEmailButton(_ sender: UIButton) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "VerifyMailController") as! VerifyMailController
         navigationController?.pushViewController(nextViewController, animated: true)

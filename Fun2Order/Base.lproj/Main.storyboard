@@ -605,6 +605,16 @@
                                 <fontDescription key="fontDescription" name="ProductSans-Bold" family="Product Sans" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nQb-h1-bMp">
+                                <rect key="frame" x="160.5" y="580" width="93" height="33"/>
+                                <fontDescription key="fontDescription" name="ProductSans-Regular" family="Product Sans" pointSize="18"/>
+                                <state key="normal" title="E-Mail 認證">
+                                    <color key="titleColor" red="0.98039215690000003" green="0.25882352939999997" blue="0.43137254899999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginEmailButton:" destination="dg7-6V-PzR" eventType="touchUpInside" id="b1D-Bu-0k5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -612,6 +622,7 @@
                             <constraint firstItem="S6N-yN-Rsg" firstAttribute="bottom" secondItem="xpq-uO-gQP" secondAttribute="top" constant="-10" id="5TR-tM-tOz"/>
                             <constraint firstItem="QM1-w6-FaF" firstAttribute="leading" secondItem="w5W-ku-FTh" secondAttribute="leading" constant="30" id="60B-Fj-P9X"/>
                             <constraint firstItem="QM1-w6-FaF" firstAttribute="top" secondItem="xpq-uO-gQP" secondAttribute="bottom" constant="15" id="B2P-fB-JDZ"/>
+                            <constraint firstItem="nQb-h1-bMp" firstAttribute="centerX" secondItem="MFa-rp-ap5" secondAttribute="centerX" id="CKe-6a-Zhp"/>
                             <constraint firstItem="MFa-rp-ap5" firstAttribute="centerX" secondItem="WM2-bP-6z0" secondAttribute="centerX" id="Dcj-RG-rLC"/>
                             <constraint firstItem="MFa-rp-ap5" firstAttribute="leading" secondItem="w5W-ku-FTh" secondAttribute="leading" constant="30" id="Ef2-0x-D85"/>
                             <constraint firstItem="MFa-rp-ap5" firstAttribute="top" secondItem="QM1-w6-FaF" secondAttribute="bottom" constant="30" id="NP4-qJ-ki6"/>
@@ -622,6 +633,7 @@
                             <constraint firstItem="w5W-ku-FTh" firstAttribute="trailing" secondItem="MFa-rp-ap5" secondAttribute="trailing" constant="30" id="bO7-MT-TTh"/>
                             <constraint firstItem="xpq-uO-gQP" firstAttribute="trailing" secondItem="QM1-w6-FaF" secondAttribute="trailing" id="cv2-dt-ESv"/>
                             <constraint firstItem="S6N-yN-Rsg" firstAttribute="centerX" secondItem="WM2-bP-6z0" secondAttribute="centerX" id="h9o-uY-O8D"/>
+                            <constraint firstItem="nQb-h1-bMp" firstAttribute="top" secondItem="MFa-rp-ap5" secondAttribute="bottom" constant="30" id="qsY-7A-VrO"/>
                             <constraint firstItem="QM1-w6-FaF" firstAttribute="centerX" secondItem="WM2-bP-6z0" secondAttribute="centerX" id="t1b-VH-4Jt"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="w5W-ku-FTh"/>
@@ -629,6 +641,7 @@
                     <navigationItem key="navigationItem" id="aUr-5y-TYt"/>
                     <connections>
                         <outlet property="PhoneNumberTextField" destination="QM1-w6-FaF" id="lvw-WT-dWu"/>
+                        <outlet property="buttonEMail" destination="nQb-h1-bMp" id="Drf-O1-LdM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H4u-QS-v0V" userLabel="First Responder" sceneMemberID="firstResponder"/>
