@@ -41,6 +41,12 @@ class GroupEditViewController: UIViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        self.title = "編輯群組資訊"
+        self.navigationController?.title = "編輯群組資訊"
+        self.tabBarController?.title = "編輯群組資訊"
+    }
+
     @IBAction func cancelUpdate(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }

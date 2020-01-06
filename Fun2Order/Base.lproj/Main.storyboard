@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="myY-7K-WVh">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -29,7 +30,9 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yvh-aR-Y2Y">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="0.14901960784313725" green="0.65098039215686276" blue="0.60392156862745094" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.39215686274509803" green="0.79607843137254897" blue="0.76862745098039209" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="0.0" green="0.41176470588235292" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.39215686274509803" green="0.79607843137254897" blue="0.76862745099999996" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <connections>
                         <segue destination="sLV-zI-7Tj" kind="relationship" relationship="rootViewController" id="1A5-Zz-kbV"/>
@@ -42,13 +45,13 @@
         <!--首頁-->
         <scene sceneID="SWo-1a-eq6">
             <objects>
-                <viewController title="首頁" id="lhU-FT-xtp" customClass="HomeViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="lhU-FT-xtp" customClass="HomeViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pil-sS-cp5">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P5F-Pv-Ibf" customClass="FSPagerView" customModule="Fun2Order" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44" width="414" height="293"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="293"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="P5F-Pv-Ibf" secondAttribute="height" multiplier="414:293" id="WZt-b9-cnl"/>
                                 </constraints>
@@ -57,14 +60,14 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aVt-MN-yk4" customClass="FSPageControl" customModule="Fun2Order" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="309" width="414" height="28"/>
+                                <rect key="frame" x="0.0" y="265" width="414" height="28"/>
                                 <color key="backgroundColor" white="0.40000000000000002" alpha="0.40999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="iPL-QX-oVv"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="v7C-fL-aVD">
-                                <rect key="frame" x="0.0" y="337" width="414" height="559"/>
+                                <rect key="frame" x="0.0" y="293" width="414" height="515"/>
                                 <sections/>
                             </tableView>
                         </subviews>
@@ -85,6 +88,7 @@
                         <viewLayoutGuide key="safeArea" id="qWc-St-5Ko"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="首頁" image="TabBar_Home" selectedImage="TabBar_Home" id="soO-e0-16j"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="pageControl" destination="aVt-MN-yk4" id="8eV-8W-ubR"/>
                         <outlet property="pagerView" destination="P5F-Pv-Ibf" id="TFl-q2-Tgo"/>
@@ -165,16 +169,16 @@
             </objects>
             <point key="canvasLocation" x="764" y="-1050"/>
         </scene>
-        <!--首頁-->
+        <!--Home Tab Bar-->
         <scene sceneID="ape-v2-BcT">
             <objects>
-                <tabBarController storyboardIdentifier="HomeTabBar" title="首頁" id="Vrc-hP-5Fm" customClass="HomeTabBar" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" title="Home" id="Xbp-aj-bCG"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="1TV-3u-7ar">
+                <tabBarController storyboardIdentifier="HomeTabBar" id="Vrc-hP-5Fm" customClass="HomeTabBar" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Xbp-aj-bCG"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="1TV-3u-7ar">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="tintColor" red="0.14901960784313725" green="0.65098039215686276" blue="0.60392156862745094" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
                         <color key="selectedImageTintColor" red="0.14901960784313725" green="0.65098039215686276" blue="0.60392156862745094" alpha="0.84705882352941175" colorSpace="calibratedRGB"/>
                     </tabBar>
                     <connections>
@@ -188,15 +192,15 @@
             </objects>
             <point key="canvasLocation" x="-55" y="-82"/>
         </scene>
-        <!--Favorite Store-->
+        <!--選擇我的最愛-->
         <scene sceneID="NdE-Cm-HtG">
             <objects>
-                <tableViewController title="Favorite Store" id="xqA-34-jxq" customClass="FavoriteTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="選擇我的最愛" id="xqA-34-jxq" customClass="FavoriteTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="BpJ-2t-tJr">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="eOA-QH-nSz">
+                        <toolbar key="tableHeaderView" contentMode="scaleToFill" id="eOA-QH-nSz">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
@@ -212,7 +216,8 @@
                                     </connections>
                                 </barButtonItem>
                             </items>
-                            <color key="tintColor" red="0.14901960784313725" green="0.65098039215686276" blue="0.60392156862745094" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.0" green="0.41176470590000003" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="barTintColor" red="0.3921568627" green="0.79607843140000001" blue="0.76862745099999996" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         </toolbar>
                         <connections>
                             <outlet property="dataSource" destination="xqA-34-jxq" id="kFH-gT-Fq0"/>
@@ -220,6 +225,7 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="我的最愛" image="TabBar_Favorite" selectedImage="TabBar_Favorite" id="a6w-QE-UMX" userLabel="Favorite"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="menuBarItem" destination="p65-rg-b43" id="o89-ys-7MZ"/>
                     </connections>
@@ -233,7 +239,7 @@
             <objects>
                 <tableViewController title="訂單歷史紀錄" id="BkH-ek-Dwa" customClass="HistoryTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ahG-BJ-RK5">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <connections>
@@ -242,6 +248,7 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="歷史訂單" image="TabBar_History" selectedImage="TabBar_History" id="QcF-56-Ro9"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KAv-H2-Tc3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -300,6 +307,21 @@
             </objects>
             <point key="canvasLocation" x="1700.0000000000002" y="939.50892857142856"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="ERd-Vp-Wvu">
+            <objects>
+                <viewController id="int-Xp-fXe" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Hfk-Bg-lMw">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="hPa-r9-3wa"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hx7-78-zxx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2464" y="940"/>
+        </scene>
         <!--Brand List-->
         <scene sceneID="Lva-nG-FZI">
             <objects>
@@ -336,63 +358,178 @@
             </objects>
             <point key="canvasLocation" x="1700" y="-461"/>
         </scene>
-        <!--Group Order-->
+        <!--Group Order View Controller-->
         <scene sceneID="gRP-pF-QyV">
             <objects>
-                <viewController storyboardIdentifier="GroupOrder_VC" title="Group Order" id="LFz-eu-5Q9" customClass="GroupOrderViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GroupOrder_VC" id="LFz-eu-5Q9" customClass="GroupOrderViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Swh-Lz-dce">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="L8U-K9-PKU">
-                                <rect key="frame" x="34" y="93" width="82" height="280"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="W1E-uC-QbK">
-                                    <size key="itemSize" width="80" height="30"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="teK-Aq-t4B">
+                                <rect key="frame" x="20" y="99.5" width="374" height="85"/>
+                                <color key="backgroundColor" systemColor="systemFillColor" red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="85" id="cG0-Lu-b3m"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="o3m-Xz-iDW">
+                                    <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GroupCell" id="dnQ-wH-Pjs" customClass="GroupCell" customModule="Fun2Order" customModuleProvider="target">
-                                        <rect key="frame" x="1" y="0.0" width="80" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="jq0-nT-YWa">
-                                            <rect key="frame" x="0.0" y="0.0" width="80" height="30"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </collectionViewCellContentView>
-                                        <size key="customSize" width="80" height="30"/>
-                                    </collectionViewCell>
-                                </cells>
+                                <cells/>
                             </collectionView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="i6q-wf-GS6">
-                                <rect key="frame" x="137" y="93" width="257" height="280"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5Sd-uG-5pN">
+                                <rect key="frame" x="20" y="199.5" width="374" height="300"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="E76-72-xD4"/>
+                                </constraints>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WMu-HM-N7g">
+                                <rect key="frame" x="20" y="520" width="374" height="33"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="   設定團購截止時間"/>
+                                <connections>
+                                    <action selector="setupOrderDueDate:" destination="LFz-eu-5Q9" eventType="touchUpInside" id="UKJ-Kt-V37"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="截止時間" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJn-Ys-BTA">
+                                <rect key="frame" x="20" y="562.5" width="374" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="hbX-56-l23"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.69411764710000001" green="0.0" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sgz-NU-Yyf" customClass="Checkbox" customModule="Fun2Order" customModuleProvider="target">
+                                <rect key="frame" x="122" y="602.5" width="25" height="25"/>
+                                <color key="backgroundColor" red="0.47632852370000001" green="0.79607843140000001" blue="0.76862745099999996" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="7sy-Gv-s5O"/>
+                                    <constraint firstAttribute="width" constant="25" id="Pjl-7N-ItR"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="參與此次團購" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qsv-BR-ZPc">
+                                <rect key="frame" x="155" y="602.5" width="104" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="YHE-fr-xzm"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KGZ-d7-RWh">
+                                <rect key="frame" x="20" y="647.5" width="374" height="33"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="送出團購邀請"/>
+                                <connections>
+                                    <action selector="sendGroupOrder:" destination="LFz-eu-5Q9" eventType="touchUpInside" id="xwV-ab-ND1"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="店名" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Iy-DD-X1s">
+                                <rect key="frame" x="60" y="54" width="294" height="30"/>
+                                <color key="backgroundColor" red="0.14901960780000001" green="0.65098039220000004" blue="0.60392156860000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="hTV-j9-VJD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="WMu-HM-N7g" firstAttribute="centerX" secondItem="Swh-Lz-dce" secondAttribute="centerX" id="2yh-Dy-BYi"/>
+                            <constraint firstItem="GUY-lw-rmK" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="hJn-Ys-BTA" secondAttribute="trailing" constant="20" id="4An-dA-xEz"/>
+                            <constraint firstItem="teK-Aq-t4B" firstAttribute="centerX" secondItem="Swh-Lz-dce" secondAttribute="centerX" id="4gn-Fe-FJG"/>
+                            <constraint firstItem="GUY-lw-rmK" firstAttribute="trailing" secondItem="5Sd-uG-5pN" secondAttribute="trailing" constant="20" id="602-lg-VD4"/>
+                            <constraint firstItem="4Iy-DD-X1s" firstAttribute="leading" relation="lessThanOrEqual" secondItem="GUY-lw-rmK" secondAttribute="leading" constant="60" id="8Wc-Vj-V8s"/>
+                            <constraint firstItem="GUY-lw-rmK" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="4Iy-DD-X1s" secondAttribute="trailing" constant="60" id="IfY-xR-UPG"/>
+                            <constraint firstItem="GUY-lw-rmK" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="WMu-HM-N7g" secondAttribute="trailing" constant="20" id="ItN-AO-lHD"/>
+                            <constraint firstItem="qsv-BR-ZPc" firstAttribute="top" secondItem="hJn-Ys-BTA" secondAttribute="bottom" constant="10" id="IxU-8C-kMi"/>
+                            <constraint firstItem="WMu-HM-N7g" firstAttribute="leading" relation="lessThanOrEqual" secondItem="GUY-lw-rmK" secondAttribute="leading" constant="20" id="K3g-RB-4nd"/>
+                            <constraint firstItem="4Iy-DD-X1s" firstAttribute="centerX" secondItem="Swh-Lz-dce" secondAttribute="centerX" id="MfB-zE-BSb"/>
+                            <constraint firstItem="qsv-BR-ZPc" firstAttribute="centerX" secondItem="Swh-Lz-dce" secondAttribute="centerX" id="Odx-c3-dkn"/>
+                            <constraint firstItem="hJn-Ys-BTA" firstAttribute="centerX" secondItem="Swh-Lz-dce" secondAttribute="centerX" id="SaA-6F-wWW"/>
+                            <constraint firstItem="hJn-Ys-BTA" firstAttribute="leading" relation="lessThanOrEqual" secondItem="GUY-lw-rmK" secondAttribute="leading" constant="20" id="T6x-jG-5xL"/>
+                            <constraint firstItem="WMu-HM-N7g" firstAttribute="top" secondItem="5Sd-uG-5pN" secondAttribute="bottom" constant="20" id="UXc-DX-bgI"/>
+                            <constraint firstItem="GUY-lw-rmK" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="4Iy-DD-X1s" secondAttribute="trailing" symbolic="YES" id="VpM-MV-cum"/>
+                            <constraint firstItem="teK-Aq-t4B" firstAttribute="leading" secondItem="GUY-lw-rmK" secondAttribute="leading" constant="20" id="ZYt-vg-xIE"/>
+                            <constraint firstItem="KGZ-d7-RWh" firstAttribute="centerX" secondItem="Swh-Lz-dce" secondAttribute="centerX" id="ZrT-xs-NMZ"/>
+                            <constraint firstItem="5Sd-uG-5pN" firstAttribute="top" secondItem="teK-Aq-t4B" secondAttribute="bottom" constant="15" id="axz-re-8zL"/>
+                            <constraint firstItem="teK-Aq-t4B" firstAttribute="top" secondItem="4Iy-DD-X1s" secondAttribute="bottom" constant="15.5" id="cFo-pe-j2E"/>
+                            <constraint firstItem="5Sd-uG-5pN" firstAttribute="centerX" secondItem="teK-Aq-t4B" secondAttribute="centerX" id="d8L-Xn-0cX"/>
+                            <constraint firstItem="4Iy-DD-X1s" firstAttribute="top" secondItem="GUY-lw-rmK" secondAttribute="top" constant="10" id="dtY-J9-bLD"/>
+                            <constraint firstItem="Sgz-NU-Yyf" firstAttribute="top" secondItem="hJn-Ys-BTA" secondAttribute="bottom" constant="10" id="ed4-iK-IOc"/>
+                            <constraint firstItem="GUY-lw-rmK" firstAttribute="trailing" secondItem="teK-Aq-t4B" secondAttribute="trailing" constant="20" id="fph-g6-MrO"/>
+                            <constraint firstItem="hJn-Ys-BTA" firstAttribute="top" secondItem="WMu-HM-N7g" secondAttribute="bottom" constant="10" id="h8Z-q9-YQa"/>
+                            <constraint firstItem="Sgz-NU-Yyf" firstAttribute="centerY" secondItem="qsv-BR-ZPc" secondAttribute="centerY" id="lDx-ru-3XW"/>
+                            <constraint firstItem="KGZ-d7-RWh" firstAttribute="top" secondItem="qsv-BR-ZPc" secondAttribute="bottom" constant="20" id="o6n-Wj-Ivl"/>
+                            <constraint firstItem="5Sd-uG-5pN" firstAttribute="leading" secondItem="GUY-lw-rmK" secondAttribute="leading" constant="20" id="ofX-fP-xe5"/>
+                            <constraint firstItem="KGZ-d7-RWh" firstAttribute="leading" relation="lessThanOrEqual" secondItem="GUY-lw-rmK" secondAttribute="leading" constant="20" id="puh-ev-Nbx"/>
+                            <constraint firstItem="qsv-BR-ZPc" firstAttribute="leading" secondItem="Sgz-NU-Yyf" secondAttribute="trailing" constant="8" symbolic="YES" id="ymc-RE-3sc"/>
+                            <constraint firstItem="GUY-lw-rmK" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="KGZ-d7-RWh" secondAttribute="trailing" constant="20" id="zUW-WI-dvs"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="GUY-lw-rmK"/>
                     </view>
                     <connections>
-                        <outlet property="groupCollectionView" destination="L8U-K9-PKU" id="83c-Ax-6vk"/>
-                        <outlet property="memberTableView" destination="i6q-wf-GS6" id="ldA-cw-Bs9"/>
+                        <outlet property="buttonCreateOrder" destination="KGZ-d7-RWh" id="Q4v-9u-1if"/>
+                        <outlet property="buttonDueDate" destination="WMu-HM-N7g" id="dSr-ws-l6x"/>
+                        <outlet property="collectionGroup" destination="teK-Aq-t4B" id="0PT-im-K94"/>
+                        <outlet property="labelDueDate" destination="hJn-Ys-BTA" id="mhJ-DZ-rsQ"/>
+                        <outlet property="labelTitle" destination="4Iy-DD-X1s" id="Bfw-aB-D1C"/>
+                        <outlet property="memberTableView" destination="5Sd-uG-5pN" id="6wM-8l-0ju"/>
+                        <outlet property="myCheckStatus" destination="Sgz-NU-Yyf" id="sSO-ca-VTw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ldo-rZ-dcm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2462.3188405797105" y="-461.38392857142856"/>
         </scene>
-        <!--Product Detail List-->
+        <!--Date Time View Controller-->
+        <scene sceneID="t2E-4S-I1J">
+            <objects>
+                <viewController storyboardIdentifier="DATETIME_VC" id="W4b-SN-qVX" customClass="DateTimeViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="W8S-Xh-Lk5">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="30" translatesAutoresizingMaskIntoConstraints="NO" id="DIz-nl-LTC">
+                                <rect key="frame" x="0.0" y="19" width="320" height="162"/>
+                                <locale key="locale" localeIdentifier="zh_TW"/>
+                                <connections>
+                                    <action selector="datePickerChanged:" destination="W4b-SN-qVX" eventType="valueChanged" id="5zn-Zt-DrR"/>
+                                </connections>
+                            </datePicker>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="DIz-nl-LTC" firstAttribute="centerY" secondItem="W8S-Xh-Lk5" secondAttribute="centerY" id="Gdb-r8-BYX"/>
+                            <constraint firstItem="DIz-nl-LTC" firstAttribute="centerX" secondItem="W8S-Xh-Lk5" secondAttribute="centerX" id="oyf-d5-akJ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="GQL-cX-uMO"/>
+                    </view>
+                    <size key="freeformSize" width="320" height="200"/>
+                    <connections>
+                        <outlet property="dateTimePicker" destination="DIz-nl-LTC" id="Ehb-rE-80C"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9nb-MZ-Xwj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3039" y="-694"/>
+        </scene>
+        <!--Product Detail Table View Controller-->
         <scene sceneID="M4i-Y0-GR6">
             <objects>
-                <tableViewController storyboardIdentifier="ProductList_VC" title="Product Detail List" id="JCJ-j0-hzJ" customClass="ProductDetailTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ProductList_VC" id="JCJ-j0-hzJ" customClass="ProductDetailTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="haC-FD-swh">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Uey-aP-Jxp">
+                        <toolbar key="tableHeaderView" contentMode="scaleToFill" id="Uey-aP-Jxp">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
@@ -418,7 +555,8 @@
                                     </connections>
                                 </barButtonItem>
                             </items>
-                            <color key="tintColor" red="0.14901960784313725" green="0.65098039215686276" blue="0.60392156862745094" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.0" green="0.41176470590000003" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <color key="barTintColor" red="0.3921568627" green="0.79607843140000001" blue="0.76862745099999996" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         </toolbar>
                         <connections>
                             <outlet property="dataSource" destination="JCJ-j0-hzJ" id="14a-Ju-952"/>
@@ -426,6 +564,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="categorySegment" destination="W3C-H7-OWe" id="Dio-M4-PLM"/>
                     </connections>
@@ -434,15 +573,15 @@
             </objects>
             <point key="canvasLocation" x="1700.0000000000002" y="255.80357142857142"/>
         </scene>
-        <!--Product Recipe-->
+        <!--Recipe Table View Controller-->
         <scene sceneID="fi5-hi-8tQ">
             <objects>
-                <tableViewController storyboardIdentifier="Recipe_VC" title="Product Recipe" id="GSZ-TY-Uez" customClass="RecipeTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="Recipe_VC" id="GSZ-TY-Uez" customClass="RecipeTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="wrU-x5-07G">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="BBW-cv-Y7p">
+                        <toolbar key="tableHeaderView" contentMode="scaleToFill" id="BBW-cv-Y7p">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
@@ -453,13 +592,15 @@
                                     </connections>
                                 </barButtonItem>
                             </items>
-                            <color key="tintColor" red="0.14901960784313725" green="0.65098039215686276" blue="0.60392156862745094" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.0" green="0.41176470588235292" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="barTintColor" red="0.3921568627" green="0.79607843140000001" blue="0.76862745099999996" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         </toolbar>
                         <connections>
                             <outlet property="dataSource" destination="GSZ-TY-Uez" id="7F1-Ih-mXW"/>
                             <outlet property="delegate" destination="GSZ-TY-Uez" id="R4V-7U-aj3"/>
                         </connections>
                     </tableView>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I3H-ti-2Sy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -470,7 +611,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="Cart_VC" title="Cart" id="OJi-7X-vXB" customClass="CartTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="5G2-CV-mQ2">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <connections>
@@ -814,18 +955,18 @@
             <objects>
                 <viewController title="我的設定" id="Qxv-6f-9in" customClass="MyProfileViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MG8-6g-wVx">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image_Default_Member.png" translatesAutoresizingMaskIntoConstraints="NO" id="qOt-HE-34n">
-                                <rect key="frame" x="20" y="50" width="80" height="80"/>
+                                <rect key="frame" x="20" y="6" width="80" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="vv8-h5-jpV"/>
                                     <constraint firstAttribute="height" constant="80" id="zMq-T7-7Yh"/>
                                 </constraints>
                             </imageView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="GbX-cC-ncg">
-                                <rect key="frame" x="98" y="145" width="218" height="32"/>
+                                <rect key="frame" x="98" y="101" width="218" height="32"/>
                                 <segments>
                                     <segment title="基本資料"/>
                                     <segment title="我的最愛"/>
@@ -836,19 +977,19 @@
                                 </connections>
                             </segmentedControl>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J2u-Fg-xuN">
-                                <rect key="frame" x="0.0" y="184" width="414" height="629"/>
+                                <rect key="frame" x="0.0" y="140" width="414" height="585"/>
                                 <connections>
                                     <segue destination="6XF-XD-8dH" kind="embed" id="pqk-Ne-CeY"/>
                                 </connections>
                             </containerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1234567890" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pWU-RQ-yFB">
-                                <rect key="frame" x="115" y="102" width="62" height="12"/>
+                                <rect key="frame" x="115" y="58" width="62" height="12"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User's Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OwK-aB-ih3">
-                                <rect key="frame" x="115" y="71" width="98" height="21"/>
+                                <rect key="frame" x="115" y="27" width="98" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -875,6 +1016,7 @@
                         <viewLayoutGuide key="safeArea" id="Zd2-Bt-E5q"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="我的設定" image="TabBar_Me" selectedImage="TabBar_Me" id="UP9-ji-aLo"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="imageMyPhoto" destination="qOt-HE-34n" id="Kmu-eI-Pzp"/>
                         <outlet property="labelUserID" destination="pWU-RQ-yFB" id="MfM-c6-jNk"/>
@@ -908,7 +1050,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="BASIC_INFO_VC" id="dsv-z7-3BV" customClass="BasicInformationTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="g5X-v3-gnZ">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="629"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="585"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <sections>
@@ -1218,7 +1360,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="CONFIG_FAVORITE_VC" id="hAG-S3-A3y" customClass="ConfigMyFavoriteTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="VDA-5s-0Yu">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="629"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="585"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <toolbar key="tableFooterView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="rby-2u-Zeb">
@@ -1259,7 +1401,7 @@
             <objects>
                 <viewController storyboardIdentifier="MEMBER_GROUP_VC" id="gMo-MT-pfQ" customClass="MemberGroupViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tXU-sH-N5T">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="629"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="585"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="v2F-eZ-hJN">
@@ -1283,7 +1425,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tys-cZ-Nb4">
-                                <rect key="frame" x="20" y="216" width="374" height="403"/>
+                                <rect key="frame" x="20" y="216" width="374" height="359"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbZ-z0-H9a">
@@ -1387,7 +1529,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="CONFIG_FAVORITE_PRODUCT_VC" id="fPl-P5-mGK" customClass="ConfigFavoriteProductTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="uIY-be-G9H">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="629"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="585"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <connections>
@@ -1914,6 +2056,6 @@
         <image name="ToolBar_Menu" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Fof-3o-hkm"/>
+        <segue reference="c2M-Dl-3EI"/>
     </inferredMetricsTieBreakers>
 </document>

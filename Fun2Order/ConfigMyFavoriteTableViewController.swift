@@ -80,7 +80,6 @@ class ConfigMyFavoriteTableViewController: UITableViewController {
             }
         }
     }
-    
 
     @objc func deleteMyFavoriteAddress(_ notification: Notification) {
         print("ConfigMyFavoriteTableViewController receive ConfigDeleteAddress notification")

@@ -355,4 +355,16 @@ extension MemberGroupViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        //header.layer.backgroundColor = UIColor.clear.cgColor
+        header.backgroundView?.layer.backgroundColor = UIColor.clear.cgColor
+        header.textLabel?.textAlignment = .center
+        header.textLabel?.text = "\(self.groupList[self.selectedGroupIndex].groupName)  會員列表"
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 44
+    }
 }

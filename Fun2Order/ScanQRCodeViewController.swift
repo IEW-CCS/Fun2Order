@@ -30,7 +30,13 @@ class ScanQRCodeViewController: UIViewController {
         
         configScanner()
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        self.title = "掃描會員條碼"
+        self.navigationController?.title = "掃描會員條碼"
+        self.tabBarController?.title = "掃描會員條碼"
+    }
+
     @IBAction func addToGroup(_ sender: UIButton) {
         let databaseRef = Database.database().reference()
         let profileDatabasePath = "USER_PROFILE/\(self.memberID)"

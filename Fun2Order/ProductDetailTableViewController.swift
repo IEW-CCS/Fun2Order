@@ -16,6 +16,7 @@ class ProductDetailTableViewController: UITableViewController {
     var storeProductList = [StoreProductRecipe]()
     var favoriteStoreInfo = FavoriteStoreInfo()
     var productRecipePriceList: ProductRecipePriceList!
+    var orderType: String = ""
     
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
@@ -290,7 +291,8 @@ class ProductDetailTableViewController: UITableViewController {
         
         recipe_vc.storeProductRecipe = self.storeProductList[indexPath.row]
         recipe_vc.priceListArray = tmpPriceList
-        recipe_vc.oType = "S"
+        //recipe_vc.oType = "S"
+        recipe_vc.oType = self.orderType
         recipe_vc.isEditFlag = false
         //show(recipe_vc, sender: self)
         self.navigationController?.pushViewController(recipe_vc, animated: true)

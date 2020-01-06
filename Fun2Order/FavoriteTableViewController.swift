@@ -200,6 +200,7 @@ class FavoriteTableViewController: UITableViewController {
             }
 
             product_vc.favoriteStoreInfo = self.favoriteStoreArray[indexPath.row]
+            product_vc.orderType = ORDER_TYPE_SINGLE
             show(product_vc, sender: self)
         }
     }
@@ -234,8 +235,9 @@ extension FavoriteTableViewController: DisplayGroupOrderDelegate {
             return
         }
         
-        groupOrderController.modalTransitionStyle = .crossDissolve
-        groupOrderController.modalPresentationStyle = .overFullScreen
-        navigationController?.present(groupOrderController, animated: true, completion: nil)
+        //groupOrderController.modalTransitionStyle = .crossDissolve
+        //groupOrderController.modalPresentationStyle = .overFullScreen
+        groupOrderController.favoriteStoreInfo = self.favoriteStoreArray[index.row]
+        navigationController?.show(groupOrderController, sender: self)
     }
 }

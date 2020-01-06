@@ -55,12 +55,18 @@ class MyProfileViewController: UIViewController {
         )
     }
 
+    //override func viewWillAppear(_ animated: Bool) {
+    //    self.title = "我的設定"
+    //    self.navigationController?.title = "我的設定"
+    //   self.tabBarController?.title = "我的設定"
+    //}
+    
     override func viewWillAppear(_ animated: Bool) {
         self.title = "我的設定"
         self.navigationController?.title = "我的設定"
         self.tabBarController?.title = "我的設定"
     }
-    
+
     override func viewDidLayoutSubviews() {
         print("**************  viewDidLayoutSubviews to setupSegmentIndicator")
         setupSegmentIndicator()
@@ -184,24 +190,13 @@ class MyProfileViewController: UIViewController {
         if let plist = NSMutableDictionary(contentsOfFile: path) {
             if let userID = plist["UserID"] {labelUserID.text = userID as? String}
             if let userName = plist["UserName"] {labelUserName.text = userName as? String}
-            //if let userImage = plist["UserImage"] {imageMyPhoto.image = UIImage(data: userImage as! Data)!}
-            /*
-             let userImage = plist["UserImage"] as! Data
-             if userImage.isEmpty {
-                 self.imageMyPhoto.image = UIImage(named: "Image_Default.Member.png")!
-             } else {
-                 self.imageMyPhoto.image = UIImage(data: userImage)!
-             }
-              */
-             let userImage = plist["UserImage"] as? Data
-             if (userImage == nil || userImage?.count == 0)
-             {
+
+            let userImage = plist["UserImage"] as? Data
+            if (userImage == nil || userImage?.count == 0) {
                 self.imageMyPhoto.image = UIImage(named: "Image_Default_Member.png")!
-             }
-            else
-             {
+            } else {
                 self.imageMyPhoto.image = UIImage(data: userImage!)
-             }
+            }
         }
     }
     

@@ -93,73 +93,6 @@ class CartOrderItemCell: UITableViewCell {
         return recipeString
     }
     
-    func deleteProduct(order_number: String, item_number: Int) -> Bool {
-        let fetchProduct: NSFetchRequest<ORDER_CONTENT_ITEM> = ORDER_CONTENT_ITEM.fetchRequest()
-        let pString = "orderNumber == \"\(order_number)\" AND itemNumber == \(item_number)"
-        print("deleteProduct pOrderpStringString = \(pString)")
-        let predicate = NSPredicate(format: pString)
-        fetchProduct.predicate = predicate
-
-        do {
-            let product_data = try vc.fetch(fetchProduct).first
-            vc.delete(product_data!)
-            //app.saveContext()
-        } catch {
-            print(error.localizedDescription)
-            return false
-        }
-        
-        let fetchRecipe: NSFetchRequest<ORDER_PRODUCT_RECIPE> = ORDER_PRODUCT_RECIPE.fetchRequest()
-        let pRecipeString = "orderNumber == \"\(order_number)\" AND itemNumber == \(item_number)"
-        print("deleteProduct pOrderpStringString = \(pRecipeString)")
-        let predicateRecipe = NSPredicate(format: pRecipeString)
-        fetchRecipe.predicate = predicateRecipe
-        
-        do {
-            let recipe_list = try vc.fetch(fetchRecipe)
-            for recipe_data in recipe_list {
-                vc.delete(recipe_data)
-            }
-            //app.saveContext()
-        } catch {
-            print(error.localizedDescription)
-            return false
-        }
-        
-        let fetchRequest: NSFetchRequest<ORDER_CONTENT_ITEM> = ORDER_CONTENT_ITEM.fetchRequest()
-        let pRequestString = "orderNumber == \"\(order_number)\""
-        print("deleteProduct pRequestString = \(pRequestString)")
-        let predicateRequest = NSPredicate(format: pRequestString)
-        fetchRequest.predicate = predicateRequest
-
-        do {
-            let product_list = try vc.fetch(fetchRequest)
-            if product_list.count == 0 {
-                let fetchOrder: NSFetchRequest<ORDER_INFORMATION> = ORDER_INFORMATION.fetchRequest()
-                let pOrderString = "orderNumber == \"\(order_number)\""
-                print("deleteProduct pOrderString = \(pOrderString)")
-                let predicateOrder = NSPredicate(format: pOrderString)
-                fetchOrder.predicate = predicateOrder
-                do {
-                    let order_data = try vc.fetch(fetchOrder).first
-                    vc.delete(order_data!)
-                    //app.saveContext()
-                } catch {
-                    print(error.localizedDescription)
-                    return false
-                }
-            }
-        } catch {
-            print(error.localizedDescription)
-            return false
-        }
-
-        updateOrderData(brand_id: self.orderInformation.brandID, store_id: self.orderInformation.storeID)
-        app.saveContext()
-        
-        return true
-    }
-    
     @IBAction func editOrderProductItem(_ sender: UIButton) {
         var tmpOrderInfo: OrderInformation = OrderInformation()
 
@@ -167,6 +100,7 @@ class CartOrderItemCell: UITableViewCell {
         tmpOrderInfo.contentList.removeAll()
         tmpOrderInfo.contentList.append(self.productItem)
 
+        //Send notofication to CartTableViewController
         NotificationCenter.default.post(name: NSNotification.Name("EditProductRecipe"), object: tmpOrderInfo)
     }
     
@@ -175,8 +109,10 @@ class CartOrderItemCell: UITableViewCell {
 
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             print("Confirm to delete this product")
-            if self.deleteProduct(order_number: self.productItem.orderNumber, item_number: self.productItem.itemNumber) {
+            if deleteOrderProduct(brand_id: self.orderInformation.brandID, store_id: self.orderInformation.storeID, order_number: self.productItem.orderNumber, item_number: self.productItem.itemNumber) {
                 print("Delete successful!")
+                
+                //Send notofication to CartTableViewController
                 NotificationCenter.default.post(name: NSNotification.Name("EditDeleteOrderProduct"), object: nil)
             }
         }

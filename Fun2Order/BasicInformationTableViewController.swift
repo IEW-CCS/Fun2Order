@@ -253,7 +253,8 @@ class BasicInformationTableViewController: UITableViewController {
         okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
         controller.addAction(okAction)
         
-        present(controller, animated: true, completion: nil)    }
+        present(controller, animated: true, completion: nil)
+    }
     
     @IBAction func updateProfile(_ sender: UIButton) {
         saveSetupConfig()

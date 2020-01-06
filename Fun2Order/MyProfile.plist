@@ -3,24 +3,24 @@
 <plist version="1.0">
 <dict>
 	<key>UserID</key>
-	<string>FTecTGU9uhhzWH2pmkbN0edj0ql2</string>
+	<string></string>
 	<key>PhoneNumber</key>
-	<string>0912345678</string>
+	<string></string>
 	<key>UserAccount</key>
-	<string>robohood83</string>
+	<string></string>
 	<key>EmailAddress</key>
-	<string>robohood83@gmail.com</string>
+	<string></string>
 	<key>UserPassword</key>
-	<string>1234567</string>
+	<string></string>
 	<key>UserName</key>
-	<string>James</string>
+	<string></string>
 	<key>UserImage</key>
 	<data></data>
 	<key>Gender</key>
-	<string>男性</string>
+	<string></string>
 	<key>Birthday</key>
-	<string>1980/08/08</string>
+	<string></string>
 	<key>Address</key>
-	<string>台南市</string>
+	<string></string>
 </dict>
 </plist>

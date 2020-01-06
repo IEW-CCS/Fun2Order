@@ -90,7 +90,7 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.title = "首頁"
         self.navigationController?.title = "首頁"
         self.tabBarController?.title = "首頁"

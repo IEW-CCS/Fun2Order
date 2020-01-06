@@ -12,6 +12,7 @@ import UIKit
 let DATETIME_FORMATTER: String = "yyyyMMddHHmmssSSS"
 let DATETIME_FORMATTER2: String = "yyyyMMddHHmmss"
 let TAIWAN_DATETIME_FORMATTER: String = "yyyy年MM月dd日 HH:mm:ss"
+let TAIWAN_DATETIME_FORMATTER2: String = "yyyy年MM月dd日 HH:mm"
 let DATE_FORMATTER: String = "yyyy年MM月dd日"
 
 let HTTP_REQUEST_TIMEOUT: Double = 5.0
@@ -20,6 +21,7 @@ let BASIC_FRAME_BORDER_COLOR_GREEN = UIColor(red: 51/255, green: 205/255, blue: 
 let BASIC_FRAME_BORDER_COLOR_CYAN = UIColor(red: 128/255, green: 222/255, blue: 234/255, alpha: 1.0)
 let BASIC_FRAME_BORDER_COLOR_BLUE = UIColor(red: 36/255, green: 113/255, blue: 249/255, alpha: 1.0)
 let BASIC_FRAME_BORDER_COLOR_ORANGE = UIColor(red: 255/255, green: 112/255, blue: 67/255, alpha: 1.0)
+let NAVIGATION_BAR_COLOR_DARK_TEAL = UIColor(red: 100/255, green: 203/255, blue: 196/255, alpha: 1.0)
 
 let COLOR_PEPPER_RED = UIColor(red: 177/255, green: 0/255, blue: 28/255, alpha: 1.0)
 

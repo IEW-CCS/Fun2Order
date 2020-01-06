@@ -68,16 +68,27 @@ class CartTableViewController: UITableViewController {
             object: nil
         )
 
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.addProductRecipe(_:)),
+            name: NSNotification.Name(rawValue: "AddProductRecipe"),
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.refreshCart(_:)),
+            name: NSNotification.Name(rawValue: "RefreshCartOrder"),
+            object: nil
+        )
+
         retrieveOrderList()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-    //    self.viewWillAppear(animated)
         self.title = "我的訂單"
         self.tabBarController?.title = "我的訂單"
         self.navigationController?.title = "我的訂單"
-        //retrieveOrderList()
-        //self.tableView.reloadData()
     }
     
     func retrieveOrderList() {
@@ -343,7 +354,28 @@ class CartTableViewController: UITableViewController {
             requestPriceList(brand_id: order_info.brandID, store_id: order_info.storeID)
         }
     }
-    
+
+    @objc func addProductRecipe(_ notification: Notification) {
+        print("CartTableViewController receive AddProductRecipe notification")
+        if let store_info = notification.object as? FavoriteStoreInfo {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            guard let product_vc = storyboard.instantiateViewController(withIdentifier: "ProductList_VC") as? ProductDetailTableViewController else{
+                assertionFailure("[AssertionFailure] StoryBoard: ProductList_VC can't find!! (ViewController)")
+                return
+            }
+
+            product_vc.favoriteStoreInfo = store_info
+            product_vc.orderType = ORDER_TYPE_GROUP
+            show(product_vc, sender: self)
+        }
+    }
+
+    @objc func refreshCart(_ notification: Notification) {
+        print("CartTableViewController receive RefreshCartOrder notification")
+        retrieveOrderList()
+        self.tableView.reloadData()
+    }
+
     @objc func editDeleteOrderProduct(_ notification: Notification) {
         print("CartTableViewController receive EditDeleteOrderProduct notification")
         self.orderList.removeAll()
@@ -371,6 +403,6 @@ class CartTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 560
+        return 600
     }
 }

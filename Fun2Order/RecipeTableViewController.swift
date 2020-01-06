@@ -321,6 +321,7 @@ class RecipeTableViewController: UITableViewController {
         
         if self.isEditFlag {
             updateEditedOrderInformation(order_info: self.editOrderInfo)
+
             return
         }
         
@@ -350,6 +351,7 @@ class RecipeTableViewController: UITableViewController {
             let quantity_row_index = IndexPath(row: self.productRecipes.count + 1, section: 0)
             let quantity_cell = self.tableView.cellForRow(at: quantity_row_index) as! QuantityCell
             order_data.orderTotalPrice = Int16(quantity_cell.getTotalPrice())
+            order_data.orderTotalQuantity = Int16(quantity_cell.getQuantity())
             order_data.brandID = Int16(self.storeProductRecipe.brandID)
             order_data.brandName = self.storeProductRecipe.brandName
             order_data.storeID = Int16(self.storeProductRecipe.storeID)
@@ -370,7 +372,8 @@ class RecipeTableViewController: UITableViewController {
         self.present(alertMessage, animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
             self.presentedViewController?.dismiss(animated: true, completion: nil)
-            self.navigationController?.popViewController(animated: true)
+            //self.navigationController?.popViewController(animated: true)
+            self.navigationController?.popToRootViewController(animated: true)
         }
     }
     
@@ -435,7 +438,7 @@ class RecipeTableViewController: UITableViewController {
             return
         }
     }
-        
+
     func insertItemRecipe(item_number: Int, order_number: String, product_id: Int) {
         
         for i in 0...self.productRecipes.count - 1 {
@@ -471,6 +474,8 @@ class RecipeTableViewController: UITableViewController {
         self.present(alertMessage, animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
             self.presentedViewController?.dismiss(animated: true, completion: nil)
+            //Send notofication to CartTableViewController
+            NotificationCenter.default.post(name: NSNotification.Name("RefreshCartOrder"), object: nil)
             self.navigationController?.popViewController(animated: true)
         }
     }

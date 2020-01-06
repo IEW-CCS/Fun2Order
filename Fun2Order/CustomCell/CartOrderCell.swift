@@ -17,12 +17,16 @@ class CartOrderCell: UITableViewCell {
     
     @IBOutlet weak var labelBrandTitle: UILabel!
     @IBOutlet weak var imageBrandImage: UIImageView!
+    @IBOutlet weak var imageOrderType: UIImageView!
     @IBOutlet weak var labelTotalQuantity: UILabel!
     @IBOutlet weak var labelTotalPrice: UILabel!
     @IBOutlet weak var labelDeliveryWay: UILabel!
     @IBOutlet weak var labelAddress: UILabel!
     @IBOutlet weak var buttonTakeOut: UIButton!
     @IBOutlet weak var buttonDelivery: UIButton!
+    @IBOutlet weak var buttonSendOrder: UIButton!
+    @IBOutlet weak var buttonAddProduct: UIButton!
+    @IBOutlet weak var buttonDeleteOrder: UIButton!
     
     var orderInformation: OrderInformation = OrderInformation()
     var serialNumberList: OrderSerialList!
@@ -53,6 +57,20 @@ class CartOrderCell: UITableViewCell {
         self.buttonDelivery.setTitleColor(CUSTOM_COLOR_EMERALD_GREEN, for: .normal)
         self.buttonDelivery.setTitleColor(.white, for: .selected)
 
+        /*
+        self.buttonSendOrder.layer.borderWidth = 1.0
+        self.buttonSendOrder.layer.borderColor = UIColor.systemBlue.cgColor
+        self.buttonSendOrder.layer.cornerRadius = 6
+
+        self.buttonAddProduct.layer.borderWidth = 1.0
+        self.buttonAddProduct.layer.borderColor = UIColor.systemBlue.cgColor
+        self.buttonAddProduct.layer.cornerRadius = 6
+
+        self.buttonDeleteOrder.layer.borderWidth = 1.0
+        self.buttonDeleteOrder.layer.borderColor = COLOR_PEPPER_RED.cgColor
+        self.buttonDeleteOrder.layer.cornerRadius = 6
+         */
+        
         self.payBackView.layer.borderWidth = CGFloat(1.0)
         self.payBackView.layer.borderColor = UIColor.lightGray.cgColor
         self.payBackView.layer.cornerRadius = 4
@@ -75,19 +93,10 @@ class CartOrderCell: UITableViewCell {
     
     func setData(order_info: OrderInformation) {
         self.orderInformation = order_info
-        /*
-         var totalQuantity: Int = 0
-         var totalPrice: Int = 0
-         
-         for i in 0...order_info.contentList.count - 1 {
-             totalQuantity = totalQuantity + order_info.contentList[i].itemQuantity
-             totalPrice = totalPrice + order_info.contentList[i].itemFinalPrice
-         }
-         self.orderInformation.orderTotalPrice = totalPrice
-         */
 
         self.labelBrandTitle.text = "\(self.orderInformation.brandName)  \(self.orderInformation.storeName)"
         self.imageBrandImage.image = retrieveBrandImage(brand_id: order_info.brandID)
+        self.imageOrderType.image = order_info.orderImage
         self.labelTotalQuantity.text = String(self.orderInformation.orderTotalQuantity)
         self.labelTotalPrice.text = String(self.orderInformation.orderTotalPrice)
         self.labelAddress.text = order_info.deliveryAddress
@@ -121,25 +130,6 @@ class CartOrderCell: UITableViewCell {
             return UIImage()
         }
     }
-
-    /*
-    func retrieveFavoriteAddress() {
-        self.favoriteAddr.removeAll()
-        
-        let fetchAddress: NSFetchRequest<FAVORITE_ADDRESS> = FAVORITE_ADDRESS.fetchRequest()
-
-        do {
-            let address_list = try vc.fetch(fetchAddress)
-            for address_data in address_list {
-                var tmpAddress = FavoriteAddress()
-                tmpAddress.createTime = address_data.createTime!
-                tmpAddress.favoriteAddress = address_data.favoriteAddress!
-                self.favoriteAddr.append(tmpAddress)
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-    }*/
     
     @IBAction func takeOut(_ sender: UIButton) {
         self.labelDeliveryWay.text = "自取"
@@ -220,6 +210,55 @@ class CartOrderCell: UITableViewCell {
         textController.addAction(addAction)
         app.window?.rootViewController!.present(textController, animated: true, completion: nil)
     }
+    
+    @IBAction func addProductToOrder(_ sender: UIButton) {
+        let favoriteStore = retrieveFavoriteStoreByID(brand_id: self.orderInformation.brandID, store_id: self.orderInformation.storeID)
+        if favoriteStore != nil {
+            //Send notofication to CartTableViewController
+            NotificationCenter.default.post(name: NSNotification.Name("AddProductRecipe"), object: favoriteStore)
+        }
+    }
+    
+    @IBAction func deleteEntireOrder(_ sender: UIButton) {
+        let controller = UIAlertController(title: "刪除訂單", message: "確定要刪除整張訂單嗎？", preferredStyle: .alert)
+
+        let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+            print("Confirm to delete this order")
+            
+            if self.orderInformation.contentList.count == 0 {
+                let fetchOrder: NSFetchRequest<ORDER_INFORMATION> = ORDER_INFORMATION.fetchRequest()
+                let pOrderString = "orderNumber == \"\(self.orderInformation.orderNumber)\""
+                print("deleteEntireOrder pOrderString = \(pOrderString)")
+                let predicateOrder = NSPredicate(format: pOrderString)
+                fetchOrder.predicate = predicateOrder
+                do {
+                    let order_data = try self.vc.fetch(fetchOrder).first
+                    self.vc.delete(order_data!)
+                } catch {
+                    print(error.localizedDescription)
+                    return
+                }
+                self.app.saveContext()
+            } else {
+                for product_data in self.orderInformation.contentList {
+                    let result = deleteOrderProduct(brand_id: self.orderInformation.brandID, store_id: self.orderInformation.storeID, order_number: self.orderInformation.orderNumber, item_number: product_data.itemNumber)
+                    if result {
+                        print("Delete order product[\(product_data.productName)] successful")
+                    } else {
+                        print("Fail to delete order product[\(product_data.productName)]")
+                    }
+                }
+            }
+            
+            //Send notofication to CartTableViewController
+            NotificationCenter.default.post(name: NSNotification.Name("RefreshCartOrder"), object: nil)
+        }
+        
+        controller.addAction(okAction)
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        controller.addAction(cancelAction)
+        app.window?.rootViewController!.present(controller, animated: true, completion: nil)    }
+    
     
     func updateButtonState(takeout_flag: Bool) {
         if takeout_flag {

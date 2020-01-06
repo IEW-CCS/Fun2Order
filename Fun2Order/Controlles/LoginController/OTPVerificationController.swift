@@ -45,26 +45,15 @@ class OTPVerificationController: UIViewController,OtpViewDelegate {
                         print("Save MyProfile.plist failed")
                     }
                 }
-                
-                /*
-                 let uidPathString = "USER_PROFILE/\(Auth.auth().currentUser!.uid)/uID"
-                 Database.database().reference(withPath: uidPathString).setValue(Auth.auth().currentUser!.uid)
-                 let photoUrlPathString = "USER_PROFILE/\(Auth.auth().currentUser!.uid)/photoURL"
-                 Database.database().reference(withPath: photoUrlPathString).setValue("UserProfile_Photo/Image_Default_Member.png")
-                 let userNamePathString = "USER_PROFILE/\(Auth.auth().currentUser!.uid)/userName"
-                 Database.database().reference(withPath: userNamePathString).setValue("")
-                  */
+
                 let databaseRef = Database.database().reference()
                 
-                //let uidPathString = "USER_PROFILE/\(Auth.auth().currentUser!.uid)/uID"
                 let uidPathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "uID")
                 databaseRef.child(uidPathString).setValue(Auth.auth().currentUser!.uid)
 
-                //let userNamePathString = "USER_PROFILE/\(Auth.auth().currentUser!.uid)/userName"
                 let userNamePathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "userName")
                 databaseRef.child(userNamePathString).setValue("")
 
-                //let photoUrlPathString = "USER_PROFILE/\(Auth.auth().currentUser!.uid)/photoURL"
                 let photoUrlPathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "photoURL")
                 databaseRef.child(photoUrlPathString).setValue("UserProfile_Photo/Image_Default_Member.png")
                 

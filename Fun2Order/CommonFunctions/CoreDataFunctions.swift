@@ -203,6 +203,40 @@ func deleteAllProductRecipe() {
     app.saveContext()
 }
 
+func retrieveFavoriteStoreByID(brand_id: Int, store_id: Int) -> FavoriteStoreInfo? {
+    var tmp = FavoriteStoreInfo()
+    
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchRequest: NSFetchRequest<FAVORITE_STORE> = FAVORITE_STORE.fetchRequest()
+    let predicateString = "brandID == \(brand_id) AND storeID == \(store_id)"
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let favorite_data = try vc.fetch(fetchRequest).first
+        if favorite_data != nil {
+            tmp.brandID = Int(favorite_data!.brandID)
+            tmp.storeID = Int(favorite_data!.storeID)
+            tmp.brandName = favorite_data!.brandName!
+            tmp.storeName = favorite_data!.storeName!
+            tmp.storeDescription = favorite_data!.storeDescription!
+            tmp.insertDateTime = favorite_data!.insertDateTime!
+            tmp.storeBrandImage = UIImage(data: favorite_data!.storeBrandImage!)!
+            print("Favorite Store: brand id: \(tmp.brandID), store id: \(tmp.storeID)")
+        }
+    } catch {
+        print(error.localizedDescription)
+        return nil
+    }
+
+    return tmp
+}
+
 func retrieveFavoriteStore() -> [FavoriteStoreInfo] {
     var returnList = [FavoriteStoreInfo]()
     
@@ -582,6 +616,7 @@ func updateOrderData(brand_id: Int, store_id: Int) {
     }
 }
 
+
 func retrieveGroupList() -> [Group] {
     var returnList = [Group]()
 
@@ -728,4 +763,76 @@ func deleteMemberByGroup(group_id: Int) {
     }
 
     app.saveContext()
+}
+
+func deleteOrderProduct(brand_id: Int, store_id: Int, order_number: String, item_number: Int) -> Bool {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchProduct: NSFetchRequest<ORDER_CONTENT_ITEM> = ORDER_CONTENT_ITEM.fetchRequest()
+    let pString = "orderNumber == \"\(order_number)\" AND itemNumber == \(item_number)"
+    print("deleteProduct pOrderpStringString = \(pString)")
+    let predicate = NSPredicate(format: pString)
+    fetchProduct.predicate = predicate
+
+    do {
+        let product_data = try vc.fetch(fetchProduct).first
+        vc.delete(product_data!)
+        //app.saveContext()
+    } catch {
+        print(error.localizedDescription)
+        return false
+    }
+    
+    let fetchRecipe: NSFetchRequest<ORDER_PRODUCT_RECIPE> = ORDER_PRODUCT_RECIPE.fetchRequest()
+    let pRecipeString = "orderNumber == \"\(order_number)\" AND itemNumber == \(item_number)"
+    print("deleteProduct pOrderpStringString = \(pRecipeString)")
+    let predicateRecipe = NSPredicate(format: pRecipeString)
+    fetchRecipe.predicate = predicateRecipe
+    
+    do {
+        let recipe_list = try vc.fetch(fetchRecipe)
+        for recipe_data in recipe_list {
+            vc.delete(recipe_data)
+        }
+        //app.saveContext()
+    } catch {
+        print(error.localizedDescription)
+        return false
+    }
+    
+    let fetchRequest: NSFetchRequest<ORDER_CONTENT_ITEM> = ORDER_CONTENT_ITEM.fetchRequest()
+    let pRequestString = "orderNumber == \"\(order_number)\""
+    print("deleteProduct pRequestString = \(pRequestString)")
+    let predicateRequest = NSPredicate(format: pRequestString)
+    fetchRequest.predicate = predicateRequest
+
+    do {
+        let product_list = try vc.fetch(fetchRequest)
+        if product_list.count == 0 {
+            let fetchOrder: NSFetchRequest<ORDER_INFORMATION> = ORDER_INFORMATION.fetchRequest()
+            let pOrderString = "orderNumber == \"\(order_number)\""
+            print("deleteProduct pOrderString = \(pOrderString)")
+            let predicateOrder = NSPredicate(format: pOrderString)
+            fetchOrder.predicate = predicateOrder
+            do {
+                let order_data = try vc.fetch(fetchOrder).first
+                vc.delete(order_data!)
+                //app.saveContext()
+            } catch {
+                print(error.localizedDescription)
+                return false
+            }
+        }
+    } catch {
+        print(error.localizedDescription)
+        return false
+    }
+
+    updateOrderData(brand_id: brand_id, store_id: store_id)
+    app.saveContext()
+    
+    return true
 }

@@ -68,12 +68,12 @@ public class Checkbox: UIView {
 
     private func setupDefaults() {
         backgroundColor = UIColor.init(white: 1, alpha: 0)
-        //uncheckedBorderColor = tintColor
-        //checkedBorderColor = tintColor
-        //checkmarkColor = tintColor
-        uncheckedBorderColor = UIColor.lightGray
-        checkedBorderColor = UIColor.lightGray
-        checkmarkColor = UIColor.lightGray
+        uncheckedBorderColor = tintColor
+        checkedBorderColor = tintColor
+        checkmarkColor = tintColor
+        //uncheckedBorderColor = UIColor.lightGray
+        //checkedBorderColor = UIColor.lightGray
+        //checkmarkColor = UIColor.lightGray
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(recognizer:)))
         addGestureRecognizer(tapGesture)

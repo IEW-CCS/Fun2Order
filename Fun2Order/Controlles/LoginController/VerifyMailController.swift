@@ -47,6 +47,27 @@ class VerifyMailController: UIViewController {
                 self!.present(alert, animated: true, completion: nil)
                 
             } else {
+                let path = NSHomeDirectory() + "/Documents/MyProfile.plist"
+                if let plist = NSMutableDictionary(contentsOfFile: path) {
+                    plist["UserID"] = Auth.auth().currentUser?.uid
+                    plist["PhoneNumber"] = Auth.auth().currentUser?.phoneNumber
+
+                    if !plist.write(toFile: path, atomically: true) {
+                        print("Save MyProfile.plist failed")
+                    }
+                }
+
+                let databaseRef = Database.database().reference()
+                
+                let uidPathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "uID")
+                databaseRef.child(uidPathString).setValue(Auth.auth().currentUser!.uid)
+
+                let userNamePathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "userName")
+                databaseRef.child(userNamePathString).setValue("")
+
+                let photoUrlPathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "photoURL")
+                databaseRef.child(photoUrlPathString).setValue("UserProfile_Photo/Image_Default_Member.png")
+
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 let nextViewController = storyBoard.instantiateViewController(withIdentifier: "HomeTabBar") as! UITabBarController
                 self!.navigationController?.pushViewController(nextViewController, animated: true)
