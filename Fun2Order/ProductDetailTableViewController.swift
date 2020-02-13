@@ -12,7 +12,7 @@ import Firebase
 
 class ProductDetailTableViewController: UITableViewController {
     var productCategories = [String]()
-    var productList = [ProductInformation]()
+    //var productList = [ProductInformation]()
     var storeProductList = [StoreProductRecipe]()
     var favoriteStoreInfo = FavoriteStoreInfo()
     var productRecipePriceList: ProductRecipePriceList!
@@ -39,7 +39,14 @@ class ProductDetailTableViewController: UITableViewController {
         
         let sectionViewNib: UINib = UINib(nibName: "CategorySectionView", bundle: nil)
         self.tableView.register(sectionViewNib, forHeaderFooterViewReuseIdentifier: "CategorySectionView")
-        
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.refreshProductDetailList(_:)),
+            name: NSNotification.Name(rawValue: "RefreshProductDetailList"),
+            object: nil
+        )
+
         vc = app.persistentContainer.viewContext
 
         retrieveCategoryInformation()
@@ -49,7 +56,6 @@ class ProductDetailTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.title = "\(self.favoriteStoreInfo.brandName)  \(self.favoriteStoreInfo.storeName) 產品列表"
-        //self.tableView.reloadData()
     }
 
     @IBAction func displayCartView(_ sender: UIBarButtonItem) {
@@ -62,6 +68,12 @@ class ProductDetailTableViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
+    @objc func refreshProductDetailList(_ notification: Notification) {
+        print("FavoriteTableViewController received RefreshProductDetailList notification")
+        retrieveProductInfo()
+        self.tableView.reloadData()
+    }
+
     func retrieveCategoryInformation() {
         if self.favoriteStoreInfo.brandID == 0 || self.favoriteStoreInfo.storeID == 0 {
             print("ProductDetailTableViewController retrieveCategoryInformation --> brandID or storeID is 0")

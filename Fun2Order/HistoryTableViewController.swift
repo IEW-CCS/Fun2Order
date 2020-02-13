@@ -8,137 +8,252 @@
 
 import UIKit
 import CoreData
+import Firebase
 
 class HistoryTableViewController: UITableViewController {
-
+    @IBOutlet weak var segmentType: UISegmentedControl!
+    
     var orderList: [OrderInformation] = [OrderInformation]()
+    var menuOrderList: [MenuOrder] = [MenuOrder]()
+    var invitationList: [NotificationData] = [NotificationData]()
     
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        vc = app.persistentContainer.viewContext
+        
         let historyCellViewNib: UINib = UINib(nibName: "OrderHistoryCell", bundle: nil)
         self.tableView.register(historyCellViewNib, forCellReuseIdentifier: "OrderHistoryCell")
 
-        vc = app.persistentContainer.viewContext
+        let joinCellViewNib: UINib = UINib(nibName: "JoinInvitationCell", bundle: nil)
+        self.tableView.register(joinCellViewNib, forCellReuseIdentifier: "JoinInvitationCell")
 
-        retrieveHistoryOrderList()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.receiveRefreshHistory(_:)),
+            name: NSNotification.Name(rawValue: "RefreshHistory"),
+            object: nil
+        )
+
+        self.segmentType.selectedSegmentIndex = 0
+        queryMenuOrder()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        self.title = "訂單歷史紀錄"
-        self.navigationController?.title = "訂單歷史紀錄"
-        self.tabBarController?.title = "訂單歷史紀錄"
+        self.title = "歷史紀錄"
+        self.navigationController?.title = "歷史紀錄"
+        self.tabBarController?.title = "歷史紀錄"
+        navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
     }
-
-    func retrieveHistoryOrderList() {
-        self.orderList.removeAll()
+    
+    @IBAction func changeHistoryType(_ sender: UISegmentedControl) {
+        if self.segmentType.selectedSegmentIndex == 0 {
+            queryMenuOrder()
+        } else {
+            self.invitationList = retrieveInvitationNotificationList()
+            self.tableView.reloadData()
+        }
+    }
+    
+    func queryMenuOrder() {
+        var pathString: String = ""
+        let databaseRef = Database.database().reference()
+        //let pathString = "USER_MENU_ORDER/\(order_info.orderOwnerID)/\(order_info.orderNumber)"
+        if let userID = Auth.auth().currentUser?.uid {
+            pathString = "USER_MENU_ORDER/\(userID)"
+            print("pathString = \(pathString)")
+        } else {
+            print("HistoryTableViewController queryMenuOrder: Auth.auth().currentUser?.uid is nil, just return")
+        }
         
-        let fetchOrder: NSFetchRequest<ORDER_INFORMATION> = ORDER_INFORMATION.fetchRequest()
-        let pOrderString = "orderStatus != \"\(ORDER_STATUS_INIT)\""
-        print("retrieveOrderList pOrderString = \(pOrderString)")
-        let predicate1 = NSPredicate(format: pOrderString)
-        fetchOrder.predicate = predicate1
-        let sort = NSSortDescriptor(key: "orderCreateTime", ascending: true)
-        fetchOrder.sortDescriptors = [sort]
+        self.menuOrderList.removeAll()
+        databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                let rawData = snapshot.value
+                let jsonData = try? JSONSerialization.data(withJSONObject: rawData as Any, options: [])
+                let jsonString = String(data: jsonData!, encoding: .utf8)!
+                print("jsonString = \(jsonString)")
 
-        do {
-            let order_list = try vc.fetch(fetchOrder)
-            for order_data in order_list {
-                var tmpOrderInfo: OrderInformation = OrderInformation()
-                tmpOrderInfo.orderNumber = order_data.orderNumber!
-                tmpOrderInfo.orderType = order_data.orderType!
-                tmpOrderInfo.orderStatus = order_data.orderStatus!
-                tmpOrderInfo.deliveryType = order_data.deliveryType ?? ""
-                tmpOrderInfo.deliveryAddress = order_data.deliveryAddress ?? ""
-                tmpOrderInfo.orderImage = UIImage(data: order_data.orderImage!)!
-                tmpOrderInfo.orderCreateTime = order_data.orderCreateTime!
-                tmpOrderInfo.orderOwner = order_data.orderOwner ?? ""
-                tmpOrderInfo.orderTotalQuantity = Int(order_data.orderTotalQuantity)
-                tmpOrderInfo.orderTotalPrice = Int(order_data.orderTotalPrice)
-                tmpOrderInfo.brandID = Int(order_data.brandID)
-                tmpOrderInfo.brandName = order_data.brandName!
-                tmpOrderInfo.storeID = Int(order_data.storeID)
-                tmpOrderInfo.storeName = order_data.storeName!
-                
-                let fetchProductItem: NSFetchRequest<ORDER_CONTENT_ITEM> = ORDER_CONTENT_ITEM.fetchRequest()
-                let pProductString = "orderNumber == \"\(order_data.orderNumber!)\""
-                print("retrieveOrderList pProductString = \(pProductString)")
-                let predicate2 = NSPredicate(format: pProductString)
-                fetchProductItem.predicate = predicate2
-                let sort = NSSortDescriptor(key: "itemCreateTime", ascending: true)
-                fetchProductItem.sortDescriptors = [sort]
-
+                let decoder: JSONDecoder = JSONDecoder()
                 do {
-                    let product_list = try vc.fetch(fetchProductItem)
-                    for product_data in product_list {
-                        var tmpProductItem: OrderContentItem = OrderContentItem()
-                        tmpProductItem.orderNumber = product_data.orderNumber!
-                        tmpProductItem.itemNumber = Int(product_data.itemNumber)
-                        tmpProductItem.productID = Int(product_data.productID)
-                        tmpProductItem.productName = product_data.productName!
-                        //tmpProductItem.itemOwnerName = product_data.itemOwnerName!
-                        //tmpProductItem.itemOwnerImage = UIImage(data: product_data.itemOwnerImage!)!
-                        tmpProductItem.itemCreateTime = product_data.itemCreateTime!
-                        tmpProductItem.itemQuantity = Int(product_data.itemQuantity)
-                        tmpProductItem.itemSinglePrice = Int(product_data.itemSinglePrice)
-                        tmpProductItem.itemFinalPrice = Int(product_data.itemFinalPrice)
-                        tmpProductItem.itemComments = product_data.itemComments!
-
-                        let fetchRecipeItem: NSFetchRequest<ORDER_PRODUCT_RECIPE> = ORDER_PRODUCT_RECIPE.fetchRequest()
-                        let pRecipeString = "orderNumber == \"\(product_data.orderNumber!)\" AND itemNumber == \(Int(product_data.itemNumber)) AND productID == \(Int(product_data.productID))"
-                        print("retrieveOrderList pRecipeString = \(pRecipeString)")
-                        let predicate3 = NSPredicate(format: pRecipeString)
-                        fetchRecipeItem.predicate = predicate3
-
-                        do {
-                            let recipe_list = try vc.fetch(fetchRecipeItem)
-                            for recipe_data in recipe_list {
-                                var tmpRecipeItem: OrderProductRecipe = OrderProductRecipe()
-                                tmpRecipeItem.orderNumber = recipe_data.orderNumber!
-                                tmpRecipeItem.itemNumber = Int(recipe_data.itemNumber)
-                                tmpRecipeItem.productID = Int(recipe_data.productID)
-                                tmpRecipeItem.recipeCode = recipe_data.recipeCode!
-                                tmpRecipeItem.recipeSubCode = recipe_data.recipeSubCode!
-                                tmpProductItem.itemRecipe.append(tmpRecipeItem)
-                            }
-                        } catch {
-                            print(error.localizedDescription)
-                        }
-                        tmpOrderInfo.contentList.append(tmpProductItem)
+                    let listData = try decoder.decode([String:MenuOrder].self, from: jsonData!)
+                    print("queryMenuOrder jason decoded successful")
+                    for keyValuePair in listData {
+                        self.menuOrderList.append(keyValuePair.value)
                     }
+                    
+                    self.tableView.reloadData()
                 } catch {
-                    print(error.localizedDescription)
+                    print("jsonData decode failed: \(error.localizedDescription)")
+                    return
                 }
-                self.orderList.append(tmpOrderInfo)
+            } else {
+                self.tableView.reloadData()
+                print("queryMenuOrder snapshot doesn't exist!")
+                return
             }
-        } catch {
+        }) { (error) in
             print(error.localizedDescription)
         }
     }
+    
+    @objc func receiveRefreshHistory(_ notification: Notification) {
+        queryMenuOrder()
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.orderList.count
+        if segmentType.selectedSegmentIndex == 0 {
+            if self.menuOrderList.isEmpty {
+                return 0
+            }
+            
+            return self.menuOrderList.count
+        } else {
+            if self.invitationList.isEmpty {
+                return 0
+            }
+            
+            return self.invitationList.count
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "OrderHistoryCell", for: indexPath) as! OrderHistoryCell
-        cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        cell.setData(order_info: self.orderList[indexPath.row])
-        
-        cell.delegate = self
-        cell.indexPath = indexPath
-        return cell
+        if segmentType.selectedSegmentIndex == 0 {
+            if self.menuOrderList.isEmpty {
+                return super.tableView(tableView, cellForRowAt: indexPath)
+            }
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "OrderHistoryCell", for: indexPath) as! OrderHistoryCell
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            cell.setMenuData(menu_order: self.menuOrderList[indexPath.row])
+
+            cell.delegate = self
+            cell.indexPath = indexPath
+            return cell
+
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "JoinInvitationCell", for: indexPath) as! JoinInvitationCell
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            cell.setData(notify_data: self.invitationList[indexPath.row])
+            cell.AdjustAutoLayout()
+            cell.delegate = self
+            cell.tag = indexPath.row
+            return cell
+        }
+
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if segmentType.selectedSegmentIndex == 0 {
+            let databaseRef = Database.database().reference()
+            let pathString = "USER_MENU_ORDER/\(self.menuOrderList[indexPath.row].orderOwnerID)/\(self.menuOrderList[indexPath.row].orderNumber)"
+
+            databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.exists() {
+                    let rawData = snapshot.value
+                    let jsonData = try? JSONSerialization.data(withJSONObject: rawData as Any, options: [])
+                    let jsonString = String(data: jsonData!, encoding: .utf8)!
+                    print("jsonString = \(jsonString)")
+
+                    let decoder: JSONDecoder = JSONDecoder()
+                    do {
+                        let orderData = try decoder.decode(MenuOrder.self, from: jsonData!)
+                        print("queryMenuOrder jason decoded successful")
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        guard let history_vc = storyboard.instantiateViewController(withIdentifier: "HISTORY_DETAIL_VC") as? HistoryDetailViewController else {
+                            assertionFailure("[AssertionFailure] StoryBoard: HISTORY_DETAIL_VC can't find!! (ViewController)")
+                            return
+                        }
+
+                        history_vc.menuOrder = orderData
+
+                        self.show(history_vc, sender: self)
+
+                    } catch {
+                        print("jsonData decode failed: \(error.localizedDescription)")
+                        return
+                    }
+                } else {
+                    print("HistoryTableViewController didSelectRowAt snapshot doesn't exist!")
+                    return
+                }
+            }) { (error) in
+                print(error.localizedDescription)
+            }
+        } else {
+            
+        }
+
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 270
+        if self.segmentType.selectedSegmentIndex == 0 {
+            return 180
+        } else {
+            return 111
+        }
     }
 
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        var alertWindow: UIWindow!
+        if self.segmentType.selectedSegmentIndex == 0 {
+            if editingStyle == .delete {
+                let controller = UIAlertController(title: "刪除訂單資料", message: "確定要刪除此訂單資料嗎？", preferredStyle: .alert)
+
+                let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                    print("Confirm to delete this order information")
+                    alertWindow.isHidden = true
+                    let databaseRef = Database.database().reference()
+                    let pathString = "USER_MENU_ORDER/\(self.menuOrderList[indexPath.row].orderOwnerID)/\(self.menuOrderList[indexPath.row].orderNumber)"
+                    databaseRef.child(pathString).removeValue() { (error, reference) in
+                        if let error = error {
+                            print("Delete Menu Order error = \(error.localizedDescription)")
+                            return
+                        }
+                        self.queryMenuOrder()
+                    }
+                }
+                
+                controller.addAction(okAction)
+                let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+                    print("Cancel to delete the order information")
+                    alertWindow.isHidden = true
+                }
+                controller.addAction(cancelAction)
+                //app.window?.rootViewController!.present(controller, animated: true, completion: nil)
+                alertWindow = presentAlert(controller)
+            }
+        } else {
+            if editingStyle == .delete {
+                let controller = UIAlertController(title: "刪除通知", message: "確定要刪除此通知嗎？", preferredStyle: .alert)
+
+                let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                    print("Confirm to delete this notification")
+                    deleteNotificationByID(message_id: self.invitationList[indexPath.row].messageID)
+                    alertWindow.isHidden = true
+                    self.invitationList = retrieveInvitationNotificationList()
+                    setNotificationBadgeNumber()
+                    self.tableView.reloadData()
+                }
+                
+                controller.addAction(okAction)
+                let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+                    print("Cancel to delete the notification")
+                    alertWindow.isHidden = true
+                }
+                controller.addAction(cancelAction)
+                //app.window?.rootViewController!.present(controller, animated: true, completion: nil)
+                alertWindow = presentAlert(controller)
+            }
+        }
+        
+    }
 }
 
 extension HistoryTableViewController: DisplayQRCodeDelegate {
@@ -152,5 +267,142 @@ extension HistoryTableViewController: DisplayQRCodeDelegate {
         qrCodeController.modalTransitionStyle = .crossDissolve
         qrCodeController.modalPresentationStyle = .overFullScreen
         navigationController?.present(qrCodeController, animated: true, completion: nil)
+    }
+}
+
+extension HistoryTableViewController: JoinInvitationCellDelegate {
+    func attendOrderInvitation(data_index: Int) {
+        let dispatchGroup = DispatchGroup()
+        var menuData: MenuInformation = MenuInformation()
+        var memberContent: MenuOrderMemberContent = MenuOrderMemberContent()
+        var memberIndex: Int = -1
+        var user_id: String = ""
+        var downloadMenuInformation: Bool = false
+        var downloadMenuOrder: Bool = false
+
+        if Auth.auth().currentUser?.uid != nil {
+            user_id = Auth.auth().currentUser!.uid
+        } else {
+            print("Get Ahthorization uid failed")
+            return
+        }
+
+        let databaseRef = Database.database().reference()
+        
+        let pathString = "USER_MENU_INFORMATION/\(self.invitationList[data_index].orderOwnerID)/\(self.invitationList[data_index].menuNumber)"
+        
+        dispatchGroup.enter()
+        databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                let menuInfo = snapshot.value
+                let jsonData = try? JSONSerialization.data(withJSONObject: menuInfo as Any, options: [])
+                let jsonString = String(data: jsonData!, encoding: .utf8)!
+                print("jsonString = \(jsonString)")
+
+                let decoder: JSONDecoder = JSONDecoder()
+                do {
+                    menuData = try decoder.decode(MenuInformation.self, from: jsonData!)
+                    downloadMenuInformation = true
+                    print("menuData decoded successful !!")
+                    print("menuData = \(menuData)")
+                    dispatchGroup.leave()
+
+                } catch {
+                    dispatchGroup.leave()
+                    print("attendOrderInvitation jsonData decode failed: \(error.localizedDescription)")
+                }
+            } else {
+                dispatchGroup.leave()
+                print("attendOrderInvitation snapshot doesn't exist!")
+                return
+            }
+        }) { (error) in
+            dispatchGroup.leave()
+            print(error.localizedDescription)
+        }
+
+        let orderString = "USER_MENU_ORDER/\(self.invitationList[data_index].orderOwnerID)/\(self.invitationList[data_index].orderNumber)/contentItems"
+        dispatchGroup.enter()
+        databaseRef.child(orderString).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                let itemRawData = snapshot.value
+                let jsonData = try? JSONSerialization.data(withJSONObject: itemRawData as Any, options: [])
+
+                let decoder: JSONDecoder = JSONDecoder()
+                do {
+                    let itemArray = try decoder.decode([MenuOrderMemberContent].self, from: jsonData!)
+
+                    if let itemIndex = itemArray.firstIndex(where: { $0.memberID == user_id }) {
+                        //let uploadPathString = pathString + "/\(itemIndex)"
+                        //databaseRef.child(uploadPathString).setValue(item.toAnyObject())
+                        memberContent = itemArray[itemIndex]
+                        memberIndex = itemIndex
+                        downloadMenuOrder = true
+                        dispatchGroup.leave()
+                    } else {
+                        dispatchGroup.leave()
+                    }
+                } catch {
+                    print("attendOrderInvitation jsonData decode failed: \(error.localizedDescription)")
+                    dispatchGroup.leave()
+                }
+            } else {
+                print("attendOrderInvitation snapshot doesn't exist!")
+                dispatchGroup.leave()
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            if downloadMenuInformation == true && downloadMenuOrder == true && memberIndex >= 0 {
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                guard let joinController = storyBoard.instantiateViewController(withIdentifier: "JOIN_ORDER_VC") as? JoinGroupOrderTableViewController else{
+                    assertionFailure("[AssertionFailure] StoryBoard: JOIN_ORDER_VC can't find!! (NotificationActionViewController)")
+                    return
+                }
+                
+                joinController.menuInformation = menuData
+                joinController.memberContent = memberContent
+                joinController.memberIndex = memberIndex
+                self.navigationController?.show(joinController, sender: self)
+            }
+
+        }
+
+    }
+    
+    func rejectOrderInvitation(data_index: Int) {
+        let databaseRef = Database.database().reference()
+        let pathString = "USER_MENU_ORDER/\(self.invitationList[data_index].orderOwnerID)/\(self.invitationList[data_index].orderNumber)/contentItems"
+        databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                let itemRawData = snapshot.value
+                let jsonData = try? JSONSerialization.data(withJSONObject: itemRawData as Any, options: [])
+
+                let decoder: JSONDecoder = JSONDecoder()
+                do {
+                    var itemArray = try decoder.decode([MenuOrderMemberContent].self, from: jsonData!)
+
+                    if let user_id = Auth.auth().currentUser?.uid {
+                        if let itemIndex = itemArray.firstIndex(where: { $0.memberID == user_id }) {
+                            let uploadPathString = pathString + "/\(itemIndex)"
+
+                            itemArray[itemIndex].orderContent.replyStatus = MENU_ORDER_REPLY_STATUS_REJECT
+                            databaseRef.child(uploadPathString).setValue(itemArray[itemIndex].toAnyObject())
+                        }
+                    }
+                } catch {
+                    print("rejectOrderInvitation jsonData decode failed: \(error.localizedDescription)")
+                }
+            } else {
+                print("rejectOrderInvitation snapshot doesn't exist!")
+                return
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+       // navigationController?.popViewController(animated: true)
     }
 }

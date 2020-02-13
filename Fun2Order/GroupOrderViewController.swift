@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Firebase
 
 class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var collectionGroup: UICollectionView!
@@ -17,12 +18,18 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var buttonCreateOrder: UIButton!
     @IBOutlet weak var myCheckStatus: Checkbox!
     @IBOutlet weak var labelTitle: UILabel!
+    @IBOutlet weak var textViewMessage: UITextView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     var groupList: [Group] = [Group]()
     var memberList: [GroupMember] = [GroupMember]()
     var selectedGroupIndex: Int = 0
     var isAttended: Bool = true
     var favoriteStoreInfo: FavoriteStoreInfo = FavoriteStoreInfo()
+    var menuInformation: MenuInformation = MenuInformation()
+    var orderType: String = ""
+    var menuOrder: MenuOrder = MenuOrder()
+    
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
 
@@ -30,7 +37,7 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         
         vc = app.persistentContainer.viewContext
-
+        
         //let iconImage: UIImage? = UIImage(named: "Icon_Clock.png")
         //self.buttonDueDate.setImage(iconImage, for: UIControl.State.normal)
         self.buttonDueDate.layer.borderWidth = 1.0
@@ -46,12 +53,19 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
         self.buttonCreateOrder.layer.borderColor = UIColor.systemBlue.cgColor
         self.buttonCreateOrder.layer.cornerRadius = 6
 
+        self.labelTitle.layer.borderWidth = 1.0
+        self.labelTitle.layer.borderColor = UIColor.clear.cgColor
         self.labelTitle.layer.cornerRadius = 6
         
         self.collectionGroup.layer.borderWidth = 1.0
         self.collectionGroup.layer.borderColor = UIColor.systemBlue.cgColor
         self.collectionGroup.layer.cornerRadius = 6
 
+        self.textViewMessage.layer.borderWidth = 1.0
+        self.textViewMessage.layer.borderColor = UIColor.lightGray.cgColor
+        self.textViewMessage.layer.cornerRadius = 6
+
+        
         let groupCellViewNib: UINib = UINib(nibName: "GroupCell", bundle: nil)
         self.collectionGroup.register(groupCellViewNib, forCellWithReuseIdentifier: "GroupCell")
         collectionGroup.dataSource = self
@@ -73,13 +87,27 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
             self.isAttended = isChecked
         }
         
+        self.labelDueDate.text = nil
+        
         self.groupList = retrieveGroupList()
         if self.groupList.count > 0 {
             self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
             self.memberTableView.reloadData()
         }
         
-        self.labelTitle.text = "\(self.favoriteStoreInfo.brandName)  \(self.favoriteStoreInfo.storeName)"
+        if self.orderType == ORDER_TYPE_MENU {
+            self.labelTitle.text = self.menuInformation.brandName
+        } else {
+            self.labelTitle.text = "\(self.favoriteStoreInfo.brandName)  \(self.favoriteStoreInfo.storeName)"
+        }
+
+        self.scrollView.backgroundColor = UIColor.clear
+        let contentWidth = self.scrollView.bounds.width
+        let contentHeight = self.scrollView.bounds.height * 2.0
+        print("self.scrollView.bounds.height = \(self.scrollView.bounds.height)")
+        self.scrollView.contentSize = CGSize(width: contentWidth, height: contentHeight)
+        self.scrollView.isExclusiveTouch = false
+        self.scrollView.delaysContentTouches = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -102,6 +130,7 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
         controller.addChild(dateTimeController)
         
         let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
+            
             print("Cancel to update due date!")
         }
         cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
@@ -119,61 +148,192 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
         present(controller, animated: true, completion: nil)
     }
     
-    func createGroupOrder() {
+    func createMenuOrder() {
+
         let timeZone = TimeZone.init(identifier: "UTC+8")
         let formatter = DateFormatter()
         formatter.timeZone = timeZone
         formatter.locale = Locale.init(identifier: "zh_TW")
         formatter.dateFormat = DATETIME_FORMATTER
         
-        let tmpOrderNumber = formatter.string(from: Date())
-        
-        let order_data = NSEntityDescription.insertNewObject(forEntityName: "ORDER_INFORMATION", into: vc) as! ORDER_INFORMATION
-        order_data.orderNumber = tmpOrderNumber
-        order_data.orderType = ORDER_TYPE_GROUP
-        //order_data.deliveryType =
-        order_data.orderStatus = ORDER_STATUS_INIT
-        order_data.orderImage = UIImage(named: "Image_Group.png")!.pngData()
-        order_data.orderCreateTime = Date()
-        //order_data.orderOwner =
-        order_data.orderTotalPrice = 0
-        order_data.orderTotalQuantity = 0
-        order_data.brandID = Int16(self.favoriteStoreInfo.brandID)
-        order_data.brandName = self.favoriteStoreInfo.brandName
-        order_data.storeID = Int16(self.favoriteStoreInfo.storeID)
-        order_data.storeName = self.favoriteStoreInfo.storeName
-
-        app.saveContext()
-    }
-    
-    func sendGroupOrderNotification() {
-        for i in 0...self.memberList.count - 1 {
-            let indexPath = IndexPath(row: i, section: 0)
-            let cell = self.memberTableView.cellForRow(at: indexPath) as! SelectMemberCell
-            if cell.getCheckStatus() {
-                print("Member[\(self.memberList[indexPath.row].memberName)] is checked, start to send notification!")
+        let tmpOrderNumber = "M\(formatter.string(from: Date()))"
+      
+        self.menuOrder.orderNumber = tmpOrderNumber
+        self.menuOrder.menuNumber = self.menuInformation.menuNumber
+        self.menuOrder.orderType = ORDER_TYPE_MENU
+        self.menuOrder.orderStatus = ORDER_STATUS_READY
+        self.menuOrder.orderOwnerID = self.menuInformation.userID
+        self.menuOrder.orderOwnerName = (Auth.auth().currentUser?.displayName)!
+        self.menuOrder.orderTotalQuantity = 0
+        self.menuOrder.orderTotalPrice = 0
+        self.menuOrder.brandName = self.menuInformation.brandName
+        if !self.menuInformation.locations!.isEmpty {
+            for i in 0...self.menuInformation.locations!.count - 1 {
+                self.menuOrder.locations?.append(self.menuInformation.locations![i])
             }
         }
         
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = DATETIME_FORMATTER
+        let timeString = timeFormatter.string(from: Date())
+        self.menuOrder.createTime = timeString
+
+        if self.labelDueDate.text != nil {
+            let formatter1 = DateFormatter()
+            formatter1.dateFormat = TAIWAN_DATETIME_FORMATTER2
+            let timeData = formatter1.date(from: self.labelDueDate.text!)
+            
+            let formatter2 = DateFormatter()
+            formatter2.dateFormat = DATETIME_FORMATTER
+            self.menuOrder.dueTime = formatter2.string(from: timeData!)
+        }
+        
+        if self.isAttended {
+            var myContent: MenuOrderMemberContent = MenuOrderMemberContent()
+            var myItem: MenuOrderContentItem = MenuOrderContentItem()
+
+            myContent.memberID = self.menuInformation.userID
+            myContent.orderOwnerID = self.menuOrder.orderOwnerID
+            myContent.memberTokenID = getMyTokenID()
+            myItem.orderNumber = self.menuOrder.orderNumber
+            myItem.itemOwnerID = self.menuInformation.userID
+            myItem.itemOwnerName = self.menuInformation.userName
+            myItem.replyStatus = MENU_ORDER_REPLY_STATUS_WAIT
+            myItem.createTime = self.menuOrder.createTime
+            myContent.orderContent = myItem
+
+            self.menuOrder.contentItems.append(myContent)
+        }
+        
+        let contentGroup = DispatchGroup()
+        
+        for i in 0...self.memberList.count - 1 {
+            if self.memberList[i].isSelected {
+                var memberContent: MenuOrderMemberContent = MenuOrderMemberContent()
+                var contentItem: MenuOrderContentItem = MenuOrderContentItem()
+                
+                let databaseRef = Database.database().reference()
+                let pathString = "USER_PROFILE/\(self.memberList[i].memberID)/tokenID"
+                contentGroup.enter()
+                databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+                    if snapshot.exists() {
+                        let token_id = snapshot.value as! String
+                        memberContent.memberID = self.memberList[i].memberID
+                        memberContent.orderOwnerID = self.menuOrder.orderOwnerID
+                        memberContent.memberTokenID = token_id
+                        contentItem.orderNumber = self.menuOrder.orderNumber
+                        contentItem.itemOwnerID = self.memberList[i].memberID
+                        contentItem.itemOwnerName = self.memberList[i].memberName
+                        contentItem.replyStatus = MENU_ORDER_REPLY_STATUS_WAIT
+                        contentItem.createTime = self.menuOrder.createTime
+                        memberContent.orderContent = contentItem
+
+                        self.menuOrder.contentItems.append(memberContent)
+                        contentGroup.leave()
+                    }
+                })  { (error) in
+                    print(error.localizedDescription)
+                    contentGroup.leave()
+                }
+            }
+        }
+        
+        contentGroup.notify(queue: .main) {
+            print("self.menuOrder.contentItems = \(self.menuOrder.contentItems)")
+            //self.app.saveContext()
+
+            self.uploadMenuOrder()
+            self.sendGroupOrderNotification()
+            if self.isAttended {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                guard let join_vc = storyboard.instantiateViewController(withIdentifier: "JOIN_ORDER_VC") as? JoinGroupOrderTableViewController else{
+                    assertionFailure("[AssertionFailure] StoryBoard: JOIN_ORDER_VC can't find!! (GroupOrderViewController)")
+                    return
+                }
+
+                join_vc.menuInformation = self.menuInformation
+
+                DispatchQueue.main.async {
+                    self.show(join_vc, sender: self)
+                }
+            }
+        }
+    }
+    
+    func uploadMenuOrder() {
+        let databaseRef = Database.database().reference()
+        let pathString = "USER_MENU_ORDER/\(self.menuInformation.userID)/\(self.menuOrder.orderNumber)"
+        print("pathString = \(pathString)")
+        print("menuOrder transformed object = \(self.menuOrder.toAnyObject())")
+
+        databaseRef.child(pathString).setValue(self.menuOrder.toAnyObject()) { (error, reference) in
+            if let error = error {
+                print("uploadMenuOrder error = \(error.localizedDescription)")
+                return
+            } else {
+                // Send notification to refresh HistoryList function
+                NotificationCenter.default.post(name: NSNotification.Name("RefreshHistory"), object: nil)
+            }
+        }
+    }
+
+    func sendGroupOrderNotification() {
+        if !self.menuOrder.contentItems.isEmpty {
+            let myTokenID = getMyTokenID()
+            let dateNow = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = DATETIME_FORMATTER
+            let dateTimeString = formatter.string(from: dateNow)
+            
+            for i in 0...self.menuOrder.contentItems.count - 1 {
+                
+                print("\(self.menuOrder.contentItems[i].orderContent.itemOwnerName)'s tokenID = \(self.menuOrder.contentItems[i].memberTokenID)")
+                
+                let tokenID = self.menuOrder.contentItems[i].memberTokenID
+                
+                var orderNotify: NotificationData = NotificationData()
+                let title: String = "團購邀請"
+                var body: String = ""
+                if self.textViewMessage.text == nil {
+                    body = "由 \(self.menuOrder.orderOwnerName) 發起的團購邀請，請點擊通知以查看詳細資訊。"
+                } else {
+                    body = "由 \(self.menuOrder.orderOwnerName) 的團購邀請：\n" + textViewMessage.text!
+                }
+
+                orderNotify.messageTitle = title
+                orderNotify.messageBody = body
+                orderNotify.notificationType = NOTIFICATION_TYPE_ACTION_JOIN_ORDER
+                orderNotify.receiveTime = dateTimeString
+                orderNotify.orderOwnerID = self.menuOrder.orderOwnerID
+                orderNotify.orderOwnerName = self.menuOrder.orderOwnerName
+                orderNotify.menuNumber = self.menuOrder.menuNumber
+                orderNotify.orderNumber = self.menuOrder.orderNumber
+                orderNotify.dueTime = self.menuOrder.dueTime
+                orderNotify.brandName = self.menuOrder.brandName
+                orderNotify.attendedMemberCount = self.menuOrder.contentItems.count
+                orderNotify.messageDetail = " "
+                orderNotify.isRead = false
+                
+                if tokenID == myTokenID {
+                    orderNotify.messageBody = "自己發起並參與的團購單"
+                    insertNotification(notification: orderNotify)
+                    continue
+                }
+                
+                let sender = PushNotificationSender()
+                sender.sendPushNotification(to: tokenID, title: title, body: body, data: orderNotify)
+            }
+
+        }
     }
     
     @IBAction func sendGroupOrder(_ sender: UIButton) {
-        if self.isAttended {
-            createGroupOrder()
-            
-            // Send remote notification to each selected member
-            sendGroupOrderNotification()
-            
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            guard let product_vc = storyboard.instantiateViewController(withIdentifier: "ProductList_VC") as? ProductDetailTableViewController else{
-                assertionFailure("[AssertionFailure] StoryBoard: ProductList_VC can't find!! (ViewController)")
-                return
-            }
-
-            product_vc.favoriteStoreInfo = self.favoriteStoreInfo
-            product_vc.orderType = ORDER_TYPE_GROUP
-            show(product_vc, sender: self)
+        if self.memberList.isEmpty {
+            print("Selected Group's member list is empty")
+            return
         }
+        
+        createMenuOrder()
     }
 }
 
@@ -230,6 +390,7 @@ extension GroupOrderViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         //cell.setData(image: self.memberImages[indexPath.row], name: self.memberNames[indexPath.row])
         cell.setData(image: self.memberList[indexPath.row].memberImage, name: self.memberList[indexPath.row].memberName)
+        cell.delegate = self
         cell.tag = indexPath.row
         
         return cell
@@ -241,10 +402,12 @@ extension GroupOrderViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
-        //header.layer.backgroundColor = UIColor.clear.cgColor
         header.backgroundView?.layer.backgroundColor = UIColor.clear.cgColor
         header.textLabel?.textAlignment = .center
-        header.textLabel?.text = "\(self.groupList[self.selectedGroupIndex].groupName)  會員列表"
+        if !self.groupList.isEmpty {
+            header.textLabel?.text = "\(self.groupList[self.selectedGroupIndex].groupName)  會員列表"
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -252,3 +415,8 @@ extension GroupOrderViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+extension GroupOrderViewController: SetMemberSelectedStatusDelegate {
+    func setMemberSelectedStatus(cell: UITableViewCell, status: Bool, data_index: Int) {
+        self.memberList[data_index].isSelected = status
+    }
+}

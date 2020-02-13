@@ -2,7 +2,7 @@
 //  ORDER_INFORMATION+CoreDataProperties.swift
 //  
 //
-//  Created by Lo Fang Chou on 2019/12/12.
+//  Created by Lo Fang Chou on 2020/1/18.
 //
 //
 
@@ -18,6 +18,7 @@ extension ORDER_INFORMATION {
 
     @NSManaged public var brandID: Int16
     @NSManaged public var brandName: String?
+    @NSManaged public var deliveryAddress: String?
     @NSManaged public var deliveryType: String?
     @NSManaged public var orderCreateTime: Date?
     @NSManaged public var orderImage: Data?
@@ -25,10 +26,10 @@ extension ORDER_INFORMATION {
     @NSManaged public var orderOwner: String?
     @NSManaged public var orderStatus: String?
     @NSManaged public var orderTotalPrice: Int16
+    @NSManaged public var orderTotalQuantity: Int16
     @NSManaged public var orderType: String?
     @NSManaged public var storeID: Int16
     @NSManaged public var storeName: String?
-    @NSManaged public var deliveryAddress: String?
-    @NSManaged public var orderTotalQuantity: Int16
+    @NSManaged public var orderOwnerID: String?
 
 }

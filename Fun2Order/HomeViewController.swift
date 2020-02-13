@@ -87,13 +87,19 @@ class HomeViewController: UIViewController, FSPagerViewDataSource, FSPagerViewDe
         setupPageView()
         requestUpdateDateTime()
         print("sqlite path --> \(app.persistentContainer.persistentStoreDescriptions)")
-        
+        //navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
         self.title = "首頁"
         self.navigationController?.title = "首頁"
         self.tabBarController?.title = "首頁"
+        navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     private func setupPageView() {

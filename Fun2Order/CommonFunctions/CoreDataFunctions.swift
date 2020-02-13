@@ -579,6 +579,28 @@ func retrieveOrderInformation(brand_id: Int, store_id: Int) -> ORDER_INFORMATION
     }
 }
 
+func deleteMenuOrderInformation(order_number: String) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+
+    let fetchRequest: NSFetchRequest<ORDER_INFORMATION> = ORDER_INFORMATION.fetchRequest()
+    let predicateString = "orderNumber == \"\(order_number)\""
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+    
+    do {
+        let orderData = try vc.fetch(fetchRequest).first
+        if orderData != nil {
+            vc.delete(orderData!)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    app.saveContext()
+}
+
 func updateOrderData(brand_id: Int, store_id: Int) {
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
@@ -692,7 +714,7 @@ func retrieveMemberList(group_id: Int) -> [GroupMember] {
             tmpMember.memberID = member_data.memberID!
             tmpMember.memberName = member_data.memberName!
             tmpMember.memberImage = UIImage(data: member_data.memberImage!)!
-
+            tmpMember.isSelected = true
             returnList.append(tmpMember)
         }
     } catch {
@@ -835,4 +857,708 @@ func deleteOrderProduct(brand_id: Int, store_id: Int, order_number: String, item
     app.saveContext()
     
     return true
+}
+
+func getCartBadgeNumber() -> Int {
+    var totalCount: Int = 0
+
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<ORDER_INFORMATION> = ORDER_INFORMATION.fetchRequest()
+    let predicateString = "orderStatus == \"\(ORDER_STATUS_INIT)\""
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let order_list = try vc.fetch(fetchRequest)
+        for order_data in order_list {
+            totalCount = totalCount + Int(order_data.orderTotalQuantity)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    print("Cart Order Badge Number = \(totalCount)")
+    
+    return totalCount
+}
+
+func retrieveMenuInformation() -> [MenuInformation] {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+
+    var menuInfoList: [MenuInformation]  = [MenuInformation]()
+    
+    let fetchRequest: NSFetchRequest<MENU_INFORMATION> = MENU_INFORMATION.fetchRequest()
+    do {
+        let infoList = try vc.fetch(fetchRequest)
+        for infoData in infoList {
+            let menuData = retrieveMenuInformationByID(menu_number: infoData.menuNumber!)
+            if menuData != nil {
+                menuInfoList.append(menuData!)
+            }
+        }
+    } catch {
+        print(error.localizedDescription)
+        return menuInfoList
+    }
+    
+    return menuInfoList
+}
+
+func retrieveMenuIcon(menu_number: String) -> UIImage {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+
+    var iconImage: UIImage = UIImage()
+
+    let fetchRequest: NSFetchRequest<MENU_ICON> = MENU_ICON.fetchRequest()
+    let predicateString = "menuNumber == \"\(menu_number)\""
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+    
+    do {
+        let menuIcon = try vc.fetch(fetchRequest).first
+        if menuIcon == nil {
+            iconImage = UIImage(named: "Default_Menu_Image_original.png")!
+        } else {
+            iconImage = UIImage(data: menuIcon!.menuIcon!)!
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    return iconImage
+}
+
+func insertMenuIcon(menu_number: String, menu_icon: UIImage) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+
+    let menuIcon = NSEntityDescription.insertNewObject(forEntityName: "MENU_ICON", into: vc) as! MENU_ICON
+    menuIcon.menuNumber = menu_number
+    menuIcon.menuIcon = menu_icon.pngData()!
+    
+    app.saveContext()
+}
+
+func deleteMenuIcon(menu_number: String) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+
+    let fetchRequest: NSFetchRequest<MENU_ICON> = MENU_ICON.fetchRequest()
+    let predicateString = "menuNumber == \"\(menu_number)\""
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+    
+    do {
+        let menuIcon = try vc.fetch(fetchRequest).first
+        if menuIcon != nil {
+            vc.delete(menuIcon!)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    app.saveContext()
+}
+
+func retrieveMenuInformationByID(menu_number: String) -> MenuInformation? {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+    
+    var menuInfo: MenuInformation = MenuInformation()
+
+    let infoRequest: NSFetchRequest<MENU_INFORMATION> = MENU_INFORMATION.fetchRequest()
+    let infoString = "menuNumber == \"\(menu_number)\""
+    let infoPredicate = NSPredicate(format: infoString)
+    infoRequest.predicate = infoPredicate
+    
+    do {
+        let menuData = try vc.fetch(infoRequest).first
+        if menuData != nil {
+            menuInfo.brandName = menuData!.brandName!
+            menuInfo.brandCategory = menuData!.brandCategory!
+            menuInfo.createTime = menuData!.createTime!
+            menuInfo.menuDescription = menuData!.menuDescription!
+            menuInfo.menuImageURL = menuData!.menuImageURL!
+            menuInfo.menuNumber = menuData!.menuNumber!
+            //menuInfo.menuIcon = UIImage(data: menuData!.menuIcon!) ?? UIImage()
+            //if (menuData!.menuIcon == nil || menuData!.menuIcon?.count == 0) {
+            //    menuInfo.menuIcon = UIImage(named: "Default_Menu_Image_original.png")!
+            //} else {
+            //    menuInfo.menuIcon = UIImage(data: menuData!.menuIcon!)!
+            //}
+            menuInfo.userID = menuData!.userID!
+            menuInfo.userName = menuData!.userName ?? ""
+        } else {
+            return nil
+        }
+    } catch {
+        print(error.localizedDescription)
+        return nil
+    }
+
+    let fetchLocation: NSFetchRequest<MENU_LOCATION> = MENU_LOCATION.fetchRequest()
+    let pLocation = "menuNumber == \"\(menu_number)\""
+    let lPredicate = NSPredicate(format: pLocation)
+    fetchLocation.predicate = lPredicate
+    
+    do {
+        let locationList = try vc.fetch(fetchLocation)
+        for locationData in locationList {
+            menuInfo.locations?.append(locationData.locationName!)
+        }
+    } catch {
+        print(error.localizedDescription)
+        return nil
+    }
+    
+    let fetchItem: NSFetchRequest<MENU_ITEM> = MENU_ITEM.fetchRequest()
+    let pItem = "menuNumber == \"\(menu_number)\""
+    let iPredicate = NSPredicate(format: pItem)
+    fetchItem.predicate = iPredicate
+    let sort = NSSortDescriptor(key: "sequenceNumber", ascending: true)
+    fetchItem.sortDescriptors = [sort]
+
+    do {
+        let itemList = try vc.fetch(fetchItem)
+        for itemData in itemList {
+            var tmpData: MenuItem = MenuItem()
+            tmpData.sequenceNumber = Int(itemData.sequenceNumber)
+            tmpData.itemName = itemData.itemName!
+            tmpData.itemPrice = Int(itemData.itemPrice)
+            menuInfo.menuItems?.append(tmpData)
+        }
+    } catch {
+        print(error.localizedDescription)
+        return nil
+    }
+
+    let fetchRecipeCategory: NSFetchRequest<MENU_RECIPE_CATEGORY> = MENU_RECIPE_CATEGORY.fetchRequest()
+    let pRecipeCategory = "menuNumber == \"\(menu_number)\""
+    let rPredicate = NSPredicate(format: pRecipeCategory)
+    fetchRecipeCategory.predicate = rPredicate
+    let rSort = NSSortDescriptor(key: "sequenceNumber", ascending: true)
+    fetchRecipeCategory.sortDescriptors = [rSort]
+
+    do {
+        let recipeCategoryList = try vc.fetch(fetchRecipeCategory)
+        for categoryData in recipeCategoryList {
+            var menuRecipe: MenuRecipe = MenuRecipe()
+            menuRecipe.sequenceNumber = Int(categoryData.sequenceNumber)
+            menuRecipe.recipeCategory = categoryData.recipeCategory!
+            menuRecipe.isAllowedMulti = categoryData.isAllowedMulti
+            
+            let fetchRecipeItem: NSFetchRequest<MENU_RECIPE> = MENU_RECIPE.fetchRequest()
+            let pRecipeItem = "menuNumber == \"\(menu_number)\" AND recipeCategory == \"\(categoryData.recipeCategory!)\""
+            let rtPredicate = NSPredicate(format: pRecipeItem)
+            fetchRecipeItem.predicate = rtPredicate
+            let rtSort = NSSortDescriptor(key: "sequenceNumber", ascending: true)
+            fetchRecipeItem.sortDescriptors = [rtSort]
+
+            do {
+                let itemList = try vc.fetch(fetchRecipeItem)
+                for itemData in itemList {
+                    var iData: RecipeItem = RecipeItem()
+                    iData.sequenceNumber = Int(itemData.sequenceNumber)
+                    iData.checkedFlag = true
+                    iData.recipeName = itemData.recipeName!
+                    menuRecipe.recipeItems?.append(iData)
+                }
+            } catch {
+                print(error.localizedDescription)
+                return nil
+            }
+            menuInfo.menuRecipes?.append(menuRecipe)
+        }
+    } catch {
+        print(error.localizedDescription)
+        return nil
+    }
+    
+    return menuInfo
+}
+
+func insertMenuInformation(menu_info: MenuInformation) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+
+    let menuInfo = NSEntityDescription.insertNewObject(forEntityName: "MENU_INFORMATION", into: vc) as! MENU_INFORMATION
+    menuInfo.menuNumber = menu_info.menuNumber
+    menuInfo.brandName = menu_info.brandName
+    menuInfo.brandCategory = menu_info.brandCategory
+    menuInfo.menuDescription = menu_info.menuDescription
+    menuInfo.menuImageURL = menu_info.menuImageURL
+    //if menu_info.menuIcon.imageAsset != nil {
+    //    menuInfo.menuIcon = menu_info.menuIcon.pngData()!
+    //}
+    menuInfo.userID = menu_info.userID
+    menuInfo.userName = menu_info.userName
+    menuInfo.createTime = menu_info.createTime
+    app.saveContext()
+    
+    if !menu_info.locations!.isEmpty {
+        for i in 0...menu_info.locations!.count - 1 {
+            let locationData = NSEntityDescription.insertNewObject(forEntityName: "MENU_LOCATION", into: vc) as! MENU_LOCATION
+            locationData.menuNumber = menu_info.menuNumber
+            locationData.locationName = menu_info.locations![i]
+        }
+    }
+    app.saveContext()
+    
+    if !menu_info.menuItems!.isEmpty {
+        for i in 0...menu_info.menuItems!.count - 1 {
+            let itemData = NSEntityDescription.insertNewObject(forEntityName: "MENU_ITEM", into: vc) as! MENU_ITEM
+            itemData.menuNumber = menu_info.menuNumber
+            itemData.itemName = menu_info.menuItems![i].itemName
+            itemData.itemPrice = Int16(menu_info.menuItems![i].itemPrice)
+            itemData.sequenceNumber = Int16(menu_info.menuItems![i].sequenceNumber)
+        }
+    }
+    app.saveContext()
+
+    if !menu_info.menuRecipes!.isEmpty {
+        for i in 0...menu_info.menuRecipes!.count - 1 {
+            let recipeCategory = NSEntityDescription.insertNewObject(forEntityName: "MENU_RECIPE_CATEGORY", into: vc) as! MENU_RECIPE_CATEGORY
+            recipeCategory.menuNumber = menu_info.menuNumber
+            recipeCategory.sequenceNumber = Int16(menu_info.menuRecipes![i].sequenceNumber)
+            recipeCategory.recipeCategory = menu_info.menuRecipes![i].recipeCategory
+            recipeCategory.isAllowedMulti = menu_info.menuRecipes![i].isAllowedMulti
+        }
+    }
+    app.saveContext()
+
+    if !menu_info.menuRecipes!.isEmpty {
+        for i in 0...menu_info.menuRecipes!.count - 1 {
+            for j in 0...menu_info.menuRecipes![i].recipeItems!.count - 1 {
+                let recipeData = NSEntityDescription.insertNewObject(forEntityName: "MENU_RECIPE", into: vc) as! MENU_RECIPE
+                recipeData.menuNumber = menu_info.menuNumber
+                recipeData.sequenceNumber = Int16(menu_info.menuRecipes![i].sequenceNumber)
+                recipeData.recipeCategory = menu_info.menuRecipes![i].recipeCategory
+                recipeData.recipeName = menu_info.menuRecipes![i].recipeItems![j].recipeName
+            }
+        }
+    }
+    app.saveContext()
+}
+
+func updateMenuInformation(menu_info: MenuInformation) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<MENU_INFORMATION> = MENU_INFORMATION.fetchRequest()
+    let predicateString = "menuNumber == \"\(menu_info.menuNumber)\""
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let menuData = try vc.fetch(fetchRequest).first
+        if menuData != nil {
+            menuData?.setValue(menu_info.brandName, forKey: "brandName")
+            menuData?.setValue(menu_info.brandCategory, forKey: "brandCategory")
+            menuData?.setValue(menu_info.menuDescription, forKey: "menuDescription")
+            menuData?.setValue(menu_info.menuImageURL, forKey: "menuImageURL")
+            //menuData?.setValue(menu_info.menuIcon.jpegData(compressionQuality: 1), forKey: "menuIcon")
+            menuData?.setValue(menu_info.userID, forKey: "userID")
+            menuData?.setValue(menu_info.createTime, forKey: "createTime")
+        }
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+    
+    app.saveContext()
+}
+
+func deleteMenuInformation(menu_info: MenuInformation) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<MENU_INFORMATION> = MENU_INFORMATION.fetchRequest()
+    let predicateString = "menuNumber == \"\(menu_info.menuNumber)\""
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let menuData = try vc.fetch(fetchRequest).first
+        if menuData != nil {
+            vc.delete(menuData!)
+        }
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+    app.saveContext()
+    
+    let fetchLocation: NSFetchRequest<MENU_LOCATION> = MENU_LOCATION.fetchRequest()
+    let pLocation = "menuNumber == \"\(menu_info.menuNumber)\""
+    let lPredicate = NSPredicate(format: pLocation)
+    fetchLocation.predicate = lPredicate
+    do {
+        let locationList = try vc.fetch(fetchLocation)
+        for locationData in locationList {
+            vc.delete(locationData)
+        }
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+    app.saveContext()
+    
+    let fetchItem: NSFetchRequest<MENU_ITEM> = MENU_ITEM.fetchRequest()
+    let pItem = "menuNumber == \"\(menu_info.menuNumber)\""
+    let iPredicate = NSPredicate(format: pItem)
+    fetchItem.predicate = iPredicate
+    do {
+        let itemList = try vc.fetch(fetchItem)
+        for itemData in itemList {
+            vc.delete(itemData)
+        }
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+    app.saveContext()
+
+    let fetchRecipe: NSFetchRequest<MENU_RECIPE> = MENU_RECIPE.fetchRequest()
+    let pRecipe = "menuNumber == \"\(menu_info.menuNumber)\""
+    let rPredicate = NSPredicate(format: pRecipe)
+    fetchRecipe.predicate = rPredicate
+    do {
+        let recipeList = try vc.fetch(fetchRecipe)
+        for recipeData in recipeList {
+            vc.delete(recipeData)
+        }
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+    app.saveContext()
+    
+    let fetchCategory: NSFetchRequest<MENU_RECIPE_CATEGORY> = MENU_RECIPE_CATEGORY.fetchRequest()
+    let pCategory = "menuNumber == \"\(menu_info.menuNumber)\""
+    let cPredicate = NSPredicate(format: pCategory)
+    fetchCategory.predicate = cPredicate
+    do {
+        let categoryList = try vc.fetch(fetchCategory)
+        for categoryData in categoryList {
+            vc.delete(categoryData)
+        }
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+    app.saveContext()
+
+}
+
+func retrieveMenuBrandCategory() -> [String] {
+    var returnList = [String]()
+    
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<MENU_BRAND_CATEGORY> = MENU_BRAND_CATEGORY.fetchRequest()
+
+    do {
+        let category_list = try vc.fetch(fetchRequest)
+        for category_data in category_list {
+            returnList.append(category_data.categoryName!)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    return returnList
+}
+
+func insertMenuBrandCategory(category: String) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+
+    let fetchRequest: NSFetchRequest<MENU_BRAND_CATEGORY> = MENU_BRAND_CATEGORY.fetchRequest()
+    let predicateString = "categoryName == \"\(category)\""
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let categoryData = try vc.fetch(fetchRequest).first
+        if categoryData != nil {
+            print("Brand Category exists, just return!")
+            return
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    let menuCategory = NSEntityDescription.insertNewObject(forEntityName: "MENU_BRAND_CATEGORY", into: vc) as! MENU_BRAND_CATEGORY
+
+    menuCategory.categoryName = category
+    
+    app.saveContext()
+}
+
+func deleteMenuBrandCategory(category: String) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<MENU_BRAND_CATEGORY> = MENU_BRAND_CATEGORY.fetchRequest()
+    let predicateString = "categoryName == \"\(category)\""
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let categoryData = try vc.fetch(fetchRequest).first
+        if categoryData != nil {
+            vc.delete(categoryData!)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    app.saveContext()
+}
+
+func retrieveMemberImage(user_id: String) -> UIImage {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+
+    let fetchProduct: NSFetchRequest<GROUP_MEMBER> = GROUP_MEMBER.fetchRequest()
+    let pString = "memberID == \"\(user_id)\""
+    print("retrieveMemberImage pString = \(pString)")
+    let predicate = NSPredicate(format: pString)
+    fetchProduct.predicate = predicate
+
+    do {
+        let member_data = try vc.fetch(fetchProduct).first
+        return UIImage(data: member_data!.memberImage!)!
+    } catch {
+        print(error.localizedDescription)
+        return UIImage()
+    }
+}
+
+func retrieveNotificationList() -> [NotificationData] {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+
+    var returnList: [NotificationData] = [NotificationData]()
+    
+    let fetchRequest: NSFetchRequest<NOTIFICATION_TABLE> = NOTIFICATION_TABLE.fetchRequest()
+    let sort = NSSortDescriptor(key: "receiveTime", ascending: false)
+    fetchRequest.sortDescriptors = [sort]
+
+    do {
+        let notificationList = try vc.fetch(fetchRequest)
+        for notificationData in notificationList {
+            var tmpData: NotificationData = NotificationData()
+            
+            let decoder: JSONDecoder = JSONDecoder()
+            do {
+                let jsonData = notificationData.notificationData!.data(using: .utf8)
+                tmpData = try decoder.decode(NotificationData.self, from: jsonData!)
+                //print("tmpData in notificationList = \(tmpData)")
+                returnList.append(tmpData)
+            } catch {
+                print("jsonData decode failed: \(error.localizedDescription)")
+                continue
+            }
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    return returnList
+}
+
+func retrieveInvitationNotificationList() -> [NotificationData] {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+
+    var returnList: [NotificationData] = [NotificationData]()
+    
+    let fetchRequest: NSFetchRequest<NOTIFICATION_TABLE> = NOTIFICATION_TABLE.fetchRequest()
+    let sort = NSSortDescriptor(key: "receiveTime", ascending: false)
+    fetchRequest.sortDescriptors = [sort]
+
+    do {
+        let notificationList = try vc.fetch(fetchRequest)
+        for notificationData in notificationList {
+            var tmpData: NotificationData = NotificationData()
+            
+            let decoder: JSONDecoder = JSONDecoder()
+            do {
+                let jsonData = notificationData.notificationData!.data(using: .utf8)
+                tmpData = try decoder.decode(NotificationData.self, from: jsonData!)
+                if tmpData.notificationType == NOTIFICATION_TYPE_ACTION_JOIN_ORDER {
+                    returnList.append(tmpData)
+                }
+            } catch {
+                print("jsonData decode failed: \(error.localizedDescription)")
+                continue
+            }
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    return returnList
+}
+
+func retrieveNotificationBadgeNumber() -> Int {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+
+    var badgeNumber: Int = 0
+
+    let fetchRequest: NSFetchRequest<NOTIFICATION_TABLE> = NOTIFICATION_TABLE.fetchRequest()
+
+    do {
+        let notificationList = try vc.fetch(fetchRequest)
+        for notificationData in notificationList {
+            if notificationData.isRead == false {
+                badgeNumber = badgeNumber + 1
+            }
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    return badgeNumber
+}
+
+func insertNotification(notification: NotificationData) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+
+    let notifyData = NSEntityDescription.insertNewObject(forEntityName: "NOTIFICATION_TABLE", into: vc) as! NOTIFICATION_TABLE
+    notifyData.isRead = false
+    notifyData.messageID = notification.messageID
+    notifyData.messageTitle = notification.messageTitle
+    notifyData.messageBody = notification.messageBody
+    notifyData.receiveTime = Date()
+    
+    do {
+        let jsonData = try JSONSerialization.data(withJSONObject: notification.toAnyObject(), options: [.prettyPrinted])
+        let jsonString = String(data: jsonData, encoding: .utf8)!
+        print("jsonString = \(jsonString)")
+        notifyData.notificationData = jsonString
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+
+    app.saveContext()
+}
+
+func deleteAllNotifications() {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<NOTIFICATION_TABLE> = NOTIFICATION_TABLE.fetchRequest()
+    
+    do {
+        let notificationList = try vc.fetch(fetchRequest)
+        for notificationData in notificationList {
+            vc.delete(notificationData)
+        }
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+    
+    app.saveContext()
+}
+
+func deleteNotificationByID(message_id: String) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<NOTIFICATION_TABLE> = NOTIFICATION_TABLE.fetchRequest()
+    let pString = "messageID == \"\(message_id)\""
+    let predicate = NSPredicate(format: pString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let notificationData = try vc.fetch(fetchRequest).first
+        if notificationData != nil {
+            vc.delete(notificationData!)
+        }
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+    
+    app.saveContext()
+}
+
+func updateNotificationReadStatus(message_id: String, status: Bool) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<NOTIFICATION_TABLE> = NOTIFICATION_TABLE.fetchRequest()
+    let predicateString = "messageID == \"\(message_id)\""
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let notificationData = try vc.fetch(fetchRequest).first
+        if notificationData != nil {
+            notificationData?.setValue(status, forKey: "isRead")
+            let decoder: JSONDecoder = JSONDecoder()
+            do {
+                let jsonData = notificationData?.notificationData!.data(using: .utf8)
+                var tmpData = try decoder.decode(NotificationData.self, from: jsonData!)
+                print("updateNotificationReadStatus: tmpData in notificationList = \(tmpData)")
+                tmpData.isRead = true
+                do {
+                    let updatedJSONData = try JSONSerialization.data(withJSONObject: tmpData.toAnyObject(), options: [.prettyPrinted])
+                    let jsonString = String(data: updatedJSONData, encoding: .utf8)!
+                    print("jsonString = \(jsonString)")
+                    notificationData?.setValue(jsonString, forKey: "notificationData")
+                } catch {
+                    print(error.localizedDescription)
+                    return
+                }
+
+                
+            } catch {
+                print("updateNotificationReadStatus: jsonData decode failed: \(error.localizedDescription)")
+                return
+            }
+        }
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+    
+    app.saveContext()
 }

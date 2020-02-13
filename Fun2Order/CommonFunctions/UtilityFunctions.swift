@@ -140,3 +140,48 @@ func getUserPhotoStoragePath(u_id: String) -> String {
     let path: String = "UserProfile_Photo/\(u_id).png"
     return path
 }
+
+func getMenuInfoDatabasePath(u_id: String, menu_number: String, key_value: String) -> String {
+    let path: String = "USER_MENU_INFORMATION/\(u_id)/\(menu_number)/\(key_value)"
+    return path
+}
+
+func presentAlert(_ alertController: UIAlertController) -> UIWindow {
+ 
+    // 創造一個 UIWindow 的實例。
+    let alertWindow = UIWindow()
+    
+    if #available(iOS 13.0, *) {
+        // 取得 view 所屬的 windowScene，並指派給 alertWindow。
+        //guard let windowScene = alertController.view.window?.windowScene else { return }
+        let windowScene = UIApplication.shared.connectedScenes.first { $0.activationState == .foregroundActive }
+        alertWindow.windowScene = windowScene as? UIWindowScene
+    }
+ 
+    // UIWindow 預設的背景色是黑色，但我們想要 alertWindow 的背景是透明的。
+    alertWindow.backgroundColor = nil
+ 
+    // 將 alertWindow 的顯示層級提升到最上方，不讓它被其它視窗擋住。
+    alertWindow.windowLevel = .alert
+ 
+    // 指派一個空的 UIViewController 給 alertWindow 當 rootViewController。
+    DispatchQueue.main.async {
+       alertWindow.rootViewController = UIViewController()
+    
+       // 將 alertWindow 顯示出來。由於我們不需要使 alertWindow 變成主視窗，所以沒有必要用 alertWindow.makeKeyAndVisible()。
+       alertWindow.isHidden = false
+    
+       // 使用 alertWindow 的 rootViewController 來呈現警告。
+       alertWindow.rootViewController?.present(alertController, animated: true)
+    }
+    
+    return alertWindow
+}
+
+func getMyTokenID() -> String {
+    let path = NSHomeDirectory() + "/Documents/AppConfig.plist"
+    let plist = NSMutableDictionary(contentsOfFile: path)
+    let tokenID = plist!["FirebaseInstanceID"] as! String
+    
+    return tokenID
+}

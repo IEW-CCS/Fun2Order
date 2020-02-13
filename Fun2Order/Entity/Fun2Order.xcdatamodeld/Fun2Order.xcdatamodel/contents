@@ -61,6 +61,58 @@
         <attribute name="groupImage" optional="YES" attributeType="Binary"/>
         <attribute name="groupName" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="MENU_BRAND_CATEGORY" representedClassName="MENU_BRAND_CATEGORY" syncable="YES">
+        <attribute name="categoryName" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="MENU_ICON" representedClassName="MENU_ICON" syncable="YES">
+        <attribute name="menuIcon" optional="YES" attributeType="Binary"/>
+        <attribute name="menuNumber" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="MENU_INFORMATION" representedClassName="MENU_INFORMATION" syncable="YES">
+        <attribute name="brandCategory" optional="YES" attributeType="String"/>
+        <attribute name="brandName" optional="YES" attributeType="String"/>
+        <attribute name="createTime" optional="YES" attributeType="String"/>
+        <attribute name="menuDescription" optional="YES" attributeType="String"/>
+        <attribute name="menuImageURL" optional="YES" attributeType="String"/>
+        <attribute name="menuNumber" optional="YES" attributeType="String"/>
+        <attribute name="userID" optional="YES" attributeType="String"/>
+        <attribute name="userName" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="MENU_ITEM" representedClassName="MENU_ITEM" syncable="YES">
+        <attribute name="itemName" optional="YES" attributeType="String"/>
+        <attribute name="itemPrice" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="menuNumber" optional="YES" attributeType="String"/>
+        <attribute name="sequenceNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="MENU_LOCATION" representedClassName="MENU_LOCATION" syncable="YES">
+        <attribute name="locationName" optional="YES" attributeType="String"/>
+        <attribute name="menuNumber" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="MENU_RECIPE" representedClassName="MENU_RECIPE" syncable="YES">
+        <attribute name="menuNumber" optional="YES" attributeType="String"/>
+        <attribute name="recipeCategory" optional="YES" attributeType="String"/>
+        <attribute name="recipeName" optional="YES" attributeType="String"/>
+        <attribute name="sequenceNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="MENU_RECIPE_CATEGORY" representedClassName="MENU_RECIPE_CATEGORY" syncable="YES">
+        <attribute name="isAllowedMulti" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="menuNumber" optional="YES" attributeType="String"/>
+        <attribute name="recipeCategory" optional="YES" attributeType="String"/>
+        <attribute name="sequenceNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="MENU_RECIPE_TEMPLATE" representedClassName="MENU_RECIPE_TEMPLATE" syncable="YES">
+        <attribute name="recipeCategory" optional="YES" attributeType="String"/>
+        <attribute name="recipeName" optional="YES" attributeType="String"/>
+        <attribute name="templateName" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="NOTIFICATION_TABLE" representedClassName="NOTIFICATION_TABLE" syncable="YES">
+        <attribute name="isRead" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="messageBody" optional="YES" attributeType="String"/>
+        <attribute name="messageID" optional="YES" attributeType="String"/>
+        <attribute name="messageTitle" optional="YES" attributeType="String"/>
+        <attribute name="notificationData" optional="YES" attributeType="String"/>
+        <attribute name="receiveTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
     <entity name="ORDER_CONTENT_ITEM" representedClassName="ORDER_CONTENT_ITEM" syncable="YES">
         <attribute name="itemComments" optional="YES" attributeType="String"/>
         <attribute name="itemCreateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -83,6 +135,7 @@
         <attribute name="orderImage" optional="YES" attributeType="Binary"/>
         <attribute name="orderNumber" optional="YES" attributeType="String"/>
         <attribute name="orderOwner" optional="YES" attributeType="String"/>
+        <attribute name="orderOwnerID" optional="YES" attributeType="String"/>
         <attribute name="orderStatus" optional="YES" attributeType="String"/>
         <attribute name="orderTotalPrice" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="orderTotalQuantity" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -161,15 +214,24 @@
         <element name="FAVORITE_PRODUCT" positionX="136.8359375" positionY="53.92578125" width="128" height="88"/>
         <element name="FAVORITE_PRODUCT_RECIPE" positionX="129.0390625" positionY="165.54296875" width="128" height="118"/>
         <element name="FAVORITE_STORE" positionX="292.28125" positionY="140.04296875" width="128" height="148"/>
+        <element name="GROUP_MEMBER" positionX="189" positionY="54" width="128" height="103"/>
+        <element name="GROUP_TABLE" positionX="180" positionY="45" width="128" height="118"/>
+        <element name="MENU_BRAND_CATEGORY" positionX="225" positionY="90" width="128" height="58"/>
+        <element name="MENU_INFORMATION" positionX="180" positionY="45" width="128" height="163"/>
+        <element name="MENU_ITEM" positionX="189" positionY="54" width="128" height="103"/>
+        <element name="MENU_LOCATION" positionX="216" positionY="81" width="128" height="73"/>
+        <element name="MENU_RECIPE" positionX="198" positionY="63" width="128" height="103"/>
+        <element name="MENU_RECIPE_CATEGORY" positionX="180" positionY="45" width="128" height="103"/>
+        <element name="MENU_RECIPE_TEMPLATE" positionX="207" positionY="72" width="128" height="88"/>
         <element name="ORDER_CONTENT_ITEM" positionX="458.171875" positionY="278.82421875" width="128" height="208"/>
-        <element name="ORDER_INFORMATION" positionX="459.72265625" positionY="72.046875" width="128" height="253"/>
+        <element name="ORDER_INFORMATION" positionX="459.72265625" positionY="72.046875" width="128" height="268"/>
         <element name="ORDER_PRODUCT_RECIPE" positionX="294.3359375" positionY="322.8359375" width="128" height="118"/>
         <element name="PRODUCT_INFORMATION" positionX="131.2265625" positionY="313.52734375" width="128" height="178"/>
         <element name="PRODUCT_RECIPE" positionX="-12.4296875" positionY="312.859375" width="128" height="238"/>
         <element name="PRODUCT_RECIPE_PRICE" positionX="135.07421875" positionY="-94.15234375" width="128" height="133"/>
         <element name="STORE_BUSINESS_HOURS" positionX="-16.67578125" positionY="115.625" width="128" height="178"/>
         <element name="STORE_INFORMATION" positionX="-25.1015625" positionY="-90.71484375" width="128" height="178"/>
-        <element name="GROUP_TABLE" positionX="180" positionY="45" width="128" height="118"/>
-        <element name="GROUP_MEMBER" positionX="189" positionY="54" width="128" height="103"/>
+        <element name="NOTIFICATION_TABLE" positionX="180" positionY="45" width="128" height="133"/>
+        <element name="MENU_ICON" positionX="189" positionY="54" width="128" height="73"/>
     </elements>
 </model>

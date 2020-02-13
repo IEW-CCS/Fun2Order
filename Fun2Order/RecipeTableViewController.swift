@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Firebase
 
 class RecipeTableViewController: UITableViewController {
     var itemHeight = [Int]();
@@ -265,7 +266,10 @@ class RecipeTableViewController: UITableViewController {
             
             let row_index = IndexPath(row: self.productRecipes.count + 1, section: 0)
             print("receivePriceUpdate -> row_index.row = \(row_index.row)")
-            let cell = self.tableView.cellForRow(at: row_index) as! QuantityCell
+            //let cell = self.tableView.cellForRow(at: row_index) as! QuantityCell
+            guard let cell = self.tableView.dequeueReusableCell(withIdentifier: "QuantityCell", for: row_index) as? QuantityCell else {
+                return
+            }
             cell.setSinglePrice(price: self.finalPrice)
         }
     }
@@ -300,6 +304,9 @@ class RecipeTableViewController: UITableViewController {
                 }
             }
         }
+        
+        // Send notification to refresh ProductDetailTableViewController
+        NotificationCenter.default.post(name: NSNotification.Name("RefreshProductDetailList"), object: nil)
         
         //Add message to inform user that action is successful
         var messageString: String = ""
@@ -347,9 +354,19 @@ class RecipeTableViewController: UITableViewController {
                 order_data.orderImage = UIImage(named: "Image_Group.png")!.pngData()
             }
             order_data.orderCreateTime = Date()
-            //order_data.orderOwner =
+            if(Auth.auth().currentUser?.uid != nil) {
+                order_data.orderOwnerID = Auth.auth().currentUser?.uid
+                order_data.orderOwner = Auth.auth().currentUser?.displayName
+            } else {
+                order_data.orderOwnerID = "Guest"
+                order_data.orderOwner = "Guest"
+            }
+            
             let quantity_row_index = IndexPath(row: self.productRecipes.count + 1, section: 0)
-            let quantity_cell = self.tableView.cellForRow(at: quantity_row_index) as! QuantityCell
+            //let quantity_cell = self.tableView.cellForRow(at: quantity_row_index) as! QuantityCell
+            guard let quantity_cell = self.tableView.dequeueReusableCell(withIdentifier: "QuantityCell", for: quantity_row_index) as? QuantityCell else {
+                return
+            }
             order_data.orderTotalPrice = Int16(quantity_cell.getTotalPrice())
             order_data.orderTotalQuantity = Int16(quantity_cell.getQuantity())
             order_data.brandID = Int16(self.storeProductRecipe.brandID)
@@ -379,7 +396,10 @@ class RecipeTableViewController: UITableViewController {
     
     func insertOrderContentItem(order_number: String) {
         let quantity_row_index = IndexPath(row: self.productRecipes.count + 1, section: 0)
-        let quantity_cell = self.tableView.cellForRow(at: quantity_row_index) as! QuantityCell
+        //let quantity_cell = self.tableView.cellForRow(at: quantity_row_index) as! QuantityCell
+        guard let quantity_cell = self.tableView.dequeueReusableCell(withIdentifier: "QuantityCell", for: quantity_row_index) as? QuantityCell else {
+            return
+        }
         quantity_cell.setSinglePrice(price: self.finalPrice)
 
         let order_item = NSEntityDescription.insertNewObject(forEntityName: "ORDER_CONTENT_ITEM", into: vc) as! ORDER_CONTENT_ITEM
@@ -396,7 +416,10 @@ class RecipeTableViewController: UITableViewController {
         order_item.itemFinalPrice = Int16(quantity_cell.getTotalPrice())
         
         let comments_row_index = IndexPath(row: self.productRecipes.count, section: 0)
-        let comments_cell = self.tableView.cellForRow(at: comments_row_index) as! CommentsCell
+        //let comments_cell = self.tableView.cellForRow(at: comments_row_index) as! CommentsCell
+        guard let comments_cell = self.tableView.dequeueReusableCell(withIdentifier: "CommentsCell", for: comments_row_index) as? CommentsCell else {
+            return
+        }
         order_item.itemComments = comments_cell.getComments()
         
         app.saveContext()
@@ -414,7 +437,10 @@ class RecipeTableViewController: UITableViewController {
             let item_data = try vc.fetch(fetchRequest).first
             if item_data != nil {
                 let quantity_row_index = IndexPath(row: self.productRecipes.count + 1, section: 0)
-                let quantity_cell = self.tableView.cellForRow(at: quantity_row_index) as! QuantityCell
+                //let quantity_cell = self.tableView.cellForRow(at: quantity_row_index) as! QuantityCell
+                guard let quantity_cell = self.tableView.dequeueReusableCell(withIdentifier: "QuantityCell", for: quantity_row_index) as? QuantityCell else {
+                    return
+                }
                 //quantity_cell.setSinglePrice(price: self.finalPrice)
                 print("updateOrderContentItem -> item_data!.itemSinglePrice = \(item_data!.itemSinglePrice)")
                 quantity_cell.setSinglePrice(price: Int(item_data!.itemSinglePrice))
@@ -425,7 +451,10 @@ class RecipeTableViewController: UITableViewController {
                 item_data?.setValue(Int16(quantity_cell.getTotalPrice()), forKey: "itemFinalPrice")
                 
                 let comments_row_index = IndexPath(row: self.productRecipes.count, section: 0)
-                let comments_cell = self.tableView.cellForRow(at: comments_row_index) as! CommentsCell
+                //let comments_cell = self.tableView.cellForRow(at: comments_row_index) as! CommentsCell
+                guard let comments_cell = self.tableView.dequeueReusableCell(withIdentifier: "CommentsCell", for: comments_row_index) as? CommentsCell else {
+                    return
+                }
                 item_data?.setValue(comments_cell.getComments(), forKey: "itemComments")
 
                 app.saveContext()

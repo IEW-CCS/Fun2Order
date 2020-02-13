@@ -145,6 +145,9 @@ class CartOrderCell: UITableViewCell {
     }
     
     @IBAction func deliveryByStore(_ sender: UIButton) {
+        var alertWindow: UIWindow!
+        var alertTextWindow: UIWindow!
+        
         self.labelDeliveryWay.text = "外送地址"
         self.labelAddress.isEnabled = true
         self.labelAddress.isHidden = false
@@ -163,6 +166,7 @@ class CartOrderCell: UITableViewCell {
                     self.labelAddress.text = action.title!
                     self.orderInformation.deliveryAddress = action.title!
                     self.updateOrderAddress()
+                    alertWindow.isHidden = true
                }
                controller.addAction(action)
             }
@@ -173,7 +177,9 @@ class CartOrderCell: UITableViewCell {
             
             let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
                 print("Cancel to select favorite address!")
+                alertWindow.isHidden = true
             }
+            
             cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
             controller.addAction(cancelAction)
             
@@ -185,11 +191,13 @@ class CartOrderCell: UITableViewCell {
                 self.labelAddress.text = address_string!
                 self.orderInformation.deliveryAddress = address_string!
                 self.updateOrderAddress()
+                alertWindow.isHidden = true
             }
             addAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
             controller.addAction(addAction)
             
-            app.window?.rootViewController!.present(controller, animated: true, completion: nil)
+            //app.window?.rootViewController!.present(controller, animated: true, completion: nil)
+            alertWindow = presentAlert(controller)
             return
         }
         
@@ -206,9 +214,12 @@ class CartOrderCell: UITableViewCell {
             self.labelAddress.text = address_string!
             self.orderInformation.deliveryAddress = address_string!
             self.updateOrderAddress()
+            alertTextWindow.isHidden = true
         }
+        
         textController.addAction(addAction)
-        app.window?.rootViewController!.present(textController, animated: true, completion: nil)
+        //app.window?.rootViewController!.present(textController, animated: true, completion: nil)
+        alertTextWindow = presentAlert(textController)
     }
     
     @IBAction func addProductToOrder(_ sender: UIButton) {
@@ -220,6 +231,8 @@ class CartOrderCell: UITableViewCell {
     }
     
     @IBAction func deleteEntireOrder(_ sender: UIButton) {
+        var alertWindow: UIWindow!
+        
         let controller = UIAlertController(title: "刪除訂單", message: "確定要刪除整張訂單嗎？", preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
@@ -252,12 +265,19 @@ class CartOrderCell: UITableViewCell {
             
             //Send notofication to CartTableViewController
             NotificationCenter.default.post(name: NSNotification.Name("RefreshCartOrder"), object: nil)
+            alertWindow.isHidden = true
         }
         
         controller.addAction(okAction)
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        //let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+            print("Cancel the action")
+            alertWindow.isHidden = true
+        }
         controller.addAction(cancelAction)
-        app.window?.rootViewController!.present(controller, animated: true, completion: nil)    }
+        //app.window?.rootViewController!.present(controller, animated: true, completion: nil)
+        alertWindow = presentAlert(controller)
+    }
     
     
     func updateButtonState(takeout_flag: Bool) {
@@ -335,6 +355,7 @@ class CartOrderCell: UITableViewCell {
     }
     
     func updateOrderInformationToCoreData() {
+        var alertWindow: UIWindow!
         var todayCode: String = ""
         var serial_number: Int = 0
         var isFoundSerial: Bool = false
@@ -425,15 +446,14 @@ class CartOrderCell: UITableViewCell {
         
         let messageString: String = "訂單已成功送出"
         let alertMessage = UIAlertController(title: messageString, message: nil, preferredStyle: .alert)
-        DispatchQueue.main.async {
-            self.app.window?.rootViewController!.present(alertMessage, animated: true, completion: nil)
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
-            self.app.window?.rootViewController!.dismiss(animated: true, completion: nil)
-        }
-        
+        alertWindow = presentAlert(alertMessage)
         NotificationCenter.default.post(name: NSNotification.Name("EditDeleteOrderProduct"), object: nil)
+       
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
+            //self.app.window?.rootViewController!.dismiss(animated: true, completion: nil)
+            alertWindow.isHidden = true
+        }
+        
     }
     
     @IBAction func sendOrder(_ sender: UIButton) {

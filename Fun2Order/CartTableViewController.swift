@@ -89,6 +89,7 @@ class CartTableViewController: UITableViewController {
         self.title = "我的訂單"
         self.tabBarController?.title = "我的訂單"
         self.navigationController?.title = "我的訂單"
+        navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
     }
     
     func retrieveOrderList() {
@@ -114,6 +115,7 @@ class CartTableViewController: UITableViewController {
                 tmpOrderInfo.orderImage = UIImage(data: order_data.orderImage!)!
                 tmpOrderInfo.orderCreateTime = order_data.orderCreateTime!
                 tmpOrderInfo.orderOwner = order_data.orderOwner ?? ""
+                tmpOrderInfo.orderOwnerID = order_data.orderOwnerID ?? ""
                 tmpOrderInfo.orderTotalQuantity = Int(order_data.orderTotalQuantity)
                 tmpOrderInfo.orderTotalPrice = Int(order_data.orderTotalPrice)
                 tmpOrderInfo.brandID = Int(order_data.brandID)

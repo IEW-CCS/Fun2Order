@@ -13,19 +13,18 @@ class HomeTabBar : UITabBarController
     override func viewDidLoad() {
         super .viewDidLoad()
         navigationController?.viewControllers = [self]
-        
+        let app = UIApplication.shared.delegate as! AppDelegate
+        app.myTabBar = self.tabBar
     }
     
-    //override func viewWillAppear(_ animated: Bool) {
-    //    self.title = "首頁"
-    //    self.navigationController?.title = "首頁"
-    //    self.tabBarController?.title = "首頁"
-    //}
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
+    }
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-         navigationController?.setNavigationBarHidden(false, animated: false)
-         self.title = "首頁"
-         self.navigationController?.title = "首頁"
-         self.tabBarController?.title = "首頁"
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        self.title = "首頁"
+        self.navigationController?.title = "首頁"
+        self.tabBarController?.title = "首頁"
     }
 }

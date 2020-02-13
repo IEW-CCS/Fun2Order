@@ -19,6 +19,7 @@ class FavoriteTableViewController: UITableViewController {
     var vc: NSManagedObjectContext!
 
     @IBOutlet weak var menuBarItem: UIBarButtonItem!
+    @IBOutlet weak var cartBarItem: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,15 +47,25 @@ class FavoriteTableViewController: UITableViewController {
             name: NSNotification.Name(rawValue: "AddToFavorite"),
             object: nil
         )
-
+        
         getDefaultBrandData()
         self.favoriteStoreArray = retrieveFavoriteStore()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.title = "選擇我的最愛"
         self.navigationController?.title = "選擇我的最愛"
         self.tabBarController?.title = "選擇我的最愛"
+        
+        navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
+        
+        let badgeNumber = getCartBadgeNumber()
+        if badgeNumber == 0 {
+            self.cartBarItem.removeBadge()
+        } else {
+            self.cartBarItem.addBadge(text: String(badgeNumber))
+        }
     }
     
     func getDefaultBrandData() {
@@ -235,8 +246,6 @@ extension FavoriteTableViewController: DisplayGroupOrderDelegate {
             return
         }
         
-        //groupOrderController.modalTransitionStyle = .crossDissolve
-        //groupOrderController.modalPresentationStyle = .overFullScreen
         groupOrderController.favoriteStoreInfo = self.favoriteStoreArray[index.row]
         navigationController?.show(groupOrderController, sender: self)
     }

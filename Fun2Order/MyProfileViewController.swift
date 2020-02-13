@@ -54,23 +54,20 @@ class MyProfileViewController: UIViewController {
             object: nil
         )
     }
-
-    //override func viewWillAppear(_ animated: Bool) {
-    //    self.title = "我的設定"
-    //    self.navigationController?.title = "我的設定"
-    //   self.tabBarController?.title = "我的設定"
-    //}
     
     override func viewWillAppear(_ animated: Bool) {
         self.title = "我的設定"
         self.navigationController?.title = "我的設定"
         self.tabBarController?.title = "我的設定"
+        navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
     }
 
-    override func viewDidLayoutSubviews() {
-        print("**************  viewDidLayoutSubviews to setupSegmentIndicator")
-        setupSegmentIndicator()
-    }
+    /*
+     override func viewDidLayoutSubviews() {
+         print("**************  viewDidLayoutSubviews to setupSegmentIndicator")
+         setupSegmentIndicator()
+     }
+     */
     
     @objc func handleImageTap(_ sender: UITapGestureRecognizer) {
         print("Group Image View is tapped")
@@ -115,22 +112,24 @@ class MyProfileViewController: UIViewController {
     }
     
     @IBAction func selectFunctions(_ sender: UISegmentedControl) {
-        let numberOfSegments = CGFloat(self.segmentControl.numberOfSegments)
-        let segmentWidth = CGFloat((self.segmentControl.layer.frame.maxX - self.segmentControl.layer.frame.minX)/numberOfSegments)
+        /*
+         let numberOfSegments = CGFloat(self.segmentControl.numberOfSegments)
+         let segmentWidth = CGFloat((self.segmentControl.layer.frame.maxX - self.segmentControl.layer.frame.minX)/numberOfSegments)
 
-        self.segmentIndicator.removeConstraints(self.segmentIndicator.constraints)
+         self.segmentIndicator.removeConstraints(self.segmentIndicator.constraints)
 
-        self.segmentIndicator.topAnchor.constraint(equalTo: self.segmentControl.bottomAnchor, constant: 3).isActive = true
-        self.segmentIndicator.heightAnchor.constraint(equalToConstant: 2).isActive = true
-        
-        self.segmentIndicator.widthAnchor.constraint(equalToConstant: CGFloat(segmentWidth - 20)).isActive = true
-        
-        print("self.segmentControl.selectedSegmentIndex = \(self.segmentControl.selectedSegmentIndex)")
-        self.segmentIndicator.centerXAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].centerXAnchor).isActive = true
-        
-        UIView.animate(withDuration: 0.05, animations: {
-            self.view.layoutIfNeeded()
-        })
+         self.segmentIndicator.topAnchor.constraint(equalTo: self.segmentControl.bottomAnchor, constant: 3).isActive = true
+         self.segmentIndicator.heightAnchor.constraint(equalToConstant: 2).isActive = true
+         
+         self.segmentIndicator.widthAnchor.constraint(equalToConstant: CGFloat(segmentWidth - 20)).isActive = true
+         
+         print("self.segmentControl.selectedSegmentIndex = \(self.segmentControl.selectedSegmentIndex)")
+         self.segmentIndicator.centerXAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].centerXAnchor).isActive = true
+         
+         UIView.animate(withDuration: 0.05, animations: {
+             self.view.layoutIfNeeded()
+         })
+         */
         
         NotificationCenter.default.post(name: NSNotification.Name("IndexChange"), object: self.segmentControl.selectedSegmentIndex)
     }
@@ -245,10 +244,12 @@ class MyProfileViewController: UIViewController {
         if let pageIndex = notification.object as? Int {
             print("MyProfileViewController received PageChange notification for page[\(pageIndex)]")
             self.segmentControl.selectedSegmentIndex = pageIndex
-            self.segmentIndicator.centerXAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].centerXAnchor).isActive = true
-            UIView.animate(withDuration: 0.1, animations: {
-                self.view.layoutIfNeeded()
-            })
+            /*
+             self.segmentIndicator.centerXAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].centerXAnchor).isActive = true
+             UIView.animate(withDuration: 0.1, animations: {
+                 self.view.layoutIfNeeded()
+             })
+             */
         }
     }
     
@@ -270,7 +271,7 @@ class MyProfileViewController: UIViewController {
 extension MyProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
-        let newImage = resizeImage(image: image, width: 320)
+        let newImage = resizeImage(image: image, width: 120)
         self.imageMyPhoto.image = newImage
         //self.saveUserImage(user_image: newImage)
         dismiss(animated: true, completion: nil)

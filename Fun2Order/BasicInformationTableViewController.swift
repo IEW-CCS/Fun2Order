@@ -206,7 +206,8 @@ class BasicInformationTableViewController: UITableViewController {
         }
 
         controller.setValue(genderController, forKey: "contentViewController")
-        //genderController.preferredContentSize.height = 100
+        genderController.preferredContentSize.height = 120
+        controller.preferredContentSize.height = 120
         controller.addChild(genderController)
         
         let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
@@ -236,7 +237,8 @@ class BasicInformationTableViewController: UITableViewController {
         }
 
         controller.setValue(birthdayController, forKey: "contentViewController")
-        //birthdayController.preferredContentSize.height = 150
+        birthdayController.preferredContentSize.height = 180
+        controller.preferredContentSize.height = 180
         controller.addChild(birthdayController)
         
         let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
@@ -315,7 +317,6 @@ class BasicInformationTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Selected row index = \(indexPath.row)")
-        
         
         if indexPath.section == 0 {
             switch indexPath.row {

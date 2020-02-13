@@ -11,9 +11,10 @@ import CoreData
 import Firebase
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
 
     var window: UIWindow?
+    var myTabBar: UITabBar?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -22,7 +23,65 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         writeSetupConfig()
         FirebaseApp.configure()
 
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().delegate = self
+            let authOptions: UNAuthorizationOptions = [.alert, .badge]
+            UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: {_, _ in })
+        }
+        
+        application.registerForRemoteNotifications()
+        Messaging.messaging().delegate = self
+        
+        //deleteAllNotifications()
+        getNotifications()
+        NotificationCenter.default.post(name: NSNotification.Name("RefreshNotificationList"), object: nil)
         return true
+    }
+
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        print("Firebase registration token: \(fcmToken)")
+
+        let dataDict:[String: String] = ["token": fcmToken]
+        NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
+
+        InstanceID.instanceID().instanceID { (result, error) in
+          if let error = error {
+            print("Error fetching remote instance ID: \(error)")
+          } else if let result = result {
+            print("Remote instance ID token: \(result.token)")
+            self.saveInstanceID(instance_id: result.token)
+            //self.instanceIDTokenMessage.text  = "Remote InstanceID token: \(result.token)"
+          }
+        }
+    }
+
+    private func application(application: UIApplication,
+                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        print("application didRegisterForRemoteNotificationsWithDeviceToken")
+        Messaging.messaging().apnsToken = deviceToken as Data
+    }
+
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        getNotifications()
+        NotificationCenter.default.post(name: NSNotification.Name("RefreshNotificationList"), object: nil)
+        completionHandler(UIBackgroundFetchResult.newData)
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        //let userInfo = notification.request.content.userInfo
+        //print(userInfo)
+        //getNotifications()
+        print("notification.request.identifier = \(notification.request.identifier)")
+        setupNotification(notity: notification)
+        setNotificationBadgeNumber()
+        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
+        //center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
+        // Change this to your preferred presentation option
+        NotificationCenter.default.post(name: NSNotification.Name("RefreshNotificationList"), object: nil)
+        completionHandler(UNNotificationPresentationOptions.alert)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -77,8 +136,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    
-    // MARK: UISceneSession Lifecycle
+    func saveInstanceID(instance_id: String) {
+        let path = NSHomeDirectory() + "/Documents/AppConfig.plist"
+        if let plist = NSMutableDictionary(contentsOfFile: path) {
+            plist["FirebaseInstanceID"] = instance_id
+            
+            if !plist.write(toFile: path, atomically: true) {
+                print("Save AppConfig.plist failed")
+            }
+        }
+        
+        if let user_id = Auth.auth().currentUser?.uid {
+            uploadUserProfileTokenID(user_id: user_id, token_id: instance_id)
+        }
+    }
 
     @available(iOS 13, *)
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

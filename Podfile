@@ -11,6 +11,7 @@ target 'Fun2Order' do
     pod 'Firebase/Auth'
     pod 'GoogleSignIn'
     pod 'Firebase/Analytics'
+    pod 'Firebase/Messaging'
     pod 'Firebase/Storage'
     pod 'Firebase/Firestore'
     pod 'Firebase/Database'

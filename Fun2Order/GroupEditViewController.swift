@@ -181,7 +181,7 @@ extension GroupEditViewController: UIImagePickerControllerDelegate, UINavigation
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
-        let newImage = resizeImage(image: image, width: 320)
+        let newImage = resizeImage(image: image, width: 120)
         self.imageGroup.image = newImage
         dismiss(animated: true, completion: nil)
     }

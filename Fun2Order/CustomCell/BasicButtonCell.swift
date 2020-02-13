@@ -35,13 +35,60 @@ class BasicButtonCell: UITableViewCell {
     @IBAction func addToFavorite(_ sender: UIButton) {
         switch self.actionType {
         case BUTTON_ACTION_FAVORITE:
+            // Send notification to RecipeTableViewController
             NotificationCenter.default.post(name: NSNotification.Name("AddFavoriteProduct"), object: nil)
             break
                 
         case BUTTON_ACTION_CART:
+            // Send notification to RecipeTableViewController
             NotificationCenter.default.post(name: NSNotification.Name("AddToCart"), object: nil)
             break
+
+        case BUTTON_ACTION_MENU_LIST:
+            // Send notification to MenuHomeTableViewController
+            NotificationCenter.default.post(name: NSNotification.Name("MenuList"), object: nil)
+            break
             
+        case BUTTON_ACTION_MENU_CREATE:
+            // Send notification to MenuHomeTableViewController
+            NotificationCenter.default.post(name: NSNotification.Name("MenuCreate"), object: nil)
+            break
+            
+        case BUTTON_ACTION_MENU_CONFIRM:
+            // Send notification to CreateMenuTableViewController
+            NotificationCenter.default.post(name: NSNotification.Name("MenuConfirm"), object: nil)
+            break
+
+        case BUTTON_ACTION_ASSIGN_RECIPE:
+            // Send notification to CreateMenuTableViewController
+            NotificationCenter.default.post(name: NSNotification.Name("AssignRecipe"), object: nil)
+            break
+
+        case BUTTON_ACTION_SETUP_RECIPE:
+            // Send notification to CreateRecipeTableViewController
+            NotificationCenter.default.post(name: NSNotification.Name("SetupRecipe"), object: nil)
+            break
+
+        case BUTTON_ACTION_ABOUT:
+            // Send notification to MenuHomeTableViewController
+            NotificationCenter.default.post(name: NSNotification.Name("DisplayAbout"), object: nil)
+            break
+
+        case BUTTON_ACTION_REFRESH_STATUS_SUMMARY:
+            // Send notification to StatusSummaryTableViewController
+            NotificationCenter.default.post(name: NSNotification.Name("RefreshStatusSummary"), object: nil)
+            break
+
+        case BUTTON_ACTION_NOTIFY_MENUORDER_DUETIME:
+            // Send notification to StatusSummaryTableViewController
+            NotificationCenter.default.post(name: NSNotification.Name("NotifyMenuOrderDueTime"), object: nil)
+            break
+
+        case BUTTON_ACTION_JOINORDER_SELECT_RECIPE:
+            // Send notification to StatusSummaryTableViewController
+            NotificationCenter.default.post(name: NSNotification.Name("JoinOrderSelectRecipe"), object: nil)
+            break
+
         default:
             break
         }

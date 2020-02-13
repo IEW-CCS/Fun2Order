@@ -38,17 +38,24 @@ class ConfigFavoriteStoreCell: UITableViewCell {
     }
     
     @IBAction func deleteStore(_ sender: UIButton) {
+        var alertWindow: UIWindow!
         let controller = UIAlertController(title: "刪除最愛店家", message: "刪除最愛店家會一併刪除與此店家有關的最愛產品，確定要刪除此最愛店家嗎？", preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             print("Confirm to delete this store")
             NotificationCenter.default.post(name: NSNotification.Name("ConfigDeleteStore"), object: self.rowIndex)
+            alertWindow.isHidden = true
         }
         
         controller.addAction(okAction)
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        //let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+            print("Cancel the action")
+            alertWindow.isHidden = true
+        }
         controller.addAction(cancelAction)
-        app.window?.rootViewController!.present(controller, animated: true, completion: nil)
+        //app.window?.rootViewController!.present(controller, animated: true, completion: nil)
+        alertWindow = presentAlert(controller)
     }
     
 }

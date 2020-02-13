@@ -2,7 +2,7 @@
 //  ORDER_INFORMATION+CoreDataClass.swift
 //  
 //
-//  Created by Lo Fang Chou on 2019/12/12.
+//  Created by Lo Fang Chou on 2020/1/18.
 //
 //
 

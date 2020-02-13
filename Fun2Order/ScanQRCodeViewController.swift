@@ -64,7 +64,13 @@ class ScanQRCodeViewController: UIViewController {
                         }
                     }
                     
-                    tmpMemberInfo.memberImage = UIImage(data: data!)!
+                    if data == nil {
+                        print("Member image is nil !")
+                        tmpMemberInfo.memberImage = UIImage(named: "Image_Default_Member.png")!
+                    } else {
+                        tmpMemberInfo.memberImage = UIImage(data: data!)!
+                    }
+                    
                     NotificationCenter.default.post(name: NSNotification.Name("AddMember"), object: tmpMemberInfo)
                     self.navigationController?.popViewController(animated: true)
                 })

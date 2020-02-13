@@ -300,24 +300,6 @@ extension MemberGroupViewController: UICollectionViewDataSource, UICollectionVie
             self.memberList = retrieveMemberList(group_id: self.groupList[indexPath.row].groupID)
             self.memberTableView.reloadData()
         }
-        
-        /*
-         print("didSelectItemAt indexPath.row = \(indexPath.row)")
-         let cellSelected = collectionView.cellForItem(at: indexPath) as! BasicCollectionViewCell
-         cellSelected.selected()
-         self.currentSelectedIndex = indexPath.row
-         setupChartData(cate_index: indexPath.row)
-         
-          AdjustAutoLayout()
-         
-         if indexPath.row != self.previousSelectedIndex {
-             let prevIndexPath = IndexPath(row: self.previousSelectedIndex, section: indexPath.section)
-             let cellUnSelected = collectionView.cellForItem(at: prevIndexPath) as! BasicCollectionViewCell
-             cellUnSelected.unselected()
-             
-             self.previousSelectedIndex = indexPath.row
-         }
-         */
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -357,11 +339,15 @@ extension MemberGroupViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let header = view as! UITableViewHeaderFooterView
-        //header.layer.backgroundColor = UIColor.clear.cgColor
-        header.backgroundView?.layer.backgroundColor = UIColor.clear.cgColor
-        header.textLabel?.textAlignment = .center
-        header.textLabel?.text = "\(self.groupList[self.selectedGroupIndex].groupName)  會員列表"
+        if !self.groupList.isEmpty {
+            let header = view as! UITableViewHeaderFooterView
+            //header.layer.backgroundColor = UIColor.clear.cgColor
+            header.backgroundView?.layer.backgroundColor = UIColor.white.cgColor
+            header.textLabel?.textAlignment = .center
+            if !self.groupList.isEmpty {
+                header.textLabel?.text = "\(self.groupList[self.selectedGroupIndex].groupName)  會員列表"
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

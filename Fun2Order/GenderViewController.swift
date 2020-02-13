@@ -10,6 +10,7 @@ import UIKit
 
 class GenderViewController: UIViewController {
     @IBOutlet weak var genderPickerView: UIPickerView!
+    
     let genderArray = ["男性", "女性", "其他"]
     var selectedGenderIndex: Int = 0
     

@@ -7,6 +7,9 @@
 //
 
 import UIKit
+protocol SetMemberSelectedStatusDelegate: class {
+    func setMemberSelectedStatus(cell: UITableViewCell, status: Bool, data_index: Int)
+}
 
 class SelectMemberCell: UITableViewCell {
     @IBOutlet weak var backView: UIView!
@@ -14,6 +17,7 @@ class SelectMemberCell: UITableViewCell {
     @IBOutlet weak var memberLabel: UILabel!
     @IBOutlet weak var selectCheckBox: Checkbox!
     var checkStatus: Bool = true
+    weak var delegate: SetMemberSelectedStatusDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,6 +29,7 @@ class SelectMemberCell: UITableViewCell {
         self.selectCheckBox.valueChanged = { (isChecked) in
             print("checkbox is checked: \(isChecked)")
             self.checkStatus = isChecked
+            self.delegate?.setMemberSelectedStatus(cell: self, status: self.checkStatus, data_index: self.tag)
         }
     }
 

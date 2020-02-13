@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditPaymentCell" rowHeight="115" id="KGk-i7-Jjw" customClass="EditPaymentCell" customModule="Fun2Order" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="115"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="115"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BY3-bp-Ovi" customClass="ShadowGradientView" customModule="Fun2Order" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="115"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="gradientColor">
+                                <integer key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KaA-1e-6w3">
+                        <rect key="frame" x="15" y="15" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="Gn4-Aw-yii"/>
+                            <constraint firstAttribute="width" constant="40" id="WvT-iz-XvN"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YFr-nS-1T6">
+                        <rect key="frame" x="67" y="15" width="86" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Product Recipe" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y86-5p-LpE">
+                        <rect key="frame" x="67" y="40" width="87" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="付款日" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BOf-di-pCq">
+                        <rect key="frame" x="15" y="60" width="46" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="付款金額" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tM8-V2-n2E">
+                        <rect key="frame" x="15" y="83" width="62" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ue4-TO-QtS">
+                        <rect key="frame" x="265" y="77" width="31" height="30"/>
+                        <state key="normal" title="編輯">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="editPaymentStatus:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="mNe-yb-YYe"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9yI-hN-kmw">
+                        <rect key="frame" x="88" y="61" width="29" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q0G-hM-oJk">
+                        <rect key="frame" x="88" y="84" width="31" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="YFr-nS-1T6" firstAttribute="leading" secondItem="KaA-1e-6w3" secondAttribute="trailing" constant="12" id="1Nt-YO-7tc"/>
+                    <constraint firstItem="YFr-nS-1T6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="1rN-nY-YSJ"/>
+                    <constraint firstItem="9yI-hN-kmw" firstAttribute="centerY" secondItem="BOf-di-pCq" secondAttribute="centerY" id="49L-So-sa9"/>
+                    <constraint firstItem="y86-5p-LpE" firstAttribute="top" secondItem="YFr-nS-1T6" secondAttribute="bottom" constant="4" id="69E-PR-XwD"/>
+                    <constraint firstAttribute="trailing" secondItem="Ue4-TO-QtS" secondAttribute="trailing" constant="24" id="7KS-Ym-XcS"/>
+                    <constraint firstItem="y86-5p-LpE" firstAttribute="leading" secondItem="KaA-1e-6w3" secondAttribute="trailing" constant="12" id="82s-hY-5mT"/>
+                    <constraint firstItem="q0G-hM-oJk" firstAttribute="leading" secondItem="9yI-hN-kmw" secondAttribute="leading" id="F2C-Cz-dka"/>
+                    <constraint firstItem="BOf-di-pCq" firstAttribute="leading" secondItem="KaA-1e-6w3" secondAttribute="leading" id="GHe-ND-Wq6"/>
+                    <constraint firstItem="q0G-hM-oJk" firstAttribute="centerY" secondItem="tM8-V2-n2E" secondAttribute="centerY" id="Lpm-ti-pxe"/>
+                    <constraint firstItem="KaA-1e-6w3" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="N6e-61-Rye"/>
+                    <constraint firstItem="Ue4-TO-QtS" firstAttribute="firstBaseline" secondItem="tM8-V2-n2E" secondAttribute="firstBaseline" id="bu6-E2-G6G"/>
+                    <constraint firstItem="tM8-V2-n2E" firstAttribute="top" secondItem="BOf-di-pCq" secondAttribute="bottom" constant="5" id="e3c-aX-plQ"/>
+                    <constraint firstItem="tM8-V2-n2E" firstAttribute="leading" secondItem="KaA-1e-6w3" secondAttribute="leading" id="ea5-C3-qs4"/>
+                    <constraint firstItem="9yI-hN-kmw" firstAttribute="leading" secondItem="BOf-di-pCq" secondAttribute="trailing" constant="27" id="gOc-sD-nO4"/>
+                    <constraint firstItem="KaA-1e-6w3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="jsk-pg-wqg"/>
+                    <constraint firstItem="BOf-di-pCq" firstAttribute="top" secondItem="KaA-1e-6w3" secondAttribute="bottom" constant="5" id="pwJ-xv-39P"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="backView" destination="BY3-bp-Ovi" id="P1Q-Y9-gVg"/>
+                <outlet property="buttonEdit" destination="Ue4-TO-QtS" id="1iz-Tn-Gf2"/>
+                <outlet property="imageMember" destination="KaA-1e-6w3" id="it8-li-2w5"/>
+                <outlet property="labelMemberName" destination="YFr-nS-1T6" id="afg-JM-cJj"/>
+                <outlet property="labelPayStatus" destination="BOf-di-pCq" id="ykL-s9-TXm"/>
+                <outlet property="labelPayTime" destination="9yI-hN-kmw" id="B1q-FA-uyl"/>
+                <outlet property="labelPrice" destination="q0G-hM-oJk" id="ctT-eU-JUc"/>
+                <outlet property="labelProductRecipe" destination="y86-5p-LpE" id="MCt-8t-ygm"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="137.61160714285714"/>
+        </tableViewCell>
+    </objects>
+</document>

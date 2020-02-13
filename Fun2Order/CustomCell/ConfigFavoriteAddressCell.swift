@@ -33,18 +33,24 @@ class ConfigFavoriteAddressCell: UITableViewCell {
     }
     
     @IBAction func deleteAddress(_ sender: UIButton) {
+        var alertWindow: UIWindow!
         let controller = UIAlertController(title: "刪除最愛外送地址", message: "確定要刪除此最愛外送地址嗎？", preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             print("Confirm to delete this address")
             NotificationCenter.default.post(name: NSNotification.Name("ConfigDeleteAddress"), object: self.rowIndex)
+            alertWindow.isHidden = true
         }
         
         controller.addAction(okAction)
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        //let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+            print("Cancel the action")
+            alertWindow.isHidden = true
+        }
         controller.addAction(cancelAction)
-        app.window?.rootViewController!.present(controller, animated: true, completion: nil)
-
+        //app.window?.rootViewController!.present(controller, animated: true, completion: nil)
+        alertWindow = presentAlert(controller)
     }
     
 }
