@@ -282,7 +282,7 @@ struct MenuRecipe: Codable {
     var recipeCategory: String = ""
     var isAllowedMulti: Bool = false
     var sequenceNumber: Int = 0
-    var recipeItems: [RecipeItem]? = [RecipeItem]()
+    var recipeItems: [RecipeItem]?
     
     func toAnyObject() -> Any {
         var recipeItemsArray: [Any] = [Any]()

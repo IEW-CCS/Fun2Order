@@ -167,7 +167,8 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
         self.menuOrder.orderTotalQuantity = 0
         self.menuOrder.orderTotalPrice = 0
         self.menuOrder.brandName = self.menuInformation.brandName
-        if !self.menuInformation.locations!.isEmpty {
+        //if !self.menuInformation.locations!.isEmpty {
+        if self.menuInformation.locations != nil {
             for i in 0...self.menuInformation.locations!.count - 1 {
                 self.menuOrder.locations?.append(self.menuInformation.locations![i])
             }
@@ -256,6 +257,9 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
                 DispatchQueue.main.async {
                     self.show(join_vc, sender: self)
                 }
+            } else {
+                self.navigationController?.popToRootViewController(animated: true)
+                self.dismiss(animated: false, completion: nil)
             }
         }
     }
@@ -272,6 +276,7 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
                 return
             } else {
                 // Send notification to refresh HistoryList function
+                print("GroupOrderViewController sends notification to refresh History List function")
                 NotificationCenter.default.post(name: NSNotification.Name("RefreshHistory"), object: nil)
             }
         }

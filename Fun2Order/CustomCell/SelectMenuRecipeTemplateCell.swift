@@ -11,6 +11,7 @@ import Firebase
 
 protocol SelectMenuRecipeTemplateCellDelegate: class {
     func queryMenuRecipeTemplateData(cell: UITableViewCell)
+    func addNewRecipeCategory(cell: UITableViewCell)
 }
 
 class SelectMenuRecipeTemplateCell: UITableViewCell {
@@ -30,6 +31,10 @@ class SelectMenuRecipeTemplateCell: UITableViewCell {
     @IBAction func queryTemplateData(_ sender: UIButton) {
         //NotificationCenter.default.post(name: NSNotification.Name("QueryTemplate"), object: nil)
         delegate?.queryMenuRecipeTemplateData(cell: self)
+    }
+    
+    @IBAction func addNewCategory(_ sender: UIButton) {
+        delegate?.addNewRecipeCategory(cell: self)
     }
     
     func setData(template_name: String) {

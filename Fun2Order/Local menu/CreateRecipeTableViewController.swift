@@ -77,6 +77,7 @@ class CreateRecipeTableViewController: UITableViewController {
             // Send notification to CreateMenuTableViewController
             NotificationCenter.default.post(name: NSNotification.Name("SendRecipeItems"), object: nil)
             navigationController?.popViewController(animated: true)
+            self.dismiss(animated: false, completion: nil)
         } else {
             var tmpData: [MenuRecipe]?
             
@@ -101,6 +102,7 @@ class CreateRecipeTableViewController: UITableViewController {
                     finalRecipe.recipeCategory = self.menuRecipes![i].recipeCategory
                     finalRecipe.isAllowedMulti = self.menuRecipes![i].isAllowedMulti
                     finalRecipe.recipeItems = recipeItems
+                    
                     if tmpData == nil {
                         tmpData = [MenuRecipe]()
                     }
@@ -111,15 +113,16 @@ class CreateRecipeTableViewController: UITableViewController {
             // Send notification to CreateMenuTableViewController
             NotificationCenter.default.post(name: NSNotification.Name("SendRecipeItems"), object: tmpData)
             navigationController?.popViewController(animated: true)
+            self.dismiss(animated: false, completion: nil)
         }
     }
 
     @objc func receiveTemplateIndex(_ notification: Notification) {
         if let templateIndex = notification.object as? Int {
             self.selectedTemoplateIndex = templateIndex
-            let indexPath = IndexPath(row: 0, section: 0)
-            let cell = self.tableView.cellForRow(at: indexPath) as! SelectMenuRecipeTemplateCell
-            cell.setData(template_name: self.brandCategory[templateIndex])
+            //let indexPath = IndexPath(row: 0, section: 0)
+            //let cell = self.tableView.cellForRow(at: indexPath) as! SelectMenuRecipeTemplateCell
+            //cell.setData(template_name: self.brandCategory[templateIndex])
             cellHeight.removeAll()
             cellHeight = Array(repeating: 0, count: self.menuRecipeTemplates[self.selectedTemoplateIndex].menuRecipes.count)
 
@@ -194,6 +197,11 @@ extension CreateRecipeTableViewController: MenuRecipeCellDelegate {
     func setMenuRecipe(cell: UITableViewCell, menu_recipe: MenuRecipe, data_index: Int) {
         self.menuRecipes![data_index] = menu_recipe
     }
+    
+    func addRecipeItem(cell: UITableViewCell, menu_recipe: MenuRecipe, data_index: Int) {
+        self.menuRecipes![data_index] = menu_recipe
+        self.tableView.reloadData()
+    }
 }
 
 extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate {
@@ -206,8 +214,8 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
             if snapshot.exists() {
                 let templateDictionary = snapshot.value
                 let jsonData = try? JSONSerialization.data(withJSONObject: templateDictionary as Any, options: [])
-                let jsonString = String(data: jsonData!, encoding: .utf8)!
-                print("jsonString = \(jsonString)")
+                //let jsonString = String(data: jsonData!, encoding: .utf8)!
+                //print("jsonString = \(jsonString)")
 
                 let decoder: JSONDecoder = JSONDecoder()
                 do {
@@ -231,5 +239,56 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
         }) { (error) in
             print(error.localizedDescription)
         }
+    }
+    
+    func addNewRecipeCategory(cell: UITableViewCell) {
+        let controller = UIAlertController(title: "請輸入類別名稱", message: nil, preferredStyle: .actionSheet)
+
+        guard let categoryController = self.storyboard?.instantiateViewController(withIdentifier: "RECIPE_CATEGORY_VC") as? RecipeCategoryViewController else{
+            assertionFailure("[AssertionFailure] StoryBoard: RECIPE_CATEGORY_VC can't find!! (QRCodeViewController)")
+            return
+        }
+
+        controller.setValue(categoryController, forKey: "contentViewController")
+        categoryController.preferredContentSize.height = 120
+        controller.preferredContentSize.height = 120
+        controller.addChild(categoryController)
+        
+        let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
+            print("Cancel to create recipe category!")
+        }
+        
+        cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+        controller.addAction(cancelAction)
+        
+        let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+            let category_controller = controller.children[0] as! RecipeCategoryViewController
+            if category_controller.getRecipeCategory() != nil {
+                var menuRecipeData: MenuRecipe = MenuRecipe()
+                menuRecipeData.recipeCategory = category_controller.getRecipeCategory()!
+                menuRecipeData.isAllowedMulti = category_controller.getCheckStatus()
+                if self.menuRecipes == nil {
+                    menuRecipeData.sequenceNumber = 1
+                    self.menuRecipes = [MenuRecipe]()
+                    self.menuRecipes?.append(menuRecipeData)
+                } else {
+                    var sequenceNumber: Int = 0
+                    for i in 0...self.menuRecipes!.count - 1 {
+                        if self.menuRecipes![i].sequenceNumber > sequenceNumber {
+                            sequenceNumber = self.menuRecipes![i].sequenceNumber
+                        }
+                    }
+                    sequenceNumber = sequenceNumber + 1
+                    menuRecipeData.sequenceNumber = sequenceNumber
+                    self.menuRecipes?.append(menuRecipeData)
+                }
+                self.refershRecipe()
+            }
+        }
+        
+        okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+        controller.addAction(okAction)
+        
+        present(controller, animated: true, completion: nil)
     }
 }

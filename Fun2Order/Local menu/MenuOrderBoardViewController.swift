@@ -122,6 +122,7 @@ class MenuOrderBoardViewController: UIViewController {
             
             delegate?.setFollowProductInformation(items: items)
             navigationController?.popViewController(animated: true)
+            self.dismiss(animated: false, completion: nil)
         }
     }
     

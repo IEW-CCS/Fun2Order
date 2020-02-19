@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import Firebase
+import GoogleMobileAds
 
 class HistoryTableViewController: UITableViewController {
     @IBOutlet weak var segmentType: UISegmentedControl!
@@ -16,6 +17,7 @@ class HistoryTableViewController: UITableViewController {
     var orderList: [OrderInformation] = [OrderInformation]()
     var menuOrderList: [MenuOrder] = [MenuOrder]()
     var invitationList: [NotificationData] = [NotificationData]()
+    var interstitialAd: GADInterstitial!
     
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
@@ -46,6 +48,18 @@ class HistoryTableViewController: UITableViewController {
         self.navigationController?.title = "歷史紀錄"
         self.tabBarController?.title = "歷史紀錄"
         navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
+    }
+    
+    func setupInterstitialAd() {
+        // Test Interstitla Video Ad
+        self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/5135589807")
+
+        // My real Interstitial Ad
+        //self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-9511677579097261/6069385370")
+
+        let adRequest = GADRequest()
+        self.interstitialAd.load(adRequest)
+        self.interstitialAd.delegate = self
     }
     
     @IBAction func changeHistoryType(_ sender: UISegmentedControl) {
@@ -263,7 +277,7 @@ extension HistoryTableViewController: DisplayQRCodeDelegate {
             return
         }
         
-        qrCodeController.setQRCodeText(code: self.orderList[index.row].orderNumber)
+        qrCodeController.setQRCodeText(code: self.menuOrderList[index.row].orderNumber)
         qrCodeController.modalTransitionStyle = .crossDissolve
         qrCodeController.modalPresentationStyle = .overFullScreen
         navigationController?.present(qrCodeController, animated: true, completion: nil)
@@ -287,6 +301,8 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
             return
         }
 
+        self.setupInterstitialAd()
+        
         let databaseRef = Database.database().reference()
         
         let pathString = "USER_MENU_INFORMATION/\(self.invitationList[data_index].orderOwnerID)/\(self.invitationList[data_index].menuNumber)"
@@ -356,6 +372,7 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
         }
         
         dispatchGroup.notify(queue: .main) {
+            
             if downloadMenuInformation == true && downloadMenuOrder == true && memberIndex >= 0 {
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 guard let joinController = storyBoard.instantiateViewController(withIdentifier: "JOIN_ORDER_VC") as? JoinGroupOrderTableViewController else{
@@ -403,6 +420,43 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
         }) { (error) in
             print(error.localizedDescription)
         }
-       // navigationController?.popViewController(animated: true)
+    }
+}
+
+extension HistoryTableViewController: GADInterstitialDelegate {
+    /// Tells the delegate an ad request succeeded.
+    func interstitialDidReceiveAd(_ ad: GADInterstitial) {
+        print("interstitialDidReceiveAd")
+        if self.interstitialAd.isReady {
+            self.interstitialAd.present(fromRootViewController: self)
+        } else {
+            print("Interstitial Ad is not ready !!")
+        }
+    }
+
+    /// Tells the delegate an ad request failed.
+    func interstitial(_ ad: GADInterstitial, didFailToReceiveAdWithError error: GADRequestError) {
+        print("interstitial:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+
+    /// Tells the delegate that an interstitial will be presented.
+    func interstitialWillPresentScreen(_ ad: GADInterstitial) {
+        print("interstitialWillPresentScreen")
+    }
+
+    /// Tells the delegate the interstitial is to be animated off the screen.
+    func interstitialWillDismissScreen(_ ad: GADInterstitial) {
+        print("interstitialWillDismissScreen")
+    }
+
+    /// Tells the delegate the interstitial had been animated off the screen.
+    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
+        print("interstitialDidDismissScreen")
+    }
+
+    /// Tells the delegate that a user click will open another app
+    /// (such as the App Store), backgrounding the current app.
+    func interstitialWillLeaveApplication(_ ad: GADInterstitial) {
+        print("interstitialWillLeaveApplication")
     }
 }

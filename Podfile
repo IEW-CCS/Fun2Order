@@ -8,6 +8,8 @@ target 'Fun2Order' do
   # Pods for Fun2Order
 
     pod 'Firebase/Core'
+    pod 'Google-Mobile-Ads-SDK'
+    pod 'Firebase/AdMob'
     pod 'Firebase/Auth'
     pod 'GoogleSignIn'
     pod 'Firebase/Analytics'
@@ -16,4 +18,5 @@ target 'Fun2Order' do
     pod 'Firebase/Firestore'
     pod 'Firebase/Database'
     pod "FlagPhoneNumber"
+    
 end

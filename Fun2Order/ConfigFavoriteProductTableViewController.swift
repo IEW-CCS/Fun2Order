@@ -52,6 +52,7 @@ class ConfigFavoriteProductTableViewController: UITableViewController {
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
                     self.presentedViewController?.dismiss(animated: true, completion: nil)
                     self.navigationController?.popViewController(animated: true)
+                    self.dismiss(animated: false, completion: nil)
                 }
             }
         }

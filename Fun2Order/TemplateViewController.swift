@@ -23,12 +23,12 @@ class TemplateViewController: UIViewController {
     }
 
     @IBAction func cancelSelect(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func confirmSelect(_ sender: UIButton) {
         NotificationCenter.default.post(name: NSNotification.Name("SelectTemplate"), object: self.selectedTemplateIndex)
-        dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     func setData(template_ids: [String]) {

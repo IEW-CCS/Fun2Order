@@ -30,6 +30,7 @@ class MenuListTableViewController: UITableViewController {
             object: nil
         )
 
+        print("MenuListTableViewController viewDidLoad downloadFBMenuInformation")
         downloadFBMenuInformation(select_index: 0)
    }
 
@@ -48,8 +49,8 @@ class MenuListTableViewController: UITableViewController {
             if snapshot.exists() {
                 let rawData = snapshot.value
                 let jsonData = try? JSONSerialization.data(withJSONObject: rawData as Any, options: [])
-                let jsonString = String(data: jsonData!, encoding: .utf8)!
-                print("jsonString = \(jsonString)")
+                //let jsonString = String(data: jsonData!, encoding: .utf8)!
+                //print("jsonString = \(jsonString)")
 
                 let decoder: JSONDecoder = JSONDecoder()
                 do {
@@ -79,6 +80,7 @@ class MenuListTableViewController: UITableViewController {
     }
     
     @objc func receiveRefreshMenuList(_ notification: Notification) {
+        print("MenuListTableViewController receiveRefreshMenuList downloadFBMenuInformation")
         downloadFBMenuInformation(select_index: 0)
     }
     
@@ -141,6 +143,7 @@ class MenuListTableViewController: UITableViewController {
         deleteMenuIcon(menu_number: self.menuInfosByCategory[index.row].menuNumber)
         deleteFBMenuInformation(user_id: self.menuInfosByCategory[index.row].userID, menu_number: self.menuInfosByCategory[index.row].menuNumber, image_url: self.menuInfosByCategory[index.row].menuImageURL)
 
+        print("MenuListTableViewController deleteMenuInfo downloadFBMenuInformation")
         downloadFBMenuInformation(select_index: selectedIndex)
     }
     

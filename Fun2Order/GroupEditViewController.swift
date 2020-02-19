@@ -49,6 +49,7 @@ class GroupEditViewController: UIViewController {
 
     @IBAction func cancelUpdate(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: false, completion: nil)
     }
     
     @IBAction func confirmUpdate(_ sender: UIButton) {
@@ -60,6 +61,7 @@ class GroupEditViewController: UIViewController {
         
         NotificationCenter.default.post(name: NSNotification.Name("RefreshGroup"), object: nil)
         self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: false, completion: nil)
     }
     
     @objc func handleImageTap(_ sender: UITapGestureRecognizer) {

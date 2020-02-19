@@ -160,10 +160,16 @@ class MenuOrderNotebookViewController: UIViewController {
         
         if self.isNoLocations {
             for i in 0...self.menuOrder.contentItems.count - 1 {
+                if self.menuOrder.contentItems[i].orderContent.replyStatus != MENU_ORDER_REPLY_STATUS_ACCEPT {
+                    continue
+                }
                 content = content + getItemString(index: i)
             }
         } else {
             for i in 0...self.menuOrder.contentItems.count - 1 {
+                if self.menuOrder.contentItems[i].orderContent.replyStatus != MENU_ORDER_REPLY_STATUS_ACCEPT {
+                    continue
+                }
                 if self.menuOrder.contentItems[i].orderContent.location != self.menuOrder.locations![self.segmentOption.selectedSegmentIndex] {
                     continue
                 }

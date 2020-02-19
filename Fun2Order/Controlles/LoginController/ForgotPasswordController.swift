@@ -22,8 +22,6 @@ class ForgotPasswordController: UIViewController {
         self.emailText.endEditing(false)
     }
     
-
-   
     @IBAction func sendButton(_ sender: Any) {
         self.emailText.endEditing(true)
         Auth.auth().sendPasswordReset(withEmail: emailText.text!) { error in
@@ -45,15 +43,11 @@ class ForgotPasswordController: UIViewController {
                 }
             }
         }
-        
-        
-        
-        
-        
     }
 
     @IBAction func backButton(_ sender: Any) {
-         navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
+        self.dismiss(animated: false, completion: nil)
     }
     
 }

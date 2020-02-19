@@ -26,6 +26,7 @@ class CreateMenuTableViewController: UITableViewController {
     var savedMenuInformation: MenuInformation = MenuInformation()
     var isNeedSave: Bool = false
     var isEditedMode: Bool = false
+    var testDate: Date = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,7 +113,7 @@ class CreateMenuTableViewController: UITableViewController {
         self.labelProductCount.text = "\(itemCount) 項"
 
     }
-    
+
     func generateMenuNumber(date: Date) -> String {
         let timeZone = TimeZone.init(identifier: "UTC+8")
         let formatter = DateFormatter()
@@ -154,22 +155,24 @@ class CreateMenuTableViewController: UITableViewController {
         
         let databaseRef = Database.database().reference()
         let pathString = "USER_MENU_INFORMATION/\(menu_info.userID)/\(menu_info.menuNumber)"
-        print("menu_info transformed object = \(menu_info.toAnyObject())")
+        //print("menu_info transformed object = \(menu_info.toAnyObject())")
         
         databaseRef.child(pathString).setValue(menu_info.toAnyObject()) { (_, _) in
+            print("Firebase setValue of Menu Information successfule, then send notification to refresh Menu List")
             // Send notification to refresh Menu List function
             NotificationCenter.default.post(name: NSNotification.Name("RefreshMenuList"), object: nil)
-            self.navigationController?.popViewController(animated: true)
+            //self.navigationController?.popViewController(animated: true)
         }
     }
     
     @objc func receiveMenuConfirm(_ notification: Notification) {
+        print("CreateMenu receiveMenuConfirm testDate = \(self.testDate)")
         
         let nowDate = Date()
         if self.isEditedMode {
             //deleteMenuInformation(menu_info: self.savedMenuInformation)
             deleteMenuIcon(menu_number: self.savedMenuInformation.menuNumber)
-            deleteFBMenuInformation(user_id: self.savedMenuInformation.userID, menu_number: self.savedMenuInformation.menuNumber, image_url: self.savedMenuInformation.menuImageURL)
+            //deleteFBMenuInformation(user_id: self.savedMenuInformation.userID, menu_number: self.savedMenuInformation.menuNumber, image_url: self.savedMenuInformation.menuImageURL)
         } else {
             self.menuInformation.menuNumber = generateMenuNumber(date: nowDate)
         }
@@ -202,6 +205,9 @@ class CreateMenuTableViewController: UITableViewController {
 
         //insertMenuInformation(menu_info: self.menuInformation)
         uploadMenuInformation(menu_info: self.menuInformation)
+
+        navigationController?.popToRootViewController(animated: true)
+        self.dismiss(animated: false, completion: nil)
     }
 
     @objc func receiveAssignRecipe(_ notification: Notification) {
@@ -465,12 +471,14 @@ class CreateMenuTableViewController: UITableViewController {
         if segue.identifier == "ShowLocation" {
             if let controllerLocation = segue.destination as? MenuLocationTableViewController {
                 controllerLocation.locationArray = self.menuInformation.locations
+                controllerLocation.delegate = self
             }
         }
 
         if segue.identifier == "ShowProduct" {
             if let controllerProduct = segue.destination as? MenuItemTableViewController {
                 controllerProduct.menuItemArray = self.menuInformation.menuItems
+                controllerProduct.delegate = self
             }
         }
 
@@ -490,5 +498,29 @@ extension CreateMenuTableViewController: UIImagePickerControllerDelegate, UINavi
         self.menuIcon = iconImage
         self.isNeedSave = true
         dismiss(animated: true, completion: nil)
+    }
+}
+
+extension CreateMenuTableViewController: MenuLocationDelegate {
+    func deleteMenuLocation(locations: [String]?) {
+        var locationCount: Int = 0
+
+        self.menuInformation.locations = locations
+        if self.menuInformation.locations != nil {
+            locationCount = self.menuInformation.locations!.count
+        }
+        self.labelLocationCount.text = "\(locationCount) 項"
+    }
+}
+
+extension CreateMenuTableViewController: MenuItemDelegate {
+    func deleteMenuItem(menu_items: [MenuItem]?) {
+        var itemCount: Int = 0
+
+        self.menuInformation.menuItems = menu_items
+        if self.menuInformation.menuItems != nil {
+            itemCount = self.menuInformation.menuItems!.count
+        }
+        self.labelProductCount.text = "\(itemCount) 項"
     }
 }

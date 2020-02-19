@@ -42,6 +42,65 @@
             </objects>
             <point key="canvasLocation" x="-1249" y="192"/>
         </scene>
+        <!--Recipe Category View Controller-->
+        <scene sceneID="Nmr-C6-JDb">
+            <objects>
+                <viewController storyboardIdentifier="RECIPE_CATEGORY_VC" id="3dO-k9-xDm" customClass="RecipeCategoryViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fDa-AJ-Y08">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="類別名稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhp-g7-bz1">
+                                <rect key="frame" x="15" y="30" width="70" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="是否允許多選" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWd-5J-Eai">
+                                <rect key="frame" x="101" y="78" width="104" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pj5-rT-l2W">
+                                <rect key="frame" x="101" y="23.5" width="199" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ibj-Zc-gpr" customClass="Checkbox" customModule="Fun2Order" customModuleProvider="target">
+                                <rect key="frame" x="69" y="76.5" width="24" height="24"/>
+                                <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="Wcn-Hg-XRZ"/>
+                                    <constraint firstAttribute="width" constant="24" id="XIZ-K2-XN9"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Ibj-Zc-gpr" firstAttribute="centerY" secondItem="tWd-5J-Eai" secondAttribute="centerY" id="0hV-RH-XQ6"/>
+                            <constraint firstItem="tWd-5J-Eai" firstAttribute="top" secondItem="pj5-rT-l2W" secondAttribute="bottom" constant="20.5" id="2ZU-0X-1N6"/>
+                            <constraint firstItem="tWd-5J-Eai" firstAttribute="leading" secondItem="Ibj-Zc-gpr" secondAttribute="trailing" constant="8" id="6cA-m1-atx"/>
+                            <constraint firstItem="pj5-rT-l2W" firstAttribute="centerY" secondItem="zhp-g7-bz1" secondAttribute="centerY" id="LTv-f3-t6r"/>
+                            <constraint firstItem="OFB-4Q-kkS" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="pj5-rT-l2W" secondAttribute="trailing" constant="20" id="LVg-I2-m8x"/>
+                            <constraint firstItem="zhp-g7-bz1" firstAttribute="top" secondItem="fDa-AJ-Y08" secondAttribute="top" constant="30" id="YH7-bs-He9"/>
+                            <constraint firstItem="tWd-5J-Eai" firstAttribute="leading" secondItem="pj5-rT-l2W" secondAttribute="leading" id="YaB-TZ-sG7"/>
+                            <constraint firstItem="OFB-4Q-kkS" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tWd-5J-Eai" secondAttribute="trailing" symbolic="YES" id="iQn-KI-5Us"/>
+                            <constraint firstItem="pj5-rT-l2W" firstAttribute="leading" secondItem="zhp-g7-bz1" secondAttribute="trailing" constant="16" id="lzt-fc-FvG"/>
+                            <constraint firstItem="zhp-g7-bz1" firstAttribute="leading" secondItem="OFB-4Q-kkS" secondAttribute="leading" constant="15" id="mfo-Hy-HoG"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="OFB-4Q-kkS"/>
+                    </view>
+                    <size key="freeformSize" width="320" height="120"/>
+                    <connections>
+                        <outlet property="isMultiCheckbox" destination="Ibj-Zc-gpr" id="Vki-RS-BQe"/>
+                        <outlet property="textRecipeCategory" destination="pj5-rT-l2W" id="Nz4-tf-fPn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hea-C1-apU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-5932" y="-762"/>
+        </scene>
         <!--輸入配方資訊-->
         <scene sceneID="XoA-wU-pft">
             <objects>
@@ -688,7 +747,7 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QM1-Hj-uCv">
-                                <rect key="frame" x="20" y="241" width="374" height="533"/>
+                                <rect key="frame" x="20" y="241" width="374" height="518"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="owner Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M3X-Bj-B0X">
@@ -742,21 +801,21 @@
                             <constraint firstItem="Xus-cB-cLj" firstAttribute="trailing" secondItem="xDd-mL-fI8" secondAttribute="trailing" constant="152" id="bEF-ay-McI"/>
                             <constraint firstItem="R6V-YP-SAH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1ce-pp-Gks" secondAttribute="trailing" constant="8" symbolic="YES" id="bre-bD-9nz"/>
                             <constraint firstItem="Xus-cB-cLj" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="R6V-YP-SAH" secondAttribute="trailing" symbolic="YES" id="cL8-HM-n7f"/>
+                            <constraint firstItem="Xus-cB-cLj" firstAttribute="bottom" secondItem="QM1-Hj-uCv" secondAttribute="bottom" constant="15" id="cdc-Pp-Aor"/>
                             <constraint firstItem="R6V-YP-SAH" firstAttribute="leading" secondItem="rtl-9H-WaX" secondAttribute="leading" id="dM1-3U-Oc3"/>
                             <constraint firstItem="WgR-bp-Dt7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BTj-Sk-1Y0" secondAttribute="trailing" constant="8" symbolic="YES" id="dgf-UP-aMz"/>
                             <constraint firstItem="Xus-cB-cLj" firstAttribute="trailing" secondItem="WgR-bp-Dt7" secondAttribute="trailing" constant="20" id="enb-BB-Utq"/>
                             <constraint firstItem="9Zs-61-jbA" firstAttribute="leading" secondItem="JaP-xs-dff" secondAttribute="leading" id="jWR-jS-Lle"/>
-                            <constraint firstItem="Chx-vn-Ekm" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Vsf-7b-fQl" secondAttribute="trailing" symbolic="YES" id="k33-N3-W8C"/>
+                            <constraint firstItem="Chx-vn-Ekm" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Vsf-7b-fQl" secondAttribute="trailing" constant="8" symbolic="YES" id="k33-N3-W8C"/>
                             <constraint firstItem="Xus-cB-cLj" firstAttribute="trailing" secondItem="Chx-vn-Ekm" secondAttribute="trailing" constant="152" id="kga-Jz-zQk"/>
-                            <constraint firstItem="QM1-Hj-uCv" firstAttribute="bottom" secondItem="Xus-cB-cLj" secondAttribute="bottom" id="kxq-Hw-ZDS"/>
                             <constraint firstItem="BTj-Sk-1Y0" firstAttribute="top" secondItem="JHO-QS-R9i" secondAttribute="bottom" constant="20" id="ldi-8w-dFX"/>
                             <constraint firstItem="Vsf-7b-fQl" firstAttribute="leading" secondItem="67S-FX-S6T" secondAttribute="trailing" constant="20" id="mwl-Jk-7hn"/>
                             <constraint firstItem="R6V-YP-SAH" firstAttribute="top" secondItem="rtl-9H-WaX" secondAttribute="bottom" constant="8" id="pUh-jB-gLA"/>
                             <constraint firstItem="9Zs-61-jbA" firstAttribute="top" secondItem="JaP-xs-dff" secondAttribute="bottom" constant="8" id="pzd-OO-zgK"/>
+                            <constraint firstItem="Xus-cB-cLj" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rtl-9H-WaX" secondAttribute="trailing" symbolic="YES" id="qPa-kJ-dfk"/>
                             <constraint firstItem="yVY-Yn-0oV" firstAttribute="leading" secondItem="Xus-cB-cLj" secondAttribute="leading" constant="10" id="rwA-3M-33v"/>
                             <constraint firstItem="iiB-gg-erG" firstAttribute="leading" secondItem="JHO-QS-R9i" secondAttribute="trailing" constant="15" id="s02-pb-851"/>
                             <constraint firstItem="JHO-QS-R9i" firstAttribute="leading" secondItem="6Ro-fm-vnh" secondAttribute="leading" id="vEh-v6-FcH"/>
-                            <constraint firstItem="Xus-cB-cLj" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rtl-9H-WaX" secondAttribute="trailing" symbolic="YES" id="wNx-kg-bwh"/>
                             <constraint firstItem="pbF-ay-FYy" firstAttribute="centerY" secondItem="iiB-gg-erG" secondAttribute="centerY" id="whG-Cu-Ckr"/>
                             <constraint firstItem="pbF-ay-FYy" firstAttribute="leading" secondItem="iiB-gg-erG" secondAttribute="trailing" constant="20" id="z9p-Kj-Vwr"/>
                             <constraint firstItem="rtl-9H-WaX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9Zs-61-jbA" secondAttribute="trailing" constant="8" symbolic="YES" id="zfv-dE-rW1"/>
@@ -1267,7 +1326,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="73t-ye-x6g">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="-88" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
                                 <barButtonItem style="plain" id="7Qn-LT-bIn">
@@ -1545,9 +1604,10 @@
                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="rEp-Lw-dq9"/>
                                 <barButtonItem style="plain" id="DCt-fV-x7N">
-                                    <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="YHj-If-OmK">
-                                        <rect key="frame" x="20" y="6" width="374" height="32"/>
+                                    <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="YHj-If-OmK">
+                                        <rect key="frame" x="121.5" y="6" width="171" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="我的團購單"/>
@@ -1558,6 +1618,7 @@
                                         </connections>
                                     </segmentedControl>
                                 </barButtonItem>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="GfP-2E-1a5"/>
                             </items>
                         </toolbar>
                         <connections>
@@ -2151,7 +2212,7 @@
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="xmc-Qm-BIu"/>
                                 <barButtonItem style="plain" id="xt0-US-IBY">
                                     <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="3ZM-Si-BPN">
-                                        <rect key="frame" x="46" y="6" width="318" height="32"/>
+                                        <rect key="frame" x="21" y="6" width="318" height="32"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="First"/>
@@ -2935,7 +2996,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Mma-ic-qDF">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="-311" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
                                 <barButtonItem style="plain" id="heG-bn-vXO">
@@ -3629,6 +3690,6 @@
         <image name="ToolBar_Notebook" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="c2M-Dl-3EI"/>
+        <segue reference="Ue0-yi-4xJ"/>
     </inferredMetricsTieBreakers>
 </document>

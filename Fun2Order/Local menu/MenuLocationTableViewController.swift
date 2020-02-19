@@ -8,9 +8,14 @@
 
 import UIKit
 
+protocol MenuLocationDelegate: class {
+    func deleteMenuLocation(locations: [String]?)
+}
+
 class MenuLocationTableViewController: UITableViewController {
     //var locationArray: [String] = [String]()
     var locationArray: [String]?
+    weak var delegate: MenuLocationDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,40 +52,37 @@ class MenuLocationTableViewController: UITableViewController {
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        var alertWindow: UIWindow!
         if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
+            let controller = UIAlertController(title: "刪除地點", message: "確定要刪除此地點資訊嗎？", preferredStyle: .alert)
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+            let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                print("Confirm to delete this location")
+                if self.locationArray != nil {
+                    self.locationArray!.remove(at: indexPath.row)
+                } else {
+                    return
+                }
+                
+                if self.locationArray!.isEmpty {
+                    self.delegate?.deleteMenuLocation(locations: nil)
+                } else {
+                    self.delegate?.deleteMenuLocation(locations: self.locationArray)
+                }
+                self.tableView.reloadData()
+                alertWindow.isHidden = true
+            }
+            
+            controller.addAction(okAction)
+            let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+                print("Cancel to delete the location")
+                alertWindow.isHidden = true
+            }
+            controller.addAction(cancelAction)
+            alertWindow = presentAlert(controller)
+        }
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
 }

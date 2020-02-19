@@ -76,6 +76,7 @@ class JoinGroupOrderTableViewController: UITableViewController {
             }
         }
         navigationController?.popToRootViewController(animated: true)
+        self.dismiss(animated: false, completion: nil)
     }
     
     func refreshJoinGroupOrder() {

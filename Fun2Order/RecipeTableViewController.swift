@@ -391,6 +391,7 @@ class RecipeTableViewController: UITableViewController {
             self.presentedViewController?.dismiss(animated: true, completion: nil)
             //self.navigationController?.popViewController(animated: true)
             self.navigationController?.popToRootViewController(animated: true)
+            self.dismiss(animated: false, completion: nil)
         }
     }
     
@@ -506,6 +507,7 @@ class RecipeTableViewController: UITableViewController {
             //Send notofication to CartTableViewController
             NotificationCenter.default.post(name: NSNotification.Name("RefreshCartOrder"), object: nil)
             self.navigationController?.popViewController(animated: true)
+            self.dismiss(animated: false, completion: nil)
         }
     }
 

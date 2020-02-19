@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import GoogleMobileAds
 
 class NotificationActionViewController: UIViewController {
     @IBOutlet weak var labelOrderOwner: UILabel!
@@ -19,6 +20,7 @@ class NotificationActionViewController: UIViewController {
     
     var notificationData: NotificationData = NotificationData()
     var indexPath: IndexPath = IndexPath()
+    var interstitialAd: GADInterstitial!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +30,18 @@ class NotificationActionViewController: UIViewController {
         setData(notification: self.notificationData)
     }
 
+    func setupInterstitialAd() {
+        // Test Interstitla Video Ad
+        self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/5135589807")
+
+        // My real Interstitial Ad
+        //self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-9511677579097261/6069385370")
+
+        let adRequest = GADRequest()
+        self.interstitialAd.load(adRequest)
+        self.interstitialAd.delegate = self
+
+    }
     @IBAction func attendGroupOrder(_ sender: UIButton) {
         let dispatchGroup = DispatchGroup()
         var menuData: MenuInformation = MenuInformation()
@@ -43,6 +57,8 @@ class NotificationActionViewController: UIViewController {
             print("Get Ahthorization uid failed")
             return
         }
+
+        self.setupInterstitialAd()
 
         let databaseRef = Database.database().reference()
         
@@ -160,6 +176,7 @@ class NotificationActionViewController: UIViewController {
             print(error.localizedDescription)
         }
         navigationController?.popViewController(animated: true)
+        self.dismiss(animated: false, completion: nil)
     }
     
     func setData(notification: NotificationData) {
@@ -200,4 +217,42 @@ class NotificationActionViewController: UIViewController {
         }
     }
 
+}
+
+extension NotificationActionViewController: GADInterstitialDelegate {
+    /// Tells the delegate an ad request succeeded.
+    func interstitialDidReceiveAd(_ ad: GADInterstitial) {
+        print("interstitialDidReceiveAd")
+        if self.interstitialAd.isReady {
+            self.interstitialAd.present(fromRootViewController: self)
+        } else {
+            print("Interstitial Ad is not ready !!")
+        }
+    }
+
+    /// Tells the delegate an ad request failed.
+    func interstitial(_ ad: GADInterstitial, didFailToReceiveAdWithError error: GADRequestError) {
+        print("interstitial:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+
+    /// Tells the delegate that an interstitial will be presented.
+    func interstitialWillPresentScreen(_ ad: GADInterstitial) {
+        print("interstitialWillPresentScreen")
+    }
+
+    /// Tells the delegate the interstitial is to be animated off the screen.
+    func interstitialWillDismissScreen(_ ad: GADInterstitial) {
+        print("interstitialWillDismissScreen")
+    }
+
+    /// Tells the delegate the interstitial had been animated off the screen.
+    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
+        print("interstitialDidDismissScreen")
+    }
+
+    /// Tells the delegate that a user click will open another app
+    /// (such as the App Store), backgrounding the current app.
+    func interstitialWillLeaveApplication(_ ad: GADInterstitial) {
+        print("interstitialWillLeaveApplication")
+    }
 }

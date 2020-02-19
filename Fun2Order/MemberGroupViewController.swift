@@ -17,7 +17,7 @@ class MemberGroupViewController: UIViewController {
     var memberList: [GroupMember] = [GroupMember]()
     var addIndex: Int = 0
     var selectedGroupIndex: Int = -1
-        
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -91,6 +91,7 @@ class MemberGroupViewController: UIViewController {
     
     @objc func refreshGroup(_ notification: Notification) {
         self.groupList = retrieveGroupList()
+        print("MemberGroupViewController refreshGroup groupList.count = \(self.groupList.count)")
         if self.groupList.isEmpty {
             self.addIndex = 0
         } else {
@@ -170,6 +171,7 @@ class MemberGroupViewController: UIViewController {
                     self.groupList = retrieveGroupList()
                     if self.groupList.isEmpty {
                         self.addIndex = 0
+                        self.selectedGroupIndex = -1
                     } else {
                         self.addIndex = self.groupList.count
                         if self.selectedGroupIndex != 0 {
@@ -276,8 +278,10 @@ extension MemberGroupViewController: UICollectionViewDataSource, UICollectionVie
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if self.groupList.isEmpty {
+            print("CollectionView numberOfItemsInSection return 1")
             return 1
         } else {
+            print("CollectionView numberOfItemsInSection return groupList.count + 1 = \(self.groupList.count + 1)")
             return self.groupList.count + 1
         }
     }

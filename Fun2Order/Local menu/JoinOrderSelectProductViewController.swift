@@ -62,6 +62,7 @@ class JoinOrderSelectProductViewController: UIViewController {
     
     @IBAction func actionCancel(_ sender: UIButton) {
         navigationController?.popViewController(animated: true)
+        self.dismiss(animated: false, completion: nil)
     }
 
     @IBAction func actionConfirm(_ sender: UIButton) {
@@ -80,6 +81,7 @@ class JoinOrderSelectProductViewController: UIViewController {
         
         delegate?.setProduct(menu_item: self.menuProductItem)
         navigationController?.popViewController(animated: true)
+        self.dismiss(animated: false, completion: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

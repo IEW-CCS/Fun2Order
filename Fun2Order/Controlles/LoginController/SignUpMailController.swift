@@ -73,7 +73,7 @@ class SignUpMailController: UIViewController {
     
     
     @IBAction func backButton(_ sender: Any) {
-        
         navigationController?.popViewController(animated: true)
+        self.dismiss(animated: false, completion: nil)
     }
 }

@@ -263,8 +263,12 @@ class BasicInformationTableViewController: UITableViewController {
     }
     
     @IBAction func deleteProfile(_ sender: UIButton) {
+        if Auth.auth().currentUser?.uid == nil {
+            print("Current User uID is null, just return deleteProfile funciton")
+            return
+        }
+        
         do {
-            try Auth.auth().signOut()
             let path = NSHomeDirectory() + "/Documents/MyProfile.plist"
             if let plist = NSMutableDictionary(contentsOfFile: path) {
                 plist["UserID"] = ""
@@ -280,21 +284,24 @@ class BasicInformationTableViewController: UITableViewController {
 
                 if !plist.write(toFile: path, atomically: true) {
                     print("Save MyProfile.plist failed")
+                    return
                 }
-                
+
                 let databaseRef = Database.database().reference()
-                let profilePathString = "USER_PROFILE/\(self.myUserID)"
+                //let profilePathString = "USER_PROFILE/\(self.myUserID)"
+                let profilePathString = "USER_PROFILE/\(Auth.auth().currentUser!.uid)"
                 databaseRef.child(profilePathString).removeValue()
                 
                 let storageRef = Storage.storage().reference()
                 //let imagePath = "UserProfile_Photo/\(self.myUserID).png"
-                let imagePath = getUserPhotoStoragePath(u_id: self.myUserID)
+                //let imagePath = getUserPhotoStoragePath(u_id: self.myUserID)
+                let imagePath = getUserPhotoStoragePath(u_id: Auth.auth().currentUser!.uid)
                 storageRef.child(imagePath).delete(completion: nil)
                 
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 let nextViewController = storyBoard.instantiateViewController(withIdentifier: "EntryViewController") as! EntryViewController
+                try Auth.auth().signOut()
                 navigationController?.pushViewController(nextViewController, animated: true)
-
             }
         } catch {
             print(error.localizedDescription)

@@ -52,6 +52,7 @@ class JoinOrderSelectRecipeTableViewController: UITableViewController {
     @objc func receiveJoinOrderSelectRecipe(_ notification: Notification) {
         delegate?.setRecipe(menu_recipes: self.menuRecipes)
         navigationController?.popViewController(animated: true)
+        self.dismiss(animated: false, completion: nil)
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -79,10 +80,11 @@ class JoinOrderSelectRecipeTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MenuRecipeCell", for: indexPath) as! MenuRecipeCell
 
         //cell.setData(recipe_data: self.menuInformation.menuRecipes![indexPath.row], number_for_row: 3)
+        cell.isSelectRecipeMode = self.isSelectRecipeMode
+        //cell.isSelectRecipeMode = true
         cell.setData(recipe_data: self.menuRecipes[indexPath.row], number_for_row: 3)
         cellHeight[indexPath.row] = cell.getCellHeight()
         cell.tag = indexPath.row
-        cell.isSelectRecipeMode = self.isSelectRecipeMode
         cell.delegate = self
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell
@@ -101,5 +103,10 @@ class JoinOrderSelectRecipeTableViewController: UITableViewController {
 extension JoinOrderSelectRecipeTableViewController: MenuRecipeCellDelegate {
     func setMenuRecipe(cell: UITableViewCell, menu_recipe: MenuRecipe, data_index: Int) {
         self.menuRecipes[data_index] = menu_recipe
+    }
+
+    func addRecipeItem(cell: UITableViewCell, menu_recipe: MenuRecipe, data_index: Int) {
+        self.menuRecipes[data_index] = menu_recipe
+        self.tableView.reloadData()
     }
 }

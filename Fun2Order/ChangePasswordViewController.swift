@@ -26,10 +26,12 @@ class ChangePasswordViewController: UIViewController {
 
     @IBAction func cancelChange(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: false, completion: nil)
     }
     
     @IBAction func updateChange(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: false, completion: nil)
     }
     
 }

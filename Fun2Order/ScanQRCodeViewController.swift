@@ -73,6 +73,7 @@ class ScanQRCodeViewController: UIViewController {
                     
                     NotificationCenter.default.post(name: NSNotification.Name("AddMember"), object: tmpMemberInfo)
                     self.navigationController?.popViewController(animated: true)
+                    self.dismiss(animated: false, completion: nil)
                 })
             } else {
                 let memberAlert = alert(message: "不存在的會員條碼或條碼格式錯誤，請再重試一次", title: "條碼錯誤")

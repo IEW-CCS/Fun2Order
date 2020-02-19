@@ -8,9 +8,14 @@
 
 import UIKit
 
+protocol MenuItemDelegate: class {
+    func deleteMenuItem(menu_items: [MenuItem]?)
+}
+
 class MenuItemTableViewController: UITableViewController {
 
     var menuItemArray: [MenuItem]?
+    weak var delegate: MenuItemDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,39 +55,36 @@ class MenuItemTableViewController: UITableViewController {
         return cell
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        var alertWindow: UIWindow!
         if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            let controller = UIAlertController(title: "刪除產品", message: "確定要刪除此產品資訊嗎？", preferredStyle: .alert)
+
+            let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                print("Confirm to delete this menu item")
+                if self.menuItemArray != nil {
+                    self.menuItemArray!.remove(at: indexPath.row)
+                } else {
+                    return
+                }
+                
+                if self.menuItemArray!.isEmpty {
+                    self.delegate?.deleteMenuItem(menu_items: nil)
+                } else {
+                    self.delegate?.deleteMenuItem(menu_items: self.menuItemArray)
+                }
+                self.tableView.reloadData()
+                alertWindow.isHidden = true
+            }
+            
+            controller.addAction(okAction)
+            let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+                print("Cancel to delete the menu item")
+                alertWindow.isHidden = true
+            }
+            controller.addAction(cancelAction)
+            alertWindow = presentAlert(controller)
+        }
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
+    
 }
