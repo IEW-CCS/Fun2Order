@@ -28,6 +28,10 @@ class OrderItemSummaryTableViewController: UITableViewController {
         filterItemInfosByStatus()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        refreshMenuOrder()
+    }
+
     func setupStatusSegment() {
         self.segmentStatus.removeAllSegments()
         for i in 0...(self.statusArray.count - 1) {
@@ -55,6 +59,12 @@ class OrderItemSummaryTableViewController: UITableViewController {
         }
     }
 
+    func refreshMenuOrder() {
+        setupStatusSegment()
+        filterItemInfosByStatus()
+        self.tableView.reloadData()
+    }
+    
     @IBAction func changeStatus(_ sender: UISegmentedControl) {
         filterItemInfosByStatus()
         self.tableView.reloadData()

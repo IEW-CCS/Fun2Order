@@ -15,7 +15,7 @@ class FunctionsPageViewController: UIPageViewController, UIPageViewControllerDat
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.functionViewControllers = [getViewController(identifier: "BASIC_INFO_VC"), getViewController(identifier: "CONFIG_FAVORITE_VC"), getViewController(identifier: "MEMBER_GROUP_VC")]
+        self.functionViewControllers = [getViewController(identifier: "BASIC_INFO_VC"), getViewController(identifier: "MY_FRIEND_VC"), getViewController(identifier: "MEMBER_GROUP_VC")]
         
         dataSource = self
         delegate = self

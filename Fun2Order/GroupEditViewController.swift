@@ -9,6 +9,10 @@
 import UIKit
 import CoreData
 
+protocol GroupEditDelegate: class {
+    func editGroupComplete(sender: GroupEditViewController)
+}
+
 class GroupEditViewController: UIViewController {
     @IBOutlet weak var imageGroup: UIImageView!
     @IBOutlet weak var labelGroupName: UILabel!
@@ -19,6 +23,7 @@ class GroupEditViewController: UIViewController {
     
     var isEditFlag: Bool = false
     var groupID: Int = 0
+    weak var delegate: GroupEditDelegate?
 
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
@@ -59,7 +64,8 @@ class GroupEditViewController: UIViewController {
             addGroup()
         }
         
-        NotificationCenter.default.post(name: NSNotification.Name("RefreshGroup"), object: nil)
+        //NotificationCenter.default.post(name: NSNotification.Name("RefreshGroup"), object: nil)
+        delegate?.editGroupComplete(sender: self)
         self.navigationController?.popViewController(animated: true)
         self.dismiss(animated: false, completion: nil)
     }

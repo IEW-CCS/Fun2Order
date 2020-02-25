@@ -28,44 +28,25 @@ class MemberGroupViewController: UIViewController {
         let iconImage: UIImage? = UIImage(named: "Icon_Add_Member.png")
         self.buttonAddMember.setImage(iconImage, for: UIControl.State.normal)
 
-        //collectionGroup.register(GroupCell.self, forCellWithReuseIdentifier: "GroupCollectionView")
         let groupCellViewNib: UINib = UINib(nibName: "GroupCell", bundle: nil)
         self.collectionGroup.register(groupCellViewNib, forCellWithReuseIdentifier: "GroupCell")
         collectionGroup.dataSource = self
         collectionGroup.delegate = self
+        
 
         let memberCellViewNib: UINib = UINib(nibName: "MemberCell", bundle: nil)
         self.memberTableView.register(memberCellViewNib, forCellReuseIdentifier: "MemberCell")
         self.memberTableView.delegate = self
         self.memberTableView.dataSource = self
 
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.refreshGroup(_:)),
-            name: NSNotification.Name(rawValue: "RefreshGroup"),
-            object: nil
-        )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.addMember),
-            name: NSNotification.Name(rawValue: "AddMember"),
-            object: nil
-        )
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.addMember),
-            name: NSNotification.Name(rawValue: "RefreshMember"),
-            object: nil
-        )
-
         self.groupList = retrieveGroupList()
         if self.groupList.isEmpty {
             self.addIndex = 0
+            self.buttonAddMember.isEnabled = false
         } else {
             self.selectedGroupIndex = 0
             self.addIndex = self.groupList.count
+            self.buttonAddMember.isEnabled = true
         }
         
         if self.selectedGroupIndex >= 0 {
@@ -74,58 +55,43 @@ class MemberGroupViewController: UIViewController {
             self.memberTableView.reloadData()
         }
     }
-    
-    @IBAction func scanMemberCode(_ sender: UIButton) {
-        if self.selectedGroupIndex < 0 {
+
+    func addMember(friends: [Friend]) {
+        if friends.isEmpty {
+            print("MemberGroupViewController addMember: friend list is empty")
             return
         }
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let qrcode_vc = storyboard.instantiateViewController(withIdentifier: "SCAN_QRCODE_VC") as? ScanQRCodeViewController else{
-            assertionFailure("[AssertionFailure] StoryBoard: GROUP_EDIT_VC can't find!! (ViewController)")
-            return
-        }
-
-        navigationController?.show(qrcode_vc, sender: self)
-    }
-    
-    @objc func refreshGroup(_ notification: Notification) {
-        self.groupList = retrieveGroupList()
-        print("MemberGroupViewController refreshGroup groupList.count = \(self.groupList.count)")
-        if self.groupList.isEmpty {
-            self.addIndex = 0
-        } else {
-            self.addIndex = self.groupList.count
-        }
-        
-        self.collectionGroup.reloadData()
-    }
-
-    @objc func refreshMember(_ notification: Notification) {
-        self.memberList.removeAll()
-        self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
-        self.memberTableView.reloadData()
-    }
-    
-    @objc func addMember(_ notification: Notification) {
-        print("MemberGroupViewController received AddMember notification")
-        if var memberInfo = notification.object as? GroupMember {
-            print("memberInfo.memberID = \(memberInfo.memberID)")
+        for i in 0...friends.count - 1 {
+            var memberInfo: GroupMember = GroupMember()
+            var isExist: Bool = false
             for memberData in self.memberList {
-                if memberData.memberID == memberInfo.memberID {
-                    let memberAlert = alert(message: "此會員已加入群組中", title: "加入錯誤")
-                    self.present(memberAlert, animated : false, completion : nil)
+                if memberData.memberID == friends[i].memberID {
+                    var alertWindow: UIWindow!
+                    let controller = UIAlertController(title: "忽略加入群組", message: "此好友\(friends[i].memberName)已加入群組中", preferredStyle: .alert)
 
-                    return
+                    let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                        print("Confirm to delete this order information")
+                        alertWindow.isHidden = true
+                    }
+                    
+                    controller.addAction(okAction)
+                    alertWindow = presentAlert(controller)
+                    isExist = true
+                    break
                 }
             }
             
-            memberInfo.groupID = self.groupList[selectedGroupIndex].groupID
-            print("memberInfo = \(memberInfo)")
-            insertGroupMember(member_info: memberInfo)
-            self.memberList.removeAll()
-            self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
-            self.memberTableView.reloadData()
+            if !isExist {
+                memberInfo.groupID = self.groupList[selectedGroupIndex].groupID
+                memberInfo.memberID = friends[i].memberID
+                memberInfo.memberName = friends[i].memberName
+                print("memberInfo = \(memberInfo)")
+                insertGroupMember(member_info: memberInfo)
+                self.memberList.removeAll()
+                self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
+                self.memberTableView.reloadData()
+            }
         }
     }
     
@@ -153,6 +119,7 @@ class MemberGroupViewController: UIViewController {
 
                 group_vc.isEditFlag = true
                 group_vc.groupID = self.groupList[sender.view!.tag].groupID
+                group_vc.delegate = self
                 self.navigationController?.show(group_vc, sender: self)
             }
             
@@ -165,6 +132,7 @@ class MemberGroupViewController: UIViewController {
 
                 let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
                     print("Confirm to delete this geoup")
+                    print("groupID = \(self.groupList[sender.view!.tag].groupID)")
                     deleteGroup(group_id: self.groupList[sender.view!.tag].groupID)
                     deleteMemberByGroup(group_id: self.groupList[sender.view!.tag].groupID)
                     //self.selectedGroupIndex = self.selectedGroupIndex - 1
@@ -172,20 +140,24 @@ class MemberGroupViewController: UIViewController {
                     if self.groupList.isEmpty {
                         self.addIndex = 0
                         self.selectedGroupIndex = -1
+                        self.buttonAddMember.isEnabled = false
                     } else {
                         self.addIndex = self.groupList.count
                         if self.selectedGroupIndex != 0 {
                             self.selectedGroupIndex = self.selectedGroupIndex - 1
                         }
+                        self.buttonAddMember.isEnabled = true
                     }
                     
                     self.collectionGroup.reloadData()
+                    self.collectionGroup.collectionViewLayout.invalidateLayout()
                     
                     self.memberList.removeAll()
                     if self.selectedGroupIndex >= 0 {
                         self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
-                        self.memberTableView.reloadData()
+                        //self.memberTableView.reloadData()
                     }
+                    self.memberTableView.reloadData()
                 }
                 
                 alertController.addAction(okAction)
@@ -245,6 +217,14 @@ class MemberGroupViewController: UIViewController {
             present(controller, animated: true, completion: nil)
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowGroupFriendList" {
+            if let controllerGroupFriendList = segue.destination as? GroupFriendListTableViewController {
+                controllerGroupFriendList.delegate = self
+            }
+        }
+    }
 
 }
 
@@ -294,7 +274,8 @@ extension MemberGroupViewController: UICollectionViewDataSource, UICollectionVie
                 assertionFailure("[AssertionFailure] StoryBoard: GROUP_EDIT_VC can't find!! (ViewController)")
                 return
             }
-
+            
+            group_vc.delegate = self
             navigationController?.show(group_vc, sender: self)
         } else {
             print("Select group name = [\(self.groupList[indexPath.row].groupName)]")
@@ -328,7 +309,8 @@ extension MemberGroupViewController: UITableViewDelegate, UITableViewDataSource 
         let cell = tableView.dequeueReusableCell(withIdentifier: "MemberCell", for: indexPath) as! MemberCell
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         //cell.setData(image: self.memberImages[indexPath.row], name: self.memberNames[indexPath.row])
-        cell.setData(image: self.memberList[indexPath.row].memberImage, name: self.memberList[indexPath.row].memberName)
+        //cell.setData(image: self.memberList[indexPath.row].memberImage, name: self.memberList[indexPath.row].memberName)
+        cell.setData(member_id: self.memberList[indexPath.row].memberID, member_name: self.memberList[indexPath.row].memberName)
         cell.tag = indexPath.row
 
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPressMemberCell(_:)))
@@ -341,20 +323,48 @@ extension MemberGroupViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
-    
+
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        //header.layer.backgroundColor = UIColor.clear.cgColor
+        header.backgroundView?.layer.backgroundColor = UIColor.white.cgColor
+
         if !self.groupList.isEmpty {
-            let header = view as! UITableViewHeaderFooterView
-            //header.layer.backgroundColor = UIColor.clear.cgColor
-            header.backgroundView?.layer.backgroundColor = UIColor.white.cgColor
             header.textLabel?.textAlignment = .center
-            if !self.groupList.isEmpty {
-                header.textLabel?.text = "\(self.groupList[self.selectedGroupIndex].groupName)  會員列表"
-            }
+            header.textLabel?.text = "\(self.groupList[self.selectedGroupIndex].groupName)  會員列表"
+        } else {
+            header.textLabel?.text = ""
         }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 44
+    }
+}
+
+extension MemberGroupViewController: GroupFriendListDelegate {
+    func getSelectedFriendList(sender: GroupFriendListTableViewController, friend_list: [Friend]) {
+        print("MemberGroupViewController receive selected friend list")
+        print("Friend List = \(friend_list)")
+        self.addMember(friends: friend_list)
+    }
+}
+
+extension MemberGroupViewController: GroupEditDelegate {
+    func editGroupComplete(sender: GroupEditViewController) {
+        self.groupList = retrieveGroupList()
+        print("MemberGroupViewController refreshGroup groupList.count = \(self.groupList.count)")
+        if self.groupList.isEmpty {
+            self.addIndex = 0
+            self.buttonAddMember.isEnabled = false
+        } else {
+            self.addIndex = self.groupList.count
+            self.buttonAddMember.isEnabled = true
+            self.selectedGroupIndex = self.groupList.count - 1
+        }
+        
+        self.collectionGroup.reloadData()
+        self.collectionGroup.collectionViewLayout.invalidateLayout()
+        self.memberTableView.reloadData()
     }
 }

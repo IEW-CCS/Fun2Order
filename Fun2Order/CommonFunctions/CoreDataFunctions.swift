@@ -713,7 +713,7 @@ func retrieveMemberList(group_id: Int) -> [GroupMember] {
             tmpMember.groupID = Int(member_data.groupID)
             tmpMember.memberID = member_data.memberID!
             tmpMember.memberName = member_data.memberName!
-            tmpMember.memberImage = UIImage(data: member_data.memberImage!)!
+            //tmpMember.memberImage = UIImage(data: member_data.memberImage!)!
             tmpMember.isSelected = true
             returnList.append(tmpMember)
         }
@@ -734,7 +734,7 @@ func insertGroupMember(member_info: GroupMember) {
     memberData.groupID = Int16(member_info.groupID)
     memberData.memberID = member_info.memberID
     memberData.memberName = member_info.memberName
-    memberData.memberImage = member_info.memberImage.pngData()!
+    //memberData.memberImage = member_info.memberImage.pngData()!
     
     app.saveContext()
 }
@@ -785,6 +785,95 @@ func deleteMemberByGroup(group_id: Int) {
     }
 
     app.saveContext()
+}
+
+func retrieveFriendList() -> [Friend] {
+    var returnList = [Friend]()
+
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchFriend: NSFetchRequest<FRIEND_TABLE> = FRIEND_TABLE.fetchRequest()
+
+    do {
+        let friend_list = try vc.fetch(fetchFriend)
+        for friend_data in friend_list {
+            var tmpFirend = Friend()
+            tmpFirend.memberID = friend_data.memberID!
+            tmpFirend.memberName = friend_data.memberName!
+            tmpFirend.memberNickname = friend_data.memberNickname!
+            returnList.append(tmpFirend)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    return returnList
+}
+
+func insertFriend(friend_info: Friend) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let friendData = NSEntityDescription.insertNewObject(forEntityName: "FRIEND_TABLE", into: vc) as! FRIEND_TABLE
+    friendData.memberID = friend_info.memberID
+    friendData.memberName = friend_info.memberName
+    friendData.memberNickname = friend_info.memberNickname
+    
+    app.saveContext()
+}
+
+func deleteFriend(member_id: String) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchRequest: NSFetchRequest<FRIEND_TABLE> = FRIEND_TABLE.fetchRequest()
+    let predicateString = "memberID == \"\(member_id)\""
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let friend_data = try vc.fetch(fetchRequest).first
+        if friend_data != nil {
+            vc.delete(friend_data!)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+
+    app.saveContext()
+}
+
+func updateFriend(member_id: String, nick_name: String) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<FRIEND_TABLE> = FRIEND_TABLE.fetchRequest()
+    let predicateString = "memberID == \"\(member_id)\""
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let friendData = try vc.fetch(fetchRequest).first
+        if friendData != nil {
+            friendData?.setValue(nick_name, forKey: "memberNickname")
+        }
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+    
+    app.saveContext()
+
 }
 
 func deleteOrderProduct(brand_id: Int, store_id: Int, order_number: String, item_number: Int) -> Bool {

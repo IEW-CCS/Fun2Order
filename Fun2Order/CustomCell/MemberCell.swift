@@ -16,7 +16,7 @@ class MemberCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.backView.layer.borderWidth = CGFloat(1.0)
-        self.backView.layer.borderColor = UIColor.systemBlue.cgColor
+        self.backView.layer.borderColor = UIColor.lightGray.cgColor
         self.backView.layer.cornerRadius = 6
     }
 
@@ -25,8 +25,17 @@ class MemberCell: UITableViewCell {
 
     }
     
+    func receiveMemberImage(member_image: UIImage) {
+        self.memberImage.image = member_image
+    }
+    
     func setData(image: UIImage, name: String) {
         self.memberImage.image = image
         self.memberLabel.text = name
+    }
+    
+    func setData(member_id: String, member_name: String) {
+        self.memberLabel.text = member_name
+        downloadFBMemberImage(member_id: member_id, completion: receiveMemberImage)
     }
 }

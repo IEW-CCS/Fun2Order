@@ -85,8 +85,14 @@ class MenuRecipeCell: UITableViewCell {
 
             let addButton = UIButton(frame: buttonRect)
             addButton.setImage(UIImage(named: "Icon_Add_Group.png")!, for: .normal)
+            //addButton.setImage(UIImage(named: "Add_Icon.png")!, for: .normal)
             addButton.imageView?.contentMode = .scaleAspectFit
-            
+            if let tintImageAdd = addButton.imageView?.image {
+                let colorlessImage = tintImageAdd.withRenderingMode(.alwaysTemplate)
+                addButton.imageView?.image = colorlessImage
+                addButton.imageView?.tintColor = UIColor.lightGray
+            }
+
             self.addSubview(addButton)
             
             let tapGesture = UITapGestureRecognizer(target: self, action:#selector(self.addItemClicked(_:)))
@@ -115,8 +121,14 @@ class MenuRecipeCell: UITableViewCell {
 
                     let addButton = UIButton(frame: buttonRect)
                     addButton.setImage(UIImage(named: "Icon_Add_Group.png")!, for: .normal)
+                    //addButton.setImage(UIImage(named: "Add_Icon.png.png")!, for: .normal)
                     addButton.imageView?.contentMode = .scaleAspectFit
-                    
+                    if let tintImageAdd = addButton.imageView?.image {
+                        let colorlessImage = tintImageAdd.withRenderingMode(.alwaysTemplate)
+                        addButton.imageView?.image = colorlessImage
+                        addButton.imageView?.tintColor = UIColor.lightGray
+                    }
+
                     self.addSubview(addButton)
                     
                     let tapGesture = UITapGestureRecognizer(target: self, action:#selector(self.addItemClicked(_:)))

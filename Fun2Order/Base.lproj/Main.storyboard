@@ -918,7 +918,7 @@
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="mEi-vO-pgg"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                 </textField>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UvX-JF-DZj">
                                                     <rect key="frame" x="202" y="5.5" width="35" height="33"/>
@@ -1326,9 +1326,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="73t-ye-x6g">
-                            <rect key="frame" x="0.0" y="-88" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="pXE-JZ-3Uj"/>
                                 <barButtonItem style="plain" id="7Qn-LT-bIn">
                                     <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="lcF-Kd-WIc">
                                         <rect key="frame" x="20" y="5.5" width="374" height="33"/>
@@ -1342,6 +1343,7 @@
                                         </connections>
                                     </segmentedControl>
                                 </barButtonItem>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="GKs-Fr-b1Y"/>
                             </items>
                         </toolbar>
                         <prototypes>
@@ -1359,7 +1361,9 @@
                             <outlet property="delegate" destination="8zi-YN-Plp" id="yxA-Wa-hCy"/>
                         </connections>
                     </tableView>
+                    <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="categorySegment" destination="lcF-Kd-WIc" id="vTC-Qa-hHU"/>
                     </connections>
@@ -1475,7 +1479,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="470" id="1xS-LJ-yYX"/>
                                     <constraint firstItem="w7n-0q-uaC" firstAttribute="centerX" secondItem="F4F-PN-u2w" secondAttribute="centerX" id="PJh-qZ-gnL"/>
@@ -2212,7 +2216,7 @@
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="xmc-Qm-BIu"/>
                                 <barButtonItem style="plain" id="xt0-US-IBY">
                                     <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="3ZM-Si-BPN">
-                                        <rect key="frame" x="21" y="6" width="318" height="32"/>
+                                        <rect key="frame" x="141.5" y="6" width="131" height="32"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="First"/>
@@ -2388,7 +2392,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="xpq-uO-gQP" firstAttribute="leading" secondItem="QM1-w6-FaF" secondAttribute="leading" id="2f8-sz-fxj"/>
                             <constraint firstItem="S6N-yN-Rsg" firstAttribute="bottom" secondItem="xpq-uO-gQP" secondAttribute="top" constant="-10" id="5TR-tM-tOz"/>
@@ -2483,7 +2487,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="uDc-IJ-3Kf" firstAttribute="centerY" secondItem="OZu-bB-xAF" secondAttribute="centerY" constant="-50" id="C5F-ki-oOQ"/>
                             <constraint firstItem="tPu-4c-0WV" firstAttribute="top" secondItem="nyg-eD-fn3" secondAttribute="bottom" constant="15" id="bHd-fM-77t"/>
@@ -2559,7 +2563,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="Lga-hr-EV4" firstAttribute="top" secondItem="FUt-VL-oOc" secondAttribute="bottom" constant="50" id="2K2-As-xIv"/>
                             <constraint firstItem="FUt-VL-oOc" firstAttribute="top" secondItem="DAX-52-vyd" secondAttribute="bottom" constant="40" id="8WV-nK-9hc"/>
@@ -2601,8 +2605,8 @@
                                 <rect key="frame" x="98" y="101" width="218" height="32"/>
                                 <segments>
                                     <segment title="基本資料"/>
-                                    <segment title="我的最愛"/>
-                                    <segment title="會員群組"/>
+                                    <segment title="我的好友"/>
+                                    <segment title="群組資訊"/>
                                 </segments>
                                 <connections>
                                     <action selector="selectFunctions:" destination="Qxv-6f-9in" eventType="valueChanged" id="VWU-kw-ILF"/>
@@ -2987,30 +2991,22 @@
             </objects>
             <point key="canvasLocation" x="1700.0000000000002" y="2185.3794642857142"/>
         </scene>
-        <!--Config My Favorite Table View Controller-->
+        <!--My Friend Table View Controller-->
         <scene sceneID="hrH-Kf-jkA">
             <objects>
-                <tableViewController storyboardIdentifier="CONFIG_FAVORITE_VC" id="hAG-S3-A3y" customClass="ConfigMyFavoriteTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="MY_FRIEND_VC" id="hAG-S3-A3y" customClass="MyFriendTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="VDA-5s-0Yu">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="585"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Mma-ic-qDF">
-                            <rect key="frame" x="0.0" y="-311" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
-                                <barButtonItem style="plain" id="heG-bn-vXO">
-                                    <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Noi-ZN-90S">
-                                        <rect key="frame" x="20" y="5.5" width="374" height="33"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <segments>
-                                            <segment title="最愛店家"/>
-                                            <segment title="最愛外送地址"/>
-                                        </segments>
-                                        <connections>
-                                            <action selector="changeFavoriteCategory:" destination="hAG-S3-A3y" eventType="valueChanged" id="CtE-vc-nr8"/>
-                                        </connections>
-                                    </segmentedControl>
+                                <barButtonItem title="加好友" image="Icon_Add_Member.png" id="shH-Dh-Krd">
+                                    <connections>
+                                        <segue destination="DIS-1s-ueF" kind="show" identifier="ShowQRCodeScan" id="qDm-NQ-HMP"/>
+                                    </connections>
                                 </barButtonItem>
                             </items>
                         </toolbar>
@@ -3020,9 +3016,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="Csd-m7-GDr"/>
-                    <connections>
-                        <outlet property="favoriteSegment" destination="Noi-ZN-90S" id="l0Q-rs-1dM"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FSP-rk-i1I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -3057,24 +3050,24 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tys-cZ-Nb4">
-                                <rect key="frame" x="20" y="216" width="374" height="359"/>
+                                <rect key="frame" x="20" y="228" width="374" height="347"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbZ-z0-H9a">
-                                <rect key="frame" x="20" y="178" width="120" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbZ-z0-H9a">
+                                <rect key="frame" x="20" y="183" width="150" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="kjf-iB-CQY"/>
                                 </constraints>
-                                <state key="normal" title="   掃描加入群組"/>
+                                <state key="normal" title="   將好友加入群組"/>
                                 <connections>
-                                    <action selector="scanMemberCode:" destination="gMo-MT-pfQ" eventType="touchUpInside" id="o7K-6t-RVX"/>
+                                    <segue destination="4to-QY-Htk" kind="show" identifier="ShowGroupFriendList" id="MNG-co-cS3"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="CmM-6Q-mQa" firstAttribute="leading" secondItem="NZL-rt-g30" secondAttribute="leading" constant="20" id="4Hz-mf-dtu"/>
-                            <constraint firstItem="tys-cZ-Nb4" firstAttribute="top" secondItem="qbZ-z0-H9a" secondAttribute="bottom" constant="8" id="CYt-0h-Q6k"/>
+                            <constraint firstItem="tys-cZ-Nb4" firstAttribute="top" secondItem="qbZ-z0-H9a" secondAttribute="bottom" constant="15" id="CYt-0h-Q6k"/>
                             <constraint firstItem="NZL-rt-g30" firstAttribute="trailing" secondItem="tys-cZ-Nb4" secondAttribute="trailing" constant="20" id="Mwo-9c-NlQ"/>
                             <constraint firstItem="qbZ-z0-H9a" firstAttribute="leading" secondItem="NZL-rt-g30" secondAttribute="leading" constant="20" id="Nee-JN-yDC"/>
                             <constraint firstItem="v2F-eZ-hJN" firstAttribute="top" secondItem="CmM-6Q-mQa" secondAttribute="bottom" constant="8" symbolic="YES" id="OrE-Uk-dAi"/>
@@ -3084,7 +3077,7 @@
                             <constraint firstItem="NZL-rt-g30" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="qbZ-z0-H9a" secondAttribute="trailing" symbolic="YES" id="gQG-Bq-akY"/>
                             <constraint firstAttribute="bottom" secondItem="tys-cZ-Nb4" secondAttribute="bottom" constant="10" id="hP2-IY-yrK"/>
                             <constraint firstItem="v2F-eZ-hJN" firstAttribute="leading" secondItem="CmM-6Q-mQa" secondAttribute="leading" id="lBG-Tz-rp1"/>
-                            <constraint firstItem="qbZ-z0-H9a" firstAttribute="top" secondItem="v2F-eZ-hJN" secondAttribute="bottom" constant="10" id="otc-qG-3g8"/>
+                            <constraint firstItem="qbZ-z0-H9a" firstAttribute="top" secondItem="v2F-eZ-hJN" secondAttribute="bottom" constant="15" id="otc-qG-3g8"/>
                             <constraint firstItem="NZL-rt-g30" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CmM-6Q-mQa" secondAttribute="trailing" symbolic="YES" id="yuU-vt-awS"/>
                             <constraint firstItem="tys-cZ-Nb4" firstAttribute="centerX" secondItem="tXU-sH-N5T" secondAttribute="centerX" id="ziZ-FN-YcJ"/>
                         </constraints>
@@ -3099,14 +3092,60 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A7f-Ta-irv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3087" y="2186"/>
+            <point key="canvasLocation" x="3086.9565217391305" y="2185.3794642857142"/>
         </scene>
-        <!--掃描會員條碼-->
+        <!--Group Friend List Table View Controller-->
+        <scene sceneID="b1o-6l-A6h">
+            <objects>
+                <tableViewController id="4to-QY-Htk" customClass="GroupFriendListTableViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="FCX-gD-BTj">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="585"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="tEh-jb-Yam">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <items>
+                                <barButtonItem title="取消" id="1aH-bF-icT">
+                                    <connections>
+                                        <action selector="cancelSelect:" destination="4to-QY-Htk" id="HBB-Rt-qxU"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="PYj-sB-2tz"/>
+                                <barButtonItem title="確定" id="tFv-0Z-q5a">
+                                    <connections>
+                                        <action selector="confirmSelect:" destination="4to-QY-Htk" id="V4o-nk-dOn"/>
+                                    </connections>
+                                </barButtonItem>
+                            </items>
+                        </toolbar>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="CH0-a2-dZq">
+                                <rect key="frame" x="0.0" y="72" width="414" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CH0-a2-dZq" id="AYG-WL-rZe">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="4to-QY-Htk" id="eJo-2Q-JQY"/>
+                            <outlet property="delegate" destination="4to-QY-Htk" id="6Eb-FO-joX"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="cxE-Vs-SXz"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wgL-Mn-8Po" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3851" y="2186"/>
+        </scene>
+        <!--掃描好友條碼-->
         <scene sceneID="N6r-O1-cMF">
             <objects>
-                <viewController storyboardIdentifier="SCAN_QRCODE_VC" title="掃描會員條碼" id="DIS-1s-ueF" customClass="ScanQRCodeViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SCAN_QRCODE_VC" title="掃描好友條碼" id="DIS-1s-ueF" customClass="ScanQRCodeViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Fy8-Tv-5Vf">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="585"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EBs-pW-mLc">
@@ -3127,9 +3166,9 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A1T-QU-6NI">
                                 <rect key="frame" x="176" y="471" width="62" height="30"/>
-                                <state key="normal" title="加入群組"/>
+                                <state key="normal" title="加入好友"/>
                                 <connections>
-                                    <action selector="addToGroup:" destination="DIS-1s-ueF" eventType="touchUpInside" id="NSS-Yc-97q"/>
+                                    <action selector="addToFriend:" destination="DIS-1s-ueF" eventType="touchUpInside" id="PvR-5j-KaT"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -3154,7 +3193,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wgD-05-CAo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3787" y="2276"/>
+            <point key="canvasLocation" x="2390" y="2735"/>
         </scene>
         <!--Config Favorite Product Table View Controller-->
         <scene sceneID="eW3-nx-90C">
@@ -3173,7 +3212,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XE7-OO-283" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2391" y="2691"/>
+            <point key="canvasLocation" x="955" y="2676"/>
         </scene>
         <!--Group Edit View Controller-->
         <scene sceneID="J3t-11-2dj">
@@ -3388,7 +3427,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gNL-5v-avd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1700" y="2781"/>
+            <point key="canvasLocation" x="1701" y="2802"/>
         </scene>
         <!--Gender View Controller-->
         <scene sceneID="gpP-Lv-NR3">
@@ -3413,7 +3452,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q89-6R-fpU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2394" y="3000"/>
+            <point key="canvasLocation" x="954" y="2986"/>
         </scene>
         <!--Birthday View Controller-->
         <scene sceneID="EPh-6a-IYt">
@@ -3442,7 +3481,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QAj-rn-aOC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2393" y="3158"/>
+            <point key="canvasLocation" x="954" y="3149"/>
         </scene>
         <!--Verify Mail Controller-->
         <scene sceneID="hSm-54-GeU">
@@ -3638,7 +3677,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="nYM-x5-p9K" firstAttribute="top" secondItem="bWV-gL-lXq" secondAttribute="top" constant="30" id="0XD-5X-0lL"/>
                             <constraint firstItem="mH8-wx-cQt" firstAttribute="centerX" secondItem="bWV-gL-lXq" secondAttribute="centerX" id="11h-Vp-pBd"/>
@@ -3670,6 +3709,7 @@
     </scenes>
     <resources>
         <image name="8.png" width="573" height="365"/>
+        <image name="Icon_Add_Member.png" width="15" height="15"/>
         <image name="Icon_Address.png" width="15" height="14.5"/>
         <image name="Icon_Birthday.png" width="15" height="15"/>
         <image name="Icon_Gender.png" width="15" height="13"/>

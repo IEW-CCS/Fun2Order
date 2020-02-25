@@ -21,7 +21,12 @@ class EditPaymentStatusTableViewController: UITableViewController {
         getAcceptedItems()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        refreshMenuOrder()
+    }
+    
     func getAcceptedItems() {
+        self.acceptedItems.removeAll()
         if !self.menuOrder.contentItems.isEmpty {
             for i in 0...self.menuOrder.contentItems.count - 1 {
                 if self.menuOrder.contentItems[i].orderContent.replyStatus == MENU_ORDER_REPLY_STATUS_ACCEPT {
@@ -29,6 +34,11 @@ class EditPaymentStatusTableViewController: UITableViewController {
                 }
             }
         }
+    }
+    
+    func refreshMenuOrder() {
+        getAcceptedItems()
+        self.tableView.reloadData()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

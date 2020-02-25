@@ -215,8 +215,14 @@ struct GroupMember {
     var groupID: Int = 0
     var memberID: String = ""
     var memberName: String = ""
-    var memberImage: UIImage = UIImage()
+    //var memberImage: UIImage = UIImage()
     var isSelected: Bool = false
+}
+
+struct Friend {
+    var memberID: String = ""
+    var memberName: String = ""
+    var memberNickname: String = ""
 }
 
 struct MenuInformation: Codable {

@@ -12,6 +12,10 @@ import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
 
+protocol ScanQRCodeDelegate: class {
+    func getQRCodeMemberInfo(sender: ScanQRCodeViewController, member_id: String, member_name: String)
+}
+
 class ScanQRCodeViewController: UIViewController {
     @IBOutlet weak var viewPreview: UIView!
     @IBOutlet weak var labelMemberName: UILabel!
@@ -22,6 +26,7 @@ class ScanQRCodeViewController: UIViewController {
     var captureSession = AVCaptureSession()
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
     var qrCodeFrameView: UIView?
+    weak var delegate: ScanQRCodeDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,27 +37,30 @@ class ScanQRCodeViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        self.title = "掃描會員條碼"
-        self.navigationController?.title = "掃描會員條碼"
-        self.tabBarController?.title = "掃描會員條碼"
+        self.title = "掃描好友條碼"
+        self.navigationController?.title = "掃描好友條碼"
+        self.tabBarController?.title = "掃描好友條碼"
     }
 
-    @IBAction func addToGroup(_ sender: UIButton) {
+    @IBAction func addToFriend(_ sender: UIButton) {
         let databaseRef = Database.database().reference()
         let profileDatabasePath = "USER_PROFILE/\(self.memberID)"
         
         databaseRef.child(profileDatabasePath).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
-                var tmpMemberInfo = GroupMember()
+                //var tmpMemberInfo = GroupMember()
                 let value = snapshot.value as? NSDictionary
                 let userName = value?["userName"] as! String
-                let photoUrl = value?["photoURL"] as! String
                 self.memberUserName = userName
-                print("userName = \(userName)")
-                print("photoUrl = \(photoUrl)")
-                tmpMemberInfo.memberID = self.memberID
-                tmpMemberInfo.memberName = userName
+                //print("userName = \(userName)")
+                //print("photoUrl = \(photoUrl)")
+                //tmpMemberInfo.memberID = self.memberID
+                //tmpMemberInfo.memberName = userName
                 
+                self.delegate?.getQRCodeMemberInfo(sender: self, member_id: self.memberID, member_name: userName)
+                self.navigationController?.popViewController(animated: true)
+                self.dismiss(animated: false, completion: nil)
+/*
                 let storageRef = Storage.storage().reference()
                 storageRef.child(photoUrl).getData(maxSize: 1 * 1024 * 1024, completion: { (data, error) in
                     if let error = error {
@@ -71,10 +79,9 @@ class ScanQRCodeViewController: UIViewController {
                         tmpMemberInfo.memberImage = UIImage(data: data!)!
                     }
                     
-                    NotificationCenter.default.post(name: NSNotification.Name("AddMember"), object: tmpMemberInfo)
-                    self.navigationController?.popViewController(animated: true)
-                    self.dismiss(animated: false, completion: nil)
+                    //NotificationCenter.default.post(name: NSNotification.Name("AddMember"), object: tmpMemberInfo)
                 })
+ */
             } else {
                 let memberAlert = alert(message: "不存在的會員條碼或條碼格式錯誤，請再重試一次", title: "條碼錯誤")
                 self.present(memberAlert, animated : false, completion : nil)
@@ -84,6 +91,7 @@ class ScanQRCodeViewController: UIViewController {
         }) { (error) in
             print(error.localizedDescription)
         }
+
     }
     
     func configScanner() {

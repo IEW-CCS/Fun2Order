@@ -37,6 +37,10 @@ class JoinGroupOrderTableViewController: UITableViewController {
         let productCellViewNib: UINib = UINib(nibName: "NewProductCell", bundle: nil)
         self.tableView.register(productCellViewNib, forCellReuseIdentifier: "NewProductCell")
 
+        let tapGesture = UITapGestureRecognizer(target: self, action:#selector(self.menuImageClicked(_:)))
+        imageMenu.isUserInteractionEnabled = true
+        imageMenu.addGestureRecognizer(tapGesture)
+
         refreshJoinGroupOrder()
         
     }
@@ -83,7 +87,12 @@ class JoinGroupOrderTableViewController: UITableViewController {
         self.labelBrandName.text = self.menuInformation.brandName
         //self.labelProductQuantity.text = ""
         setupLocationSegment()
-        downloadMenuImage()
+        downloadFBMenuImage(menu_url: self.menuInformation.menuImageURL, completion: receiveMenuImage)
+        //downloadMenuImage()
+    }
+    
+    func receiveMenuImage(menu_image: UIImage) {
+        self.imageMenu.image = menu_image
     }
     
     @IBAction func changeLocationIndex(_ sender: UISegmentedControl) {
@@ -110,23 +119,56 @@ class JoinGroupOrderTableViewController: UITableViewController {
         
         print("self.segmentLocation.selectedSegmentIndex = \(self.segmentLocation.selectedSegmentIndex)")
     }
+    
+    @objc func menuImageClicked(_ sender: UITapGestureRecognizer) {
+        print("Menu Image tapped")
+        let imageView = sender.view as! UIImageView
 
-    func downloadMenuImage() {
-        if self.menuInformation.menuImageURL != "" {
-            let storageRef = Storage.storage().reference()
-            storageRef.child(self.menuInformation.menuImageURL).getData(maxSize: 3 * 2048 * 2048, completion: { (data, error) in
-                if let error = error {
-                    print(error.localizedDescription)
-                    DispatchQueue.main.async {
-                        let httpAlert = alert(message: error.localizedDescription, title: "存取菜單影像錯誤")
-                        self.present(httpAlert, animated : false, completion : nil)
-                        return
-                    }
-                }
-                
-                self.imageMenu.image = UIImage(data: data!)!
-            })
-        }
+        let zoomView = ImageZoomView(frame: UIScreen.main.bounds, image: imageView.image!)
+        zoomView.bounces = false
+        //let zoomView = ImageZoomView(frame: self.view.bounds, image: imageView.image!)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
+        tap.cancelsTouchesInView = false
+        zoomView.addGestureRecognizer(tap)
+        self.view.addSubview(zoomView)
+        self.navigationController?.isNavigationBarHidden = true
+        self.tabBarController?.tabBar.isHidden = true
+
+/*
+        var scrollView: UIScrollView!
+
+        let imageView = sender.view as! UIImageView
+        let newImageView = UIImageView(image: imageView.image)
+        newImageView.frame = UIScreen.main.bounds
+        newImageView.backgroundColor = .black
+        newImageView.contentMode = .scaleAspectFit
+        newImageView.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
+        newImageView.addGestureRecognizer(tap)
+
+        scrollView = UIScrollView(frame: self.view.bounds)
+        scrollView.backgroundColor = UIColor.black
+        scrollView.contentSize = newImageView.bounds.size
+        scrollView.autoresizingMask = UIView.AutoresizingMask(rawValue: UIView.AutoresizingMask.RawValue(UInt8(UIView.AutoresizingMask.flexibleWidth.rawValue) | UInt8(UIView.AutoresizingMask.flexibleHeight.rawValue)))
+        scrollView.addSubview(newImageView)
+        self.view.addSubview(scrollView)
+        //self.view.addSubview(newImageView)
+        
+        scrollView.scrollsToTop = false
+        scrollView.zoomScale = 1.0
+        scrollView.minimumZoomScale = 0.5
+        scrollView.maximumZoomScale = 2.0
+        scrollView.bouncesZoom = true
+        scrollView.delegate = self
+        self.navigationController?.isNavigationBarHidden = true
+        self.tabBarController?.tabBar.isHidden = true
+ */
+    }
+    
+    @objc func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
+        self.navigationController?.isNavigationBarHidden = false
+        self.tabBarController?.tabBar.isHidden = false
+        sender.view?.removeFromSuperview()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -145,7 +187,6 @@ class JoinGroupOrderTableViewController: UITableViewController {
         if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NewProductCell", for: indexPath) as! NewProductCell
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            //cell.setData(name: self.menuInformation.menuItems![indexPath.row].itemName, price: String(self.menuInformation.menuItems![indexPath.row].itemPrice))
             cell.setData(item: self.memberContent.orderContent.menuProductItems![indexPath.row])
             cell.AdjustAutoLayout()
             cell.tag = indexPath.row

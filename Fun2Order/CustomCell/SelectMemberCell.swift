@@ -37,13 +37,26 @@ class SelectMemberCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
     }
-    
+
+    func receiveMemberImage(member_image: UIImage) {
+        self.memberImage.image = member_image
+    }
+
     func setData(image: UIImage, name: String) {
         self.memberImage.image = image
         self.memberLabel.text = name
     }
-    
+
+    func setData(member_id: String, member_name: String) {
+        self.memberLabel.text = member_name
+        downloadFBMemberImage(member_id: member_id, completion: receiveMemberImage)
+    }
+
     func getCheckStatus() -> Bool {
         return self.checkStatus
+    }
+    
+    func setCheckStatus(status: Bool) {
+        self.selectCheckBox.isChecked = status
     }
 }

@@ -37,6 +37,64 @@ func downloadTokenID(user_id: String) {
     
 }
 
+func downloadFBMenuImage(menu_url: String, completion: @escaping(UIImage) -> Void) {
+    var alertWindow: UIWindow!
+    if menu_url != "" {
+        let storageRef = Storage.storage().reference()
+        storageRef.child(menu_url).getData(maxSize: 3 * 2048 * 2048, completion: { (data, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                let controller = UIAlertController(title: "存取菜單影像錯誤", message: error.localizedDescription, preferredStyle: .alert)
+                
+                let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                    alertWindow.isHidden = true
+                }
+                
+                controller.addAction(okAction)
+                alertWindow = presentAlert(controller)
+            }
+            
+            completion(UIImage(data: data!)!)
+        })
+    }
+}
+
+func downloadFBMemberImage(member_id: String, completion: @escaping (UIImage) -> Void) {
+    var alertWindow: UIWindow!
+    
+    let databaseRef = Database.database().reference()
+    let storageRef = Storage.storage().reference()
+    
+    let pathString = "USER_PROFILE/\(member_id)/photoURL"
+    databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+        if snapshot.exists() {
+            let imageURL = snapshot.value as! String
+            storageRef.child(imageURL).getData(maxSize: 3 * 2048 * 2048, completion: { (data, error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    let controller = UIAlertController(title: "存取會員影像錯誤", message: error.localizedDescription, preferredStyle: .alert)
+                    
+                    let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                        alertWindow.isHidden = true
+                    }
+                    
+                    controller.addAction(okAction)
+                    alertWindow = presentAlert(controller)
+                }
+                
+                completion(UIImage(data: data!)!)
+            })
+        } else {
+            print("downloadMemberImage photoURL snapshot doesn't exist!")
+            return
+        }
+    })  { (error) in
+        print(error.localizedDescription)
+        return
+    }
+
+}
+
 func uploadFBMenuOrderContentItem(item: MenuOrderMemberContent) {
     let databaseRef = Database.database().reference()
     let pathString = "USER_MENU_ORDER/\(item.orderOwnerID)/\(item.orderContent.orderNumber)/contentItems"

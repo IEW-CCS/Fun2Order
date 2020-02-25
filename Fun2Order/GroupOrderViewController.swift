@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import Firebase
 
-class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
+class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
     @IBOutlet weak var collectionGroup: UICollectionView!
     @IBOutlet weak var memberTableView: UITableView!
     @IBOutlet weak var buttonDueDate: UIButton!
@@ -65,7 +65,6 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
         self.textViewMessage.layer.borderColor = UIColor.lightGray.cgColor
         self.textViewMessage.layer.cornerRadius = 6
 
-        
         let groupCellViewNib: UINib = UINib(nibName: "GroupCell", bundle: nil)
         self.collectionGroup.register(groupCellViewNib, forCellWithReuseIdentifier: "GroupCell")
         collectionGroup.dataSource = self
@@ -108,6 +107,11 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
         self.scrollView.contentSize = CGSize(width: contentWidth, height: contentHeight)
         self.scrollView.isExclusiveTouch = false
         self.scrollView.delaysContentTouches = false
+
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -116,7 +120,15 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate {
         self.tabBarController?.title = "設定揪團訂單"
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+          textField.resignFirstResponder()
+          return true
+    }
     
+    @objc func dismissKeyBoard() {
+        self.view.endEditing(true)
+    }
+
     @IBAction func setupOrderDueDate(_ sender: UIButton) {
         let controller = UIAlertController(title: "請設定截止時間", message: nil, preferredStyle: .actionSheet)
 
@@ -394,7 +406,8 @@ extension GroupOrderViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SelectMemberCell", for: indexPath) as! SelectMemberCell
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         //cell.setData(image: self.memberImages[indexPath.row], name: self.memberNames[indexPath.row])
-        cell.setData(image: self.memberList[indexPath.row].memberImage, name: self.memberList[indexPath.row].memberName)
+        //cell.setData(image: self.memberList[indexPath.row].memberImage, name: self.memberList[indexPath.row].memberName)
+        cell.setData(member_id: self.memberList[indexPath.row].memberID, member_name: self.memberList[indexPath.row].memberName)
         cell.delegate = self
         cell.tag = indexPath.row
         

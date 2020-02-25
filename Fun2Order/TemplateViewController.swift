@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol MenuTemplateDelegate: class {
+    func sendTemplateSelectedIndex(sender: TemplateViewController, index: Int)
+}
+
 class TemplateViewController: UIViewController {
     @IBOutlet weak var templatePickerView: UIPickerView!
     @IBOutlet weak var buttonCancel: UIButton!
@@ -15,6 +19,7 @@ class TemplateViewController: UIViewController {
     
     var templateArray: [String] = [String]()
     var selectedTemplateIndex: Int = 0
+    weak var delegate: MenuTemplateDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +33,7 @@ class TemplateViewController: UIViewController {
     
     @IBAction func confirmSelect(_ sender: UIButton) {
         NotificationCenter.default.post(name: NSNotification.Name("SelectTemplate"), object: self.selectedTemplateIndex)
+        delegate?.sendTemplateSelectedIndex(sender: self, index: self.selectedTemplateIndex)
         self.dismiss(animated: true, completion: nil)
     }
     

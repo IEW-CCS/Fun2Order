@@ -9,9 +9,14 @@
 import UIKit
 import Firebase
 
+protocol StatusSummaryDelegate: class {
+    func updateMenuOrderInformation(sender: StatusSummaryTableViewController, menu_order: MenuOrder)
+}
+
 class StatusSummaryTableViewController: UITableViewController {
     var menuOrder: MenuOrder = MenuOrder()
     var summaryData: [Int] = [Int]()
+    weak var delegate: StatusSummaryDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,20 +26,6 @@ class StatusSummaryTableViewController: UITableViewController {
         
         let basicButtonCellViewNib: UINib = UINib(nibName: "BasicButtonCell", bundle: nil)
         self.tableView.register(basicButtonCellViewNib, forCellReuseIdentifier: "BasicButtonCell")
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.receiveRefreshStatusSummary(_:)),
-            name: NSNotification.Name(rawValue: "RefreshStatusSummary"),
-            object: nil
-        )
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.receiveNotifyMenuOrderDueTime(_:)),
-            name: NSNotification.Name(rawValue: "NotifyMenuOrderDueTime"),
-            object: nil
-        )
 
         getSummaryData()
     }
@@ -74,9 +65,64 @@ class StatusSummaryTableViewController: UITableViewController {
         summaryData.append(rejectCount)
         summaryData.append(expireCount)
     }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
 
-    @objc func receiveRefreshStatusSummary(_ notification: Notification) {
-        print("receiveRefreshStatusSummary notification received!")
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DashboardStatusSummaryCell", for: indexPath) as! DashboardStatusSummaryCell
+
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            cell.AdjustAutoLayout()
+            cell.setMenuInfo(brand: self.menuOrder.brandName, start_time: self.menuOrder.createTime, member_count: self.menuOrder.contentItems.count, due_time: self.menuOrder.dueTime)
+            cell.setupChartData(data_array: self.summaryData)
+            return cell
+        }
+
+        if indexPath.row == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
+            
+            let iconImage: UIImage = UIImage(named: "Icon_Refresh.png")!
+            cell.setData(icon: iconImage, button_text: "更新狀態", action_type: BUTTON_ACTION_REFRESH_STATUS_SUMMARY)
+
+            cell.delegate = self
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            return cell
+        }
+
+        if indexPath.row == 2 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
+            
+            let iconImage: UIImage = UIImage(named: "Icon_Notify_Menu.png")!
+            cell.setData(icon: iconImage, button_text: "發出催訂通知", action_type: BUTTON_ACTION_NOTIFY_MENUORDER_DUETIME)
+
+            cell.delegate = self
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            return cell
+        }
+        
+        return super.tableView(tableView, cellForRowAt: indexPath)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 455
+        }
+        
+        return 54
+    }
+
+}
+
+extension StatusSummaryTableViewController: BasicButtonDelegate {
+    func refreshStatusSummary(sender: BasicButtonCell) {
+        print("StatusSummaryTableViewController receives BasicButtonDelegate.refreshStatusSummary")
         let databaseRef = Database.database().reference()
         let pathString =  "USER_MENU_ORDER/\(self.menuOrder.orderOwnerID)/\(self.menuOrder.orderNumber)"
         databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -92,20 +138,21 @@ class StatusSummaryTableViewController: UITableViewController {
                     self.menuOrder = menuData
                     self.getSummaryData()
                     self.tableView.reloadData()
+                    self.delegate?.updateMenuOrderInformation(sender: self, menu_order: self.menuOrder)
                 } catch {
                     print("jsonData decode failed: \(error.localizedDescription)")
                 }
             } else {
-                print("receiveRefreshStatusSummary snapshot doesn't exist!")
+                print("StatusSummaryTableViewController refreshStatusSummary snapshot doesn't exist!")
                 return
             }
         }) { (error) in
             print(error.localizedDescription)
         }
     }
-
-    @objc func receiveNotifyMenuOrderDueTime(_ notification: Notification) {
-        print("receiveNotifyMenuOrderDueTime notification received!")
+    
+    func notifyMenuOrderDueTime(sender: BasicButtonCell) {
+        print("StatusSummaryTableViewController receives BasicButtonDelegate.notifyMenuOrderDueTime")
 
         if !self.menuOrder.contentItems.isEmpty {
             let tokenID = getMyTokenID()
@@ -147,57 +194,5 @@ class StatusSummaryTableViewController: UITableViewController {
             }
             
         }
-
     }
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DashboardStatusSummaryCell", for: indexPath) as! DashboardStatusSummaryCell
-
-            cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            cell.AdjustAutoLayout()
-            cell.setMenuInfo(brand: self.menuOrder.brandName, start_time: self.menuOrder.createTime, member_count: self.menuOrder.contentItems.count, due_time: self.menuOrder.dueTime)
-            cell.setupChartData(data_array: self.summaryData)
-            return cell
-        }
-
-        if indexPath.row == 1 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
-            
-            let iconImage: UIImage = UIImage(named: "Icon_Refresh.png")!
-            cell.setData(icon: iconImage, button_text: "更新狀態", action_type: BUTTON_ACTION_REFRESH_STATUS_SUMMARY)
-
-            cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            return cell
-        }
-
-        if indexPath.row == 2 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
-            
-            let iconImage: UIImage = UIImage(named: "Icon_Notify_Menu.png")!
-            cell.setData(icon: iconImage, button_text: "發出催訂通知", action_type: BUTTON_ACTION_NOTIFY_MENUORDER_DUETIME)
-
-            cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            return cell
-        }
-        
-        return super.tableView(tableView, cellForRowAt: indexPath)
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0 {
-            return 455
-        }
-        
-        return 54
-    }
-
 }

@@ -41,6 +41,7 @@ class HistoryPageViewController: UIPageViewController, UIPageViewControllerDataS
             case 0:
                 let controller = self.functionViewControllers[0] as? StatusSummaryTableViewController
                 controller?.menuOrder = self.menuOrder
+                controller?.delegate = self
                 
             case 1:
                 let controller = self.functionViewControllers[1] as? OrderItemSummaryTableViewController
@@ -56,6 +57,25 @@ class HistoryPageViewController: UIPageViewController, UIPageViewControllerDataS
         }
     }
     
+    func refreshController() {
+        for i in 0...self.functionViewControllers.count - 1 {
+            switch i {
+            case 1:
+                let controller = self.functionViewControllers[1] as? OrderItemSummaryTableViewController
+                controller?.menuOrder = self.menuOrder
+                //controller?.refreshMenuOrder()
+
+            case 2:
+                let controller = self.functionViewControllers[2] as? EditPaymentStatusTableViewController
+                controller?.menuOrder = self.menuOrder
+                //controller?.refreshMenuOrder()
+
+            default:
+                break
+            }
+        }
+    }
+
     @objc func receiveHistoryPageIndexChange(_ notification: Notification) {
         if let pageIndex = notification.object as? Int {
             print("HistoryPageViewController received IndexChange notification for index[\(pageIndex)]")
@@ -101,5 +121,12 @@ class HistoryPageViewController: UIPageViewController, UIPageViewControllerDataS
             let index = functionViewControllers.firstIndex(of: firstViewController) {
                 NotificationCenter.default.post(name: NSNotification.Name("HistoryPageChange"), object: index)
             }
+    }
+}
+
+extension HistoryPageViewController: StatusSummaryDelegate {
+    func updateMenuOrderInformation(sender: StatusSummaryTableViewController, menu_order: MenuOrder) {
+        self.menuOrder = menu_order
+        refreshController()
     }
 }

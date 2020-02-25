@@ -9,6 +9,10 @@
 import UIKit
 import Firebase
 
+protocol CreateRecipeDelegate: class {
+    func sendRecipeItems(sender: CreateRecipeTableViewController, menu_recipes: [MenuRecipe]?)
+}
+
 class CreateRecipeTableViewController: UITableViewController {
     var brandCategory: [String] = [String]()
     var menuRecipeTemplates: [MenuRecipeTemplate] = [MenuRecipeTemplate]()
@@ -16,6 +20,7 @@ class CreateRecipeTableViewController: UITableViewController {
     var cellHeight = [Int]();
     var isEditedMode: Bool = false
     var menuRecipes: [MenuRecipe]?
+    weak var delegate: CreateRecipeDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,21 +34,17 @@ class CreateRecipeTableViewController: UITableViewController {
         let basicButtonCellViewNib: UINib = UINib(nibName: "BasicButtonCell", bundle: nil)
         self.tableView.register(basicButtonCellViewNib, forCellReuseIdentifier: "BasicButtonCell")
 
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.receiveTemplateIndex(_:)),
-            name: NSNotification.Name(rawValue: "SelectTemplate"),
-            object: nil
-        )
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.receiveSetupRecipe(_:)),
-            name: NSNotification.Name(rawValue: "SetupRecipe"),
-            object: nil
-        )
-
         refershRecipe()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        print("CreateRecipeTableViewController enters viewDidDisappear")
+        self.dismiss(animated: true, completion: {
+            print("CreateRecipeTableViewController dismissed")
+        })
     }
 
     func refershRecipe() {
@@ -68,55 +69,12 @@ class CreateRecipeTableViewController: UITableViewController {
         controller.preferredContentSize.height = 200
         controller.addChild(templateController)
         templateController.setData(template_ids: self.brandCategory)
+        templateController.delegate = self
         
         present(controller, animated: true, completion: nil)
     }
 
-    @objc func receiveSetupRecipe(_ notification: Notification) {
-        if self.menuRecipes == nil {
-            // Send notification to CreateMenuTableViewController
-            NotificationCenter.default.post(name: NSNotification.Name("SendRecipeItems"), object: nil)
-            navigationController?.popViewController(animated: true)
-            self.dismiss(animated: false, completion: nil)
-        } else {
-            var tmpData: [MenuRecipe]?
-            
-            for i in 0...self.menuRecipes!.count - 1 {
-                var recipeItems: [RecipeItem] = [RecipeItem]()
-                if self.menuRecipes![i].recipeItems != nil {
-                    for j in 0...self.menuRecipes![i].recipeItems!.count - 1 {
-                        if self.menuRecipes![i].recipeItems![j].checkedFlag {
-                            var tmpItem: RecipeItem = RecipeItem()
-                            tmpItem.sequenceNumber = self.menuRecipes![i].recipeItems![j].sequenceNumber
-                            tmpItem.checkedFlag = true
-                            tmpItem.recipeName = self.menuRecipes![i].recipeItems![j].recipeName
-                            
-                            recipeItems.append(tmpItem)
-                        }
-                    }
-                }
-                
-                if !recipeItems.isEmpty {
-                    var finalRecipe: MenuRecipe = MenuRecipe()
-                    finalRecipe.sequenceNumber = self.menuRecipes![i].sequenceNumber
-                    finalRecipe.recipeCategory = self.menuRecipes![i].recipeCategory
-                    finalRecipe.isAllowedMulti = self.menuRecipes![i].isAllowedMulti
-                    finalRecipe.recipeItems = recipeItems
-                    
-                    if tmpData == nil {
-                        tmpData = [MenuRecipe]()
-                    }
-                    tmpData?.append(finalRecipe)
-                }
-            }
-
-            // Send notification to CreateMenuTableViewController
-            NotificationCenter.default.post(name: NSNotification.Name("SendRecipeItems"), object: tmpData)
-            navigationController?.popViewController(animated: true)
-            self.dismiss(animated: false, completion: nil)
-        }
-    }
-
+/*
     @objc func receiveTemplateIndex(_ notification: Notification) {
         if let templateIndex = notification.object as? Int {
             self.selectedTemoplateIndex = templateIndex
@@ -137,6 +95,7 @@ class CreateRecipeTableViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
+ */
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -168,7 +127,7 @@ class CreateRecipeTableViewController: UITableViewController {
             } else {
                 cell.setData(icon: iconImage, button_text: "設定配方", action_type: BUTTON_ACTION_SETUP_RECIPE)
             }
-
+            cell.delegate = self
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
         }
@@ -290,5 +249,74 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
         controller.addAction(okAction)
         
         present(controller, animated: true, completion: nil)
+    }
+}
+
+extension CreateRecipeTableViewController: BasicButtonDelegate {
+    func setupRecipe(sender: BasicButtonCell) {
+        print("CreateRecipeTableViewController receive BasicButtonDelegate.setupRecipe")
+        if self.menuRecipes == nil {
+            //NotificationCenter.default.post(name: NSNotification.Name("SendRecipeItems"), object: nil)
+            delegate?.sendRecipeItems(sender: self, menu_recipes: nil)
+            navigationController?.popViewController(animated: true)
+            self.dismiss(animated: false, completion: nil)
+        } else {
+            var tmpData: [MenuRecipe]?
+            
+            for i in 0...self.menuRecipes!.count - 1 {
+                var recipeItems: [RecipeItem] = [RecipeItem]()
+                if self.menuRecipes![i].recipeItems != nil {
+                    for j in 0...self.menuRecipes![i].recipeItems!.count - 1 {
+                        if self.menuRecipes![i].recipeItems![j].checkedFlag {
+                            var tmpItem: RecipeItem = RecipeItem()
+                            tmpItem.sequenceNumber = self.menuRecipes![i].recipeItems![j].sequenceNumber
+                            tmpItem.checkedFlag = true
+                            tmpItem.recipeName = self.menuRecipes![i].recipeItems![j].recipeName
+                            
+                            recipeItems.append(tmpItem)
+                        }
+                    }
+                }
+                
+                if !recipeItems.isEmpty {
+                    var finalRecipe: MenuRecipe = MenuRecipe()
+                    finalRecipe.sequenceNumber = self.menuRecipes![i].sequenceNumber
+                    finalRecipe.recipeCategory = self.menuRecipes![i].recipeCategory
+                    finalRecipe.isAllowedMulti = self.menuRecipes![i].isAllowedMulti
+                    finalRecipe.recipeItems = recipeItems
+                    
+                    if tmpData == nil {
+                        tmpData = [MenuRecipe]()
+                    }
+                    tmpData?.append(finalRecipe)
+                }
+            }
+
+            //NotificationCenter.default.post(name: NSNotification.Name("SendRecipeItems"), object: tmpData)
+            delegate?.sendRecipeItems(sender: self, menu_recipes: tmpData)
+            navigationController?.popViewController(animated: true)
+            self.dismiss(animated: false, completion: nil)
+        }
+    }
+}
+
+extension CreateRecipeTableViewController: MenuTemplateDelegate {
+    func sendTemplateSelectedIndex(sender: TemplateViewController, index: Int) {
+        self.selectedTemoplateIndex = index
+        //let indexPath = IndexPath(row: 0, section: 0)
+        //let cell = self.tableView.cellForRow(at: indexPath) as! SelectMenuRecipeTemplateCell
+        //cell.setData(template_name: self.brandCategory[templateIndex])
+        cellHeight.removeAll()
+        cellHeight = Array(repeating: 0, count: self.menuRecipeTemplates[self.selectedTemoplateIndex].menuRecipes.count)
+
+        if self.menuRecipes != nil {
+            self.menuRecipes!.removeAll()
+        } else {
+            self.menuRecipes = [MenuRecipe]()
+        }
+        self.menuRecipes = Array<MenuRecipe>(repeating: MenuRecipe(), count: self.menuRecipeTemplates[self.selectedTemoplateIndex].menuRecipes.count)
+
+        self.menuRecipes = self.menuRecipeTemplates[self.selectedTemoplateIndex].menuRecipes
+        self.tableView.reloadData()
     }
 }

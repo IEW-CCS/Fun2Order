@@ -23,7 +23,6 @@ class EditPaymentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.imageMember.layer.cornerRadius = 6
-        
         //downloadMemberImage()
     }
 
@@ -36,42 +35,6 @@ class EditPaymentCell: UITableViewCell {
         self.backView.AdjustAutoLayout()
     }
     
-    func downloadMemberImage() {
-        var alertWindow: UIWindow!
-        
-        let databaseRef = Database.database().reference()
-        let storageRef = Storage.storage().reference()
-        
-        let pathString = "USER_PROFILE/\(self.itemContent.memberID)/photoURL"
-        databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
-            if snapshot.exists() {
-                let imageURL = snapshot.value as! String
-                storageRef.child(imageURL).getData(maxSize: 3 * 2048 * 2048, completion: { (data, error) in
-                    if let error = error {
-                        print(error.localizedDescription)
-                        let controller = UIAlertController(title: "存取會員影像錯誤", message: error.localizedDescription, preferredStyle: .alert)
-                        
-                        let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
-                            alertWindow.isHidden = true
-                        }
-                        
-                        controller.addAction(okAction)
-                        alertWindow = presentAlert(controller)
-                    }
-                    
-                    self.imageMember.image = UIImage(data: data!)!
-                })
-            } else {
-                print("downloadMemberImage photoURL snapshot doesn't exist!")
-                return
-            }
-        })  { (error) in
-            print(error.localizedDescription)
-            return
-        }
-
-    }
-
     @IBAction func editPaymentStatus(_ sender: UIButton) {
         var alertWindow: UIWindow!
         
@@ -112,13 +75,19 @@ class EditPaymentCell: UITableViewCell {
         controller.addAction(cancelAction)
         alertWindow = presentAlert(controller)
     }
-        
+    
+    func receiveMemberImage(member_image: UIImage) {
+        self.imageMember.image = member_image
+    }
+    
     func setData(item_content: MenuOrderMemberContent) {
         self.itemContent = item_content
         
         //let memberImage = retrieveMemberImage(user_id: item_content.memberID)
         //self.imageMember.image = memberImage
-        downloadMemberImage()
+        //downloadMemberImage()
+        downloadFBMemberImage(member_id: self.itemContent.memberID, completion: receiveMemberImage)
+        
         self.labelMemberName.text = item_content.orderContent.itemOwnerName
         if !item_content.orderContent.isPayChecked {
             self.labelPayStatus.text = "尚未付款"
@@ -142,19 +111,7 @@ class EditPaymentCell: UITableViewCell {
     
     func setContentString(item: MenuOrderMemberContent) {
         var contentString: String = ""
-/*
-        contentString = contentString + item.orderContent.itemProductName + ": "
-        if item.orderContent.menuRecipes != nil {
-            for i in 0...item.orderContent.menuRecipes!.count - 1 {
-                if item.orderContent.menuRecipes![i].recipeItems != nil {
-                    for j in 0...item.orderContent.menuRecipes![i].recipeItems!.count - 1 {
-                        contentString = contentString + item.orderContent.menuRecipes![i].recipeItems![j].recipeName + " "
-                    }
-                }
-            }
-            contentString = contentString + " * " + String(item.orderContent.itemQuantity)
-        }
-*/
+
         if item.orderContent.menuProductItems != nil {
             for k in 0...item.orderContent.menuProductItems!.count - 1 {
                 contentString = contentString + item.orderContent.menuProductItems![k].itemName + ": "
@@ -173,5 +130,4 @@ class EditPaymentCell: UITableViewCell {
 
         self.labelProductRecipe.text = contentString
     }
-    
 }

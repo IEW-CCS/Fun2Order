@@ -16,6 +16,7 @@ class MenuListTableViewController: UITableViewController {
     var menuBrandCategory:[String] = [String]()
     var menuInfos:[MenuInformation] = [MenuInformation]()
     var menuInfosByCategory:[MenuInformation] = [MenuInformation]()
+    var createMenuController: CreateMenuTableViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,10 +31,15 @@ class MenuListTableViewController: UITableViewController {
             object: nil
         )
 
+        
         print("MenuListTableViewController viewDidLoad downloadFBMenuInformation")
         downloadFBMenuInformation(select_index: 0)
-   }
-
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.categorySegment.isHidden = true
+    }
+    
     func downloadFBMenuInformation(select_index: Int) {
         guard let user_id = Auth.auth().currentUser?.uid else {
             print("Not authorized user, cannot get Menu Information List")
@@ -66,15 +72,18 @@ class MenuListTableViewController: UITableViewController {
                     self.tableView.reloadData()
                 } catch {
                     print("jsonData decode failed: \(error.localizedDescription)")
+                    self.setupCategorySegment()
                     return
                 }
             } else {
                 self.tableView.reloadData()
-                print("queryMenuOrder snapshot doesn't exist!")
+                print("downloadFBMenuInformation snapshot doesn't exist!")
+                self.setupCategorySegment()
                 return
             }
         }) { (error) in
             print(error.localizedDescription)
+            self.setupCategorySegment()
         }
         
     }
@@ -85,6 +94,12 @@ class MenuListTableViewController: UITableViewController {
     }
     
     func setupCategorySegment() {
+        if self.menuInfos.isEmpty {
+            self.categorySegment.removeAllSegments()
+            self.categorySegment.isHidden = true
+            return
+        }
+        
         self.categorySegment.removeAllSegments()
         if self.menuBrandCategory.isEmpty {
             self.categorySegment.insertSegment(withTitle: "未分類", at: 0, animated: false)
@@ -96,6 +111,8 @@ class MenuListTableViewController: UITableViewController {
             self.categorySegment.insertSegment(withTitle: "未分類", at: self.menuBrandCategory.count, animated: false)
             self.categorySegment.selectedSegmentIndex = 0
         }
+        
+        self.categorySegment.isHidden = false
     }
     
     func filterMenuInfosByCategory() {

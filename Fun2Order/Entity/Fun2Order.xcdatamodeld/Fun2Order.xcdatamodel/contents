@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19C57" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19D76" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="BRAND_PROFILE" representedClassName="BRAND_PROFILE" syncable="YES">
         <attribute name="brandCategory" optional="YES" attributeType="String"/>
         <attribute name="brandDescription" optional="YES" attributeType="String"/>
@@ -47,6 +47,11 @@
         <attribute name="storeDescription" optional="YES" attributeType="String"/>
         <attribute name="storeID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="storeName" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="FRIEND_TABLE" representedClassName="FRIEND_TABLE" syncable="YES">
+        <attribute name="memberID" optional="YES" attributeType="String"/>
+        <attribute name="memberName" optional="YES" attributeType="String"/>
+        <attribute name="memberNickname" optional="YES" attributeType="String"/>
     </entity>
     <entity name="GROUP_MEMBER" representedClassName="GROUP_MEMBER" syncable="YES">
         <attribute name="groupID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -217,12 +222,14 @@
         <element name="GROUP_MEMBER" positionX="189" positionY="54" width="128" height="103"/>
         <element name="GROUP_TABLE" positionX="180" positionY="45" width="128" height="118"/>
         <element name="MENU_BRAND_CATEGORY" positionX="225" positionY="90" width="128" height="58"/>
+        <element name="MENU_ICON" positionX="189" positionY="54" width="128" height="73"/>
         <element name="MENU_INFORMATION" positionX="180" positionY="45" width="128" height="163"/>
         <element name="MENU_ITEM" positionX="189" positionY="54" width="128" height="103"/>
         <element name="MENU_LOCATION" positionX="216" positionY="81" width="128" height="73"/>
         <element name="MENU_RECIPE" positionX="198" positionY="63" width="128" height="103"/>
         <element name="MENU_RECIPE_CATEGORY" positionX="180" positionY="45" width="128" height="103"/>
         <element name="MENU_RECIPE_TEMPLATE" positionX="207" positionY="72" width="128" height="88"/>
+        <element name="NOTIFICATION_TABLE" positionX="180" positionY="45" width="128" height="133"/>
         <element name="ORDER_CONTENT_ITEM" positionX="458.171875" positionY="278.82421875" width="128" height="208"/>
         <element name="ORDER_INFORMATION" positionX="459.72265625" positionY="72.046875" width="128" height="268"/>
         <element name="ORDER_PRODUCT_RECIPE" positionX="294.3359375" positionY="322.8359375" width="128" height="118"/>
@@ -231,7 +238,6 @@
         <element name="PRODUCT_RECIPE_PRICE" positionX="135.07421875" positionY="-94.15234375" width="128" height="133"/>
         <element name="STORE_BUSINESS_HOURS" positionX="-16.67578125" positionY="115.625" width="128" height="178"/>
         <element name="STORE_INFORMATION" positionX="-25.1015625" positionY="-90.71484375" width="128" height="178"/>
-        <element name="NOTIFICATION_TABLE" positionX="180" positionY="45" width="128" height="133"/>
-        <element name="MENU_ICON" positionX="189" positionY="54" width="128" height="73"/>
+        <element name="FRIEND_TABLE" positionX="180" positionY="45" width="128" height="88"/>
     </elements>
 </model>

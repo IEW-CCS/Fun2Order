@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class CreateMenuTableViewController: UITableViewController {
+class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var textBrandName: UITextField!
     @IBOutlet weak var buttonCategory: UIButton!
     @IBOutlet weak var labelCategory: UILabel!
@@ -45,31 +45,36 @@ class CreateMenuTableViewController: UITableViewController {
         
         self.labelCategory.text = ""
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.receiveMenuConfirm(_:)),
-            name: NSNotification.Name(rawValue: "MenuConfirm"),
-            object: nil
-        )
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.receiveAssignRecipe(_:)),
-            name: NSNotification.Name(rawValue: "AssignRecipe"),
-            object: nil
-        )
+        self.textBrandName.delegate = self
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.receiveSendRecipeItems(_:)),
-            name: NSNotification.Name(rawValue: "SendRecipeItems"),
-            object: nil
-        )
-
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
+        
         self.savedMenuInformation = self.menuInformation
         refreshMenu()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
 
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+          textField.resignFirstResponder()
+          return true
+    }
+    
+    @objc func dismissKeyBoard() {
+        self.view.endEditing(true)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        print("CreateMenuTableViewController enters viewDidDisappear")
+        self.dismiss(animated: true, completion: {
+            print("CreateMenuTableViewController dismissed")
+        })
+    }
+    
     func refreshMenu() {
         var locationCount: Int = 0
         var itemCount: Int = 0
@@ -77,7 +82,7 @@ class CreateMenuTableViewController: UITableViewController {
         if self.isEditedMode {
             print("CreateMenuTableViewController Edit Mode is ON!")
         }
-        
+
         self.textBrandName.text = self.menuInformation.brandName
         self.labelCategory.text = self.menuInformation.brandCategory
         self.textViewDescription.text = self.menuInformation.menuDescription
@@ -161,78 +166,7 @@ class CreateMenuTableViewController: UITableViewController {
             print("Firebase setValue of Menu Information successfule, then send notification to refresh Menu List")
             // Send notification to refresh Menu List function
             NotificationCenter.default.post(name: NSNotification.Name("RefreshMenuList"), object: nil)
-            //self.navigationController?.popViewController(animated: true)
-        }
-    }
-    
-    @objc func receiveMenuConfirm(_ notification: Notification) {
-        print("CreateMenu receiveMenuConfirm testDate = \(self.testDate)")
-        
-        let nowDate = Date()
-        if self.isEditedMode {
-            //deleteMenuInformation(menu_info: self.savedMenuInformation)
-            deleteMenuIcon(menu_number: self.savedMenuInformation.menuNumber)
-            //deleteFBMenuInformation(user_id: self.savedMenuInformation.userID, menu_number: self.savedMenuInformation.menuNumber, image_url: self.savedMenuInformation.menuImageURL)
-        } else {
-            self.menuInformation.menuNumber = generateMenuNumber(date: nowDate)
-        }
-        
-        //Create Menu and save to CoreData tables
-        self.menuInformation.brandName = self.textBrandName.text!
-        self.menuInformation.brandCategory = self.labelCategory.text!
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = DATETIME_FORMATTER
-        let timeString = formatter.string(from: nowDate)
-
-        self.menuInformation.createTime = timeString
-        self.menuInformation.menuDescription = self.textViewDescription.text
-        if(Auth.auth().currentUser?.uid != nil) {
-            self.menuInformation.userID = Auth.auth().currentUser!.uid
-            self.menuInformation.userName = Auth.auth().currentUser!.displayName!
-        } else {
-            self.menuInformation.userID = "Guest"
-            self.menuInformation.userName = "Guest"
-        }
-        
-        if self.imageMenuPhoto.image != nil {
-            self.menuInformation.menuImageURL = generateMenuImageURL(user_id: self.menuInformation.userID, menu_number: self.menuInformation.menuNumber)
-            deleteMenuIcon(menu_number: self.menuInformation.menuNumber)
-            if self.menuIcon != nil {
-                insertMenuIcon(menu_number: self.menuInformation.menuNumber, menu_icon: self.menuIcon!)
-            }
-        }
-
-        //insertMenuInformation(menu_info: self.menuInformation)
-        uploadMenuInformation(menu_info: self.menuInformation)
-
-        navigationController?.popToRootViewController(animated: true)
-        self.dismiss(animated: false, completion: nil)
-    }
-
-    @objc func receiveAssignRecipe(_ notification: Notification) {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        guard let recipeController = storyBoard.instantiateViewController(withIdentifier: "CREATERECIPE_VC") as? CreateRecipeTableViewController else{
-            assertionFailure("[AssertionFailure] StoryBoard: CREATERECIPE_VC can't find!! (QRCodeViewController)")
-            return
-        }
-        
-        if self.isEditedMode {
-            recipeController.isEditedMode = true
-            //recipeController.menuRecipes = self.menuInformation.menuRecipes
-        }
-        recipeController.menuRecipes = self.menuInformation.menuRecipes
-        
-        navigationController?.show(recipeController, sender: self)
-    }
-    
-    @objc func receiveSendRecipeItems(_ notification: Notification) {
-        if notification.object == nil {
-            self.menuInformation.menuRecipes = nil
-        } else {
-            if let recipe_items = notification.object as? [MenuRecipe] {
-                self.menuInformation.menuRecipes = recipe_items
-            }
+            self.navigationController?.popViewController(animated: true)
         }
     }
 
@@ -428,7 +362,8 @@ class CreateMenuTableViewController: UITableViewController {
                 } else {
                     cell.setData(icon: iconImage, button_text: "指定配方", action_type: BUTTON_ACTION_ASSIGN_RECIPE)
                 }
-
+                
+                cell.delegate = self
                 cell.selectionStyle = UITableViewCell.SelectionStyle.none
                 return cell
             }
@@ -443,6 +378,7 @@ class CreateMenuTableViewController: UITableViewController {
                     cell.setData(icon: iconImage, button_text: "產生菜單", action_type: BUTTON_ACTION_MENU_CONFIRM)
                 }
 
+                cell.delegate = self
                 cell.selectionStyle = UITableViewCell.SelectionStyle.none
                 return cell
             }
@@ -522,5 +458,74 @@ extension CreateMenuTableViewController: MenuItemDelegate {
             itemCount = self.menuInformation.menuItems!.count
         }
         self.labelProductCount.text = "\(itemCount) 項"
+    }
+}
+
+extension CreateMenuTableViewController: CreateRecipeDelegate {
+    func sendRecipeItems(sender: CreateRecipeTableViewController, menu_recipes: [MenuRecipe]?) {
+        print("CreateMenuTableViewController receives CreateRecipeDelegate.sendRecipeItems")
+        self.menuInformation.menuRecipes = menu_recipes
+    }
+}
+
+extension CreateMenuTableViewController: BasicButtonDelegate {
+    func menuConfirm(sender: BasicButtonCell) {
+        print("CreateMenuTableViewController receives CreateRecipeDelegate.menuConfirm")
+        
+        let nowDate = Date()
+        if self.isEditedMode {
+            //deleteMenuInformation(menu_info: self.savedMenuInformation)
+            deleteMenuIcon(menu_number: self.savedMenuInformation.menuNumber)
+            //deleteFBMenuInformation(user_id: self.savedMenuInformation.userID, menu_number: self.savedMenuInformation.menuNumber, image_url: self.savedMenuInformation.menuImageURL)
+        } else {
+            self.menuInformation.menuNumber = generateMenuNumber(date: nowDate)
+        }
+        
+        //Create Menu and save to CoreData tables
+        self.menuInformation.brandName = self.textBrandName.text!
+        self.menuInformation.brandCategory = self.labelCategory.text!
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = DATETIME_FORMATTER
+        let timeString = formatter.string(from: nowDate)
+
+        self.menuInformation.createTime = timeString
+        self.menuInformation.menuDescription = self.textViewDescription.text
+        if(Auth.auth().currentUser?.uid != nil) {
+            self.menuInformation.userID = Auth.auth().currentUser!.uid
+            self.menuInformation.userName = Auth.auth().currentUser!.displayName!
+        } else {
+            self.menuInformation.userID = "Guest"
+            self.menuInformation.userName = "Guest"
+        }
+        
+        if self.imageMenuPhoto.image != nil {
+            self.menuInformation.menuImageURL = generateMenuImageURL(user_id: self.menuInformation.userID, menu_number: self.menuInformation.menuNumber)
+            deleteMenuIcon(menu_number: self.menuInformation.menuNumber)
+            if self.menuIcon != nil {
+                insertMenuIcon(menu_number: self.menuInformation.menuNumber, menu_icon: self.menuIcon!)
+            }
+        }
+
+        //insertMenuInformation(menu_info: self.menuInformation)
+        uploadMenuInformation(menu_info: self.menuInformation)
+    }
+    
+    func assignRecipe(sender: BasicButtonCell) {
+        print("CreateMenuTableViewController receives CreateRecipeDelegate.assignRecipe")
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        guard let recipeController = storyBoard.instantiateViewController(withIdentifier: "CREATERECIPE_VC") as? CreateRecipeTableViewController else{
+            assertionFailure("[AssertionFailure] StoryBoard: CREATERECIPE_VC can't find!! (QRCodeViewController)")
+            return
+        }
+        
+        if self.isEditedMode {
+            recipeController.isEditedMode = true
+            //recipeController.menuRecipes = self.menuInformation.menuRecipes
+        }
+        recipeController.menuRecipes = self.menuInformation.menuRecipes
+        recipeController.delegate = self
+        
+        navigationController?.show(recipeController, sender: self)
     }
 }

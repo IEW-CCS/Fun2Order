@@ -40,21 +40,8 @@ class JoinOrderSelectRecipeTableViewController: UITableViewController {
                 }
             }
         }
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.receiveJoinOrderSelectRecipe(_:)),
-            name: NSNotification.Name(rawValue: "JoinOrderSelectRecipe"),
-            object: nil
-        )
     }
     
-    @objc func receiveJoinOrderSelectRecipe(_ notification: Notification) {
-        delegate?.setRecipe(menu_recipes: self.menuRecipes)
-        navigationController?.popViewController(animated: true)
-        self.dismiss(animated: false, completion: nil)
-    }
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -73,6 +60,8 @@ class JoinOrderSelectRecipeTableViewController: UITableViewController {
             
             let iconImage: UIImage = UIImage(named: "Icon_Menu_Recipe.png")!
             cell.setData(icon: iconImage, button_text: "設定配方", action_type: BUTTON_ACTION_JOINORDER_SELECT_RECIPE)
+            
+            cell.delegate = self
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
         }
@@ -108,5 +97,13 @@ extension JoinOrderSelectRecipeTableViewController: MenuRecipeCellDelegate {
     func addRecipeItem(cell: UITableViewCell, menu_recipe: MenuRecipe, data_index: Int) {
         self.menuRecipes[data_index] = menu_recipe
         self.tableView.reloadData()
+    }
+}
+
+extension JoinOrderSelectRecipeTableViewController: BasicButtonDelegate {
+    func joinOrderToSelectRecipe(sender: BasicButtonCell) {
+        delegate?.setRecipe(menu_recipes: self.menuRecipes)
+        navigationController?.popViewController(animated: true)
+        self.dismiss(animated: false, completion: nil)
     }
 }

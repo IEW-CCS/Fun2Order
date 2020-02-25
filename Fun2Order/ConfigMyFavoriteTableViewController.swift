@@ -12,7 +12,6 @@ import CoreData
 class ConfigMyFavoriteTableViewController: UITableViewController {
     @IBOutlet weak var favoriteSegment: UISegmentedControl!
     
-    
     var favoriteStoreArray = [FavoriteStoreInfo]()
     var favoriteAddress: [FavoriteAddress] = [FavoriteAddress]()
     var selectedIndex: Int = 0
