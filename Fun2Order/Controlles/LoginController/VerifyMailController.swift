@@ -17,15 +17,12 @@ class VerifyMailController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
     }
-    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         emailText.resignFirstResponder()
         passwordText.resignFirstResponder()
     }
-    
     
     @IBAction func login(_ sender: Any) {
         
@@ -76,19 +73,17 @@ class VerifyMailController: UIViewController {
         }
     }
     
-   
     @IBAction func forgotPasswordButton(_ sender: Any) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ForgotPasswordController") as! ForgotPasswordController
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
+    
     @IBAction func signupUserButton(_ sender: Any) {
 
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SignUpMailController") as! SignUpMailController
         navigationController?.pushViewController(nextViewController, animated: true)
-        
-        
     }
     
 }

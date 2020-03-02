@@ -102,10 +102,25 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
 
 extension MyFriendTableViewController: ScanQRCodeDelegate {
     func getQRCodeMemberInfo(sender: ScanQRCodeViewController, member_id: String, member_name: String) {
+        var isUserDuplicate: Bool = false
         var newFriend: Friend = Friend()
         newFriend.memberID = member_id
         newFriend.memberName = member_name
-        insertFriend(friend_info: newFriend)
-        refreshFriendList()
+        
+        if !self.friendList.isEmpty {
+            for i in 0...self.friendList.count - 1 {
+                if self.friendList[i].memberID == member_id {
+                    isUserDuplicate = true
+                    break
+                }
+            }
+        }
+
+        if isUserDuplicate {
+            print("User ID is duplicate!")
+        } else {
+            insertFriend(friend_info: newFriend)
+            refreshFriendList()
+        }
     }
 }

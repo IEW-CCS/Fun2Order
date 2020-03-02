@@ -1507,7 +1507,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Y8l-TN-TaQ" firstAttribute="top" secondItem="F4F-PN-u2w" secondAttribute="top" constant="10" id="7nx-OE-6H8"/>
                             <constraint firstItem="sqb-HX-oeP" firstAttribute="centerX" secondItem="fvP-Md-Yif" secondAttribute="centerX" id="8FL-zC-TL5"/>
@@ -1965,7 +1965,9 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="DIz-nl-LTC" firstAttribute="trailing" secondItem="GQL-cX-uMO" secondAttribute="trailing" id="01s-EI-dJ5"/>
                             <constraint firstItem="DIz-nl-LTC" firstAttribute="centerY" secondItem="W8S-Xh-Lk5" secondAttribute="centerY" id="Gdb-r8-BYX"/>
+                            <constraint firstItem="DIz-nl-LTC" firstAttribute="leading" secondItem="GQL-cX-uMO" secondAttribute="leading" id="biE-ax-d8u"/>
                             <constraint firstItem="DIz-nl-LTC" firstAttribute="centerX" secondItem="W8S-Xh-Lk5" secondAttribute="centerX" id="oyf-d5-akJ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="GQL-cX-uMO"/>
@@ -2980,6 +2982,12 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="Cwc-HC-R2c"/>
                     <connections>
+                        <outlet property="imageAddress" destination="doX-4m-VV3" id="qAo-Xa-Kkk"/>
+                        <outlet property="imageBirthday" destination="Qa5-hB-PgR" id="NCe-3D-4QC"/>
+                        <outlet property="imageGender" destination="dnc-pn-5k7" id="4Ng-f5-dNW"/>
+                        <outlet property="imageName" destination="Frt-hG-RyO" id="iJ5-9R-aIa"/>
+                        <outlet property="imagePhone" destination="vzP-D5-q5b" id="4kZ-kn-aQv"/>
+                        <outlet property="imageQRCode" destination="qcZ-ln-bOt" id="fdv-lH-rpV"/>
                         <outlet property="labelAddress" destination="Nn8-KE-fp8" id="7g1-7F-QYU"/>
                         <outlet property="labelBirthday" destination="c3o-2R-NaG" id="Tcr-os-i60"/>
                         <outlet property="labelGender" destination="5HF-8x-x0S" id="Cq4-At-hx9"/>
@@ -3138,7 +3146,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wgL-Mn-8Po" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3851" y="2186"/>
+            <point key="canvasLocation" x="3777" y="2185"/>
         </scene>
         <!--掃描好友條碼-->
         <scene sceneID="N6r-O1-cMF">
@@ -3149,51 +3157,88 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EBs-pW-mLc">
-                                <rect key="frame" x="0.0" y="50" width="414" height="350"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="350"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="350" id="Fkv-fG-81Q"/>
-                                </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User ID" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pre-lQ-iu2">
-                                <rect key="frame" x="87" y="425" width="240" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="240" id="DYY-Ch-23w"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A1T-QU-6NI">
-                                <rect key="frame" x="176" y="471" width="62" height="30"/>
-                                <state key="normal" title="加入好友"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wMR-jM-JYE">
+                                <rect key="frame" x="168.5" y="380" width="77" height="30"/>
+                                <state key="normal" title="從相簿讀取"/>
                                 <connections>
-                                    <action selector="addToFriend:" destination="DIS-1s-ueF" eventType="touchUpInside" id="PvR-5j-KaT"/>
+                                    <action selector="readQRCodeFromAlbum:" destination="DIS-1s-ueF" eventType="touchUpInside" id="P0c-xD-yTd"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="ybn-Ke-0dh" firstAttribute="trailing" secondItem="EBs-pW-mLc" secondAttribute="trailing" id="4KK-lV-GQb"/>
-                            <constraint firstItem="EBs-pW-mLc" firstAttribute="top" secondItem="ybn-Ke-0dh" secondAttribute="top" constant="6" id="KwE-uI-uv6"/>
-                            <constraint firstItem="EBs-pW-mLc" firstAttribute="leading" secondItem="ybn-Ke-0dh" secondAttribute="leading" id="Lmc-sL-7fY"/>
-                            <constraint firstItem="EBs-pW-mLc" firstAttribute="centerX" secondItem="Fy8-Tv-5Vf" secondAttribute="centerX" id="RDh-Wc-UAF"/>
-                            <constraint firstItem="A1T-QU-6NI" firstAttribute="centerX" secondItem="EBs-pW-mLc" secondAttribute="centerX" id="RLg-u3-6p8"/>
-                            <constraint firstItem="A1T-QU-6NI" firstAttribute="top" secondItem="Pre-lQ-iu2" secondAttribute="bottom" constant="25" id="RR3-aT-EIl"/>
-                            <constraint firstItem="Pre-lQ-iu2" firstAttribute="centerX" secondItem="EBs-pW-mLc" secondAttribute="centerX" id="awD-sa-umy"/>
-                            <constraint firstItem="Pre-lQ-iu2" firstAttribute="top" secondItem="EBs-pW-mLc" secondAttribute="bottom" constant="25" id="f6N-Dx-c3K"/>
+                            <constraint firstItem="wMR-jM-JYE" firstAttribute="centerX" secondItem="Fy8-Tv-5Vf" secondAttribute="centerX" id="BNj-Qi-ShC"/>
+                            <constraint firstItem="EBs-pW-mLc" firstAttribute="leading" secondItem="ybn-Ke-0dh" secondAttribute="leading" id="G7i-Sr-DyB"/>
+                            <constraint firstAttribute="bottom" secondItem="EBs-pW-mLc" secondAttribute="bottom" constant="235" id="V5J-od-hFF"/>
+                            <constraint firstItem="EBs-pW-mLc" firstAttribute="centerX" secondItem="wMR-jM-JYE" secondAttribute="centerX" id="dGX-aW-9rc"/>
+                            <constraint firstItem="EBs-pW-mLc" firstAttribute="top" secondItem="Fy8-Tv-5Vf" secondAttribute="topMargin" constant="-44" id="gJZ-rv-VyO"/>
+                            <constraint firstItem="wMR-jM-JYE" firstAttribute="top" secondItem="EBs-pW-mLc" secondAttribute="bottom" constant="30" id="i94-aF-9GH"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ybn-Ke-0dh"/>
                     </view>
                     <navigationItem key="navigationItem" id="hob-lS-YAO"/>
                     <connections>
-                        <outlet property="labelMemberName" destination="Pre-lQ-iu2" id="knC-nA-sxC"/>
                         <outlet property="viewPreview" destination="EBs-pW-mLc" id="mVL-XS-bnP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wgD-05-CAo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2390" y="2735"/>
+            <point key="canvasLocation" x="2389.8550724637685" y="2734.4866071428569"/>
+        </scene>
+        <!--Add Friend View Controller-->
+        <scene sceneID="gQD-c5-gcF">
+            <objects>
+                <viewController storyboardIdentifier="ADD_FRIEND_VC" id="AkV-Tp-fGf" customClass="AddFriendViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Hro-n6-jew">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q0S-IT-vf9">
+                                <rect key="frame" x="206" y="66" width="74" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="加入好友"/>
+                                <connections>
+                                    <action selector="confirmToAddFriend:" destination="AkV-Tp-fGf" eventType="touchUpInside" id="SFs-u2-Fli"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lvB-TN-lc5">
+                                <rect key="frame" x="40" y="66" width="74" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="取消加入"/>
+                                <connections>
+                                    <action selector="cancelAction:" destination="AkV-Tp-fGf" eventType="touchUpInside" id="BFl-jx-jyO"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User ID" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="anq-6F-7AF">
+                                <rect key="frame" x="137.5" y="25" width="45" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="lvB-TN-lc5" firstAttribute="leading" secondItem="yeN-pF-e8J" secondAttribute="leading" constant="40" id="7fz-N0-S4X"/>
+                            <constraint firstItem="anq-6F-7AF" firstAttribute="top" secondItem="Hro-n6-jew" secondAttribute="top" constant="25" id="Voq-qG-NaS"/>
+                            <constraint firstItem="lvB-TN-lc5" firstAttribute="centerY" secondItem="Q0S-IT-vf9" secondAttribute="centerY" id="bfr-9x-rno"/>
+                            <constraint firstItem="Q0S-IT-vf9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="lvB-TN-lc5" secondAttribute="trailing" constant="8" symbolic="YES" id="cjl-Sr-nHi"/>
+                            <constraint firstItem="anq-6F-7AF" firstAttribute="centerX" secondItem="Hro-n6-jew" secondAttribute="centerX" id="dT5-uw-IyU"/>
+                            <constraint firstItem="Q0S-IT-vf9" firstAttribute="top" secondItem="anq-6F-7AF" secondAttribute="bottom" constant="25" id="e5r-qp-Bse"/>
+                            <constraint firstItem="yeN-pF-e8J" firstAttribute="trailing" secondItem="Q0S-IT-vf9" secondAttribute="trailing" constant="40" id="u7w-fY-POQ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="yeN-pF-e8J"/>
+                    </view>
+                    <size key="freeformSize" width="320" height="120"/>
+                    <connections>
+                        <outlet property="labelUserID" destination="anq-6F-7AF" id="87A-am-8pk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3k8-gs-9MJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2396" y="3052"/>
         </scene>
         <!--Config Favorite Product Table View Controller-->
         <scene sceneID="eW3-nx-90C">
@@ -3395,6 +3440,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="B2C-8t-eF9" firstAttribute="top" secondItem="EGt-Fg-hJY" secondAttribute="bottom" constant="23" id="1Qy-Se-GPz"/>
+                            <constraint firstItem="B2C-8t-eF9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="JvK-1c-4vy" secondAttribute="trailing" constant="8" symbolic="YES" id="5IW-fo-19t"/>
                             <constraint firstItem="s2Y-Jq-InE" firstAttribute="centerY" secondItem="2Uy-fM-j70" secondAttribute="centerY" id="7zj-OJ-A0l"/>
                             <constraint firstItem="2Uy-fM-j70" firstAttribute="top" secondItem="VCR-h0-4zN" secondAttribute="bottom" constant="12" id="80A-5G-bPs"/>
                             <constraint firstItem="VCR-h0-4zN" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Mfo-oc-GlC" secondAttribute="trailing" constant="8" symbolic="YES" id="HFx-sT-XD9"/>
@@ -3730,6 +3776,6 @@
         <image name="ToolBar_Notebook" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Ue0-yi-4xJ"/>
+        <segue reference="c2M-Dl-3EI"/>
     </inferredMetricsTieBreakers>
 </document>

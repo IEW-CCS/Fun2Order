@@ -38,6 +38,7 @@ class CreateRecipeTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -121,7 +122,7 @@ class CreateRecipeTableViewController: UITableViewController {
         if indexPath.row == self.menuRecipes!.count + 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
             
-            let iconImage: UIImage = UIImage(named: "Icon_Menu_Recipe.png")!
+            let iconImage: UIImage = UIImage(named: "Icon_Menu_Recipe.png")!.withRenderingMode(.alwaysTemplate)
             if self.isEditedMode {
                 cell.setData(icon: iconImage, button_text: "修改配方", action_type: BUTTON_ACTION_SETUP_RECIPE)
             } else {
@@ -179,15 +180,21 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
                 let decoder: JSONDecoder = JSONDecoder()
                 do {
                     let templateArray = try decoder.decode([String:MenuRecipeTemplate].self, from: jsonData!)
-                    self.brandCategory.removeAll()
                     self.menuRecipeTemplates.removeAll()
                     
                     for keyValuePair in templateArray {
-                        self.brandCategory.append(keyValuePair.key)
+                        //self.brandCategory.append(keyValuePair.key)
                         self.menuRecipeTemplates.append(keyValuePair.value)
                     }
                     
-                    self.displayTemplate()
+                    if !self.menuRecipeTemplates.isEmpty {
+                        self.menuRecipeTemplates.sort(by: {$0.sequenceNumber < $1.sequenceNumber})
+                        self.brandCategory.removeAll()
+                        for i in 0...self.menuRecipeTemplates.count - 1 {
+                            self.brandCategory.append(self.menuRecipeTemplates[i].templateName)
+                        }
+                        self.displayTemplate()
+                    }
                 } catch {
                     print("jsonData decode failed: \(error.localizedDescription)")
                 }

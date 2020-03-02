@@ -135,7 +135,7 @@ func testFirebaseJSONUpload() {
     
     tmpData.messageID = "TTTTTTT"
     
-    databaseRef.child(pathString).setValue(tmpData.toAnyObject())
+    databaseRef.child(pathString).childByAutoId().setValue(tmpData.toAnyObject())
     print("tmpData.toAnyObject = \(tmpData.toAnyObject())")
 }
 

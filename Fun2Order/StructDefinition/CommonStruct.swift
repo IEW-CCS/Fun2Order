@@ -337,6 +337,7 @@ struct MenuProductItem: Codable {
 }
 
 struct MenuRecipeTemplate: Codable {
+    var sequenceNumber: Int = 0
     var templateName: String = ""
     var menuRecipes: [MenuRecipe] = [MenuRecipe]()
     
@@ -349,6 +350,7 @@ struct MenuRecipeTemplate: Codable {
         }
         
         return [
+            "sequenceNumber": sequenceNumber,
             "templateName": templateName,
             "menuRecipes": menuRecipesArray
         ]

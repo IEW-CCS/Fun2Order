@@ -161,6 +161,7 @@
                 <outlet property="backView" destination="ylA-KS-pO5" id="sAM-KC-I7t"/>
                 <outlet property="backView2" destination="fyd-hn-sqg" id="8pQ-3q-nGa"/>
                 <outlet property="brandImage" destination="xjG-fe-QTm" id="eD2-Ag-lia"/>
+                <outlet property="buttonQRCode" destination="o80-nf-sKE" id="3vW-lR-rLn"/>
                 <outlet property="memberCountLabel" destination="ffu-Vm-r0O" id="ea8-CG-2AW"/>
                 <outlet property="memberImage" destination="Ovf-YS-Oo2" id="ByQ-vl-A6h"/>
                 <outlet property="memberLabel" destination="gIb-07-5ix" id="HpG-S8-rIz"/>

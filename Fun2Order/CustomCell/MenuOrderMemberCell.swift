@@ -33,6 +33,10 @@ class MenuOrderMemberCell: UITableViewCell {
         self.backView.AdjustAutoLayout()
     }
     
+    func receiveMemberImage(member_image: UIImage) {
+        self.imageMember.image = member_image
+    }
+
     func setData(image: UIImage, name: String, location: String) {
         self.imageMember.image = image
         self.labelMemberName.text = name
@@ -51,8 +55,9 @@ class MenuOrderMemberCell: UITableViewCell {
                 }
             }
         } else {
-            let memberImage = retrieveMemberImage(user_id: item_content.memberID)
-            self.imageMember.image = memberImage
+            //let memberImage = retrieveMemberImage(user_id: item_content.memberID)
+            //self.imageMember.image = memberImage
+            downloadFBMemberImage(member_id: item_content.memberID, completion: receiveMemberImage)
         }
         
         self.labelMemberName.text = item_content.orderContent.itemOwnerName
@@ -63,23 +68,7 @@ class MenuOrderMemberCell: UITableViewCell {
     
     func setContentString(item: MenuOrderMemberContent) {
         var contentString: String = ""
-/*
-        contentString = contentString + item.orderContent.itemProductName + ": "
-        if item.orderContent.menuRecipes != nil {
-            for i in 0...item.orderContent.menuRecipes!.count - 1 {
-                if item.orderContent.menuRecipes![i].recipeItems != nil {
-                    for j in 0...item.orderContent.menuRecipes![i].recipeItems!.count - 1 {
-                        contentString = contentString + item.orderContent.menuRecipes![i].recipeItems![j].recipeName + " "
-                    }
-                }
-            }
-            contentString = contentString + "\n"
-            let productLength = item.orderContent.itemProductName.lengthOfBytes(using: .utf8)
-            print("Bytes length of product: \(productLength)")
-            let prefixSpaces = String(repeating: " ", count: productLength)
-            contentString = contentString + prefixSpaces + item.orderContent.itemComments + "\n"
-        }
-*/
+
         if item.orderContent.menuProductItems != nil {
             for k in 0...item.orderContent.menuProductItems!.count - 1 {
                 contentString = contentString + item.orderContent.menuProductItems![k].itemName + ": "

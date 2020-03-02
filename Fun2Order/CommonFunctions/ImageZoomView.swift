@@ -23,9 +23,11 @@ class ImageZoomView: UIScrollView, UIScrollViewDelegate {
         imageView.isUserInteractionEnabled = true
         addSubview(imageView)
         
+        //imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        //imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        
+
         setupScrollView()
         setupGestureRecognizer()
     }

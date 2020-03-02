@@ -14,7 +14,6 @@ import GoogleMobileAds
 class HistoryTableViewController: UITableViewController {
     @IBOutlet weak var segmentType: UISegmentedControl!
     
-    var orderList: [OrderInformation] = [OrderInformation]()
     var menuOrderList: [MenuOrder] = [MenuOrder]()
     var invitationList: [NotificationData] = [NotificationData]()
     var interstitialAd: GADInterstitial!
@@ -97,6 +96,7 @@ class HistoryTableViewController: UITableViewController {
                     for keyValuePair in listData {
                         self.menuOrderList.append(keyValuePair.value)
                     }
+                    self.menuOrderList.sort(by: {$0.createTime > $1.createTime })
                     
                     self.tableView.reloadData()
                 } catch {

@@ -51,6 +51,8 @@ class MenuListTableViewController: UITableViewController {
         let databaseRef = Database.database().reference()
         let pathString = "USER_MENU_INFORMATION/\(user_id)"
         
+        //let dabaseQuery = databaseRef.child(pathString).queryOrdered(byChild: "createTime")
+        //dabaseQuery.observeSingleEvent(of: .value, with: { (snapshot) in
         databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
                 let rawData = snapshot.value
@@ -62,9 +64,17 @@ class MenuListTableViewController: UITableViewController {
                 do {
                     let listData = try decoder.decode([String:MenuInformation].self, from: jsonData!)
                     print("downloadFBMenuInformation jason decoded successful")
+                    //print("listData = \(listData)")
+                    
                     for keyValuePair in listData {
                         self.menuInfos.append(keyValuePair.value)
                     }
+                    
+                    self.menuInfos.sort(by: {$0.createTime > $1.createTime})
+                    //for menuData in self.menuInfos {
+                    //    print("\(menuData.brandName): \(menuData.createTime)")
+                    //}
+                    
                     self.menuBrandCategory = retrieveMenuBrandCategory()
                     self.setupCategorySegment()
                     self.categorySegment.selectedSegmentIndex = select_index

@@ -59,6 +59,7 @@ class BasicButtonCell: UITableViewCell {
     func setData(icon: UIImage, button_text: String, action_type: String) {
         self.favoriteButton.setTitle(button_text, for: .normal)
         self.iconImage.image = icon
+        self.iconImage.tintColor = CUSTOM_COLOR_EMERALD_GREEN
         self.actionType = action_type
     }
     

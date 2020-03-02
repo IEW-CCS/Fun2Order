@@ -22,8 +22,6 @@ class ProductDetailTableViewController: UITableViewController {
     var vc: NSManagedObjectContext!
 
     var selectedCategory: Int = 0
-    //var detailProductFlag: Bool = true
-    //var menuImages: [UIImage] = [UIImage(imageLiteralResourceName: "ToolBar_ProductDetail"), UIImage(imageLiteralResourceName: "ToolBar_ProductBrief")]
     
     @IBOutlet weak var categorySegment: UISegmentedControl!
     //@IBOutlet weak var productListBarButton: UIBarButtonItem!

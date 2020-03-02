@@ -17,6 +17,14 @@ class BasicInformationTableViewController: UITableViewController {
     @IBOutlet weak var labelGender: UILabel!
     @IBOutlet weak var labelBirthday: UILabel!
     @IBOutlet weak var labelAddress: UILabel!
+    @IBOutlet weak var imageQRCode: UIImageView!
+    @IBOutlet weak var imagePhone: UIImageView!
+    @IBOutlet weak var imageName: UIImageView!
+    @IBOutlet weak var imageGender: UIImageView!
+    @IBOutlet weak var imageBirthday: UIImageView!
+    @IBOutlet weak var imageAddress: UIImageView!
+    
+    
     var myUserID: String = ""
     
     override func viewDidLoad() {
@@ -28,9 +36,30 @@ class BasicInformationTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         //tmpDeleteProfile()
+        setupImageTintColor()
         loadSetupConfig()
     }
 
+    func setupImageTintColor() {
+        self.imageQRCode.image = UIImage(named: "Icon_QRCode.png")?.withRenderingMode(.alwaysTemplate)
+        self.imageQRCode.tintColor = CUSTOM_COLOR_EMERALD_GREEN
+
+        self.imagePhone.image = UIImage(named: "Icon_Phone.png")?.withRenderingMode(.alwaysTemplate)
+        self.imagePhone.tintColor = CUSTOM_COLOR_EMERALD_GREEN
+
+        self.imageName.image = UIImage(named: "Icon_Name.png")?.withRenderingMode(.alwaysTemplate)
+        self.imageName.tintColor = CUSTOM_COLOR_EMERALD_GREEN
+
+        self.imageGender.image = UIImage(named: "Icon_Gender.png")?.withRenderingMode(.alwaysTemplate)
+        self.imageGender.tintColor = CUSTOM_COLOR_EMERALD_GREEN
+
+        self.imageBirthday.image = UIImage(named: "Icon_Birthday.png")?.withRenderingMode(.alwaysTemplate)
+        self.imageBirthday.tintColor = CUSTOM_COLOR_EMERALD_GREEN
+
+        self.imageAddress.image = UIImage(named: "Icon_Address.png")?.withRenderingMode(.alwaysTemplate)
+        self.imageAddress.tintColor = CUSTOM_COLOR_EMERALD_GREEN
+    }
+    
     func tmpDeleteProfile() {
         let fm = FileManager.default
         let dst = NSHomeDirectory() + "/Documents/MyProfile.plist"

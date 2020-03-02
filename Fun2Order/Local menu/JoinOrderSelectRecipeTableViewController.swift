@@ -58,7 +58,7 @@ class JoinOrderSelectRecipeTableViewController: UITableViewController {
         if indexPath.row == self.menuInformation.menuRecipes!.count {
             let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
             
-            let iconImage: UIImage = UIImage(named: "Icon_Menu_Recipe.png")!
+            let iconImage: UIImage = UIImage(named: "Icon_Menu_Recipe.png")!.withRenderingMode(.alwaysTemplate)
             cell.setData(icon: iconImage, button_text: "設定配方", action_type: BUTTON_ACTION_JOINORDER_SELECT_RECIPE)
             
             cell.delegate = self

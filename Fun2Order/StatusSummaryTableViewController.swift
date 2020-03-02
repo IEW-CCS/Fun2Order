@@ -88,7 +88,7 @@ class StatusSummaryTableViewController: UITableViewController {
         if indexPath.row == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
             
-            let iconImage: UIImage = UIImage(named: "Icon_Refresh.png")!
+            let iconImage: UIImage = UIImage(named: "Icon_Refresh.png")!.withRenderingMode(.alwaysTemplate)
             cell.setData(icon: iconImage, button_text: "更新狀態", action_type: BUTTON_ACTION_REFRESH_STATUS_SUMMARY)
 
             cell.delegate = self
@@ -99,7 +99,7 @@ class StatusSummaryTableViewController: UITableViewController {
         if indexPath.row == 2 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
             
-            let iconImage: UIImage = UIImage(named: "Icon_Notify_Menu.png")!
+            let iconImage: UIImage = UIImage(named: "Icon_Notify_Menu.png")!.withRenderingMode(.alwaysTemplate)
             cell.setData(icon: iconImage, button_text: "發出催訂通知", action_type: BUTTON_ACTION_NOTIFY_MENUORDER_DUETIME)
 
             cell.delegate = self

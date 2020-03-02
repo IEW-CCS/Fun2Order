@@ -28,6 +28,10 @@ class MenuOrderMemberNGCell: UITableViewCell {
         self.backView.AdjustAutoLayout()
     }
 
+    func receiveMemberImage(member_image: UIImage) {
+        self.imageMember.image = member_image
+    }
+
     func setData(image: UIImage, name: String, status: String) {
         self.imageMember.image = image
         self.labelMemberName.text = name
@@ -63,8 +67,9 @@ class MenuOrderMemberNGCell: UITableViewCell {
                 }
             }
         } else {
-            let memberImage = retrieveMemberImage(user_id: item_content.memberID)
-            self.imageMember.image = memberImage
+            //let memberImage = retrieveMemberImage(user_id: item_content.memberID)
+            //self.imageMember.image = memberImage
+            downloadFBMemberImage(member_id: item_content.memberID, completion: receiveMemberImage)
         }
 
         switch item_content.orderContent.replyStatus {

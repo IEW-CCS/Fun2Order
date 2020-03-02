@@ -41,7 +41,8 @@ class NewProductCell: UITableViewCell {
                     }
                 }
             }
-            self.labelRecipe.text = contentString
         }
+        contentString = contentString + "(\(item.itemComments))"
+        self.labelRecipe.text = contentString
     }
 }

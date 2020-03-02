@@ -27,6 +27,7 @@ class OrderHistoryCell: UITableViewCell {
     @IBOutlet weak var memberCountLabel: UILabel!
     @IBOutlet weak var quantityLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var buttonQRCode: UIButton!
     
     var delegate: DisplayQRCodeDelegate??
     var indexPath: IndexPath!
@@ -45,6 +46,8 @@ class OrderHistoryCell: UITableViewCell {
         self.backView.layer.cornerRadius = 6
         self.backView2.layer.cornerRadius = 2.5
         self.titleLabel.layer.cornerRadius = 6
+        self.buttonQRCode.imageView?.image = UIImage(named: "Image_QR_Code.png")?.withRenderingMode(.alwaysTemplate)
+        self.buttonQRCode.tintColor = CUSTOM_COLOR_EMERALD_GREEN
         
         vc = app.persistentContainer.viewContext
     }
@@ -68,11 +71,14 @@ class OrderHistoryCell: UITableViewCell {
         }
 
         if order_info.orderType == ORDER_TYPE_SINGLE {
-            self.memberImage.image = self.imageArray[0]
+            self.memberImage.image = UIImage(named: "Image_Person.png")!.withRenderingMode(.alwaysTemplate)
+            self.memberImage.tintColor = CUSTOM_COLOR_EMERALD_GREEN
         } else if order_info.orderType == ORDER_TYPE_GROUP {
-            self.memberImage.image = self.imageArray[1]
+            self.memberImage.image = UIImage(named: "Image_Group.png")!.withRenderingMode(.alwaysTemplate)
+            self.memberImage.tintColor = CUSTOM_COLOR_EMERALD_GREEN
         } else if order_info.orderType == ORDER_TYPE_MENU {
-            self.memberImage.image = self.imageArray[2]
+            self.memberImage.image = UIImage(named: "Icon_Menu_Recipe.png")!.withRenderingMode(.alwaysTemplate)
+            self.memberImage.tintColor = CUSTOM_COLOR_EMERALD_GREEN
         }
         
         let formatter = DateFormatter()
@@ -98,7 +104,8 @@ class OrderHistoryCell: UITableViewCell {
         self.memberCountLabel.text = String(menu_order.contentItems.count)
         
         self.titleLabel.text = "\(menu_order.brandName)"
-        self.memberImage.image = self.imageArray[2]
+        self.memberImage.image = UIImage(named: "Icon_Menu_Recipe.png")!.withRenderingMode(.alwaysTemplate)
+        self.memberImage.tintColor = CUSTOM_COLOR_EMERALD_GREEN
         self.brandImage.isHidden = true
         
         let timeFormatter = DateFormatter()

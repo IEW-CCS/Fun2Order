@@ -625,7 +625,7 @@ class RecipeTableViewController: UITableViewController {
         if indexPath.row == self.productRecipes.count + 2 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
             
-            let iconImage: UIImage = UIImage(named: "Icon_Favorite3.png")!
+            let iconImage: UIImage = UIImage(named: "Icon_Favorite3.png")!.withRenderingMode(.alwaysTemplate)
             if self.storeProductRecipe.favorite {
                 cell.setData(icon: iconImage, button_text: "更新我的最愛產品", action_type: BUTTON_ACTION_FAVORITE)
             } else {
@@ -639,7 +639,7 @@ class RecipeTableViewController: UITableViewController {
         if indexPath.row == self.productRecipes.count + 3 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
            
-            let iconImage: UIImage = UIImage(named: "Icon_Cart_Red.png")!
+            let iconImage: UIImage = UIImage(named: "Icon_Cart_Red.png")!.withRenderingMode(.alwaysTemplate)
             
             if self.isEditFlag {
                 cell.setData(icon: iconImage, button_text: "更新購物車", action_type: BUTTON_ACTION_CART)

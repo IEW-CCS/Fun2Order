@@ -84,7 +84,7 @@ class MenuHomeTableViewController: UITableViewController {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
                
-                let iconImage: UIImage = UIImage(named: "Icon_Menu_List.png")!
+                let iconImage: UIImage = UIImage(named: "Icon_Menu_List.png")!.withRenderingMode(.alwaysTemplate)
                 cell.setData(icon: iconImage, button_text: "菜單列表", action_type: BUTTON_ACTION_MENU_LIST)
 
                 cell.delegate = self
@@ -95,7 +95,7 @@ class MenuHomeTableViewController: UITableViewController {
             if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
                
-                let iconImage: UIImage = UIImage(named: "Icon_Menu_Item.png")!
+                let iconImage: UIImage = UIImage(named: "Icon_Menu_Item.png")!.withRenderingMode(.alwaysTemplate)
                 cell.setData(icon: iconImage, button_text: "製作菜單", action_type: BUTTON_ACTION_MENU_CREATE)
 
                 cell.delegate = self
@@ -106,7 +106,7 @@ class MenuHomeTableViewController: UITableViewController {
             if indexPath.row == 2 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
                
-                let iconImage: UIImage = UIImage(named: "Icon_About.png")!
+                let iconImage: UIImage = UIImage(named: "Icon_About.png")!.withRenderingMode(.alwaysTemplate)
                 cell.setData(icon: iconImage, button_text: "關於我們", action_type: BUTTON_ACTION_ABOUT)
 
                 cell.delegate = self
@@ -179,6 +179,7 @@ extension MenuHomeTableViewController: BasicButtonDelegate {
     }
     
     func displayAbout(sender: BasicButtonCell) {
+        //testFirebaseJSONUpload()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: "Banner_VC") as? BannerDetailViewController else {
             assertionFailure("[AssertionFailure] StoryBoard: Banner_VC can't find!! (ViewController)")

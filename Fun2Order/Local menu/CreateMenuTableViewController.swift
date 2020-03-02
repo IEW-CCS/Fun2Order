@@ -356,7 +356,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
                 
-                let iconImage: UIImage = UIImage(named: "Icon_Menu_Recipe.png")!
+                let iconImage: UIImage = UIImage(named: "Icon_Menu_Recipe.png")!.withRenderingMode(.alwaysTemplate)
                 if self.isEditedMode {
                     cell.setData(icon: iconImage, button_text: "修改配方", action_type: BUTTON_ACTION_ASSIGN_RECIPE)
                 } else {
@@ -371,7 +371,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
             if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
                 
-                let iconImage: UIImage = UIImage(named: "Icon_Menu_Item.png")!
+                let iconImage: UIImage = UIImage(named: "Icon_Menu_Item.png")!.withRenderingMode(.alwaysTemplate)
                 if self.isEditedMode {
                     cell.setData(icon: iconImage, button_text: "修改菜單", action_type: BUTTON_ACTION_MENU_CONFIRM)
                 } else {

@@ -62,8 +62,7 @@ class OTPVerificationController: UIViewController,OtpViewDelegate {
                 self.navigationController?.pushViewController(nextViewController, animated: true)
                 
             }
-        }            
-    
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -82,8 +81,8 @@ class OTPVerificationController: UIViewController,OtpViewDelegate {
             } else {
                 print("error varifying PhoneNumber: \(String(describing: error))")
                 
-                let alert = UIAlertController(title: "ERROR Varifying", message: String(describing: error?.localizedDescription), preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                let alert = UIAlertController(title: "認證錯誤", message: String(describing: error?.localizedDescription), preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "確定", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
                 
             }
@@ -104,8 +103,8 @@ class OTPVerificationController: UIViewController,OtpViewDelegate {
             } else {
                 print("error varifying PhoneNumber: \(String(describing: error))")
                 
-                let alert = UIAlertController(title: "ERROR Varifying", message: String(describing: error?.localizedDescription), preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                let alert = UIAlertController(title: "認證錯誤", message: String(describing: error?.localizedDescription), preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "確定", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
                 
             }
