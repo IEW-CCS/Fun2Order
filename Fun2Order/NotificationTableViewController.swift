@@ -13,18 +13,19 @@ class NotificationTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let app = UIApplication.shared.delegate as! AppDelegate
+        app.notificationDelegate = self
         
         let notificationCellViewNib: UINib = UINib(nibName: "NotificationActionCell", bundle: nil)
         self.tableView.register(notificationCellViewNib, forCellReuseIdentifier: "NotificationActionCell")
+        
+        refreshControl = UIRefreshControl()
+        refreshControl?.attributedTitle = NSAttributedString(string: "正在更新通知列表")
+        self.tableView.refreshControl = refreshControl
+        refreshControl?.addTarget(self, action: #selector(refreshList), for: .valueChanged)
 
         self.notificationList = retrieveNotificationList()
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.receiveRefreshNotificationList(_:)),
-            name: NSNotification.Name(rawValue: "RefreshNotificationList"),
-            object: nil
-        )
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,21 +36,21 @@ class NotificationTableViewController: UITableViewController {
         
     }
 
-    @objc func receiveRefreshNotificationList(_ notification: Notification) {
-        print("NotificationTableViewController received RefreshNotificationList notification")
+    @objc func refreshList() {
         self.notificationList.removeAll()
         self.notificationList = retrieveNotificationList()
-        setNotificationBadgeNumber()
-        self.tableView.reloadData()
+        DispatchQueue.main.async {
+            setNotificationBadgeNumber()
+            self.tableView.reloadData()
+            self.refreshControl?.endRefreshing()
+        }
     }
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         if self.notificationList.isEmpty {
             return 0
         }
@@ -81,7 +82,7 @@ class NotificationTableViewController: UITableViewController {
                 }
                 notifyActionController.notificationData = self.notificationList[indexPath.row]
                 notifyActionController.indexPath = indexPath
-                self.notificationList[indexPath.row].isRead = true
+                self.notificationList[indexPath.row].isRead = "Y"
                 updateNotificationReadStatus(message_id: self.notificationList[indexPath.row].messageID, status: true)
                 setNotificationBadgeNumber()
 
@@ -135,41 +136,16 @@ class NotificationTableViewController: UITableViewController {
         }
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-
 }
 
+extension NotificationTableViewController: ApplicationRefreshNotificationDelegate {
+    func refreshNotificationList() {
+        print("NotificationTableViewController received ApplicationRefreshNotificationDelegate refreshNotificationList")
+        self.notificationList.removeAll()
+        self.notificationList = retrieveNotificationList()
+        DispatchQueue.main.async {
+            setNotificationBadgeNumber()
+            self.tableView.reloadData()
+        }
+    }
+}

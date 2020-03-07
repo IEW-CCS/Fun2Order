@@ -497,7 +497,9 @@ struct NotificationData: Codable {
     var brandName: String = ""
     var attendedMemberCount: Int = 0
     var messageDetail: String = ""
-    var isRead: Bool = false
+    var isRead: String = ""
+    var replyStatus: String = ""
+    var replyTime: String = ""
     
     func toAnyObject() -> Any {
         return [
@@ -514,7 +516,9 @@ struct NotificationData: Codable {
             "brandName": brandName,
             "attendedMemberCount": attendedMemberCount,
             "messageDetail": messageDetail,
-            "isRead": isRead
+            "isRead": isRead,
+            "replyStatus": replyStatus,
+            "replyTime": replyTime
         ]
     }
 }

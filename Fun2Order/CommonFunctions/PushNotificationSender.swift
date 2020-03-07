@@ -16,8 +16,8 @@ class PushNotificationSender {
         let urlString = "https://fcm.googleapis.com/fcm/send"
         let url = NSURL(string: urlString)!
         let dataDict = data as! NotificationData
-
-        let paramString: [String : Any] =
+        
+        let paramString: [String: Any] =
             ["to" : token,
              "notification" : ["title" : title, "body" : body],
              "data": dataDict.toAnyObject()]
@@ -39,7 +39,7 @@ class PushNotificationSender {
                         
                         NSLog("Received data:\n\(jsonDataDict))")
                     }
-                }
+                }              
             } catch let err as NSError {
                 print(err.debugDescription)
             }

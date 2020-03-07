@@ -265,6 +265,8 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
                 }
 
                 join_vc.menuInformation = self.menuInformation
+                join_vc.memberContent = self.menuOrder.contentItems[0]
+                join_vc.memberIndex = 0
 
                 DispatchQueue.main.async {
                     self.show(join_vc, sender: self)
@@ -311,10 +313,10 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
                 var orderNotify: NotificationData = NotificationData()
                 let title: String = "團購邀請"
                 var body: String = ""
-                if self.textViewMessage.text == nil {
-                    body = "由 \(self.menuOrder.orderOwnerName) 發起的團購邀請，請點擊通知以查看詳細資訊。"
+                if self.textViewMessage.text == nil || self.textViewMessage.text == "" {
+                    body = "來自 \(self.menuOrder.orderOwnerName) 發起的團購邀請，請點擊通知以查看詳細資訊。"
                 } else {
-                    body = "由 \(self.menuOrder.orderOwnerName) 的團購邀請：\n" + textViewMessage.text!
+                    body = "來自 \(self.menuOrder.orderOwnerName) 的團購邀請：\n" + textViewMessage.text!
                 }
 
                 orderNotify.messageTitle = title
@@ -329,18 +331,20 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
                 orderNotify.brandName = self.menuOrder.brandName
                 orderNotify.attendedMemberCount = self.menuOrder.contentItems.count
                 orderNotify.messageDetail = " "
-                orderNotify.isRead = false
-                
+                orderNotify.isRead = "N"
+
+                let sender = PushNotificationSender()
+
                 if tokenID == myTokenID {
                     orderNotify.messageBody = "自己發起並參與的團購單"
-                    insertNotification(notification: orderNotify)
+                    orderNotify.isRead = "Y"
+                    //insertNotification(notification: orderNotify)
+                    sender.sendPushNotification(to: tokenID, title: title, body: orderNotify.messageBody, data: orderNotify)
                     continue
                 }
                 
-                let sender = PushNotificationSender()
                 sender.sendPushNotification(to: tokenID, title: title, body: body, data: orderNotify)
             }
-
         }
     }
     

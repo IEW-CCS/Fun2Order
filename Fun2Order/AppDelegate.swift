@@ -11,12 +11,30 @@ import CoreData
 import Firebase
 import GoogleMobileAds
 
+protocol ApplicationRefreshNotificationDelegate: class {
+    func refreshNotificationList()
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
 
     var window: UIWindow?
     var myTabBar: UITabBar?
+    weak var notificationDelegate: ApplicationRefreshNotificationDelegate?
 
+    func application(_ application: UIApplication,
+                     willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // When the app launch after user tap on notification (originally was not running / not in background)
+        if(launchOptions?[UIApplication.LaunchOptionsKey.remoteNotification] != nil) {
+            let userInfos = launchOptions?[UIApplication.LaunchOptionsKey.remoteNotification] as? [String: Any]
+            
+            getLaunchNotification(user_infos: userInfos!)
+        }
+        
+        return true
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         writeFirebaseConfig()
@@ -31,14 +49,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             UNUserNotificationCenter.current().delegate = self
             let authOptions: UNAuthorizationOptions = [.alert, .badge]
             UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: {_, _ in })
+            application.registerForRemoteNotifications()
+        } else {
+            let settings: UIUserNotificationSettings =
+                UIUserNotificationSettings(types: [.alert, .badge], categories: nil)
+            UIApplication.shared.registerUserNotificationSettings(settings)
         }
-        
-        application.registerForRemoteNotifications()
+
         Messaging.messaging().delegate = self
         
-        //deleteAllNotifications()
-        getNotifications()
-        NotificationCenter.default.post(name: NSNotification.Name("RefreshNotificationList"), object: nil)
+        getNotifications(completion: refreshNotifyList)
+                
         return true
     }
     
@@ -54,7 +75,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
           } else if let result = result {
             print("Remote instance ID token: \(result.token)")
             self.saveInstanceID(instance_id: result.token)
-            //self.instanceIDTokenMessage.text  = "Remote InstanceID token: \(result.token)"
           }
         }
     }
@@ -67,49 +87,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        getNotifications()
-        NotificationCenter.default.post(name: NSNotification.Name("RefreshNotificationList"), object: nil)
+        print("application didReceiveRemoteNotification")
+        getNotifications(completion: refreshNotifyList)
         completionHandler(UIBackgroundFetchResult.newData)
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("-------- userNotificationCenter  didReceive response")
+        getNotifications(completion: refreshNotifyList)
+        completionHandler()
+
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        //let userInfo = notification.request.content.userInfo
-        //print(userInfo)
-        //getNotifications()
-        print("notification.request.identifier = \(notification.request.identifier)")
-        setupNotification(notity: notification)
-        setNotificationBadgeNumber()
-        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
-        //center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
-        // Change this to your preferred presentation option
-        NotificationCenter.default.post(name: NSNotification.Name("RefreshNotificationList"), object: nil)
-        completionHandler(UNNotificationPresentationOptions.alert)
+        print("-------- userNotificationCenter willPresent")
+        getTappedNotification(notification: notification)
+        self.notificationDelegate?.refreshNotificationList()
+        
+        let isReadFlag = notification.request.content.userInfo["isRead"] as! String
+        if isReadFlag == "Y" {
+            completionHandler([])
+        } else {
+            completionHandler(UNNotificationPresentationOptions.alert)
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+        print("-------- applicationWillResignActive")
+        getNotifications(completion: refreshNotifyList)
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        print("-------- applicationDidEnterBackground")
+        getNotifications(completion: refreshNotifyList)
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        print("-------- applicationWillEnterForeground")
+        getNotifications(completion: refreshNotifyList)
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        print("-------- applicationDidBecomeActive")
+        getNotifications(completion: refreshNotifyList)
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        print("-------- applicationWillTerminate")
     }
 
+    func refreshNotifyList() {
+        self.notificationDelegate?.refreshNotificationList()
+    }
+    
     func writeFirebaseConfig() {
         let fm = FileManager.default
         let src = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")

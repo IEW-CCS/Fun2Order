@@ -1467,10 +1467,10 @@ func retrieveNotificationList() -> [NotificationData] {
             do {
                 let jsonData = notificationData.notificationData!.data(using: .utf8)
                 tmpData = try decoder.decode(NotificationData.self, from: jsonData!)
-                //print("tmpData in notificationList = \(tmpData)")
+                print("tmpData in notificationList = \(tmpData)")
                 returnList.append(tmpData)
             } catch {
-                print("jsonData decode failed: \(error.localizedDescription)")
+                print("retrieveNotificationList jsonData decode failed: \(error.localizedDescription)")
                 continue
             }
         }
@@ -1540,12 +1540,35 @@ func retrieveNotificationBadgeNumber() -> Int {
 }
 
 func insertNotification(notification: NotificationData) {
+    print("insertNotification to CoreData")
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
     vc = app.persistentContainer.viewContext
 
+    let fetchRequest: NSFetchRequest<NOTIFICATION_TABLE> = NOTIFICATION_TABLE.fetchRequest()
+    let predicateString = "messageID == \"\(notification.messageID)\""
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let notification_data = try vc.fetch(fetchRequest).first
+        if notification_data != nil {
+            print("notification data exists, do not insert into table")
+            return
+        }
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+    
     let notifyData = NSEntityDescription.insertNewObject(forEntityName: "NOTIFICATION_TABLE", into: vc) as! NOTIFICATION_TABLE
-    notifyData.isRead = false
+    if notification.isRead == "Y" {
+        notifyData.isRead = true
+    } else {
+        notifyData.isRead = false
+    }
+    
     notifyData.messageID = notification.messageID
     notifyData.messageTitle = notification.messageTitle
     notifyData.messageBody = notification.messageBody
@@ -1554,7 +1577,7 @@ func insertNotification(notification: NotificationData) {
     do {
         let jsonData = try JSONSerialization.data(withJSONObject: notification.toAnyObject(), options: [.prettyPrinted])
         let jsonString = String(data: jsonData, encoding: .utf8)!
-        print("jsonString = \(jsonString)")
+        //print("jsonString = \(jsonString)")
         notifyData.notificationData = jsonString
     } catch {
         print(error.localizedDescription)
@@ -1626,12 +1649,12 @@ func updateNotificationReadStatus(message_id: String, status: Bool) {
             do {
                 let jsonData = notificationData?.notificationData!.data(using: .utf8)
                 var tmpData = try decoder.decode(NotificationData.self, from: jsonData!)
-                print("updateNotificationReadStatus: tmpData in notificationList = \(tmpData)")
-                tmpData.isRead = true
+                //print("updateNotificationReadStatus: tmpData in notificationList = \(tmpData)")
+                tmpData.isRead = "Y"
                 do {
                     let updatedJSONData = try JSONSerialization.data(withJSONObject: tmpData.toAnyObject(), options: [.prettyPrinted])
                     let jsonString = String(data: updatedJSONData, encoding: .utf8)!
-                    print("jsonString = \(jsonString)")
+                    //print("jsonString = \(jsonString)")
                     notificationData?.setValue(jsonString, forKey: "notificationData")
                 } catch {
                     print(error.localizedDescription)
@@ -1650,4 +1673,50 @@ func updateNotificationReadStatus(message_id: String, status: Bool) {
     }
     
     app.saveContext()
+}
+
+func updateNotificationReplyStatus(order_number: String, reply_status: String, reply_time: String) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<NOTIFICATION_TABLE> = NOTIFICATION_TABLE.fetchRequest()
+    //let predicateString = "messageID == \"\(message_id)\""
+    do {
+        let notificationList = try vc.fetch(fetchRequest)
+        for notificationData in notificationList {
+            let decoder: JSONDecoder = JSONDecoder()
+            do {
+                let jsonData = notificationData.notificationData!.data(using: .utf8)
+                var tmpData = try decoder.decode(NotificationData.self, from: jsonData!)
+                if tmpData.orderNumber != order_number {
+                    continue
+                }
+                tmpData.isRead = "Y"
+                tmpData.replyStatus = reply_status
+                tmpData.replyTime = reply_time
+                
+                do {
+                    let updatedJSONData = try JSONSerialization.data(withJSONObject: tmpData.toAnyObject(), options: [.prettyPrinted])
+                    let jsonString = String(data: updatedJSONData, encoding: .utf8)!
+                    //print("jsonString = \(jsonString)")
+                    notificationData.setValue(jsonString, forKey: "notificationData")
+                } catch {
+                    print(error.localizedDescription)
+                    return
+                }
+            } catch {
+                print("updateNotificationReplyStatus: jsonData decode failed: \(error.localizedDescription)")
+                return
+            }
+
+            notificationData.setValue(true, forKey: "isRead")
+        }
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+    
+    app.saveContext()
+    
 }

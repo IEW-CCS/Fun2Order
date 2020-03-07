@@ -13,6 +13,7 @@ class NotificationActionCell: UITableViewCell {
     @IBOutlet weak var labelBrandName: UILabel!
     @IBOutlet weak var labelReceiveTime: UILabel!
     @IBOutlet weak var labelNotificationType: UILabel!
+    @IBOutlet weak var labelReplyStatus: UILabel!
     @IBOutlet weak var textViewMessageBody: UITextView!
     @IBOutlet weak var backView: ShadowGradientView!
     
@@ -20,6 +21,7 @@ class NotificationActionCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.labelReplyStatus.text = ""
         // Initialization code
     }
 
@@ -64,10 +66,16 @@ class NotificationActionCell: UITableViewCell {
                 break
         }
         
-        if notification.isRead {
+        if notification.isRead == "Y" {
             self.backView.gradientColor = 15
         } else {
             self.backView.gradientColor = 11
+        }
+        
+        if notification.replyStatus == MENU_ORDER_REPLY_STATUS_REJECT || notification.replyStatus == MENU_ORDER_REPLY_STATUS_ACCEPT {
+            self.labelReplyStatus.text = "已回覆"
+        } else {
+            self.labelReplyStatus.text = "尚未回覆"
         }
     }
 }

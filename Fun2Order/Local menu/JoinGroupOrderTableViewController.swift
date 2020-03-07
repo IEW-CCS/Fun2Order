@@ -10,6 +10,10 @@ import UIKit
 import CoreData
 import Firebase
 
+protocol JoinGroupOrderDelegate: class {
+    func refreshHistoryInvitationList(sender: JoinGroupOrderTableViewController)
+}
+
 class JoinGroupOrderTableViewController: UITableViewController {
     @IBOutlet weak var labelBrandName: UILabel!
     @IBOutlet weak var imageMenu: UIImageView!
@@ -26,9 +30,13 @@ class JoinGroupOrderTableViewController: UITableViewController {
     //var productQuantity: Int = 0
     //var productComments: String = ""
     var selectedLocationIndex: Int = -1
+    let app = UIApplication.shared.delegate as! AppDelegate
+    weak var refreshNotificationDelegate: ApplicationRefreshNotificationDelegate?
+    weak var delegate: JoinGroupOrderDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        refreshNotificationDelegate = app.notificationDelegate
 
         self.imageMenu.layer.borderWidth = 1.0
         self.imageMenu.layer.borderColor = UIColor.lightGray.cgColor
@@ -79,6 +87,13 @@ class JoinGroupOrderTableViewController: UITableViewController {
                 print(error.localizedDescription)
             }
         }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = DATETIME_FORMATTER
+        let dateString = formatter.string(from: Date())
+        updateNotificationReplyStatus(order_number: self.memberContent.orderContent.orderNumber, reply_status: MENU_ORDER_REPLY_STATUS_ACCEPT, reply_time: dateString)
+        self.refreshNotificationDelegate?.refreshNotificationList()
+        self.delegate?.refreshHistoryInvitationList(sender: self)
         navigationController?.popToRootViewController(animated: true)
         self.dismiss(animated: false, completion: nil)
     }

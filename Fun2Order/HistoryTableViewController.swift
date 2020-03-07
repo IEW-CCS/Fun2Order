@@ -20,10 +20,12 @@ class HistoryTableViewController: UITableViewController {
     
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
+    weak var refreshNotificationDelegate: ApplicationRefreshNotificationDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         vc = app.persistentContainer.viewContext
+        refreshNotificationDelegate = app.notificationDelegate
         
         let historyCellViewNib: UINib = UINib(nibName: "OrderHistoryCell", bundle: nil)
         self.tableView.register(historyCellViewNib, forCellReuseIdentifier: "OrderHistoryCell")
@@ -68,6 +70,12 @@ class HistoryTableViewController: UITableViewController {
             self.invitationList = retrieveInvitationNotificationList()
             self.tableView.reloadData()
         }
+    }
+    
+    func refreshInvitationList() {
+        self.segmentType.selectedSegmentIndex = 1
+        self.invitationList = retrieveInvitationNotificationList()
+        self.tableView.reloadData()
     }
     
     func queryMenuOrder() {
@@ -210,7 +218,7 @@ class HistoryTableViewController: UITableViewController {
         if self.segmentType.selectedSegmentIndex == 0 {
             return 180
         } else {
-            return 111
+            return 135
         }
     }
 
@@ -254,6 +262,7 @@ class HistoryTableViewController: UITableViewController {
                     self.invitationList = retrieveInvitationNotificationList()
                     setNotificationBadgeNumber()
                     self.tableView.reloadData()
+                    self.refreshNotificationDelegate?.refreshNotificationList()
                 }
                 
                 controller.addAction(okAction)
@@ -379,15 +388,14 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
                     assertionFailure("[AssertionFailure] StoryBoard: JOIN_ORDER_VC can't find!! (NotificationActionViewController)")
                     return
                 }
-                
+
                 joinController.menuInformation = menuData
                 joinController.memberContent = memberContent
                 joinController.memberIndex = memberIndex
+                joinController.delegate = self
                 self.navigationController?.show(joinController, sender: self)
             }
-
         }
-
     }
     
     func rejectOrderInvitation(data_index: Int) {
@@ -409,6 +417,13 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
                             itemArray[itemIndex].orderContent.replyStatus = MENU_ORDER_REPLY_STATUS_REJECT
                             databaseRef.child(uploadPathString).setValue(itemArray[itemIndex].toAnyObject())
                         }
+                        
+                        let formatter = DateFormatter()
+                        formatter.dateFormat = DATETIME_FORMATTER
+                        let dateString = formatter.string(from: Date())
+                        updateNotificationReplyStatus(order_number: self.invitationList[data_index].orderNumber, reply_status: MENU_ORDER_REPLY_STATUS_REJECT, reply_time: dateString)
+                        self.refreshNotificationDelegate?.refreshNotificationList()
+                        self.refreshInvitationList()
                     }
                 } catch {
                     print("rejectOrderInvitation jsonData decode failed: \(error.localizedDescription)")
@@ -420,6 +435,12 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
         }) { (error) in
             print(error.localizedDescription)
         }
+    }
+}
+
+extension HistoryTableViewController: JoinGroupOrderDelegate {
+    func refreshHistoryInvitationList(sender: JoinGroupOrderTableViewController) {
+        refreshInvitationList()
     }
 }
 

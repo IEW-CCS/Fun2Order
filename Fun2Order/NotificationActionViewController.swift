@@ -17,13 +17,18 @@ class NotificationActionViewController: UIViewController {
     @IBOutlet weak var labelBrandName: UILabel!
     @IBOutlet weak var labelMemberCount: UILabel!
     @IBOutlet weak var labelNotificationType: UILabel!
+    @IBOutlet weak var labelReplyStatus: UILabel!
     
     var notificationData: NotificationData = NotificationData()
     var indexPath: IndexPath = IndexPath()
     var interstitialAd: GADInterstitial!
-    
+
+    let app = UIApplication.shared.delegate as! AppDelegate
+    weak var refreshNotificationDelegate: ApplicationRefreshNotificationDelegate?
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        refreshNotificationDelegate = app.notificationDelegate
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,11 +87,11 @@ class NotificationActionViewController: UIViewController {
 
                 } catch {
                     dispatchGroup.leave()
-                    print("jsonData decode failed: \(error.localizedDescription)")
+                    print("attendGroupOrder menuData jsonData decode failed: \(error.localizedDescription)")
                 }
             } else {
                 dispatchGroup.leave()
-                print("queryTemplateData snapshot doesn't exist!")
+                print("attendGroupOrder USER_MENU_INFORMATION snapshot doesn't exist!")
                 return
             }
         }) { (error) in
@@ -95,6 +100,7 @@ class NotificationActionViewController: UIViewController {
         }
 
         let orderString = "USER_MENU_ORDER/\(self.notificationData.orderOwnerID)/\(self.notificationData.orderNumber)/contentItems"
+        print("orderStirng = \(orderString)")
         dispatchGroup.enter()
         databaseRef.child(orderString).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
@@ -116,11 +122,11 @@ class NotificationActionViewController: UIViewController {
                         dispatchGroup.leave()
                     }
                 } catch {
-                    print("attendGroupOrder jsonData decode failed: \(error.localizedDescription)")
+                    print("attendGroupOrder MenuOrderMemberContent jsonData decode failed: \(error.localizedDescription)")
                     dispatchGroup.leave()
                 }
             } else {
-                print("attendGroupOrder snapshot doesn't exist!")
+                print("attendGroupOrder MenuOrderMemberContent snapshot doesn't exist!")
                 dispatchGroup.leave()
             }
         }) { (error) in
@@ -139,6 +145,7 @@ class NotificationActionViewController: UIViewController {
                 joinController.menuInformation = menuData
                 joinController.memberContent = memberContent
                 joinController.memberIndex = memberIndex
+                //joinController.delegate = self
                 self.navigationController?.show(joinController, sender: self)
             }
 
@@ -165,6 +172,13 @@ class NotificationActionViewController: UIViewController {
                             databaseRef.child(uploadPathString).setValue(itemArray[itemIndex].toAnyObject())
                         }
                     }
+                    
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = DATETIME_FORMATTER
+                    let dateString = formatter.string(from: Date())
+                    updateNotificationReplyStatus(order_number: self.notificationData.orderNumber, reply_status: MENU_ORDER_REPLY_STATUS_REJECT, reply_time: dateString)
+                    self.refreshNotificationDelegate?.refreshNotificationList()
+
                 } catch {
                     print("notAttendGroupOrder jsonData decode failed: \(error.localizedDescription)")
                 }
@@ -215,8 +229,37 @@ class NotificationActionViewController: UIViewController {
             default:
                 break
         }
+
+        setupReplyStatus()
     }
 
+    func setupReplyStatus() {
+        if self.notificationData.replyStatus != "" {
+            var replyString: String = ""
+            if self.notificationData.replyTime != "" {
+                let formatter = DateFormatter()
+                formatter.dateFormat = DATETIME_FORMATTER
+                let replyDate = formatter.date(from: self.notificationData.replyTime)!
+                
+                formatter.dateFormat = TAIWAN_DATETIME_FORMATTER
+                replyString = formatter.string(from: replyDate)
+            }
+            
+            switch self.notificationData.replyStatus {
+                case MENU_ORDER_REPLY_STATUS_ACCEPT:
+                    self.labelReplyStatus.text = "已於 \(replyString) 回覆 參加"
+                    break
+                
+                case MENU_ORDER_REPLY_STATUS_REJECT:
+                    self.labelReplyStatus.text = "已於 \(replyString) 回覆 不參加"
+                    break
+                    
+                default:
+                    self.labelReplyStatus.text = "尚未回覆"
+                    break
+            }
+        }
+    }
 }
 
 extension NotificationActionViewController: GADInterstitialDelegate {

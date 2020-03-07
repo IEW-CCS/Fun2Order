@@ -562,28 +562,36 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZIU-QZ-ZO8">
-                                <rect key="frame" x="80" y="230" width="31" height="30"/>
+                                <rect key="frame" x="80" y="251" width="31" height="30"/>
                                 <state key="normal" title="參加"/>
                                 <connections>
                                     <action selector="attendGroupOrder:" destination="CrM-eU-NG0" eventType="touchUpInside" id="dfQ-iG-lv2"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2eD-78-teM">
-                                <rect key="frame" x="288" y="230" width="46" height="30"/>
+                                <rect key="frame" x="288" y="251" width="46" height="30"/>
                                 <state key="normal" title="不參加"/>
                                 <connections>
                                     <action selector="notAttendGroupOrder:" destination="CrM-eU-NG0" eventType="touchUpInside" id="2qF-Ya-TLp"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="回覆狀態" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oCq-bA-73f">
+                                <rect key="frame" x="25" y="215" width="53.5" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="pu2-IS-G15" firstAttribute="top" secondItem="Q26-dV-UZa" secondAttribute="bottom" constant="10" id="0Hv-YU-XUS"/>
+                            <constraint firstItem="oCq-bA-73f" firstAttribute="leading" secondItem="pu2-IS-G15" secondAttribute="leading" id="3FW-QG-kYX"/>
                             <constraint firstItem="Zwc-p6-fnj" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="jsP-cb-yj4" secondAttribute="trailing" symbolic="YES" id="5DZ-kP-SQA"/>
+                            <constraint firstItem="ZIU-QZ-ZO8" firstAttribute="top" secondItem="oCq-bA-73f" secondAttribute="bottom" constant="20" id="5by-Pd-lQQ"/>
                             <constraint firstItem="jsP-cb-yj4" firstAttribute="leading" secondItem="dsp-Ly-J0v" secondAttribute="leading" id="7zq-Tz-lUJ"/>
                             <constraint firstItem="jsP-cb-yj4" firstAttribute="centerY" secondItem="btM-4c-4gv" secondAttribute="centerY" id="8rW-mo-xKu"/>
-                            <constraint firstItem="ZIU-QZ-ZO8" firstAttribute="top" secondItem="pu2-IS-G15" secondAttribute="bottom" constant="25" id="BP2-2O-z6W"/>
                             <constraint firstItem="dsp-Ly-J0v" firstAttribute="leading" secondItem="CAE-zZ-dzb" secondAttribute="leading" id="EDE-uE-P7g"/>
+                            <constraint firstItem="Zwc-p6-fnj" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="oCq-bA-73f" secondAttribute="trailing" symbolic="YES" id="EFJ-D8-r27"/>
                             <constraint firstItem="ZIU-QZ-ZO8" firstAttribute="leading" secondItem="Zwc-p6-fnj" secondAttribute="leading" constant="80" id="GyQ-VN-rKL"/>
                             <constraint firstItem="Q26-dV-UZa" firstAttribute="leading" secondItem="btM-4c-4gv" secondAttribute="leading" id="Iq4-DG-RpM"/>
                             <constraint firstItem="goU-eE-TFc" firstAttribute="centerX" secondItem="dbD-Uc-Lh2" secondAttribute="centerX" id="Jgu-7h-TqU"/>
@@ -604,6 +612,7 @@
                             <constraint firstItem="Zwc-p6-fnj" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dsp-Ly-J0v" secondAttribute="trailing" symbolic="YES" id="eaq-Gz-nYB"/>
                             <constraint firstItem="Zwc-p6-fnj" firstAttribute="trailing" secondItem="2eD-78-teM" secondAttribute="trailing" constant="80" id="egg-TX-abb"/>
                             <constraint firstItem="x7X-Dn-10X" firstAttribute="leading" secondItem="Zwc-p6-fnj" secondAttribute="leading" constant="25" id="ehh-xp-Ojm"/>
+                            <constraint firstItem="oCq-bA-73f" firstAttribute="top" secondItem="pu2-IS-G15" secondAttribute="bottom" constant="10" id="eye-4D-VtP"/>
                             <constraint firstItem="dsp-Ly-J0v" firstAttribute="centerY" secondItem="yKL-IP-GJu" secondAttribute="centerY" id="fM8-2u-4mq"/>
                             <constraint firstItem="btM-4c-4gv" firstAttribute="leading" secondItem="yKL-IP-GJu" secondAttribute="leading" id="gtc-ZK-0Yg"/>
                             <constraint firstItem="goU-eE-TFc" firstAttribute="top" secondItem="Zwc-p6-fnj" secondAttribute="top" constant="25" id="iaX-Xl-TPJ"/>
@@ -625,6 +634,7 @@
                         <outlet property="labelNotificationType" destination="goU-eE-TFc" id="gsu-fF-xHR"/>
                         <outlet property="labelOrderOwner" destination="CAE-zZ-dzb" id="Zmi-CL-WkH"/>
                         <outlet property="labelReceiveTime" destination="dsp-Ly-J0v" id="gvl-11-EGA"/>
+                        <outlet property="labelReplyStatus" destination="oCq-bA-73f" id="abB-5C-AJn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8cV-y7-YxO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

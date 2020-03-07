@@ -10,40 +10,55 @@ import Foundation
 import UIKit
 import CoreData
 
-func getNotifications() {
+func getNotifications(completion: @escaping () -> Void) {
     let notifications = UNUserNotificationCenter.current()
     notifications.getDeliveredNotifications { (delivered_notifications) in
-        //print("*********************************************")
-        //print("Display all delivered notifications:")
         for delivered_notification in delivered_notifications {
-            //print(delivered_notification)
-            //print("Delivered notification request content = \(delivered_notification.request.content)")
-/*
-             print("Delivered notification userInfo = \(delivered_notification.request.content.userInfo)")
-
-             var notificationData: NotificationData = NotificationData()
-
-             notificationData.messageID = delivered_notification.request.content.userInfo["gcm.message_id"] as! String
-             notificationData.messageTitle = delivered_notification.request.content.title
-             notificationData.messageBody = delivered_notification.request.content.body
-             notificationData.notificationType = delivered_notification.request.content.userInfo["notificationType"] as! String
-             notificationData.receiveTime = delivered_notification.request.content.userInfo["receiveTime"] as! String
-             notificationData.orderOwnerID = delivered_notification.request.content.userInfo["orderOwnerID"] as! String
-             notificationData.orderOwnerName = delivered_notification.request.content.userInfo["orderOwnerName"] as! String
-             notificationData.orderNumber = delivered_notification.request.content.userInfo["orderNumber"] as! String
-             notificationData.dueTime = delivered_notification.request.content.userInfo["dueTime"] as! String
-             notificationData.brandName = delivered_notification.request.content.userInfo["brandName"] as! String
-             notificationData.attendedMemberCount = Int(delivered_notification.request.content.userInfo["attendedMemberCount"] as! String)!
-             notificationData.messageDetail = delivered_notification.request.content.userInfo["messageDetail"] as! String
-             notificationData.isRead = false
-             insertNotification(notification: notificationData)
-*/
+            print("getNotifications -> setupNotification")
             setupNotification(notity: delivered_notification)
         }
         
         notifications.removeAllDeliveredNotifications()
+        DispatchQueue.main.async {
+            setNotificationBadgeNumber()
+        }
+        completion()
+    }
+}
+
+func getLaunchNotification(user_infos: [String: Any]) {
+    var notificationData: NotificationData = NotificationData()
+
+    notificationData.messageID = user_infos["gcm.message_id"] as! String
+    notificationData.messageTitle = user_infos["messageTitle"] as! String
+    notificationData.messageBody = user_infos["messageBody"] as! String
+    notificationData.notificationType = user_infos["notificationType"] as! String
+    notificationData.receiveTime = user_infos["receiveTime"] as! String
+    notificationData.orderOwnerID = user_infos["orderOwnerID"] as! String
+    notificationData.orderOwnerName = user_infos["orderOwnerName"] as! String
+    notificationData.menuNumber = user_infos["menuNumber"] as! String
+    notificationData.orderNumber = user_infos["orderNumber"] as! String
+    notificationData.dueTime = user_infos["dueTime"] as! String
+    notificationData.brandName = user_infos["brandName"] as! String
+    notificationData.attendedMemberCount = Int(user_infos["attendedMemberCount"] as! String)!
+    notificationData.messageDetail = user_infos["messageDetail"] as! String
+    notificationData.isRead = user_infos["isRead"] as! String
+    //notificationData.isRead = user_infos["isRead"] as! Bool
+    insertNotification(notification: notificationData)
+    //notifications.removeAllDeliveredNotifications()
+    DispatchQueue.main.async {
         setNotificationBadgeNumber()
     }
+}
+
+func getTappedNotification(notification: UNNotification) {
+    setupNotification(notity: notification)
+    UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
+    //UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [notification.request.identifier])
+    DispatchQueue.main.async {
+        setNotificationBadgeNumber()
+    }
+    //UNUserNotificationCenter.current().removeAllDeliveredNotifications()
 }
 
 func setupNotification(notity: UNNotification) {
@@ -64,16 +79,21 @@ func setupNotification(notity: UNNotification) {
     notificationData.brandName = notity.request.content.userInfo["brandName"] as! String
     notificationData.attendedMemberCount = Int(notity.request.content.userInfo["attendedMemberCount"] as! String)!
     notificationData.messageDetail = notity.request.content.userInfo["messageDetail"] as! String
-    notificationData.isRead = false
+    notificationData.isRead = notity.request.content.userInfo["isRead"] as! String
+
+    //notificationData.isRead = notity.request.content.userInfo["isRead"] as! Bool
     insertNotification(notification: notificationData)
     //notifications.removeAllDeliveredNotifications()
-    //setNotificationBadgeNumber()
+    DispatchQueue.main.async {
+        setNotificationBadgeNumber()
+    }
 }
 
 func setNotificationBadgeNumber() {
     let badgeCount = retrieveNotificationBadgeNumber()
     
     UIApplication.shared.applicationIconBadgeNumber = badgeCount
+    print("setNotificationBadgeNumber badgeCount = \(badgeCount)")
     setTabBarBadgeNumber(badge: badgeCount)
 }
 

@@ -188,11 +188,10 @@ extension StatusSummaryTableViewController: BasicButtonDelegate {
                 dueTimeNotify.brandName = self.menuOrder.brandName
                 dueTimeNotify.attendedMemberCount = self.menuOrder.contentItems.count
                 dueTimeNotify.messageDetail = " "
-                dueTimeNotify.isRead = false
+                dueTimeNotify.isRead = "N"
 
                 sender.sendPushNotification(to: memberContent.memberTokenID, title: title, body: body, data: dueTimeNotify)
             }
-            
         }
     }
 }
