@@ -18,6 +18,8 @@ class NotificationActionViewController: UIViewController {
     @IBOutlet weak var labelMemberCount: UILabel!
     @IBOutlet weak var labelNotificationType: UILabel!
     @IBOutlet weak var labelReplyStatus: UILabel!
+    @IBOutlet weak var buttonAttend: UIButton!
+    @IBOutlet weak var buttonReject: UIButton!
     
     var notificationData: NotificationData = NotificationData()
     var indexPath: IndexPath = IndexPath()
@@ -231,6 +233,7 @@ class NotificationActionViewController: UIViewController {
         }
 
         setupReplyStatus()
+        checkExpire()
     }
 
     func setupReplyStatus() {
@@ -258,6 +261,32 @@ class NotificationActionViewController: UIViewController {
                     self.labelReplyStatus.text = "尚未回覆"
                     break
             }
+        }
+    }
+    
+    func checkExpire() {
+        if self.notificationData.dueTime == "" {
+            return
+        }
+        
+        let nowDate = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = DATETIME_FORMATTER
+        let nowString = formatter.string(from: nowDate)
+        
+        print("------  checkExpire ------")
+        print("self.notificationData.dueTime string = \(self.notificationData.dueTime)")
+        print("now date string = \(nowString)")
+        
+        if nowString > self.notificationData.dueTime {
+            self.buttonAttend.isEnabled = false
+            self.buttonReject.isEnabled = false
+            
+            self.labelNotificationType.text = self.labelNotificationType.text! + " -- 團購單已逾期"
+            self.labelNotificationType.textColor = COLOR_PEPPER_RED
+        } else {
+            self.buttonAttend.isEnabled = true
+            self.buttonReject.isEnabled = true
         }
     }
 }

@@ -85,8 +85,7 @@ class ScanQRCodeViewController: UIViewController {
                 self.navigationController?.popViewController(animated: true)
                 self.dismiss(animated: false, completion: nil)
             } else {
-                let memberAlert = alert(message: "不存在的會員條碼或條碼格式錯誤，請再重試一次", title: "條碼錯誤")
-                self.present(memberAlert, animated : false, completion : nil)
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "不存在的會員條碼或條碼格式錯誤，請再重試一次")
                 return
             }
         }) { (error) in
@@ -162,10 +161,17 @@ extension ScanQRCodeViewController: UIImagePickerControllerDelegate, UINavigatio
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        dismiss(animated: true, completion: nil)
+
         let detector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])!
         let ciImage = CIImage(image: image)
 
         let features = detector.features(in: ciImage!) as? [CIQRCodeFeature]
+        
+        if features == nil || features!.count == 0 {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "無法辨識出任何ID，請再重選其他照片")
+            return
+        }
 
         for feature in features! {
             print("messageString = \(feature.messageString ?? "")")
@@ -174,13 +180,17 @@ extension ScanQRCodeViewController: UIImagePickerControllerDelegate, UINavigatio
         let feature = features?.first
         let userID = feature?.messageString
         if userID != nil {
-            print("userID = \(userID!)")
-            self.memberID = userID!
-            self.displayUserID(user_id: self.memberID)
-            dismiss(animated: true, completion: nil)
-
+            if Auth.auth().currentUser?.uid != nil {
+                if Auth.auth().currentUser?.uid == userID {
+                    print("Read ID is the same with own ID, cannot add into Friend")
+                    presentSimpleAlertMessage(title: "錯誤訊息", message: "掃描到自己的ID，無法將自己加入好友")
+                    return
+                }
+                print("userID = \(userID!)")
+                self.memberID = userID!
+                self.displayUserID(user_id: self.memberID)
+            }
         }
-        dismiss(animated: true, completion: nil)
     }
 }
 

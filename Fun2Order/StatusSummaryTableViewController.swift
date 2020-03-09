@@ -16,6 +16,7 @@ protocol StatusSummaryDelegate: class {
 class StatusSummaryTableViewController: UITableViewController {
     var menuOrder: MenuOrder = MenuOrder()
     var summaryData: [Int] = [Int]()
+    var isOrderExpired: Bool = false
     weak var delegate: StatusSummaryDelegate?
 
     override func viewDidLoad() {
@@ -27,6 +28,7 @@ class StatusSummaryTableViewController: UITableViewController {
         let basicButtonCellViewNib: UINib = UINib(nibName: "BasicButtonCell", bundle: nil)
         self.tableView.register(basicButtonCellViewNib, forCellReuseIdentifier: "BasicButtonCell")
 
+        setExpireFlag()
         getSummaryData()
     }
     
@@ -66,6 +68,50 @@ class StatusSummaryTableViewController: UITableViewController {
         summaryData.append(expireCount)
     }
     
+    func setExpireFlag() {
+        if self.menuOrder.dueTime == "" {
+            return
+        }
+        
+        let nowDate = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = DATETIME_FORMATTER
+        let nowString = formatter.string(from: nowDate)
+        if nowString > self.menuOrder.dueTime {
+            self.isOrderExpired = true
+        }
+    }
+    
+    func checkOrderExpire(order_data: MenuOrder) -> MenuOrder {
+        var returnOrder: MenuOrder = MenuOrder()
+
+        returnOrder = order_data
+
+        if returnOrder.dueTime == "" {
+            return returnOrder
+        }
+
+        let nowDate = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = DATETIME_FORMATTER
+        let nowString = formatter.string(from: nowDate)
+
+        let databaseRef = Database.database().reference()
+        if !returnOrder.contentItems.isEmpty {
+            for i in 0...returnOrder.contentItems.count - 1 {
+                if (returnOrder.contentItems[i].orderContent.replyStatus == MENU_ORDER_REPLY_STATUS_WAIT) && (nowString > returnOrder.dueTime) {
+                    print("User[\(returnOrder.contentItems[i].orderContent.itemOwnerName)] is expired")
+                    returnOrder.contentItems[i].orderContent.replyStatus = MENU_ORDER_REPLY_STATUS_EXPIRE
+                    let pathString = "USER_MENU_ORDER/\(returnOrder.orderOwnerID)/\(returnOrder.orderNumber)/contentItems/\(i)"
+                    databaseRef.child(pathString).setValue(returnOrder.contentItems[i].toAnyObject())
+                }
+            }
+        }
+
+        return returnOrder
+    }
+
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -102,6 +148,12 @@ class StatusSummaryTableViewController: UITableViewController {
             let iconImage: UIImage = UIImage(named: "Icon_Notify_Menu.png")!.withRenderingMode(.alwaysTemplate)
             cell.setData(icon: iconImage, button_text: "發出催訂通知", action_type: BUTTON_ACTION_NOTIFY_MENUORDER_DUETIME)
 
+            if self.isOrderExpired {
+                cell.setDisable()
+            } else {
+                cell.setEnable()
+            }
+            
             cell.delegate = self
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
@@ -134,7 +186,8 @@ extension StatusSummaryTableViewController: BasicButtonDelegate {
 
                 let decoder: JSONDecoder = JSONDecoder()
                 do {
-                    let menuData = try decoder.decode(MenuOrder.self, from: jsonData!)
+                    var menuData = try decoder.decode(MenuOrder.self, from: jsonData!)
+                    menuData = self.checkOrderExpire(order_data: menuData)
                     self.menuOrder = menuData
                     self.getSummaryData()
                     self.tableView.reloadData()

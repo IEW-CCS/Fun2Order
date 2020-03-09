@@ -63,6 +63,14 @@ class BasicButtonCell: UITableViewCell {
         self.actionType = action_type
     }
     
+    func setEnable() {
+        self.favoriteButton.isEnabled = true
+    }
+    
+    func setDisable() {
+        self.favoriteButton.isEnabled = false
+    }
+    
     @IBAction func addToFavorite(_ sender: UIButton) {
         switch self.actionType {
         case BUTTON_ACTION_FAVORITE:

@@ -60,11 +60,12 @@ class JoinInvitationCell: UITableViewCell {
         let startTimeString = formatter.string(from: startDate)
         self.labelStartTime.text = startTimeString
         setupReplyStatus()
+        checkExpire()
     }
     
     func setupReplyStatus() {
+        var replyString: String = ""
         if self.notificationData.replyStatus != "" {
-            var replyString: String = ""
             if self.notificationData.replyTime != "" {
                 let formatter = DateFormatter()
                 formatter.dateFormat = DATETIME_FORMATTER
@@ -73,20 +74,47 @@ class JoinInvitationCell: UITableViewCell {
                 formatter.dateFormat = TAIWAN_DATETIME_FORMATTER
                 replyString = formatter.string(from: replyDate)
             }
+        }
+        
+        switch self.notificationData.replyStatus {
+            case MENU_ORDER_REPLY_STATUS_ACCEPT:
+                self.labelReplyStatus.text = "已於 \(replyString) 回覆 參加"
+                break
             
-            switch self.notificationData.replyStatus {
-                case MENU_ORDER_REPLY_STATUS_ACCEPT:
-                    self.labelReplyStatus.text = "已於 \(replyString) 回覆 參加"
-                    break
+            case MENU_ORDER_REPLY_STATUS_REJECT:
+                self.labelReplyStatus.text = "已於 \(replyString) 回覆 不參加"
+                break
                 
-                case MENU_ORDER_REPLY_STATUS_REJECT:
-                    self.labelReplyStatus.text = "已於 \(replyString) 回覆 不參加"
-                    break
-                    
-                default:
-                    self.labelReplyStatus.text = "尚未回覆"
-                    break
-            }
+            default:
+                self.labelReplyStatus.text = "尚未回覆"
+                break
+        }
+
+    }
+    
+    func checkExpire() {
+        if self.notificationData.dueTime == "" {
+            return
+        }
+        
+        let nowDate = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = DATETIME_FORMATTER
+        let nowString = formatter.string(from: nowDate)
+        
+        print("------  checkExpire ------")
+        print("self.notificationData.dueTime string = \(self.notificationData.dueTime)")
+        print("now date string = \(nowString)")
+        
+        if nowString > self.notificationData.dueTime {
+            self.buttonAttend.isEnabled = false
+            self.buttonReject.isEnabled = false
+            
+            self.labelBrandName.text = self.labelBrandName.text! + " -- 團購單已逾期"
+            self.labelBrandName.textColor = COLOR_PEPPER_RED
+        } else {
+            self.buttonAttend.isEnabled = true
+            self.buttonReject.isEnabled = true
         }
     }
 }

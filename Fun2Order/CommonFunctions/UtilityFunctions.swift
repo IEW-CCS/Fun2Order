@@ -178,6 +178,18 @@ func presentAlert(_ alertController: UIAlertController) -> UIWindow {
     return alertWindow
 }
 
+func presentSimpleAlertMessage(title: String, message: String) {
+    var alertWindow: UIWindow!
+    let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
+    let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+        alertWindow.isHidden = true
+    }
+    
+    controller.addAction(okAction)
+    alertWindow = presentAlert(controller)
+}
+
 func getMyTokenID() -> String {
     let path = NSHomeDirectory() + "/Documents/AppConfig.plist"
     let plist = NSMutableDictionary(contentsOfFile: path)

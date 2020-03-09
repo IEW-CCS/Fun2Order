@@ -121,6 +121,35 @@ class HistoryTableViewController: UITableViewController {
         }
     }
     
+    func checkOrderExpire(order_data: MenuOrder) -> MenuOrder {
+        var returnOrder: MenuOrder = MenuOrder()
+
+        returnOrder = order_data
+
+        if returnOrder.dueTime == "" {
+            return returnOrder
+        }
+
+        let nowDate = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = DATETIME_FORMATTER
+        let nowString = formatter.string(from: nowDate)
+
+        let databaseRef = Database.database().reference()
+        if !returnOrder.contentItems.isEmpty {
+            for i in 0...returnOrder.contentItems.count - 1 {
+                if (returnOrder.contentItems[i].orderContent.replyStatus == MENU_ORDER_REPLY_STATUS_WAIT) && (nowString > returnOrder.dueTime) {
+                    print("User[\(returnOrder.contentItems[i].orderContent.itemOwnerName)] is expired")
+                    returnOrder.contentItems[i].orderContent.replyStatus = MENU_ORDER_REPLY_STATUS_EXPIRE
+                    let pathString = "USER_MENU_ORDER/\(returnOrder.orderOwnerID)/\(returnOrder.orderNumber)/contentItems/\(i)"
+                    databaseRef.child(pathString).setValue(returnOrder.contentItems[i].toAnyObject())
+                }
+            }
+        }
+
+        return returnOrder
+    }
+    
     @objc func receiveRefreshHistory(_ notification: Notification) {
         queryMenuOrder()
     }
@@ -185,7 +214,7 @@ class HistoryTableViewController: UITableViewController {
 
                     let decoder: JSONDecoder = JSONDecoder()
                     do {
-                        let orderData = try decoder.decode(MenuOrder.self, from: jsonData!)
+                        var orderData = try decoder.decode(MenuOrder.self, from: jsonData!)
                         print("queryMenuOrder jason decoded successful")
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         guard let history_vc = storyboard.instantiateViewController(withIdentifier: "HISTORY_DETAIL_VC") as? HistoryDetailViewController else {
@@ -193,6 +222,7 @@ class HistoryTableViewController: UITableViewController {
                             return
                         }
 
+                        orderData = self.checkOrderExpire(order_data: orderData)
                         history_vc.menuOrder = orderData
 
                         self.show(history_vc, sender: self)
@@ -385,7 +415,7 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
             if downloadMenuInformation == true && downloadMenuOrder == true && memberIndex >= 0 {
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 guard let joinController = storyBoard.instantiateViewController(withIdentifier: "JOIN_ORDER_VC") as? JoinGroupOrderTableViewController else{
-                    assertionFailure("[AssertionFailure] StoryBoard: JOIN_ORDER_VC can't find!! (NotificationActionViewController)")
+                    assertionFailure("[AssertionFailure] StoryBoard: JOIN_ORDER_VC can't find!! (HistoryTableViewController)")
                     return
                 }
 

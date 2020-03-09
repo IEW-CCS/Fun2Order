@@ -628,6 +628,8 @@
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
+                        <outlet property="buttonAttend" destination="ZIU-QZ-ZO8" id="foi-i9-UaS"/>
+                        <outlet property="buttonReject" destination="2eD-78-teM" id="wPF-mO-EJW"/>
                         <outlet property="labelBrandName" destination="iSU-Z7-5iJ" id="lrM-SO-biz"/>
                         <outlet property="labelDueTime" destination="jsP-cb-yj4" id="dqH-Gq-yBs"/>
                         <outlet property="labelMemberCount" destination="p3r-ZO-pzR" id="mx0-fA-1Ig"/>

@@ -354,6 +354,7 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
             return
         }
         
+        self.buttonCreateOrder.isEnabled = false
         createMenuOrder()
     }
 }
@@ -409,8 +410,6 @@ extension GroupOrderViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SelectMemberCell", for: indexPath) as! SelectMemberCell
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        //cell.setData(image: self.memberImages[indexPath.row], name: self.memberNames[indexPath.row])
-        //cell.setData(image: self.memberList[indexPath.row].memberImage, name: self.memberList[indexPath.row].memberName)
         cell.setData(member_id: self.memberList[indexPath.row].memberID, member_name: self.memberList[indexPath.row].memberName)
         cell.delegate = self
         cell.tag = indexPath.row

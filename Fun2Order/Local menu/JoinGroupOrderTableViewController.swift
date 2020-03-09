@@ -149,35 +149,6 @@ class JoinGroupOrderTableViewController: UITableViewController {
         self.navigationController?.isNavigationBarHidden = true
         self.tabBarController?.tabBar.isHidden = true
 
-/*
-        var scrollView: UIScrollView!
-
-        let imageView = sender.view as! UIImageView
-        let newImageView = UIImageView(image: imageView.image)
-        newImageView.frame = UIScreen.main.bounds
-        newImageView.backgroundColor = .black
-        newImageView.contentMode = .scaleAspectFit
-        newImageView.isUserInteractionEnabled = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
-        newImageView.addGestureRecognizer(tap)
-
-        scrollView = UIScrollView(frame: self.view.bounds)
-        scrollView.backgroundColor = UIColor.black
-        scrollView.contentSize = newImageView.bounds.size
-        scrollView.autoresizingMask = UIView.AutoresizingMask(rawValue: UIView.AutoresizingMask.RawValue(UInt8(UIView.AutoresizingMask.flexibleWidth.rawValue) | UInt8(UIView.AutoresizingMask.flexibleHeight.rawValue)))
-        scrollView.addSubview(newImageView)
-        self.view.addSubview(scrollView)
-        //self.view.addSubview(newImageView)
-        
-        scrollView.scrollsToTop = false
-        scrollView.zoomScale = 1.0
-        scrollView.minimumZoomScale = 0.5
-        scrollView.maximumZoomScale = 2.0
-        scrollView.bouncesZoom = true
-        scrollView.delegate = self
-        self.navigationController?.isNavigationBarHidden = true
-        self.tabBarController?.tabBar.isHidden = true
- */
     }
     
     @objc func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
@@ -301,12 +272,6 @@ class JoinGroupOrderTableViewController: UITableViewController {
             }
         }
 
-        //if segue.identifier == "ShowOrderBoard" {
-        //    if let controllerFollow = segue.destination as? MenuOrderBoardViewController {
-        //        print("ShowOrderBoard prepare")
-        //        controllerFollow.menuOrder = self.menuOrder!
-        //    }
-        //}
     }
 }
 
