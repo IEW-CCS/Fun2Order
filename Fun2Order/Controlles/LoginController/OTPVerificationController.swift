@@ -15,8 +15,9 @@ import FirebaseStorage
 
 class OTPVerificationController: UIViewController,OtpViewDelegate {
     
-    var phoneString = ""
-    var _verificationID = ""
+    var phoneString: String = ""
+    var _verificationID: String = ""
+    var userName: String = ""
     
     func EnterOTP(otp: String) {
       
@@ -28,14 +29,12 @@ class OTPVerificationController: UIViewController,OtpViewDelegate {
             if ((error) != nil) {
                 // Handles error
                 print("error in otp : \(String(describing: error?.localizedDescription))")
-                
-                let alert = UIAlertController(title: "Wrong OTP", message: "Please Enter Correct OTP for \(self.phoneString)", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                
+                presentSimpleAlertMessage(title: "認證碼錯誤", message: "請對電話號碼(\(self.phoneString))輸入正確的認證碼")
             }
             else
             {
+                self.inputUserName()
+/*
                 let path = NSHomeDirectory() + "/Documents/MyProfile.plist"
                 if let plist = NSMutableDictionary(contentsOfFile: path) {
                     plist["UserID"] = Auth.auth().currentUser?.uid
@@ -46,25 +45,79 @@ class OTPVerificationController: UIViewController,OtpViewDelegate {
                     }
                 }
 
-                let databaseRef = Database.database().reference()
-                
-                let uidPathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "uID")
-                databaseRef.child(uidPathString).setValue(Auth.auth().currentUser!.uid)
-
-                let userNamePathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "userName")
-                databaseRef.child(userNamePathString).setValue("")
-
-                let photoUrlPathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "photoURL")
-                databaseRef.child(photoUrlPathString).setValue("UserProfile_Photo/Image_Default_Member.png")
+                self.setupFBUserProfile()
                 
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 let nextViewController = storyBoard.instantiateViewController(withIdentifier: "HomeTabBar") as! UITabBarController
                 self.navigationController?.pushViewController(nextViewController, animated: true)
-                
+*/
             }
         }
     }
     
+    func setupFBUserProfile() {
+        let databaseRef = Database.database().reference()
+        
+        let uidPathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "uID")
+        databaseRef.child(uidPathString).setValue(Auth.auth().currentUser!.uid)
+
+        let userNamePathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "userName")
+        databaseRef.child(userNamePathString).setValue(self.userName)
+
+        let phoneNumberPathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "phoneNumber")
+        databaseRef.child(phoneNumberPathString).setValue(self.phoneString)
+
+        let photoUrlPathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "photoURL")
+        databaseRef.child(photoUrlPathString).setValue("UserProfile_Photo/Image_Default_Member.png")
+
+        let changeRequest = Auth.auth().currentUser!.createProfileChangeRequest()
+        changeRequest.displayName = self.userName
+        changeRequest.commitChanges(completion: { (error) in
+            if error != nil {
+                print(error!.localizedDescription)
+                return
+            } else {
+                print("Auth.auth().currentUser?.displayName = \(String(describing: Auth.auth().currentUser?.displayName))")
+
+                let path = NSHomeDirectory() + "/Documents/MyProfile.plist"
+                if let plist = NSMutableDictionary(contentsOfFile: path) {
+                    plist["UserID"] = Auth.auth().currentUser?.uid
+                    plist["PhoneNumber"] = self.phoneString
+                    plist["UserName"] = self.userName
+
+                    if !plist.write(toFile: path, atomically: true) {
+                        print("Save MyProfile.plist failed")
+                    }
+                }
+
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "HomeTabBar") as! UITabBarController
+                self.navigationController?.pushViewController(nextViewController, animated: true)
+            }
+        })
+
+    }
+
+    func inputUserName() {
+        let controller = UIAlertController(title: "使用者名稱", message: nil, preferredStyle: .alert)
+
+        guard let userNameController = self.storyboard?.instantiateViewController(withIdentifier: "USER_NAME_VC") as? UserNameViewController else {
+            assertionFailure("[AssertionFailure] StoryBoard: USER_NAME_VC can't find!! (UserNameViewController)")
+            return
+        }
+
+        controller.setValue(userNameController, forKey: "contentViewController")
+        userNameController.preferredContentSize.height = 220
+        userNameController.preferredContentSize.width = 320
+        
+        userNameController.delegate = self
+        controller.preferredContentSize.height = 220
+        controller.preferredContentSize.width = 320
+        controller.addChild(userNameController)
+        
+        present(controller, animated: true, completion: nil)
+    }
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         otpNumber.resignFirstResponder()
     }
@@ -73,7 +126,6 @@ class OTPVerificationController: UIViewController,OtpViewDelegate {
     @IBOutlet var otpNumber: UIView!
 
     @IBAction func ResendOTP(_ sender: Any) {
-        
         PhoneAuthProvider.provider().verifyPhoneNumber(phoneString, uiDelegate: nil) { verificationID, error in
             if (error == nil) {
                 self._verificationID = verificationID!
@@ -81,13 +133,15 @@ class OTPVerificationController: UIViewController,OtpViewDelegate {
             } else {
                 print("error varifying PhoneNumber: \(String(describing: error))")
                 
-                let alert = UIAlertController(title: "認證錯誤", message: String(describing: error?.localizedDescription), preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "確定", style: UIAlertAction.Style.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                presentSimpleAlertMessage(title: "認證錯誤", message: error!.localizedDescription)
+                //let alert = UIAlertController(title: "認證錯誤", message: String(describing: error?.localizedDescription), preferredStyle: UIAlertController.Style.alert)
+                //alert.addAction(UIAlertAction(title: "確定", style: UIAlertAction.Style.default, handler: nil))
+                //self.present(alert, animated: true, completion: nil)
                 
             }
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let frm: CGRect = otpNumber.frame
@@ -102,13 +156,22 @@ class OTPVerificationController: UIViewController,OtpViewDelegate {
                 print(" varifying PhoneNumber OK !!")
             } else {
                 print("error varifying PhoneNumber: \(String(describing: error))")
+                presentSimpleAlertMessage(title: "認證錯誤", message: error!.localizedDescription)
                 
-                let alert = UIAlertController(title: "認證錯誤", message: String(describing: error?.localizedDescription), preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "確定", style: UIAlertAction.Style.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                //let alert = UIAlertController(title: "認證錯誤", message: String(describing: error?.localizedDescription), preferredStyle: UIAlertController.Style.alert)
+                //alert.addAction(UIAlertAction(title: "確定", style: UIAlertAction.Style.default, handler: nil))
+                //self.present(alert, animated: true, completion: nil)
                 
             }
         }
     }
 }
 
+extension OTPVerificationController: UserNameDelegate {
+    func setUserName(sender: UserNameViewController, user_name: String) {
+        print("OTPVerificationController received user name = \(user_name)")
+        self.userName = user_name
+
+        self.setupFBUserProfile()
+    }
+}

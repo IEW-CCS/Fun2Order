@@ -108,6 +108,7 @@ class MenuOrderBoardViewController: UIViewController {
     
     @IBAction func clickFollowAction(_ sender: UIButton) {
         var items: [MenuProductItem] = [MenuProductItem]()
+        var isAnyFollowed: Bool = false
         
         if !self.followStatus.isEmpty {
             for i in 0...self.followStatus.count - 1 {
@@ -117,12 +118,20 @@ class MenuOrderBoardViewController: UIViewController {
                             items.append(self.memberContent[i].orderContent.menuProductItems![j])
                         }
                     }
+                    isAnyFollowed = true
                 }
             }
             
+            if !isAnyFollowed {
+                presentSimpleAlertMessage(title: "提示訊息", message: "尚無任何項目被點選追隨，請重新選擇")
+                return
+            }
             delegate?.setFollowProductInformation(items: items)
             navigationController?.popViewController(animated: true)
             self.dismiss(animated: false, completion: nil)
+        } else {
+            presentSimpleAlertMessage(title: "提示訊息", message: "尚無人回覆訂單，請稍候再查詢")
+            return
         }
     }
     

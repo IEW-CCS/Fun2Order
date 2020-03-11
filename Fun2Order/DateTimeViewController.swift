@@ -14,9 +14,9 @@ class DateTimeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let formatter = DateFormatter()
-        formatter.dateFormat = TAIWAN_DATETIME_FORMATTER2
-        self.dueDate = formatter.string(from: self.dateTimePicker.date)
+        //let formatter = DateFormatter()
+        //formatter.dateFormat = TAIWAN_DATETIME_FORMATTER2
+        //self.dueDate = formatter.string(from: self.dateTimePicker.date)
     }
     
     @IBAction func datePickerChanged(_ sender: UIDatePicker) {
@@ -24,7 +24,6 @@ class DateTimeViewController: UIViewController {
         formatter.dateFormat = TAIWAN_DATETIME_FORMATTER2
         self.dueDate = formatter.string(from: sender.date)
         print("DateTimeViewController self.dueDate = \(self.dueDate)")
-
     }
     
     public func getDueDate() -> String {

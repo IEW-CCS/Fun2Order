@@ -142,7 +142,6 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
         controller.addChild(dateTimeController)
         
         let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
-            
             print("Cancel to update due date!")
         }
         cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
@@ -150,6 +149,20 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
         
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             let datetime_controller = controller.children[0] as! DateTimeViewController
+            let dueTime: String = datetime_controller.getDueDate()
+            if dueTime == "" {
+                presentSimpleAlertMessage(title: "提示訊息", message: "尚未指定團購單截止時間")
+                return
+            }
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = TAIWAN_DATETIME_FORMATTER2
+            let nowDate = formatter.string(from: Date())
+            if nowDate > dueTime {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "團購單截止時間不得早於現在時間")
+                return
+            }
+            
             self.labelDueDate.text = datetime_controller.getDueDate()
             self.labelDueDate.isHidden = false
         }
@@ -161,7 +174,6 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
     }
     
     func createMenuOrder() {
-
         let timeZone = TimeZone.init(identifier: "UTC+8")
         let formatter = DateFormatter()
         formatter.timeZone = timeZone
@@ -351,6 +363,7 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
     @IBAction func sendGroupOrder(_ sender: UIButton) {
         if self.memberList.isEmpty {
             print("Selected Group's member list is empty")
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "此團購訂單尚未指定任何參與者，請重新選取參與者")
             return
         }
         

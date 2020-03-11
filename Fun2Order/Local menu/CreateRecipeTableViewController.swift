@@ -74,29 +74,6 @@ class CreateRecipeTableViewController: UITableViewController {
         
         present(controller, animated: true, completion: nil)
     }
-
-/*
-    @objc func receiveTemplateIndex(_ notification: Notification) {
-        if let templateIndex = notification.object as? Int {
-            self.selectedTemoplateIndex = templateIndex
-            //let indexPath = IndexPath(row: 0, section: 0)
-            //let cell = self.tableView.cellForRow(at: indexPath) as! SelectMenuRecipeTemplateCell
-            //cell.setData(template_name: self.brandCategory[templateIndex])
-            cellHeight.removeAll()
-            cellHeight = Array(repeating: 0, count: self.menuRecipeTemplates[self.selectedTemoplateIndex].menuRecipes.count)
-
-            if self.menuRecipes != nil {
-                self.menuRecipes!.removeAll()
-            } else {
-                self.menuRecipes = [MenuRecipe]()
-            }
-            self.menuRecipes = Array<MenuRecipe>(repeating: MenuRecipe(), count: self.menuRecipeTemplates[self.selectedTemoplateIndex].menuRecipes.count)
-
-            self.menuRecipes = self.menuRecipeTemplates[self.selectedTemoplateIndex].menuRecipes
-            self.tableView.reloadData()
-        }
-    }
- */
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -229,27 +206,31 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
         
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             let category_controller = controller.children[0] as! RecipeCategoryViewController
-            if category_controller.getRecipeCategory() != nil {
-                var menuRecipeData: MenuRecipe = MenuRecipe()
-                menuRecipeData.recipeCategory = category_controller.getRecipeCategory()!
-                menuRecipeData.isAllowedMulti = category_controller.getCheckStatus()
-                if self.menuRecipes == nil {
-                    menuRecipeData.sequenceNumber = 1
-                    self.menuRecipes = [MenuRecipe]()
-                    self.menuRecipes?.append(menuRecipeData)
-                } else {
-                    var sequenceNumber: Int = 0
-                    for i in 0...self.menuRecipes!.count - 1 {
-                        if self.menuRecipes![i].sequenceNumber > sequenceNumber {
-                            sequenceNumber = self.menuRecipes![i].sequenceNumber
-                        }
-                    }
-                    sequenceNumber = sequenceNumber + 1
-                    menuRecipeData.sequenceNumber = sequenceNumber
-                    self.menuRecipes?.append(menuRecipeData)
-                }
-                self.refershRecipe()
+            let recipeCategory = category_controller.getRecipeCategory()
+            if recipeCategory == nil || recipeCategory! == "" {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的配方類別名稱不能為空白，請重新輸入")
+                return
             }
+            
+            var menuRecipeData: MenuRecipe = MenuRecipe()
+            menuRecipeData.recipeCategory = category_controller.getRecipeCategory()!
+            menuRecipeData.isAllowedMulti = category_controller.getCheckStatus()
+            if self.menuRecipes == nil {
+                menuRecipeData.sequenceNumber = 1
+                self.menuRecipes = [MenuRecipe]()
+                self.menuRecipes?.append(menuRecipeData)
+            } else {
+                var sequenceNumber: Int = 0
+                for i in 0...self.menuRecipes!.count - 1 {
+                    if self.menuRecipes![i].sequenceNumber > sequenceNumber {
+                        sequenceNumber = self.menuRecipes![i].sequenceNumber
+                    }
+                }
+                sequenceNumber = sequenceNumber + 1
+                menuRecipeData.sequenceNumber = sequenceNumber
+                self.menuRecipes?.append(menuRecipeData)
+            }
+            self.refershRecipe()
         }
         
         okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
@@ -299,7 +280,6 @@ extension CreateRecipeTableViewController: BasicButtonDelegate {
                 }
             }
 
-            //NotificationCenter.default.post(name: NSNotification.Name("SendRecipeItems"), object: tmpData)
             delegate?.sendRecipeItems(sender: self, menu_recipes: tmpData)
             navigationController?.popViewController(animated: true)
             self.dismiss(animated: false, completion: nil)

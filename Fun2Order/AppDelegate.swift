@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         //GADMobileAds.sharedInstance().start(completionHandler: nil)
         GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["2077ef9a63d2b398840261c8221a0c9b"]
-        
+
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
             let authOptions: UNAuthorizationOptions = [.alert, .badge]
@@ -59,12 +59,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         Messaging.messaging().delegate = self
         
         getNotifications(completion: refreshNotifyList)
-                
+        signOutForFirstRun()
         return true
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        print("Firebase registration token: \(fcmToken)")
+        print("**************************************")
+        print("********** Firebase registration token: \(fcmToken)")
 
         let dataDict:[String: String] = ["token": fcmToken]
         NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
@@ -142,6 +143,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         self.notificationDelegate?.refreshNotificationList()
     }
     
+    func signOutForFirstRun() {
+        let userDefaults = UserDefaults.standard
+        if userDefaults.value(forKey: "appFirstTimeOpend") == nil {
+            print("------ AppDelegate -> First run for Fun2Order ------")
+            //if app is first time opened then it will be nil
+            userDefaults.setValue(true, forKey: "appFirstTimeOpend")
+            // signOut from FIRAuth
+            do {
+                try Auth.auth().signOut()
+            }catch {
+                print(error.localizedDescription)
+            }
+        } else {
+            print("------ AppDelegate -> Not first run for Fun2Order ------")
+        }
+    }
+
     func writeFirebaseConfig() {
         let fm = FileManager.default
         let src = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")
@@ -182,9 +200,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
         
-        if let user_id = Auth.auth().currentUser?.uid {
-            uploadUserProfileTokenID(user_id: user_id, token_id: instance_id)
-        }
+        //if let user_id = Auth.auth().currentUser?.uid {
+        //    uploadUserProfileTokenID(user_id: user_id, token_id: instance_id)
+        //}
     }
     
     @available(iOS 13, *)

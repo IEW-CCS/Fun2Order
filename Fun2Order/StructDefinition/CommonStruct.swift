@@ -523,6 +523,31 @@ struct NotificationData: Codable {
     }
 }
 
+struct UserProfile: Codable {
+    var uID: String = ""
+    var userName: String = ""
+    var phoneNumber: String = ""
+    var tokenID: String = ""
+    var photoURL: String = ""
+    var gender: String?
+    var birthday: String?
+    var address: String?
+
+    func toAnyObject() -> Any {
+        return [
+            "uID": uID,
+            "userName": userName,
+            "phoneNumber": phoneNumber,
+            "tokenID": tokenID,
+            "photoURL": photoURL,
+            "gender": gender,
+            "birthday": birthday,
+            "address": address
+        ]
+    }
+}
+
+
 struct TestStruct: Codable {
     var messageID: String = ""
     var locations: [String]? = [String]()

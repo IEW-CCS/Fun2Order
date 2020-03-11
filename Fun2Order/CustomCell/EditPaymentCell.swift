@@ -44,7 +44,14 @@ class EditPaymentCell: UITableViewCell {
         }
         
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
-            self.labelPrice.text = controller.textFields?[0].text
+            let priceString = controller.textFields?[0].text
+            if priceString == nil || priceString! == "" {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入金額不能為空白，請重新輸入")
+                alertWindow.isHidden = true
+                return
+            }
+            
+            self.labelPrice.text = priceString
             self.itemContent.orderContent.isPayChecked = true
             self.itemContent.orderContent.payNumber = Int((controller.textFields?[0].text)!)!
             let formatter = DateFormatter()

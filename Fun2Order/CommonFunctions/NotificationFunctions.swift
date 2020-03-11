@@ -43,9 +43,7 @@ func getLaunchNotification(user_infos: [String: Any]) {
     notificationData.attendedMemberCount = Int(user_infos["attendedMemberCount"] as! String)!
     notificationData.messageDetail = user_infos["messageDetail"] as! String
     notificationData.isRead = user_infos["isRead"] as! String
-    //notificationData.isRead = user_infos["isRead"] as! Bool
     insertNotification(notification: notificationData)
-    //notifications.removeAllDeliveredNotifications()
     DispatchQueue.main.async {
         setNotificationBadgeNumber()
     }

@@ -147,6 +147,7 @@
 		3675ED432388D15F003A94B7 /* CODE_TABLE+CoreDataClass copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675ED332388D15F003A94B7 /* CODE_TABLE+CoreDataClass copy.swift */; };
 		3675ED48238ABE93003A94B7 /* FAVORITE_STORE+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675ED46238ABE93003A94B7 /* FAVORITE_STORE+CoreDataProperties.swift */; };
 		3675ED49238ABE93003A94B7 /* FAVORITE_STORE+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675ED47238ABE93003A94B7 /* FAVORITE_STORE+CoreDataClass.swift */; };
+		367BEF49241778C000292E00 /* UserNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BEF48241778C000292E00 /* UserNameViewController.swift */; };
 		367CE57823C1606100C0840D /* SelectMemberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367CE57623C1606100C0840D /* SelectMemberCell.swift */; };
 		367CE57923C1606100C0840D /* SelectMemberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 367CE57723C1606100C0840D /* SelectMemberCell.xib */; };
 		367CE57D23C1ABEC00C0840D /* Icon_Clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 367CE57C23C1ABEB00C0840D /* Icon_Clock.png */; };
@@ -527,6 +528,7 @@
 		3675ED332388D15F003A94B7 /* CODE_TABLE+CoreDataClass copy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CODE_TABLE+CoreDataClass copy.swift"; sourceTree = "<group>"; };
 		3675ED46238ABE93003A94B7 /* FAVORITE_STORE+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FAVORITE_STORE+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3675ED47238ABE93003A94B7 /* FAVORITE_STORE+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FAVORITE_STORE+CoreDataClass.swift"; sourceTree = "<group>"; };
+		367BEF48241778C000292E00 /* UserNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameViewController.swift; sourceTree = "<group>"; };
 		367CE57523C02D2200C0840D /* Fun2Order.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Fun2Order.entitlements; sourceTree = "<group>"; };
 		367CE57623C1606100C0840D /* SelectMemberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectMemberCell.swift; sourceTree = "<group>"; };
 		367CE57723C1606100C0840D /* SelectMemberCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectMemberCell.xib; sourceTree = "<group>"; };
@@ -1277,6 +1279,7 @@
 				F505DDE123692AC900E3F681 /* SignUpMailController.swift */,
 				F505DDE523692AC900E3F681 /* VerifyMailController.swift */,
 				F505DDE223692AC900E3F681 /* VerifyPhNoController.swift */,
+				367BEF48241778C000292E00 /* UserNameViewController.swift */,
 			);
 			path = LoginController;
 			sourceTree = "<group>";
@@ -1766,6 +1769,7 @@
 				36AA198D23D51D330039A758 /* StatusSummaryTableViewController.swift in Sources */,
 				36B80C9B23B876DF004359E4 /* ScanQRCodeViewController.swift in Sources */,
 				3600BC8F2394012800BC6D84 /* ORDER_PRODUCT_RECIPE+CoreDataProperties.swift in Sources */,
+				367BEF49241778C000292E00 /* UserNameViewController.swift in Sources */,
 				36B6D9802409373F00041C2C /* AddFriendViewController.swift in Sources */,
 				3675ED412388D15F003A94B7 /* PRODUCT_INFORMATION+CoreDataClass copy.swift in Sources */,
 				36973AC123A88C32008804C5 /* FunctionsPageViewController.swift in Sources */,
@@ -1924,7 +1928,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -1952,7 +1956,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;

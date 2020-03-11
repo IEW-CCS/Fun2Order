@@ -55,10 +55,6 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         refreshMenu()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-
-    }
-
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
           textField.resignFirstResponder()
           return true
@@ -163,9 +159,9 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         //print("menu_info transformed object = \(menu_info.toAnyObject())")
         
         databaseRef.child(pathString).setValue(menu_info.toAnyObject()) { (_, _) in
-            print("Firebase setValue of Menu Information successfule, then send notification to refresh Menu List")
+            print("CreateMenuTableViewController uploadMenuInformation -> Firebase setValue of Menu Information successful")
             // Send notification to refresh Menu List function
-            NotificationCenter.default.post(name: NSNotification.Name("RefreshMenuList"), object: nil)
+            //NotificationCenter.default.post(name: NSNotification.Name("RefreshMenuList"), object: nil)
             self.navigationController?.popViewController(animated: true)
         }
     }
@@ -204,6 +200,11 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
             let addAction = UIAlertAction(title: "加入菜單分類", style: .default) { (_) in
                 print("Add to brand category!")
                 let category_string = controller.textFields?[0].text
+                if category_string == nil || category_string! == "" {
+                    presentSimpleAlertMessage(title: "錯誤訊息", message: "新增的品牌類別不能為空白，請重新輸入")
+                    alertWindow.isHidden = true
+                    return
+                }
                 print("New added brand category = \(category_string!)")
                 insertMenuBrandCategory(category: category_string!)
                 self.labelCategory.text = category_string!
@@ -291,6 +292,11 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             let location_string = controller.textFields?[0].text
+            if location_string == nil || location_string! == "" {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的地點不能為空白，請重新輸入")
+                return
+            }
+
             if location_string != "" {
                 if self.menuInformation.locations == nil {
                     self.menuInformation.locations = [String]()
@@ -327,6 +333,11 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             var tmpProductItem = MenuItem()
             let product_string = controller.textFields?[0].text
+            if product_string == nil || product_string! == "" {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的產品名稱不能為空白，請重新輸入")
+                return
+            }
+
             let price_string = controller.textFields?[1].text
             tmpProductItem.itemName = product_string!
             if price_string != "" {
@@ -348,7 +359,6 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         controller.addAction(okAction)
         
         present(controller, animated: true, completion: nil)
-
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -483,6 +493,11 @@ extension CreateMenuTableViewController: BasicButtonDelegate {
         
         //Create Menu and save to CoreData tables
         self.menuInformation.brandName = self.textBrandName.text!
+        if self.textBrandName.text == nil || self.textBrandName.text! == "" {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的品牌名稱不能為空白，請重新輸入")
+            return
+        }
+
         self.menuInformation.brandCategory = self.labelCategory.text!
         
         let formatter = DateFormatter()

@@ -58,6 +58,10 @@ class GroupEditViewController: UIViewController {
     }
     
     @IBAction func confirmUpdate(_ sender: UIButton) {
+        if self.textGroupName.text == nil || self.textGroupName.text! == "" {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "群組名稱不能為空白，請重新輸入")
+            return
+        }
         if self.isEditFlag {
             updateGroup(group_id: self.groupID)
         } else {

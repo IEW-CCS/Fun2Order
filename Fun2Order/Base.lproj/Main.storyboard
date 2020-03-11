@@ -1344,7 +1344,7 @@
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="pXE-JZ-3Uj"/>
                                 <barButtonItem style="plain" id="7Qn-LT-bIn">
                                     <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="lcF-Kd-WIc">
-                                        <rect key="frame" x="20" y="5.5" width="374" height="33"/>
+                                        <rect key="frame" x="47" y="5.5" width="320" height="33"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="First"/>
@@ -2346,7 +2346,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XRL-To-kbu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1945" y="940"/>
+            <point key="canvasLocation" x="-2488" y="960"/>
         </scene>
         <!--Verify Ph No Controller-->
         <scene sceneID="OcM-NN-RW3">
@@ -2356,13 +2356,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="認證碼已透過簡訊傳至您的手機" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xpq-uO-gQP">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="認證碼將透過簡訊傳至您的手機" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xpq-uO-gQP">
                                 <rect key="frame" x="30" y="388" width="354" height="21"/>
                                 <fontDescription key="fontDescription" name="ProductSans-Regular" family="Product Sans" pointSize="18"/>
                                 <color key="textColor" red="0.14901960780000001" green="0.19215686269999999" blue="0.37254901959999998" alpha="0.79783818490000002" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="認證您的手機號碼" textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S6N-yN-Rsg">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="認證手機號碼" textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S6N-yN-Rsg">
                                 <rect key="frame" x="30" y="237" width="354" height="141"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="141" id="Z8y-ke-Mld"/>
@@ -2436,7 +2436,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H4u-QS-v0V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1210" y="940"/>
+            <point key="canvasLocation" x="-1752" y="960"/>
         </scene>
         <!--OTP Verification Controller-->
         <scene sceneID="hXr-PZ-B3X">
@@ -2521,7 +2521,74 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UBr-lp-OJU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-477" y="940"/>
+            <point key="canvasLocation" x="-1020" y="960"/>
+        </scene>
+        <!--User Name View Controller-->
+        <scene sceneID="rkJ-4F-xGi">
+            <objects>
+                <viewController storyboardIdentifier="USER_NAME_VC" id="34i-0X-BsT" customClass="UserNameViewController" customModule="Fun2Order" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Hew-vp-sfZ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="請輸入使用者名稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q0b-Jg-S2j">
+                                <rect key="frame" x="46.5" y="25" width="227" height="33.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="227" id="dRe-UB-6MJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <color key="textColor" red="0.14901960784313725" green="0.19215686269999999" blue="0.37254901959999998" alpha="0.79783818490000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b78-Ah-ONR">
+                                <rect key="frame" x="46.5" y="73.5" width="227" height="48"/>
+                                <color key="backgroundColor" red="0.93333333333333335" green="0.93908506629999999" blue="0.95220893620000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="bbB-8J-C7g"/>
+                                    <constraint firstAttribute="width" constant="227" id="o4Z-5s-lTx"/>
+                                </constraints>
+                                <color key="textColor" red="0.14901960784313725" green="0.15294117647058825" blue="0.37254901960784315" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SPW-bO-NyB">
+                                <rect key="frame" x="47" y="151.5" width="226" height="40"/>
+                                <color key="backgroundColor" red="0.98039215686274506" green="0.25882352941176467" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="226" id="L7X-HP-cMh"/>
+                                    <constraint firstAttribute="height" constant="40" id="UnM-ks-4Xh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="確定">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="ClickToSetUserName:" destination="34i-0X-BsT" eventType="touchUpInside" id="MkF-0Q-398"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Q0b-Jg-S2j" firstAttribute="top" secondItem="Hew-vp-sfZ" secondAttribute="top" constant="25" id="Exb-ZV-elS"/>
+                            <constraint firstItem="SPW-bO-NyB" firstAttribute="centerX" secondItem="b78-Ah-ONR" secondAttribute="centerX" id="QGs-If-tkx"/>
+                            <constraint firstItem="Q0b-Jg-S2j" firstAttribute="centerX" secondItem="Hew-vp-sfZ" secondAttribute="centerX" id="WTT-xD-7K4"/>
+                            <constraint firstItem="SPW-bO-NyB" firstAttribute="top" secondItem="b78-Ah-ONR" secondAttribute="bottom" constant="30" id="YaD-ax-QYA"/>
+                            <constraint firstItem="b78-Ah-ONR" firstAttribute="leading" secondItem="Q0b-Jg-S2j" secondAttribute="leading" id="ceZ-D1-O4O"/>
+                            <constraint firstItem="b78-Ah-ONR" firstAttribute="centerX" secondItem="Q0b-Jg-S2j" secondAttribute="centerX" id="ghx-oA-hxP"/>
+                            <constraint firstItem="b78-Ah-ONR" firstAttribute="top" secondItem="Q0b-Jg-S2j" secondAttribute="bottom" constant="15" id="s4h-pz-3lX"/>
+                            <constraint firstItem="SPW-bO-NyB" firstAttribute="leading" secondItem="ROV-l9-usO" secondAttribute="leading" constant="47" id="wza-b6-quN"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ROV-l9-usO"/>
+                    </view>
+                    <size key="freeformSize" width="320" height="220"/>
+                    <connections>
+                        <outlet property="buttonConfirm" destination="SPW-bO-NyB" id="ekB-kF-3sk"/>
+                        <outlet property="labelUserName" destination="b78-Ah-ONR" id="G4K-zr-eDv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zGu-5i-0Ka" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-409" y="855"/>
         </scene>
         <!--Forgot Password Controller-->
         <scene sceneID="wAY-AT-WBJ">
@@ -2598,7 +2665,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cju-PO-RI7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-478" y="1619"/>
+            <point key="canvasLocation" x="-1020" y="1639"/>
         </scene>
         <!--我的設定-->
         <scene sceneID="RsM-Id-Hry">
@@ -2759,8 +2826,8 @@
                                                         <constraint firstAttribute="height" constant="30" id="Odz-Oc-sgF"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123456789012345" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C5q-lb-TkK">
-                                                    <rect key="frame" x="250" y="13.5" width="124" height="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C5q-lb-TkK">
+                                                    <rect key="frame" x="374" y="22" width="0.0" height="0.0"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -2803,8 +2870,8 @@
                                                         <constraint firstAttribute="width" constant="30" id="RCH-Mu-WJa"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="user name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CM4-ac-T7x">
-                                                    <rect key="frame" x="307" y="13.5" width="68" height="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CM4-ac-T7x">
+                                                    <rect key="frame" x="375" y="22" width="0.0" height="0.0"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2844,8 +2911,8 @@
                                                         <constraint firstAttribute="height" constant="30" id="R0l-ui-5qA"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="男性" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5HF-8x-x0S">
-                                                    <rect key="frame" x="346" y="13.5" width="29" height="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5HF-8x-x0S">
+                                                    <rect key="frame" x="375" y="22" width="0.0" height="0.0"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2885,8 +2952,8 @@
                                                         <constraint firstAttribute="height" constant="30" id="ZFH-lc-4Es"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1980/01/01" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c3o-2R-NaG">
-                                                    <rect key="frame" x="303" y="13.5" width="72" height="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c3o-2R-NaG">
+                                                    <rect key="frame" x="375" y="22" width="0.0" height="0.0"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2926,8 +2993,8 @@
                                                         <constraint firstAttribute="width" constant="30" id="QwB-kE-ZXt"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="address address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nn8-KE-fp8">
-                                                    <rect key="frame" x="268" y="13.5" width="107" height="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nn8-KE-fp8">
+                                                    <rect key="frame" x="375" y="22" width="0.0" height="0.0"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -3676,7 +3743,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AD0-wc-dbp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1946" y="1619"/>
+            <point key="canvasLocation" x="-2488" y="1639"/>
         </scene>
         <!--Sign Up Mail Controller-->
         <scene sceneID="GgT-bl-Z0v">
@@ -3762,7 +3829,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eIf-8f-up7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1210" y="1619"/>
+            <point key="canvasLocation" x="-1752" y="1639"/>
         </scene>
     </scenes>
     <resources>

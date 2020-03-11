@@ -66,8 +66,14 @@ class JoinOrderSelectProductViewController: UIViewController {
     }
 
     @IBAction func actionConfirm(_ sender: UIButton) {
-        if labelProductName.text == nil {
+        if labelProductName.text == nil || labelProductName.text! == "" {
             print("Product Name should not be blank")
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "產品名稱不能為空白，請重新輸入火或選擇產品")
+            return
+        }
+        
+        if Int(self.labelQuantity.text!) == 0 {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "產品數量不能為0，請重新指定產品數量")
             return
         }
         

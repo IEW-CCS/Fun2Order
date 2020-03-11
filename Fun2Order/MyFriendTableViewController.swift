@@ -118,6 +118,8 @@ extension MyFriendTableViewController: ScanQRCodeDelegate {
 
         if isUserDuplicate {
             print("User ID is duplicate!")
+            presentSimpleAlertMessage(title: "警告訊息", message: "\(member_name)已存在於好友列表中")
+            return
         } else {
             insertFriend(friend_info: newFriend)
             refreshFriendList()

@@ -61,13 +61,6 @@ class MyProfileViewController: UIViewController {
         self.tabBarController?.title = "我的設定"
         navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
     }
-
-    /*
-     override func viewDidLayoutSubviews() {
-         print("**************  viewDidLayoutSubviews to setupSegmentIndicator")
-         setupSegmentIndicator()
-     }
-     */
     
     @objc func handleImageTap(_ sender: UITapGestureRecognizer) {
         print("Group Image View is tapped")
@@ -112,25 +105,6 @@ class MyProfileViewController: UIViewController {
     }
     
     @IBAction func selectFunctions(_ sender: UISegmentedControl) {
-        /*
-         let numberOfSegments = CGFloat(self.segmentControl.numberOfSegments)
-         let segmentWidth = CGFloat((self.segmentControl.layer.frame.maxX - self.segmentControl.layer.frame.minX)/numberOfSegments)
-
-         self.segmentIndicator.removeConstraints(self.segmentIndicator.constraints)
-
-         self.segmentIndicator.topAnchor.constraint(equalTo: self.segmentControl.bottomAnchor, constant: 3).isActive = true
-         self.segmentIndicator.heightAnchor.constraint(equalToConstant: 2).isActive = true
-         
-         self.segmentIndicator.widthAnchor.constraint(equalToConstant: CGFloat(segmentWidth - 20)).isActive = true
-         
-         print("self.segmentControl.selectedSegmentIndex = \(self.segmentControl.selectedSegmentIndex)")
-         self.segmentIndicator.centerXAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].centerXAnchor).isActive = true
-         
-         UIView.animate(withDuration: 0.05, animations: {
-             self.view.layoutIfNeeded()
-         })
-         */
-        
         NotificationCenter.default.post(name: NSNotification.Name("IndexChange"), object: self.segmentControl.selectedSegmentIndex)
     }
     

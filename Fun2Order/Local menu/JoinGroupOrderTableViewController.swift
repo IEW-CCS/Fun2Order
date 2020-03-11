@@ -63,13 +63,17 @@ class JoinGroupOrderTableViewController: UITableViewController {
             if self.segmentLocation.selectedSegmentIndex < 0 {
                 // User does not select location, show alert
                 print("Doesn't not select location, just return")
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "尚未選擇地點，請重新選取地點資訊")
                 return
             } else {
                 self.memberContent.orderContent.location = self.menuInformation.locations![self.segmentLocation.selectedSegmentIndex]
             }
         }
         
-        if self.memberContent.orderContent.menuProductItems != nil {
+        if self.memberContent.orderContent.menuProductItems == nil {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "尚未輸入任何產品資訊，請重新輸入")
+            return
+        } else {
             var totalQuantity: Int = 0
             for i in 0...self.memberContent.orderContent.menuProductItems!.count - 1 {
                 totalQuantity = totalQuantity + self.memberContent.orderContent.menuProductItems![i].itemQuantity
@@ -309,6 +313,7 @@ extension JoinGroupOrderTableViewController: MenuOrderBoardDelegate {
             if self.memberContent.orderContent.menuProductItems != nil {
                 if (self.memberContent.orderContent.menuProductItems!.count + items.count) > MAX_NEW_PRODUCT_COUNT {
                     print("Over the max number limitation of new product")
+                    presentSimpleAlertMessage(title: "錯誤訊息", message: "產品種類超過限制(最多五種)，請重新輸入產品資訊")
                 } else {
                     for i in 0...items.count - 1 {
                         self.memberContent.orderContent.menuProductItems!.append(items[i])

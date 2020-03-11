@@ -95,6 +95,44 @@ func downloadFBMemberImage(member_id: String, completion: @escaping (UIImage) ->
 
 }
 
+func downloadFBUserProfile(user_id: String, completion: @escaping (UserProfile) -> Void) {
+    var userData: UserProfile = UserProfile()
+    let databaseRef = Database.database().reference()
+    let pathString = "USER_PROFILE/\(user_id)"
+
+    databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+        if snapshot.exists() {
+            let userProfile = snapshot.value
+            let jsonData = try? JSONSerialization.data(withJSONObject: userProfile as Any, options: [])
+            let jsonString = String(data: jsonData!, encoding: .utf8)!
+            print("userProfile jsonString = \(jsonString)")
+
+            let decoder: JSONDecoder = JSONDecoder()
+            do {
+                userData = try decoder.decode(UserProfile.self, from: jsonData!)
+                print("userData decoded successful !!")
+                print("userData = \(userData)")
+                completion(userData)
+            } catch {
+                print("downloadFBUserProfile userData jsonData decode failed: \(error.localizedDescription)")
+            }
+        } else {
+            print("downloadFBUserProfile USER_PROFILE snapshot doesn't exist!")
+            return
+        }
+    })  { (error) in
+        print("downloadFBUserProfile Firebase error = \(error.localizedDescription)")
+        return
+    }
+}
+
+func uploadFBUserProfile(user_profile: UserProfile) {
+    let databaseRef = Database.database().reference()
+    let pathString = "USER_PROFILE/\(user_profile.uID)"
+    
+    databaseRef.child(pathString).setValue(user_profile.toAnyObject())
+}
+
 func uploadFBMenuOrderContentItem(item: MenuOrderMemberContent) {
     let databaseRef = Database.database().reference()
     let pathString = "USER_MENU_ORDER/\(item.orderOwnerID)/\(item.orderContent.orderNumber)/contentItems"

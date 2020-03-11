@@ -24,20 +24,19 @@ class BasicInformationTableViewController: UITableViewController {
     @IBOutlet weak var imageBirthday: UIImageView!
     @IBOutlet weak var imageAddress: UIImageView!
     
-    
     var myUserID: String = ""
+    var myProfile: UserProfile = UserProfile()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
         //tmpDeleteProfile()
         setupImageTintColor()
-        loadSetupConfig()
+        //loadSetupConfig()
+        
+        if Auth.auth().currentUser?.uid != nil {
+            downloadFBUserProfile(user_id: Auth.auth().currentUser!.uid, completion: setupBasicInformation)
+        }
     }
 
     func setupImageTintColor() {
@@ -58,6 +57,16 @@ class BasicInformationTableViewController: UITableViewController {
 
         self.imageAddress.image = UIImage(named: "Icon_Address.png")?.withRenderingMode(.alwaysTemplate)
         self.imageAddress.tintColor = CUSTOM_COLOR_EMERALD_GREEN
+    }
+    
+    func setupBasicInformation(user_profile: UserProfile) {
+        self.myProfile = user_profile
+        self.myUserID = user_profile.uID
+        self.labelPhoneNumber.text = user_profile.phoneNumber
+        self.labelUserName.text = user_profile.userName
+        self.labelGender.text = user_profile.gender
+        self.labelBirthday.text = user_profile.birthday
+        self.labelAddress.text = user_profile.address
     }
     
     func tmpDeleteProfile() {
@@ -81,6 +90,11 @@ class BasicInformationTableViewController: UITableViewController {
     }
 
     func saveSetupConfig() {
+        self.myProfile.gender = self.labelGender.text
+        self.myProfile.birthday = self.labelBirthday.text
+        self.myProfile.address = self.labelAddress.text
+        uploadFBUserProfile(user_profile: self.myProfile)
+        
         let path = NSHomeDirectory() + "/Documents/MyProfile.plist"
         if let plist = NSMutableDictionary(contentsOfFile: path) {
             plist["PhoneNumber"] = labelPhoneNumber.text
@@ -202,7 +216,7 @@ class BasicInformationTableViewController: UITableViewController {
         present(controller, animated: true, completion: nil)
     }
     
-    /*
+/*
     func updatePassword() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let password_vc = storyboard.instantiateViewController(withIdentifier: "CHANGE_PWD_VC") as? ChangePasswordViewController else{
@@ -212,7 +226,8 @@ class BasicInformationTableViewController: UITableViewController {
         
         self.navigationController?.pushViewController(password_vc, animated: true)
     }
-    */
+*/
+    
     func displayQRCode() {
         guard let qrCodeController = self.storyboard?.instantiateViewController(withIdentifier: "QRCode_VC") as? QRCodeViewController else{
             assertionFailure("[AssertionFailure] StoryBoard: QRCode_VC can't find!! (QRCodeViewController)")

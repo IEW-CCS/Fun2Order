@@ -23,21 +23,22 @@ class MenuListTableViewController: UITableViewController {
         
         let favoriteCellViewNib: UINib = UINib(nibName: "FavoriteStoreCell", bundle: nil)
         self.tableView.register(favoriteCellViewNib, forCellReuseIdentifier: "FavoriteStoreCell")
-        
+
+/*
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.receiveRefreshMenuList(_:)),
             name: NSNotification.Name(rawValue: "RefreshMenuList"),
             object: nil
         )
-
+*/
         
         print("MenuListTableViewController viewDidLoad downloadFBMenuInformation")
         downloadFBMenuInformation(select_index: 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.categorySegment.isHidden = true
+        //self.categorySegment.isHidden = true
     }
     
     func downloadFBMenuInformation(select_index: Int) {
@@ -98,11 +99,12 @@ class MenuListTableViewController: UITableViewController {
         
     }
     
+/*
     @objc func receiveRefreshMenuList(_ notification: Notification) {
         print("MenuListTableViewController receiveRefreshMenuList downloadFBMenuInformation")
         downloadFBMenuInformation(select_index: 0)
     }
-    
+*/
     func setupCategorySegment() {
         if self.menuInfos.isEmpty {
             self.categorySegment.removeAllSegments()

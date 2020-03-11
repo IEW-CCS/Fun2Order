@@ -27,6 +27,7 @@ class MenuHomeTableViewController: UITableViewController {
         let adCellViewNib: UINib = UINib(nibName: "MenuHomeNativeAdCell", bundle: nil)
         self.tableView.register(adCellViewNib, forCellReuseIdentifier: "MenuHomeNativeAdCell")
 
+        setupTokenID()
         setNotificationBadgeNumber()
         setupBannerAdView()
     }
@@ -34,13 +35,25 @@ class MenuHomeTableViewController: UITableViewController {
     func setupBannerAdView() {
         self.adBannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
         
-        // MenuHomeBannerAd adUnitID
+        //MenuHomeBannerAd adUnitID
         //adBannerView.adUnitID = "ca-app-pub-9511677579097261/2511330037"
         //Google Test adUnitID
         self.adBannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
         self.adBannerView.delegate = self
         self.adBannerView.rootViewController = self
         self.adBannerView.load(GADRequest())
+    }
+    
+    func setupTokenID() {
+        print("Upload Token ID in MenuHomeTableViewController")
+        if Auth.auth().currentUser?.uid != nil {
+            let path = NSHomeDirectory() + "/Documents/AppConfig.plist"
+            if let plist = NSMutableDictionary(contentsOfFile: path) {
+                if let tokenID = plist["FirebaseInstanceID"] as? String {
+                    uploadUserProfileTokenID(user_id: Auth.auth().currentUser!.uid, token_id: tokenID)
+                }
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
