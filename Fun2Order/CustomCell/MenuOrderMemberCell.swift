@@ -71,6 +71,10 @@ class MenuOrderMemberCell: UITableViewCell {
 
         if item.orderContent.menuProductItems != nil {
             for k in 0...item.orderContent.menuProductItems!.count - 1 {
+                if k != 0 {
+                    contentString = contentString + "\n"
+                }
+                
                 contentString = contentString + item.orderContent.menuProductItems![k].itemName + ": "
                 if item.orderContent.menuProductItems![k].menuRecipes != nil {
                     for i in 0...item.orderContent.menuProductItems![k].menuRecipes!.count - 1 {
@@ -80,16 +84,27 @@ class MenuOrderMemberCell: UITableViewCell {
                             }
                         }
                     }
-                    contentString = contentString + "\n"
-                    if item.orderContent.menuProductItems![k].itemComments == "" {
-                        continue
-                    }
-                    let productLength = item.orderContent.menuProductItems![k].itemName.lengthOfBytes(using: .utf8)
-                    print("Bytes length of product: \(productLength)")
-                    let prefixSpaces = String(repeating: " ", count: productLength)
-                    contentString = contentString + prefixSpaces + item.orderContent.menuProductItems![k].itemComments + "\n"
                 }
+                
+                contentString = contentString + " * " + String(item.orderContent.menuProductItems![k].itemQuantity)
+                
+                if item.orderContent.menuProductItems![k].itemComments == "" {
+                    //contentString = contentString + "\n"
+                    continue
+                }
+                
+                contentString = contentString + "  (" + item.orderContent.menuProductItems![k].itemComments + ")"
 
+/*
+                contentString = contentString + "\n"
+                if item.orderContent.menuProductItems![k].itemComments == "" {
+                    continue
+                }
+                let productLength = item.orderContent.menuProductItems![k].itemName.lengthOfBytes(using: .utf8)
+                print("Bytes length of product: \(productLength)")
+                let prefixSpaces = String(repeating: " ", count: productLength)
+                contentString = contentString + prefixSpaces + item.orderContent.menuProductItems![k].itemComments + "\n"
+*/
             }
 
         }

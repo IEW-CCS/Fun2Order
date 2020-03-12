@@ -195,6 +195,8 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
         controller.setValue(categoryController, forKey: "contentViewController")
         categoryController.preferredContentSize.height = 120
         controller.preferredContentSize.height = 120
+        categoryController.preferredContentSize.width = 320
+        controller.preferredContentSize.width = 320
         controller.addChild(categoryController)
         
         let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in

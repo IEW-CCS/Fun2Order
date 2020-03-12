@@ -63,18 +63,21 @@
                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reply Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8w9-Nk-ROp">
-                        <rect key="frame" x="15" y="100" width="77" height="16"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reply Status" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8w9-Nk-ROp">
+                        <rect key="frame" x="15" y="93" width="71.5" height="29"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="29" id="bcb-4E-00T"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V6c-9E-OSS">
-                        <rect key="frame" x="240" y="20" width="60" height="34"/>
+                        <rect key="frame" x="240" y="28" width="60" height="35"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="60" id="DK8-HS-pvh"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
                         <state key="normal" title="參加"/>
                         <state key="disabled">
                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -84,11 +87,11 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GVx-fi-kmC">
-                        <rect key="frame" x="240" y="81" width="60" height="34"/>
+                        <rect key="frame" x="240" y="85" width="60" height="35"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="60" id="beC-6g-YvE"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
                         <state key="normal" title="不參加">
                             <color key="titleColor" red="0.69411764710000001" green="0.0" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
@@ -105,17 +108,17 @@
                     <constraint firstItem="HQV-hf-txl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="1LV-Zl-Mf7"/>
                     <constraint firstAttribute="trailing" secondItem="V6c-9E-OSS" secondAttribute="trailing" constant="20" id="1Ql-0O-Yh1"/>
                     <constraint firstItem="uoU-ax-I65" firstAttribute="top" secondItem="QIo-Ph-UDw" secondAttribute="bottom" constant="11" id="46g-gl-PgV"/>
-                    <constraint firstAttribute="bottom" secondItem="GVx-fi-kmC" secondAttribute="bottom" constant="20" id="7FR-x9-bPC"/>
+                    <constraint firstAttribute="bottom" secondItem="GVx-fi-kmC" secondAttribute="bottom" constant="15" id="7FR-x9-bPC"/>
                     <constraint firstItem="Ddd-0x-4dg" firstAttribute="leading" secondItem="1HL-CN-GXl" secondAttribute="leading" id="9BW-6B-rF3"/>
                     <constraint firstItem="1HL-CN-GXl" firstAttribute="leading" secondItem="QIo-Ph-UDw" secondAttribute="trailing" constant="29" id="9yB-ly-40C"/>
                     <constraint firstItem="uoU-ax-I65" firstAttribute="leading" secondItem="QIo-Ph-UDw" secondAttribute="leading" id="Bre-Tj-NdQ"/>
                     <constraint firstItem="8w9-Nk-ROp" firstAttribute="leading" secondItem="uoU-ax-I65" secondAttribute="leading" id="Gpp-5u-AcO"/>
                     <constraint firstItem="QIo-Ph-UDw" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="UrK-ad-WtT"/>
-                    <constraint firstItem="V6c-9E-OSS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="lyD-Dk-j1D"/>
+                    <constraint firstItem="V6c-9E-OSS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="28" id="lyD-Dk-j1D"/>
                     <constraint firstItem="GVx-fi-kmC" firstAttribute="centerX" secondItem="V6c-9E-OSS" secondAttribute="centerX" id="m2H-pT-pVz"/>
                     <constraint firstItem="1HL-CN-GXl" firstAttribute="centerY" secondItem="QIo-Ph-UDw" secondAttribute="centerY" id="mwP-J6-pVR"/>
                     <constraint firstItem="Ddd-0x-4dg" firstAttribute="centerY" secondItem="uoU-ax-I65" secondAttribute="centerY" id="q8m-la-daC"/>
-                    <constraint firstItem="8w9-Nk-ROp" firstAttribute="top" secondItem="uoU-ax-I65" secondAttribute="bottom" constant="11" id="rFL-9B-Rdu"/>
+                    <constraint firstItem="8w9-Nk-ROp" firstAttribute="top" secondItem="uoU-ax-I65" secondAttribute="bottom" constant="4" id="rFL-9B-Rdu"/>
                     <constraint firstItem="HQV-hf-txl" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="yQD-6v-4oQ"/>
                 </constraints>
             </tableViewCellContentView>

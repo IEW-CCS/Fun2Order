@@ -121,17 +121,11 @@ class EditPaymentCell: UITableViewCell {
 
         if item.orderContent.menuProductItems != nil {
             for k in 0...item.orderContent.menuProductItems!.count - 1 {
-                contentString = contentString + item.orderContent.menuProductItems![k].itemName + ": "
-                if item.orderContent.menuProductItems![k].menuRecipes != nil {
-                    for i in 0...item.orderContent.menuProductItems![k].menuRecipes!.count - 1 {
-                        if item.orderContent.menuProductItems![k].menuRecipes![i].recipeItems != nil {
-                            for j in 0...item.orderContent.menuProductItems![k].menuRecipes![i].recipeItems!.count - 1 {
-                                contentString = contentString + item.orderContent.menuProductItems![k].menuRecipes![i].recipeItems![j].recipeName + " "
-                            }
-                        }
-                    }
-                    contentString = contentString + " * " + String(item.orderContent.itemQuantity) + "\n"
+                if k != 0 {
+                    contentString = contentString + "    "
                 }
+                contentString = contentString + item.orderContent.menuProductItems![k].itemName
+                contentString = contentString + " * " + String(item.orderContent.menuProductItems![k].itemQuantity)
             }
         }
 

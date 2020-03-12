@@ -59,7 +59,8 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ue4-TO-QtS">
-                        <rect key="frame" x="265" y="77" width="31" height="30"/>
+                        <rect key="frame" x="263" y="72.5" width="41" height="36"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <state key="normal" title="編輯">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
@@ -85,7 +86,7 @@
                     <constraint firstItem="YFr-nS-1T6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="1rN-nY-YSJ"/>
                     <constraint firstItem="9yI-hN-kmw" firstAttribute="centerY" secondItem="BOf-di-pCq" secondAttribute="centerY" id="49L-So-sa9"/>
                     <constraint firstItem="y86-5p-LpE" firstAttribute="top" secondItem="YFr-nS-1T6" secondAttribute="bottom" constant="4" id="69E-PR-XwD"/>
-                    <constraint firstAttribute="trailing" secondItem="Ue4-TO-QtS" secondAttribute="trailing" constant="24" id="7KS-Ym-XcS"/>
+                    <constraint firstAttribute="trailing" secondItem="Ue4-TO-QtS" secondAttribute="trailing" constant="16" id="7KS-Ym-XcS"/>
                     <constraint firstItem="y86-5p-LpE" firstAttribute="leading" secondItem="KaA-1e-6w3" secondAttribute="trailing" constant="12" id="82s-hY-5mT"/>
                     <constraint firstItem="q0G-hM-oJk" firstAttribute="leading" secondItem="9yI-hN-kmw" secondAttribute="leading" id="F2C-Cz-dka"/>
                     <constraint firstItem="BOf-di-pCq" firstAttribute="leading" secondItem="KaA-1e-6w3" secondAttribute="leading" id="GHe-ND-Wq6"/>

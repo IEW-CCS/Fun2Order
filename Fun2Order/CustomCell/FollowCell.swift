@@ -14,9 +14,9 @@ protocol FollowCellDelegate: class {
 
 class FollowCell: UITableViewCell {
     @IBOutlet weak var labelUserName: UILabel!
-    @IBOutlet weak var labelRecipe: UILabel!
     @IBOutlet weak var buttonFollow: UIButton!
     @IBOutlet weak var backView: ShadowGradientView!
+    @IBOutlet weak var textViewRecipe: UITextView!
     
     var followStatusFlag: Bool = false
     weak var delegate: FollowCellDelegate?
@@ -26,6 +26,7 @@ class FollowCell: UITableViewCell {
         
         self.buttonFollow.layer.cornerRadius = 6
         self.buttonFollow.setTitleColor(.white, for: .selected)
+        self.textViewRecipe.setContentOffset(.zero, animated: true)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -56,8 +57,12 @@ class FollowCell: UITableViewCell {
         self.labelUserName.text = member_content.orderContent.itemOwnerName
         if member_content.orderContent.menuProductItems != nil {
             for k in 0...member_content.orderContent.menuProductItems!.count - 1 {
-                contentString = contentString + member_content.orderContent.menuProductItems![k].itemName + ": "
+                if k != 0 {
+                    contentString = contentString + "\n"
+                }
+                contentString = contentString + member_content.orderContent.menuProductItems![k].itemName
                 if member_content.orderContent.menuProductItems![k].menuRecipes != nil {
+                    contentString = contentString + ": "
                     for i in 0...member_content.orderContent.menuProductItems![k].menuRecipes!.count - 1 {
                         if member_content.orderContent.menuProductItems![k].menuRecipes![i].recipeItems != nil {
                             for j in 0...member_content.orderContent.menuProductItems![k].menuRecipes![i].recipeItems!.count - 1 {
@@ -65,19 +70,21 @@ class FollowCell: UITableViewCell {
                             }
                         }
                     }
-                    contentString = contentString + "* " + String(member_content.orderContent.menuProductItems![k].itemQuantity)
-                    contentString = contentString + "\n"
-                    if member_content.orderContent.menuProductItems![k].itemComments == "" {
-                        continue
-                    }
-                    let productLength = member_content.orderContent.menuProductItems![k].itemName.lengthOfBytes(using: .utf8)
-                    print("Bytes length of product: \(productLength)")
-                    let prefixSpaces = String(repeating: " ", count: productLength)
-                    contentString = contentString + prefixSpaces + member_content.orderContent.menuProductItems![k].itemComments + "\n"
                 }
+                
+                contentString = contentString + " * " + String(member_content.orderContent.menuProductItems![k].itemQuantity)
+                
+                if member_content.orderContent.menuProductItems![k].itemComments == "" {
+                    //contentString = contentString + "\n"
+                    continue
+                }
+                
+                contentString = contentString + "  (" + member_content.orderContent.menuProductItems![k].itemComments + ")"
+
             }
         }
 
-        self.labelRecipe.text = contentString
+        self.textViewRecipe.text = contentString
+        self.textViewRecipe.setContentOffset(.zero, animated: true)
     }
 }

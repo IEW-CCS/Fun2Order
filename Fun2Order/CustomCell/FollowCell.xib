@@ -45,15 +45,16 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Recipe" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iiQ-d9-VfJ">
-                        <rect key="frame" x="20" y="37" width="78.5" height="46"/>
+                    <textView clipsSubviews="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DqY-sl-FpK">
+                        <rect key="frame" x="20" y="39" width="222" height="45"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="46" id="wxS-ZJ-Ems"/>
+                            <constraint firstAttribute="height" constant="45" id="llu-s0-o5W"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qws-z0-Mog">
                         <rect key="frame" x="252" y="26" width="48" height="48"/>
                         <constraints>
@@ -72,10 +73,11 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="Qws-z0-Mog" secondAttribute="trailing" constant="20" id="KD7-Rr-Qi5"/>
+                    <constraint firstItem="Qws-z0-Mog" firstAttribute="leading" secondItem="DqY-sl-FpK" secondAttribute="trailing" constant="10" id="Tnm-hG-QUg"/>
                     <constraint firstItem="k8j-KS-dCl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="WPb-ot-3Fo"/>
-                    <constraint firstItem="iiQ-d9-VfJ" firstAttribute="top" secondItem="k8j-KS-dCl" secondAttribute="bottom" constant="1" id="Z6i-T5-H00"/>
                     <constraint firstItem="k8j-KS-dCl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="Zr1-tg-KNg"/>
-                    <constraint firstItem="iiQ-d9-VfJ" firstAttribute="leading" secondItem="k8j-KS-dCl" secondAttribute="leading" id="edx-3p-IIe"/>
+                    <constraint firstItem="DqY-sl-FpK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="kpp-Y6-Jm9"/>
+                    <constraint firstItem="DqY-sl-FpK" firstAttribute="top" secondItem="k8j-KS-dCl" secondAttribute="bottom" constant="3" id="laq-bF-869"/>
                     <constraint firstItem="Qws-z0-Mog" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="rKn-im-Ce2"/>
                 </constraints>
             </tableViewCellContentView>
@@ -83,8 +85,8 @@
             <connections>
                 <outlet property="backView" destination="dm6-jh-swy" id="CXb-Ah-d5w"/>
                 <outlet property="buttonFollow" destination="Qws-z0-Mog" id="IuU-df-yB0"/>
-                <outlet property="labelRecipe" destination="iiQ-d9-VfJ" id="8mJ-ax-VGl"/>
                 <outlet property="labelUserName" destination="k8j-KS-dCl" id="PhS-ME-tzJ"/>
+                <outlet property="textViewRecipe" destination="DqY-sl-FpK" id="dZm-Xg-EsO"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="136.60714285714286"/>
         </tableViewCell>

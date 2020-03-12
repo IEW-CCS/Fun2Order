@@ -65,10 +65,10 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        print("CreateMenuTableViewController enters viewDidDisappear")
-        self.dismiss(animated: true, completion: {
-            print("CreateMenuTableViewController dismissed")
-        })
+        //print("CreateMenuTableViewController enters viewDidDisappear")
+        //self.dismiss(animated: true, completion: {
+            //print("CreateMenuTableViewController dismissed")
+        //})
     }
     
     func refreshMenu() {

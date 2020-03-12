@@ -92,9 +92,11 @@ class MenuOrderNotebookViewController: UIViewController {
         var itemString: String = ""
         if self.menuOrder.contentItems[index].orderContent.menuProductItems != nil {
             for m in 0...self.menuOrder.contentItems[index].orderContent.menuProductItems!.count - 1 {
+                if m != 0 {
+                    itemString = itemString + "\n"
+                }
+                
                 itemString = itemString + self.menuOrder.contentItems[index].orderContent.itemOwnerName + " " + self.menuOrder.contentItems[index].orderContent.menuProductItems![m].itemName + " "
-                let spaceCount = itemString.lengthOfBytes(using: .utf8)
-                let prefixSpaces = String(repeating: " ", count: spaceCount)
 
                 if self.menuOrder.contentItems[index].orderContent.menuProductItems![m].menuRecipes != nil {
                     for j in 0...self.menuOrder.contentItems[index].orderContent.menuProductItems![m].menuRecipes!.count - 1 {
@@ -106,9 +108,10 @@ class MenuOrderNotebookViewController: UIViewController {
                     }
                 }
                 
-                itemString = itemString + " * " + String(self.menuOrder.contentItems[index].orderContent.menuProductItems![m].itemQuantity) + "\n"
+                itemString = itemString + " * " + String(self.menuOrder.contentItems[index].orderContent.menuProductItems![m].itemQuantity)
+                
                 if self.menuOrder.contentItems[index].orderContent.menuProductItems![m].itemComments != "" {
-                    itemString = itemString + prefixSpaces + self.menuOrder.contentItems[index].orderContent.menuProductItems![m].itemComments + "\n"
+                    itemString = itemString + " (" + self.menuOrder.contentItems[index].orderContent.menuProductItems![m].itemComments + ")"
                 }
             }
         }
@@ -228,8 +231,15 @@ class MenuOrderNotebookViewController: UIViewController {
             if !mergedContent.isEmpty {
                 var content: String = ""
                 for i in 0...mergedContent.count - 1 {
-                    content = content + mergedContent[i].mergedRecipe + " * " + String(mergedContent[i].quantity) + "\n"
-                    content = content + mergedContent[i].comments + "\n"
+                    if i != 0 {
+                        content = content + "\n"
+                    }
+                    
+                    content = content + mergedContent[i].mergedRecipe + " * " + String(mergedContent[i].quantity)
+                    if mergedContent[i].comments != "" {
+                        content = content + " (" + mergedContent[i].comments + ")"
+                    }
+                    
                 }
                 self.textViewContent.text = content
             }
@@ -240,9 +250,15 @@ class MenuOrderNotebookViewController: UIViewController {
                 for i in 0...self.menuOrder.locations!.count - 1 {
                     content = content + "--" + self.menuOrder.locations![i] + "\n"
                     for j in 0...mergedContent.count - 1 {
+                        if j != 0 {
+                            content = content + "\n"
+                        }
+                        
                         if mergedContent[j].location == self.menuOrder.locations![i] {
-                            content = content + prefixString + mergedContent[j].mergedRecipe + " * " + String(mergedContent[j].quantity) + "\n"
-                            content = content + prefixString + mergedContent[j].comments + "\n"
+                            content = content + prefixString + mergedContent[j].mergedRecipe + " * " + String(mergedContent[j].quantity)
+                            if mergedContent[j].comments != "" {
+                                content = content + " (" + mergedContent[j].comments + ")"
+                            }
                         }
                     }
                 }
