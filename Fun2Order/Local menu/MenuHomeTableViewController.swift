@@ -12,7 +12,7 @@ import Firebase
 import GoogleMobileAds
 
 class MenuHomeTableViewController: UITableViewController {
-    
+
     let app = UIApplication.shared.delegate as! AppDelegate
     var adBannerView: GADBannerView!
 
@@ -36,7 +36,8 @@ class MenuHomeTableViewController: UITableViewController {
         self.adBannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
         
         //MenuHomeBannerAd adUnitID
-        //adBannerView.adUnitID = "ca-app-pub-9511677579097261/2511330037"
+        //self.adBannerView.adUnitID = "ca-app-pub-9511677579097261/2511330037"
+        
         //Google Test adUnitID
         self.adBannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
         self.adBannerView.delegate = self

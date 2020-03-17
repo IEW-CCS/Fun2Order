@@ -11,6 +11,7 @@ import UIKit
 class EditPaymentStatusTableViewController: UITableViewController {
     var menuOrder: MenuOrder = MenuOrder()
     var acceptedItems: [MenuOrderMemberContent] = [MenuOrderMemberContent]()
+    var originalIndex: [Int] = [Int]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +32,7 @@ class EditPaymentStatusTableViewController: UITableViewController {
             for i in 0...self.menuOrder.contentItems.count - 1 {
                 if self.menuOrder.contentItems[i].orderContent.replyStatus == MENU_ORDER_REPLY_STATUS_ACCEPT {
                     self.acceptedItems.append(self.menuOrder.contentItems[i])
+                    self.originalIndex.append(i)
                 }
             }
         }
@@ -57,6 +59,8 @@ class EditPaymentStatusTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "EditPaymentCell", for: indexPath) as! EditPaymentCell
         
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        cell.tag = indexPath.row
+        cell.delegate = self
         cell.AdjustAutoLayout()
 
         cell.setData(item_content: self.acceptedItems[indexPath.row])
@@ -67,5 +71,13 @@ class EditPaymentStatusTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 115
     }
+}
 
+extension EditPaymentStatusTableViewController: EditPaymentDelegate {
+    func updatePaymentInformation(sender: EditPaymentCell, index: Int, new_content: MenuOrderMemberContent) {
+        self.menuOrder.contentItems[self.originalIndex[index]].orderContent.isPayChecked = true
+        self.menuOrder.contentItems[self.originalIndex[index]].orderContent.payNumber = new_content.orderContent.payNumber
+        self.menuOrder.contentItems[self.originalIndex[index]].orderContent.payTime = new_content.orderContent.payTime
+        refreshMenuOrder()
+    }
 }

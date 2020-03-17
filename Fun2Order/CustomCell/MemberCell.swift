@@ -29,13 +29,18 @@ class MemberCell: UITableViewCell {
         self.memberImage.image = member_image
     }
     
+    func receiveUserProfile(user_profile: UserProfile) {
+        self.memberLabel.text = user_profile.userName
+    }
+    
     func setData(image: UIImage, name: String) {
         self.memberImage.image = image
         self.memberLabel.text = name
     }
     
     func setData(member_id: String, member_name: String) {
-        self.memberLabel.text = member_name
+        //self.memberLabel.text = member_name
         downloadFBMemberImage(member_id: member_id, completion: receiveMemberImage)
+        downloadFBUserProfile(user_id: member_id, completion: receiveUserProfile)
     }
 }

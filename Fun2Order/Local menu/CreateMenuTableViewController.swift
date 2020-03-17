@@ -9,6 +9,10 @@
 import UIKit
 import Firebase
 
+protocol CreateMenuDelegate: class {
+    func refreshMenuList(sender: CreateMenuTableViewController)
+}
+
 class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var textBrandName: UITextField!
     @IBOutlet weak var buttonCategory: UIButton!
@@ -27,6 +31,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     var isNeedSave: Bool = false
     var isEditedMode: Bool = false
     var testDate: Date = Date()
+    weak var delegate: CreateMenuDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -162,6 +167,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
             print("CreateMenuTableViewController uploadMenuInformation -> Firebase setValue of Menu Information successful")
             // Send notification to refresh Menu List function
             //NotificationCenter.default.post(name: NSNotification.Name("RefreshMenuList"), object: nil)
+            self.delegate?.refreshMenuList(sender: self)
             self.navigationController?.popViewController(animated: true)
         }
     }

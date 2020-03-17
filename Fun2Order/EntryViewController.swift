@@ -11,7 +11,10 @@ import UIKit
 import Firebase
 
 class EntryViewController: UIViewController {
-
+    @IBOutlet weak var buttonVerifyPhone: UIButton!
+    @IBOutlet weak var buttonGuest: UIButton!
+    @IBOutlet weak var labelLoginMethod: UILabel!
+    
     var ref: DatabaseReference!
     var userName: String = ""
     
@@ -24,11 +27,10 @@ class EntryViewController: UIViewController {
         if(Auth.auth().currentUser?.uid != nil)
         {
             print("Auth.auth().currentUser?.displayName = \(String(describing: Auth.auth().currentUser?.displayName))")
-            //let databaseRef = Database.database().reference()
-            //let phoneNumberPathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "phoneNumber")
-            //databaseRef.child(phoneNumberPathString).setValue(Auth.auth().currentUser!.phoneNumber)
-
-            //print("Auth.auth().currentUser!.phoneNumber = \(String(describing: Auth.auth().currentUser!.phoneNumber))")
+            self.labelLoginMethod.isHidden = true
+            self.buttonVerifyPhone.isEnabled = false
+            self.buttonGuest.isEnabled = false
+            self.buttonGuest.isHidden = true
             if Auth.auth().currentUser?.displayName == nil || Auth.auth().currentUser?.displayName == "" {
                 inputUserName()
             } else {

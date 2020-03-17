@@ -133,7 +133,7 @@ func uploadFBUserProfile(user_profile: UserProfile) {
     databaseRef.child(pathString).setValue(user_profile.toAnyObject())
 }
 
-func uploadFBMenuOrderContentItem(item: MenuOrderMemberContent) {
+func uploadFBMenuOrderContentItem(item: MenuOrderMemberContent, completion: @escaping () -> Void) {
     let databaseRef = Database.database().reference()
     let pathString = "USER_MENU_ORDER/\(item.orderOwnerID)/\(item.orderContent.orderNumber)/contentItems"
     //print("uploadFBMenuOrderContentItem pathString = \(pathString)")
@@ -150,7 +150,13 @@ func uploadFBMenuOrderContentItem(item: MenuOrderMemberContent) {
                     //print("itemData = \(itemArray[itemIndex])")
                     //print("itemIndex = \(itemIndex)")
                     let uploadPathString = pathString + "/\(itemIndex)"
-                    databaseRef.child(uploadPathString).setValue(item.toAnyObject())
+                    databaseRef.child(uploadPathString).setValue(item.toAnyObject()) { (error, reference) in
+                        if error != nil {
+                            presentSimpleAlertMessage(title: "資料更新錯誤", message: error!.localizedDescription)
+                            return
+                        }
+                        completion()
+                    }
                 }
             } catch {
                 print("uploadFBMenuOrderContentItem jsonData decode failed: \(error.localizedDescription)")

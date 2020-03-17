@@ -10,37 +10,50 @@ import UIKit
 import Firebase
 
 class MenuListTableViewController: UITableViewController {
-
-    @IBOutlet weak var categorySegment: UISegmentedControl!
     
     var menuBrandCategory:[String] = [String]()
     var menuInfos:[MenuInformation] = [MenuInformation]()
     var menuInfosByCategory:[MenuInformation] = [MenuInformation]()
     var createMenuController: CreateMenuTableViewController!
+    var selectedIndex: Int = 0
+    var segmentItemData: [String] = [String]()
     
+    var adLoader: GADAdLoader!
+    var nativeAd: GADUnifiedNativeAd!
+    // Test NativeAd Unit ID
+    let adUnitID = "ca-app-pub-3940256099942544/3986624511"
+    //Real NativeAd Unit ID
+    //let adUnitID = "ca-app-pub-9511677579097261/2673063242"
+    var adIndex: Int = 0
+    var heightConstraint : NSLayoutConstraint?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let favoriteCellViewNib: UINib = UINib(nibName: "FavoriteStoreCell", bundle: nil)
         self.tableView.register(favoriteCellViewNib, forCellReuseIdentifier: "FavoriteStoreCell")
 
-/*
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.receiveRefreshMenuList(_:)),
-            name: NSNotification.Name(rawValue: "RefreshMenuList"),
-            object: nil
-        )
-*/
-        
-        print("MenuListTableViewController viewDidLoad downloadFBMenuInformation")
-        downloadFBMenuInformation(select_index: 0)
+        let adCellViewNib: UINib = UINib(nibName: "MenuHomeNativeAdCell", bundle: nil)
+        self.tableView.register(adCellViewNib, forCellReuseIdentifier: "MenuHomeNativeAdCell")
+
+        let categoryCellViewNib: UINib = UINib(nibName: "MenuListCategoryCell", bundle: nil)
+        self.tableView.register(categoryCellViewNib, forCellReuseIdentifier: "MenuListCategoryCell")
+
+        setupAdLoader()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
-        //self.categorySegment.isHidden = true
+        navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
+        self.title = "菜單首頁"
+        self.navigationController?.title = "菜單首頁"
+        self.tabBarController?.title = "菜單首頁"
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+
     func downloadFBMenuInformation(select_index: Int) {
         guard let user_id = Auth.auth().currentUser?.uid else {
             print("Not authorized user, cannot get Menu Information List")
@@ -52,8 +65,6 @@ class MenuListTableViewController: UITableViewController {
         let databaseRef = Database.database().reference()
         let pathString = "USER_MENU_INFORMATION/\(user_id)"
         
-        //let dabaseQuery = databaseRef.child(pathString).queryOrdered(byChild: "createTime")
-        //dabaseQuery.observeSingleEvent(of: .value, with: { (snapshot) in
         databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
                 let rawData = snapshot.value
@@ -72,67 +83,36 @@ class MenuListTableViewController: UITableViewController {
                     }
                     
                     self.menuInfos.sort(by: {$0.createTime > $1.createTime})
-                    //for menuData in self.menuInfos {
-                    //    print("\(menuData.brandName): \(menuData.createTime)")
-                    //}
-                    
+
                     self.menuBrandCategory = retrieveMenuBrandCategory()
-                    self.setupCategorySegment()
-                    self.categorySegment.selectedSegmentIndex = select_index
+                    self.selectedIndex = select_index
                     self.filterMenuInfosByCategory()
                     self.tableView.reloadData()
                 } catch {
-                    print("jsonData decode failed: \(error.localizedDescription)")
-                    self.setupCategorySegment()
+                    print("downloadFBMenuInformation jsonData decode failed: \(error.localizedDescription)")
                     return
                 }
             } else {
                 self.tableView.reloadData()
                 print("downloadFBMenuInformation snapshot doesn't exist!")
-                self.setupCategorySegment()
                 return
             }
         }) { (error) in
-            print(error.localizedDescription)
-            self.setupCategorySegment()
+            print("downloadFBMenuInformation: \(error.localizedDescription)")
         }
-        
     }
-    
-/*
-    @objc func receiveRefreshMenuList(_ notification: Notification) {
-        print("MenuListTableViewController receiveRefreshMenuList downloadFBMenuInformation")
-        downloadFBMenuInformation(select_index: 0)
-    }
-*/
-    func setupCategorySegment() {
-        if self.menuInfos.isEmpty {
-            self.categorySegment.removeAllSegments()
-            self.categorySegment.isHidden = true
-            return
-        }
-        
-        self.categorySegment.removeAllSegments()
-        if self.menuBrandCategory.isEmpty {
-            self.categorySegment.insertSegment(withTitle: "未分類", at: 0, animated: false)
-            self.categorySegment.selectedSegmentIndex = 0
-        } else {
-            for i in 0...(self.menuBrandCategory.count - 1) {
-                self.categorySegment.insertSegment(withTitle: self.menuBrandCategory[i], at: i, animated: false)
-            }
-            self.categorySegment.insertSegment(withTitle: "未分類", at: self.menuBrandCategory.count, animated: false)
-            self.categorySegment.selectedSegmentIndex = 0
-        }
-        
-        self.categorySegment.isHidden = false
-    }
-    
+
     func filterMenuInfosByCategory() {
         self.menuInfosByCategory.removeAll()
+        // Add empty MenuInformation for NativeAd
+        let tmpMenuInfo: MenuInformation = MenuInformation()
+        self.menuInfosByCategory.append(tmpMenuInfo)
+        self.adIndex = 0
+        
         if !self.menuInfos.isEmpty {
             var categoryString: String = ""
-            if self.categorySegment.selectedSegmentIndex != self.menuBrandCategory.count {
-                categoryString = self.menuBrandCategory[self.categorySegment.selectedSegmentIndex]
+            if self.selectedIndex != self.menuBrandCategory.count {
+                categoryString = self.menuBrandCategory[self.selectedIndex]
             }
             
             for i in 0...self.menuInfos.count - 1 {
@@ -141,6 +121,7 @@ class MenuListTableViewController: UITableViewController {
                 }
             }
         }
+        
     }
     
     func getMenuCountForCategory() -> Int {
@@ -150,8 +131,8 @@ class MenuListTableViewController: UITableViewController {
             return self.menuInfos.count
         } else {
             var categoryString: String = ""
-            if self.categorySegment.selectedSegmentIndex != self.menuBrandCategory.count {
-                categoryString = self.menuBrandCategory[self.categorySegment.selectedSegmentIndex]
+            if self.selectedIndex != self.menuBrandCategory.count {
+                categoryString = self.menuBrandCategory[self.selectedIndex]
             }
 
             for i in 0...self.menuInfos.count - 1 {
@@ -166,43 +147,95 @@ class MenuListTableViewController: UITableViewController {
     }
 
     func deleteMenuInfo(index: IndexPath) {
-        let selectedIndex = self.categorySegment.selectedSegmentIndex
-        
-        //deleteMenuInformation(menu_info: self.menuInfosByCategory[index.row])
         deleteMenuIcon(menu_number: self.menuInfosByCategory[index.row].menuNumber)
         deleteFBMenuInformation(user_id: self.menuInfosByCategory[index.row].userID, menu_number: self.menuInfosByCategory[index.row].menuNumber, image_url: self.menuInfosByCategory[index.row].menuImageURL)
 
         print("MenuListTableViewController deleteMenuInfo downloadFBMenuInformation")
-        downloadFBMenuInformation(select_index: selectedIndex)
+        downloadFBMenuInformation(select_index: self.selectedIndex)
     }
     
-    @IBAction func changeBrandCategory(_ sender: UISegmentedControl) {
-        print("Selected Segment Index = \(self.categorySegment.selectedSegmentIndex)")
-        filterMenuInfosByCategory()
-        self.tableView.reloadData()
+    func setupAdLoader() {
+        self.adLoader = GADAdLoader(adUnitID: self.adUnitID, rootViewController: self, adTypes: [.unifiedNative], options: nil)
+        self.adLoader.load(GADRequest())
+        self.adLoader.delegate = self
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         if self.menuInfos.isEmpty {
-            return 0
+            return 1
         }
         
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.menuInfos.isEmpty {
-            return 0
-        }
-        
-        if self.menuInfosByCategory.isEmpty {
-            return 0
+        if section == 0 {
+            return 1
         } else {
-            return self.menuInfosByCategory.count
+            if self.menuInfos.isEmpty {
+                return 0
+            }
+            
+            if self.menuInfosByCategory.isEmpty {
+                return 0
+            } else {
+                return self.menuInfosByCategory.count
+            }
         }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MenuListCategoryCell", for: indexPath) as! MenuListCategoryCell
+            
+            if self.menuInfos.isEmpty {
+                cell.setData(menu_exist_flag: false, items: self.menuBrandCategory)
+            } else {
+                cell.setData(menu_exist_flag: true, items: self.menuBrandCategory)
+            }
+            
+            cell.delegate = self
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+
+            return cell
+        }
+        
+        if indexPath.row == self.adIndex {
+            self.nativeAd.rootViewController = self
+            heightConstraint?.isActive = false
+
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MenuHomeNativeAdCell", for: indexPath) as! MenuHomeNativeAdCell
+            
+            let adView: GADUnifiedNativeAdView = cell.contentView.subviews.first as! GADUnifiedNativeAdView
+            adView.nativeAd = self.nativeAd
+
+            adView.mediaView?.mediaContent = self.nativeAd.mediaContent
+            adView.mediaView?.contentMode = .scaleAspectFit
+            let mediaContent = nativeAd.mediaContent
+            if mediaContent.hasVideoContent {
+                mediaContent.videoController.delegate = self
+            }
+
+/*
+            if let mediaView = adView.mediaView, nativeAd.mediaContent.aspectRatio > 0 {
+                heightConstraint = NSLayoutConstraint(item: mediaView,
+                                                    attribute: .height,
+                                                    relatedBy: .equal,
+                                                    toItem: mediaView,
+                                                    attribute: .width,
+                                                    multiplier: CGFloat(1 / nativeAd.mediaContent.aspectRatio),
+                                                    constant: 0)
+                heightConstraint?.isActive = true
+            }
+*/
+            
+            (adView.headlineView as! UILabel).text = nativeAd.headline
+            (adView.advertiserView as! UILabel).text = nativeAd.advertiser
+            (adView.iconView as? UIImageView)?.image = nativeAd.icon?.image
+            
+            return cell
+        }
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteStoreCell", for: indexPath) as! FavoriteStoreCell
         
         let menuIcon = retrieveMenuIcon(menu_number: self.menuInfosByCategory[indexPath.row].menuNumber)
@@ -218,25 +251,50 @@ class MenuListTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        if indexPath.section == 0 {
+            return 44
+        } else {
+            if indexPath.row == self.adIndex {
+                return 205
+            }
+            
+            return 100
+        }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = self.tableView.cellForRow(at: indexPath) as! FavoriteStoreCell
+        if indexPath.section == 1 {
+            if indexPath.row != self.adIndex {
+                let cell = self.tableView.cellForRow(at: indexPath) as! FavoriteStoreCell
 
-        let dataIndex = cell.indexPath
-        
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        guard let menuCreateController = storyBoard.instantiateViewController(withIdentifier: "CREATEMENU_VC") as? CreateMenuTableViewController else{
-            assertionFailure("[AssertionFailure] StoryBoard: CREATEMENU_VC can't find!! (QRCodeViewController)")
-            return
+                let dataIndex = cell.indexPath
+                
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                guard let menuCreateController = storyBoard.instantiateViewController(withIdentifier: "CREATEMENU_VC") as? CreateMenuTableViewController else{
+                    assertionFailure("[AssertionFailure] StoryBoard: CREATEMENU_VC can't find!! (QRCodeViewController)")
+                    return
+                }
+                menuCreateController.isEditedMode = true
+                menuCreateController.menuInformation = menuInfosByCategory[dataIndex!.row]
+                menuCreateController.delegate = self
+                
+                navigationController?.show(menuCreateController, sender: self)
+            }
         }
-        menuCreateController.isEditedMode = true
-        menuCreateController.menuInformation = menuInfosByCategory[dataIndex!.row]
-        
-        navigationController?.show(menuCreateController, sender: self)
     }
-    
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.section == 0 {
+            return false
+        } else {
+            if indexPath.row == self.adIndex {
+                return false
+            }
+            
+            return true
+        }
+    }
+
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         var alertWindow: UIWindow!
         if editingStyle == .delete {
@@ -257,7 +315,7 @@ class MenuListTableViewController: UITableViewController {
             alertWindow = presentAlert(controller)
         }
     }
-
+    
 }
 
 extension MenuListTableViewController: DisplayGroupOrderDelegate {
@@ -269,5 +327,77 @@ extension MenuListTableViewController: DisplayGroupOrderDelegate {
         groupOrderController.orderType = ORDER_TYPE_MENU
         groupOrderController.menuInformation = self.menuInfosByCategory[index.row]
         navigationController?.show(groupOrderController, sender: self)
+    }
+}
+
+extension MenuListTableViewController: ScrollUISegmentControllerDelegate {
+    func selectItemAt(index: Int, onScrollUISegmentController scrollUISegmentController: ScrollUISegmentController) {
+        print("select Item At [\(index)] in scrollUISegmentController with tag  \(scrollUISegmentController.tag) ")
+        self.selectedIndex = index
+        filterMenuInfosByCategory()
+        self.tableView.reloadData()
+    }
+}
+
+extension MenuListTableViewController: CreateMenuDelegate {
+    func refreshMenuList(sender: CreateMenuTableViewController) {
+        print("MenuListTableViewController receive CreateMenuDelegate refreshMenuList")
+        downloadFBMenuInformation(select_index: self.selectedIndex)
+    }
+}
+
+extension MenuListTableViewController: GADUnifiedNativeAdLoaderDelegate {
+    func adLoader(_ adLoader: GADAdLoader, didFailToReceiveAdWithError error: GADRequestError) {
+        print("\(adLoader) failed with error: \(error.localizedDescription)")
+        downloadFBMenuInformation(select_index: 0)
+    }
+    
+    func adLoader(_ adLoader: GADAdLoader, didReceive nativeAd: GADUnifiedNativeAd) {
+        print("Received native ad: \(nativeAd)")
+        self.nativeAd = nativeAd
+        downloadFBMenuInformation(select_index: 0)
+    }
+    
+    func adLoaderDidFinishLoading(_ adLoader: GADAdLoader) {
+        print("adLoader Did Finish Loading!!")
+    }
+}
+
+extension MenuListTableViewController : GADVideoControllerDelegate {
+    func videoControllerDidEndVideoPlayback(_ videoController: GADVideoController) {
+        print("Video playback has ended.")
+    }
+}
+
+extension MenuListTableViewController: MenuListCategoryCellDelegate {
+    func categoryIndexChanged(sender: MenuListCategoryCell, index: Int) {
+        self.selectedIndex = index
+        self.filterMenuInfosByCategory()
+        let sectionIndex = IndexSet(integer: 1)
+        self.tableView.reloadSections(sectionIndex, with: .none)
+    }
+    
+    func displayAbout(sender: MenuListCategoryCell) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let vc = storyboard.instantiateViewController(withIdentifier: "Banner_VC") as? BannerDetailViewController else {
+            assertionFailure("[AssertionFailure] StoryBoard: Banner_VC can't find!! (ViewController)")
+            return
+        }
+        
+        vc.modalTransitionStyle = .flipHorizontal
+        vc.modalPresentationStyle = .overCurrentContext
+        navigationController?.present(vc, animated: true, completion: nil)
+    }
+    
+    func displayCreateMenu(sender: MenuListCategoryCell) {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        guard let menuCreateController = storyBoard.instantiateViewController(withIdentifier: "CREATEMENU_VC") as? CreateMenuTableViewController else {
+            assertionFailure("[AssertionFailure] StoryBoard: CREATEMENU_VC can't find!! (QRCodeViewController)")
+            return
+        }
+        
+        menuCreateController.delegate = self
+        navigationController?.show(menuCreateController, sender: self)
+
     }
 }

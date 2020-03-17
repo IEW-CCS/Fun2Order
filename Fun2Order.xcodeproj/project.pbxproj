@@ -174,6 +174,9 @@
 		3688A0A7235F3A8B001990CE /* GroupOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688A0A6235F3A8B001990CE /* GroupOrderViewController.swift */; };
 		3688A0AD235FDB9C001990CE /* MemberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688A0AB235FDB9C001990CE /* MemberCell.swift */; };
 		3688A0AE235FDB9C001990CE /* MemberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3688A0AC235FDB9C001990CE /* MemberCell.xib */; };
+		368B712924209854007BFEB4 /* MenuListCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368B712724209854007BFEB4 /* MenuListCategoryCell.swift */; };
+		368B712A24209854007BFEB4 /* MenuListCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 368B712824209854007BFEB4 /* MenuListCategoryCell.xib */; };
+		3690BBF4241B05D9009E3B26 /* ScrollUISegmentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3690BBF3241B05D9009E3B26 /* ScrollUISegmentController.swift */; };
 		36973ABB23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973ABA23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift */; };
 		36973ABF23A88955008804C5 /* MemberGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973ABE23A88955008804C5 /* MemberGroupViewController.swift */; };
 		36973AC123A88C32008804C5 /* FunctionsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973AC023A88C32008804C5 /* FunctionsPageViewController.swift */; };
@@ -556,6 +559,9 @@
 		3688A0A6235F3A8B001990CE /* GroupOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOrderViewController.swift; sourceTree = "<group>"; };
 		3688A0AB235FDB9C001990CE /* MemberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberCell.swift; sourceTree = "<group>"; };
 		3688A0AC235FDB9C001990CE /* MemberCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MemberCell.xib; sourceTree = "<group>"; };
+		368B712724209854007BFEB4 /* MenuListCategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuListCategoryCell.swift; sourceTree = "<group>"; };
+		368B712824209854007BFEB4 /* MenuListCategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuListCategoryCell.xib; sourceTree = "<group>"; };
+		3690BBF3241B05D9009E3B26 /* ScrollUISegmentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollUISegmentController.swift; sourceTree = "<group>"; };
 		36973ABA23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigMyFavoriteTableViewController.swift; sourceTree = "<group>"; };
 		36973ABE23A88955008804C5 /* MemberGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberGroupViewController.swift; sourceTree = "<group>"; };
 		36973AC023A88C32008804C5 /* FunctionsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionsPageViewController.swift; sourceTree = "<group>"; };
@@ -1068,6 +1074,7 @@
 			children = (
 				36225998238EAD9A00B637D0 /* ShadowGradientView.swift */,
 				364F120E2358379100988937 /* Checkbox.swift */,
+				3690BBF3241B05D9009E3B26 /* ScrollUISegmentController.swift */,
 				36D583882353011000AEB84F /* SelectStoreCell.swift */,
 				36D583892353011000AEB84F /* SelectStoreCell.xib */,
 				36D583A22353599D00AEB84F /* FavoriteStoreCell.swift */,
@@ -1138,6 +1145,8 @@
 				364BEA1723F4F38C003A418C /* JoinInvitationCell.xib */,
 				36C6CAF523FAA5DE00C27DFB /* MenuHomeNativeAdCell.swift */,
 				36C6CAF623FAA5DE00C27DFB /* MenuHomeNativeAdCell.xib */,
+				368B712724209854007BFEB4 /* MenuListCategoryCell.swift */,
+				368B712824209854007BFEB4 /* MenuListCategoryCell.xib */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -1454,6 +1463,7 @@
 				36159C122354BEBA00664D75 /* 迷克夏.jpg in Resources */,
 				36DC7A452356CB94009D48F5 /* 綠茶@2x.png in Resources */,
 				36D583DB2354151500AEB84F /* 圓石.jpg in Resources */,
+				368B712A24209854007BFEB4 /* MenuListCategoryCell.xib in Resources */,
 				3649CFB9235D430000C0F2EA /* Image_Friend3.png in Resources */,
 				36D5838B2353011000AEB84F /* SelectStoreCell.xib in Resources */,
 				36C8C1B5235DEC59002AD40F /* Image_Group.png in Resources */,
@@ -1657,6 +1667,7 @@
 				36857C9523E6F61D00B410B8 /* NotificationActionViewController.swift in Sources */,
 				36B80C9023B5E41E004359E4 /* GROUP_MEMBER+CoreDataClass.swift in Sources */,
 				36973ABB23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift in Sources */,
+				368B712924209854007BFEB4 /* MenuListCategoryCell.swift in Sources */,
 				36B6D97E2405625000041C2C /* ImageZoomView.swift in Sources */,
 				36857CA223E9428F00B410B8 /* MENU_INFORMATION+CoreDataClass.swift in Sources */,
 				36B80C8F23B5E41E004359E4 /* GROUP_TABLE+CoreDataClass.swift in Sources */,
@@ -1779,6 +1790,7 @@
 				36D583A42353599D00AEB84F /* FavoriteStoreCell.swift in Sources */,
 				36AA198F23D51DA80039A758 /* OrderItemSummaryTableViewController.swift in Sources */,
 				3675ED3D2388D15F003A94B7 /* PRODUCT_RECIPE+CoreDataClass copy.swift in Sources */,
+				3690BBF4241B05D9009E3B26 /* ScrollUISegmentController.swift in Sources */,
 				36857C8B23E3203A00B410B8 /* NOTIFICATION_TABLE+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1928,7 +1940,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -1956,7 +1968,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;

@@ -9,6 +9,10 @@
 import UIKit
 import Firebase
 
+protocol EditPaymentDelegate: class {
+    func updatePaymentInformation(sender: EditPaymentCell, index: Int, new_content: MenuOrderMemberContent)
+}
+
 class EditPaymentCell: UITableViewCell {
     @IBOutlet weak var backView: ShadowGradientView!
     @IBOutlet weak var imageMember: UIImageView!
@@ -19,6 +23,7 @@ class EditPaymentCell: UITableViewCell {
     @IBOutlet weak var labelPrice: UILabel!
     @IBOutlet weak var buttonEdit: UIButton!
     var itemContent: MenuOrderMemberContent = MenuOrderMemberContent()
+    weak var delegate: EditPaymentDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -66,10 +71,8 @@ class EditPaymentCell: UITableViewCell {
             self.labelPayTime.text = taiwanDatetimeString
             self.itemContent.orderContent.payTime = datetimeString
             self.labelPayStatus.text = "付款日"
-            uploadFBMenuOrderContentItem(item: self.itemContent)
+            uploadFBMenuOrderContentItem(item: self.itemContent, completion: self.receiveUpdateComplete)
             
-            //Send notification to EditPaymentStatusTableViewController to refresh cells
-            //NotificationCenter.default.post(name: NSNotification.Name("EditDeleteOrderProduct"), object: nil)
             alertWindow.isHidden = true
         }
         controller.addAction(okAction)
@@ -85,6 +88,10 @@ class EditPaymentCell: UITableViewCell {
     
     func receiveMemberImage(member_image: UIImage) {
         self.imageMember.image = member_image
+    }
+    
+    func receiveUpdateComplete() {
+        self.delegate?.updatePaymentInformation(sender: self, index: self.tag, new_content: self.itemContent)
     }
     
     func setData(item_content: MenuOrderMemberContent) {
