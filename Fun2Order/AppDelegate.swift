@@ -142,7 +142,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func refreshNotifyList() {
         self.notificationDelegate?.refreshNotificationList()
     }
-    
+
     func signOutForFirstRun() {
         let userDefaults = UserDefaults.standard
         if userDefaults.value(forKey: "appFirstTimeOpend") == nil {

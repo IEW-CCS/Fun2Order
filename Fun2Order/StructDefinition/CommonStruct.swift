@@ -524,7 +524,7 @@ struct NotificationData: Codable {
 }
 
 struct UserProfile: Codable {
-    var uID: String = ""
+    var userID: String = ""
     var userName: String = ""
     var phoneNumber: String = ""
     var tokenID: String = ""
@@ -535,7 +535,7 @@ struct UserProfile: Codable {
 
     func toAnyObject() -> Any {
         return [
-            "uID": uID,
+            "userID": userID,
             "userName": userName,
             "phoneNumber": phoneNumber,
             "tokenID": tokenID,

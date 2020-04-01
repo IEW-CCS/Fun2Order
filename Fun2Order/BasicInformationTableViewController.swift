@@ -61,7 +61,7 @@ class BasicInformationTableViewController: UITableViewController {
     
     func setupBasicInformation(user_profile: UserProfile) {
         self.myProfile = user_profile
-        self.myUserID = user_profile.uID
+        self.myUserID = user_profile.userID
         self.labelPhoneNumber.text = user_profile.phoneNumber
         self.labelUserName.text = user_profile.userName
         self.labelGender.text = user_profile.gender

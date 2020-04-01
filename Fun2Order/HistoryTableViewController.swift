@@ -108,6 +108,7 @@ class HistoryTableViewController: UITableViewController {
                     
                     self.tableView.reloadData()
                 } catch {
+                    self.tableView.reloadData()
                     print("jsonData decode failed: \(error.localizedDescription)")
                     return
                 }
@@ -345,7 +346,7 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
         let databaseRef = Database.database().reference()
         
         let pathString = "USER_MENU_INFORMATION/\(self.invitationList[data_index].orderOwnerID)/\(self.invitationList[data_index].menuNumber)"
-        
+
         dispatchGroup.enter()
         databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {

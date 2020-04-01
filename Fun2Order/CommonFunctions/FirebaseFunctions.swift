@@ -128,7 +128,7 @@ func downloadFBUserProfile(user_id: String, completion: @escaping (UserProfile) 
 
 func uploadFBUserProfile(user_profile: UserProfile) {
     let databaseRef = Database.database().reference()
-    let pathString = "USER_PROFILE/\(user_profile.uID)"
+    let pathString = "USER_PROFILE/\(user_profile.userID)"
     
     databaseRef.child(pathString).setValue(user_profile.toAnyObject())
 }

@@ -44,7 +44,7 @@ class EntryViewController: UIViewController {
     func setupFBUserProfile() {
         let databaseRef = Database.database().reference()
         
-        let uidPathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "uID")
+        let uidPathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "userID")
         databaseRef.child(uidPathString).setValue(Auth.auth().currentUser!.uid)
 
         let userNamePathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "userName")
