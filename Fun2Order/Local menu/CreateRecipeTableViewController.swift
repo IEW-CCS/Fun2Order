@@ -213,7 +213,7 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
                 presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的配方類別名稱不能為空白，請重新輸入")
                 return
             }
-            
+
             var menuRecipeData: MenuRecipe = MenuRecipe()
             menuRecipeData.recipeCategory = category_controller.getRecipeCategory()!
             menuRecipeData.isAllowedMulti = category_controller.getCheckStatus()
@@ -234,10 +234,10 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
             }
             self.refershRecipe()
         }
-        
+
         okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
         controller.addAction(okAction)
-        
+
         present(controller, animated: true, completion: nil)
     }
 }

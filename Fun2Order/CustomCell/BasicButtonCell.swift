@@ -21,6 +21,7 @@ protocol BasicButtonDelegate: class {
     func displayAbout(sender: BasicButtonCell)
     func refreshStatusSummary(sender: BasicButtonCell)
     func notifyMenuOrderDueTime(sender: BasicButtonCell)
+    func notifySendMessage(sender: BasicButtonCell)
     func joinOrderToSelectRecipe(sender: BasicButtonCell)
 }
 
@@ -35,6 +36,7 @@ extension BasicButtonDelegate {
     func displayAbout(sender: BasicButtonCell) {}
     func refreshStatusSummary(sender: BasicButtonCell) {}
     func notifyMenuOrderDueTime(sender: BasicButtonCell) {}
+    func notifySendMessage(sender: BasicButtonCell) {}
     func joinOrderToSelectRecipe(sender: BasicButtonCell) {}
 }
 
@@ -129,6 +131,12 @@ class BasicButtonCell: UITableViewCell {
             // Send notification to StatusSummaryTableViewController
             //NotificationCenter.default.post(name: NSNotification.Name("NotifyMenuOrderDueTime"), object: nil)
             delegate?.notifyMenuOrderDueTime(sender: self)
+            break
+
+        case BUTTON_ACTION_NOTIFY_SEND_MESSAGE:
+            // Send notification to StatusSummaryTableViewController
+            //NotificationCenter.default.post(name: NSNotification.Name("JoinOrderSelectRecipe"), object: nil)
+            delegate?.notifySendMessage(sender: self)
             break
 
         case BUTTON_ACTION_JOINORDER_SELECT_RECIPE:

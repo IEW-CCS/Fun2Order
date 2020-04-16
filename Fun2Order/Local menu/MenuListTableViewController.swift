@@ -10,14 +10,13 @@ import UIKit
 import Firebase
 
 class MenuListTableViewController: UITableViewController {
-    
     var menuBrandCategory:[String] = [String]()
     var menuInfos:[MenuInformation] = [MenuInformation]()
     var menuInfosByCategory:[MenuInformation] = [MenuInformation]()
     var createMenuController: CreateMenuTableViewController!
     var selectedIndex: Int = 0
     var segmentItemData: [String] = [String]()
-    
+
     var adLoader: GADAdLoader!
     var nativeAd: GADUnifiedNativeAd!
     // Test NativeAd Unit ID
@@ -59,12 +58,12 @@ class MenuListTableViewController: UITableViewController {
             print("Not authorized user, cannot get Menu Information List")
             return
         }
-        
+
         self.menuInfos.removeAll()
-        
+
         let databaseRef = Database.database().reference()
         let pathString = "USER_MENU_INFORMATION/\(user_id)"
-        
+
         databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
                 let rawData = snapshot.value
@@ -215,24 +214,17 @@ class MenuListTableViewController: UITableViewController {
             if mediaContent.hasVideoContent {
                 mediaContent.videoController.delegate = self
             }
-
-/*
-            if let mediaView = adView.mediaView, nativeAd.mediaContent.aspectRatio > 0 {
-                heightConstraint = NSLayoutConstraint(item: mediaView,
-                                                    attribute: .height,
-                                                    relatedBy: .equal,
-                                                    toItem: mediaView,
-                                                    attribute: .width,
-                                                    multiplier: CGFloat(1 / nativeAd.mediaContent.aspectRatio),
-                                                    constant: 0)
-                heightConstraint?.isActive = true
-            }
-*/
             
             (adView.headlineView as! UILabel).text = nativeAd.headline
             (adView.advertiserView as! UILabel).text = nativeAd.advertiser
             (adView.iconView as? UIImageView)?.image = nativeAd.icon?.image
-            
+            //(adView.callToActionView as? UIButton)?.setTitle(nativeAd.callToAction, for: .normal)
+            if nativeAd.callToAction == "INSTALL" {
+                (adView.callToActionView as? UIButton)?.setTitle("安裝", for: .normal)
+            } else {
+                (adView.callToActionView as? UIButton)?.setTitle(nativeAd.callToAction, for: .normal)
+            }
+            adView.callToActionView?.isHidden = nativeAd.callToAction == nil
             return cell
         }
         
@@ -255,7 +247,7 @@ class MenuListTableViewController: UITableViewController {
             return 44
         } else {
             if indexPath.row == self.adIndex {
-                return 205
+                return 190
             }
             
             return 100
@@ -293,6 +285,24 @@ class MenuListTableViewController: UITableViewController {
             
             return true
         }
+    }
+
+/*
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "刪除") { (action, indexPath) in
+
+        }
+        //(UIButton.appearance(whenContainedInInstancesOf: [UIView.self])).setImage(UIImage(named: "Icon_TrashCan.png"), for: .normal)
+        //let iconImage = UIImage(named: "Icon_TrashCan.png")?.withRenderingMode(.alwaysTemplate)
+
+        //iconImage.tintColor = UIColor.white
+        //delete.backgroundColor = UIColor(patternImage: iconImage!)
+        return [delete]
+    }
+*/
+    
+    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "刪除"
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

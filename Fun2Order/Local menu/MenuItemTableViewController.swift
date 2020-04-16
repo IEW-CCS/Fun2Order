@@ -55,6 +55,20 @@ class MenuItemTableViewController: UITableViewController {
         return cell
     }
 
+    /*
+        override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+            let delete = UITableViewRowAction(style: .default, title: "刪除") { (action, indexPath) in
+
+            }
+
+            return [delete]
+        }
+    */
+
+    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "刪除"
+    }
+
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         var alertWindow: UIWindow!
         if editingStyle == .delete {

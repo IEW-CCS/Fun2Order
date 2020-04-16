@@ -13,6 +13,7 @@ protocol GroupFriendListDelegate: class {
 }
 
 class GroupFriendListTableViewController: UITableViewController {
+    @IBOutlet weak var barButtonConfirm: UIBarButtonItem!
     var friendList: [Friend] = [Friend]()
     var selectFlag: [Bool] = [Bool]()
     
@@ -23,9 +24,12 @@ class GroupFriendListTableViewController: UITableViewController {
         let friendNib: UINib = UINib(nibName: "SelectMemberCell", bundle: nil)
         self.tableView.register(friendNib, forCellReuseIdentifier: "SelectMemberCell")
 
-        self.friendList = retrieveFriendList()
+        //self.friendList = retrieveFriendList()
         if !self.friendList.isEmpty {
             selectFlag = Array(repeating: false, count: self.friendList.count)
+            self.barButtonConfirm.isEnabled = true
+        } else {
+            self.barButtonConfirm.isEnabled = false
         }
     }
 

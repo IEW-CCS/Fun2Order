@@ -18,6 +18,10 @@ class MemberCell: UITableViewCell {
         self.backView.layer.borderWidth = CGFloat(1.0)
         self.backView.layer.borderColor = UIColor.lightGray.cgColor
         self.backView.layer.cornerRadius = 6
+        
+        self.memberImage.layer.borderWidth = 1.0
+        self.memberImage.layer.borderColor = UIColor.lightGray.cgColor
+        self.memberImage.layer.cornerRadius = 6
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

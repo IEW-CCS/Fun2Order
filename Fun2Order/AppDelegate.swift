@@ -27,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // When the app launch after user tap on notification (originally was not running / not in background)
         if(launchOptions?[UIApplication.LaunchOptionsKey.remoteNotification] != nil) {
+            print("application willFinishLaunchingWithOptions received remote notifications")
+            //presentSimpleAlertMessage(title: "Test", message: "application willFinishLaunchingWithOptions received remote notifications")
             let userInfos = launchOptions?[UIApplication.LaunchOptionsKey.remoteNotification] as? [String: Any]
             
             getLaunchNotification(user_infos: userInfos!)
@@ -57,9 +59,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         Messaging.messaging().delegate = self
-        
-        getNotifications(completion: refreshNotifyList)
+
+        getNotifications(func_id: "application didFinishLaunchingWithOptions", completion: refreshNotifyList)
         signOutForFirstRun()
+        //deleteAllNotifications()
         return true
     }
     
@@ -86,16 +89,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         Messaging.messaging().apnsToken = deviceToken as Data
     }
 
+    /*
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         print("application didReceiveRemoteNotification")
-        getNotifications(completion: refreshNotifyList)
+        getNotifications(func_id: "application didRegisterForRemoteNotificationsWithDeviceToken", completion: refreshNotifyList)
         completionHandler(UIBackgroundFetchResult.newData)
     }
+    */
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         print("-------- userNotificationCenter  didReceive response")
-        getNotifications(completion: refreshNotifyList)
+        getTappedNotification(notification: response.notification)
+        getNotifications(func_id: "userNotificationCenter didReceive", completion: refreshNotifyList)
         completionHandler()
 
     }
@@ -107,7 +113,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         getTappedNotification(notification: notification)
         self.notificationDelegate?.refreshNotificationList()
         
-        let isReadFlag = notification.request.content.userInfo["isRead"] as! String
+        guard let isReadFlag = notification.request.content.userInfo["isRead"] as? String else {
+            presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知資料格式錯誤")
+            completionHandler([])
+            return
+        }
+        
         if isReadFlag == "Y" {
             completionHandler([])
         } else {
@@ -117,22 +128,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillResignActive(_ application: UIApplication) {
         print("-------- applicationWillResignActive")
-        getNotifications(completion: refreshNotifyList)
+        getNotifications(func_id: "applicationWillResignActive", completion: refreshNotifyList)
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         print("-------- applicationDidEnterBackground")
-        getNotifications(completion: refreshNotifyList)
+        //getNotifications(func_id: "applicationDidEnterBackground", completion: refreshNotifyList)
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         print("-------- applicationWillEnterForeground")
-        getNotifications(completion: refreshNotifyList)
+        //getNotifications(func_id: "applicationWillEnterForeground", completion: refreshNotifyList)
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("-------- applicationDidBecomeActive")
-        getNotifications(completion: refreshNotifyList)
+        getNotifications(func_id: "applicationDidBecomeActive", completion: refreshNotifyList)
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -239,6 +250,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
     }
-
 }
 

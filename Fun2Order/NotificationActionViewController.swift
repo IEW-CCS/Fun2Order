@@ -49,6 +49,7 @@ class NotificationActionViewController: UIViewController {
         self.interstitialAd.delegate = self
 
     }
+    
     @IBAction func attendGroupOrder(_ sender: UIButton) {
         let dispatchGroup = DispatchGroup()
         var menuData: MenuInformation = MenuInformation()

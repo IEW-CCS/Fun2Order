@@ -97,10 +97,20 @@ class NotificationTableViewController: UITableViewController {
                 
             case NOTIFICATION_TYPE_MESSAGE_INFORMATION:
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                guard let notifyInfoController = storyBoard.instantiateViewController(withIdentifier: "NOTIFY_INFO_VC") as? NotificationInformationViewController else{
+                guard let notifyInfoController = storyBoard.instantiateViewController(withIdentifier: "NOTIFY_MESSAGE_VC") as? NotificationMessageTableViewController else{
                     assertionFailure("[AssertionFailure] StoryBoard: NOTIFY_INFO_VC can't find!! (QRCodeViewController)")
                     return
                 }
+                notifyInfoController.notificationData = self.notificationList[indexPath.row]
+                //notifyInfoController.indexPath = indexPath
+                self.notificationList[indexPath.row].isRead = "Y"
+                updateNotificationReadStatus(message_id: self.notificationList[indexPath.row].messageID, status: true)
+                setNotificationBadgeNumber()
+                guard let cell = self.tableView.cellForRow(at: indexPath) as? NotificationActionCell else {
+                    return
+                }
+                cell.setData(notification: self.notificationList[indexPath.row])
+
                 notifyInfoController.notificationData = self.notificationList[indexPath.row]
                 navigationController?.show(notifyInfoController, sender: self)
 
@@ -111,6 +121,25 @@ class NotificationTableViewController: UITableViewController {
         }
     }
 
+/*
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .default, title: "刪除") { (action, indexPath) in
+
+        }
+
+        return [delete]
+    }
+*/
+
+/*
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        print("NotificationTableViewController -> trailingSwipeActionsConfigurationForRowAt")
+    }
+*/
+    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "刪除"
+    }
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         var alertWindow: UIWindow!
         if editingStyle == .delete {

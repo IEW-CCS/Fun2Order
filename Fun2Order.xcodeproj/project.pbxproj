@@ -37,6 +37,8 @@
 		361C0BA023993B9E0086BB65 /* CartOrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 361C0B9E23993B9E0086BB65 /* CartOrderCell.xib */; };
 		361C0BA3239AA50C0086BB65 /* CartOrderItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361C0BA1239AA50C0086BB65 /* CartOrderItemCell.swift */; };
 		361C0BA4239AA50C0086BB65 /* CartOrderItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 361C0BA2239AA50C0086BB65 /* CartOrderItemCell.xib */; };
+		36206DA02443E668002A4416 /* NotificationMessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36206D9F2443E668002A4416 /* NotificationMessageTableViewController.swift */; };
+		36206DA42443FE12002A4416 /* NotificationMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36206DA32443FE12002A4416 /* NotificationMessageViewController.swift */; };
 		36225999238EAD9A00B637D0 /* ShadowGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36225998238EAD9A00B637D0 /* ShadowGradientView.swift */; };
 		3622599B238F45F200B637D0 /* DashboardGlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3622599A238F45F100B637D0 /* DashboardGlobalConstants.swift */; };
 		362259A023926B7100B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3622599D23926B7000B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataClass.swift */; };
@@ -164,7 +166,6 @@
 		36857C9023E66BC100B410B8 /* NotificationActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36857C8E23E66BC100B410B8 /* NotificationActionCell.swift */; };
 		36857C9123E66BC100B410B8 /* NotificationActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36857C8F23E66BC100B410B8 /* NotificationActionCell.xib */; };
 		36857C9523E6F61D00B410B8 /* NotificationActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36857C9423E6F61D00B410B8 /* NotificationActionViewController.swift */; };
-		36857C9723E6F65200B410B8 /* NotificationInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36857C9623E6F65200B410B8 /* NotificationInformationViewController.swift */; };
 		36857C9B23E8F16800B410B8 /* JoinOrderSelectProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36857C9A23E8F16800B410B8 /* JoinOrderSelectProductViewController.swift */; };
 		36857CA223E9428F00B410B8 /* MENU_INFORMATION+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36857C9F23E9428F00B410B8 /* MENU_INFORMATION+CoreDataClass.swift */; };
 		36857CA323E9428F00B410B8 /* MENU_ICON+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36857CA023E9428F00B410B8 /* MENU_ICON+CoreDataProperties.swift */; };
@@ -345,6 +346,7 @@
 		36DC7A5F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A2F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png */; };
 		36E8D3CE235DA7CC00AB35CB /* PayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8D3CC235DA7CC00AB35CB /* PayCell.swift */; };
 		36E8D3CF235DA7CC00AB35CB /* PayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36E8D3CD235DA7CC00AB35CB /* PayCell.xib */; };
+		36EE4E472440B15D00AE2DE9 /* Icon_TrashCan.png in Resources */ = {isa = PBXBuildFile; fileRef = 36EE4E442440B15C00AE2DE9 /* Icon_TrashCan.png */; };
 		83D0129223BEDD2A00EE960E /* OTPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D0129123BEDD2A00EE960E /* OTPView.swift */; };
 		F505DDE623692AC900E3F681 /* SignUpMailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F505DDE123692AC900E3F681 /* SignUpMailController.swift */; };
 		F505DDE723692AC900E3F681 /* VerifyPhNoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F505DDE223692AC900E3F681 /* VerifyPhNoController.swift */; };
@@ -417,6 +419,8 @@
 		361C0B9E23993B9E0086BB65 /* CartOrderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CartOrderCell.xib; sourceTree = "<group>"; };
 		361C0BA1239AA50C0086BB65 /* CartOrderItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartOrderItemCell.swift; sourceTree = "<group>"; };
 		361C0BA2239AA50C0086BB65 /* CartOrderItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CartOrderItemCell.xib; sourceTree = "<group>"; };
+		36206D9F2443E668002A4416 /* NotificationMessageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMessageTableViewController.swift; sourceTree = "<group>"; };
+		36206DA32443FE12002A4416 /* NotificationMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMessageViewController.swift; sourceTree = "<group>"; };
 		36225998238EAD9A00B637D0 /* ShadowGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowGradientView.swift; sourceTree = "<group>"; };
 		3622599A238F45F100B637D0 /* DashboardGlobalConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardGlobalConstants.swift; sourceTree = "<group>"; };
 		3622599D23926B7000B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FAVORITE_PRODUCT_RECIPE+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -549,7 +553,6 @@
 		36857C8E23E66BC100B410B8 /* NotificationActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActionCell.swift; sourceTree = "<group>"; };
 		36857C8F23E66BC100B410B8 /* NotificationActionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationActionCell.xib; sourceTree = "<group>"; };
 		36857C9423E6F61D00B410B8 /* NotificationActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActionViewController.swift; sourceTree = "<group>"; };
-		36857C9623E6F65200B410B8 /* NotificationInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationInformationViewController.swift; sourceTree = "<group>"; };
 		36857C9A23E8F16800B410B8 /* JoinOrderSelectProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinOrderSelectProductViewController.swift; sourceTree = "<group>"; };
 		36857C9E23E9428F00B410B8 /* MENU_INFORMATION+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MENU_INFORMATION+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		36857C9F23E9428F00B410B8 /* MENU_INFORMATION+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MENU_INFORMATION+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -729,6 +732,7 @@
 		36DC7A2F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "珍珠鮮奶茶@2x.png"; sourceTree = "<group>"; };
 		36E8D3CC235DA7CC00AB35CB /* PayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayCell.swift; sourceTree = "<group>"; };
 		36E8D3CD235DA7CC00AB35CB /* PayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PayCell.xib; sourceTree = "<group>"; };
+		36EE4E442440B15C00AE2DE9 /* Icon_TrashCan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_TrashCan.png; sourceTree = "<group>"; };
 		6F23F293F87D0CFC6266BEB4 /* Pods-Fun2Order.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fun2Order.debug.xcconfig"; path = "Target Support Files/Pods-Fun2Order/Pods-Fun2Order.debug.xcconfig"; sourceTree = "<group>"; };
 		7DD41DAEB12A610C33F8EFF7 /* Pods-Fun2Order.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fun2Order.release.xcconfig"; path = "Target Support Files/Pods-Fun2Order/Pods-Fun2Order.release.xcconfig"; sourceTree = "<group>"; };
 		83D0129123BEDD2A00EE960E /* OTPView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPView.swift; sourceTree = "<group>"; };
@@ -822,6 +826,7 @@
 				3625ACD023C764920037B865 /* Icon_Menu_Recipe.png */,
 				36C1F43F23D7DEC50004B0CD /* Icon_Notify_Menu.png */,
 				36C1F44223D7DEC50004B0CD /* Icon_Refresh.png */,
+				36EE4E442440B15C00AE2DE9 /* Icon_TrashCan.png */,
 			);
 			path = icons;
 			sourceTree = "<group>";
@@ -896,7 +901,8 @@
 				367CE57E23C1B96600C0840D /* DateTimeViewController.swift */,
 				3625ACA623C61C120037B865 /* NotificationTableViewController.swift */,
 				36857C9423E6F61D00B410B8 /* NotificationActionViewController.swift */,
-				36857C9623E6F65200B410B8 /* NotificationInformationViewController.swift */,
+				36206D9F2443E668002A4416 /* NotificationMessageTableViewController.swift */,
+				36206DA32443FE12002A4416 /* NotificationMessageViewController.swift */,
 				363DE7AB23CC9B1C00C60935 /* TemplateViewController.swift */,
 				36AA199223D523340039A758 /* HistoryDetailViewController.swift */,
 				36AA198A23D51CFC0039A758 /* HistoryPageViewController.swift */,
@@ -1475,6 +1481,7 @@
 				36DC7A5B2356CB94009D48F5 /* 鮮奶冬瓜.png in Resources */,
 				36DC7A3B2356CB94009D48F5 /* 青茶@2x.png in Resources */,
 				363D9D272371C2180038E136 /* AppConfig.plist in Resources */,
+				36EE4E472440B15D00AE2DE9 /* Icon_TrashCan.png in Resources */,
 				3614E0E92358A9D900D23BA6 /* CategorySectionView.xib in Resources */,
 				3688A0AE235FDB9C001990CE /* MemberCell.xib in Resources */,
 				36D583CF2354151500AEB84F /* 紅太陽@3x.png in Resources */,
@@ -1689,6 +1696,7 @@
 				36973ADA23AE5F19008804C5 /* ChangePasswordViewController.swift in Sources */,
 				362C4821235B56550010C845 /* RecipeCell.swift in Sources */,
 				F505DDEC23692AE300E3F681 /* HomeTabBar.swift in Sources */,
+				36206DA02443E668002A4416 /* NotificationMessageTableViewController.swift in Sources */,
 				3600BC8523926D2D00BC6D84 /* FAVORITE_PRODUCT+CoreDataClass.swift in Sources */,
 				36159C142355B3D500664D75 /* CommonStruct.swift in Sources */,
 				36B80C7D23B4ED9E004359E4 /* GroupCell.swift in Sources */,
@@ -1729,7 +1737,6 @@
 				362C4829235C71040010C845 /* QuantityCell.swift in Sources */,
 				367ED6A223EE8CAD00151A02 /* JoinOrderSelectRecipeTableViewController.swift in Sources */,
 				360EB73423C609CD00753469 /* MenuListTableViewController.swift in Sources */,
-				36857C9723E6F65200B410B8 /* NotificationInformationViewController.swift in Sources */,
 				3600BCA42396486500BC6D84 /* ORDER_CONTENT_ITEM+CoreDataClass.swift in Sources */,
 				36C1F44D23D889110004B0CD /* MenuOrderMemberNGCell.swift in Sources */,
 				3649CFAC235D3FEF00C0F2EA /* CartListCell.swift in Sources */,
@@ -1762,6 +1769,7 @@
 				36AA199323D523340039A758 /* HistoryDetailViewController.swift in Sources */,
 				366E126923502B9100BFFF45 /* FSPagerCollectionView.swift in Sources */,
 				36973AC323AB54A0008804C5 /* BasicInformationTableViewController.swift in Sources */,
+				36206DA42443FE12002A4416 /* NotificationMessageViewController.swift in Sources */,
 				361C0B9F23993B9E0086BB65 /* CartOrderCell.swift in Sources */,
 				F505DDEE23692AEF00E3F681 /* EntryViewController.swift in Sources */,
 				36857CA423E9428F00B410B8 /* MENU_INFORMATION+CoreDataProperties.swift in Sources */,
@@ -1940,7 +1948,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -1968,7 +1976,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;

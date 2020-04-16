@@ -182,11 +182,11 @@ class MemberGroupViewController: UIViewController {
     @objc func handleLongPressMemberCell(_ sender: UILongPressGestureRecognizer) {
         if(sender.state == .began) {
             print("Long pressed the member cell [\(sender.view!.tag)]")
-            let controller = UIAlertController(title: "編輯會員動作", message: nil, preferredStyle: .actionSheet)
+            let controller = UIAlertController(title: "編輯群組好友", message: nil, preferredStyle: .actionSheet)
             
-            let deleteAction = UIAlertAction(title: "刪除會員", style: .default) { (_) in
-                print("Delete Member[\(sender.view!.tag)] Information")
-                let alertController = UIAlertController(title: "刪除會員資訊", message: "確定要刪除此會員資訊嗎？", preferredStyle: .alert)
+            let deleteAction = UIAlertAction(title: "刪除好友", style: .default) { (_) in
+                print("Delete memberList[\(sender.view!.tag)] information, member name = \(self.memberList[sender.view!.tag].memberName)")
+                let alertController = UIAlertController(title: "刪除好友資訊", message: "確定要刪除此群組的好友資訊嗎？", preferredStyle: .alert)
 
                 let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
                     print("Confirm to delete this member")
@@ -221,6 +221,29 @@ class MemberGroupViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowGroupFriendList" {
             if let controllerGroupFriendList = segue.destination as? GroupFriendListTableViewController {
+                var filteredFriendsList: [Friend] = [Friend]()
+                
+                let allFriendsList = retrieveFriendList()
+                
+                if !allFriendsList.isEmpty {
+                    for i in 0...allFriendsList.count - 1 {
+                        var isFound: Bool = false
+                        if !self.memberList.isEmpty {
+                            for j in 0...self.memberList.count - 1 {
+                                if allFriendsList[i].memberID == self.memberList[j].memberID {
+                                    isFound = true
+                                    break
+                                }
+                            }
+                        }
+                        
+                        if !isFound {
+                            filteredFriendsList.append(allFriendsList[i])
+                        }
+                    }
+                }
+                
+                controllerGroupFriendList.friendList = filteredFriendsList
                 controllerGroupFriendList.delegate = self
             }
         }

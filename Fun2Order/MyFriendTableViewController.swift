@@ -17,12 +17,23 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
         let friendNib: UINib = UINib(nibName: "MemberCell", bundle: nil)
         self.tableView.register(friendNib, forCellReuseIdentifier: "MemberCell")
 
+        refreshControl = UIRefreshControl()
+        refreshControl?.attributedTitle = NSAttributedString(string: "正在更新好友列表")
+        self.tableView.refreshControl = refreshControl
+        refreshControl?.addTarget(self, action: #selector(pullToRefreshFriendList), for: .valueChanged)
+
         self.friendList = retrieveFriendList()
+    }
+
+    @objc func pullToRefreshFriendList() {
+        refreshFriendList()
+        //self.refreshControl?.endRefreshing()
     }
 
     func refreshFriendList() {
         self.friendList.removeAll()
         self.friendList = retrieveFriendList()
+        self.refreshControl?.endRefreshing()
         self.tableView.reloadData()
     }
 

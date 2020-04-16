@@ -705,6 +705,8 @@ func retrieveMemberList(group_id: Int) -> [GroupMember] {
 
     let predicate = NSPredicate(format: predicateString)
     fetchMember.predicate = predicate
+    let sort = NSSortDescriptor(key: "memberName", ascending: true)
+    fetchMember.sortDescriptors = [sort]
 
     do {
         let member_list = try vc.fetch(fetchMember)
@@ -796,6 +798,8 @@ func retrieveFriendList() -> [Friend] {
     vc = app.persistentContainer.viewContext
 
     let fetchFriend: NSFetchRequest<FRIEND_TABLE> = FRIEND_TABLE.fetchRequest()
+    let sort = NSSortDescriptor(key: "memberName", ascending: true)
+    fetchFriend.sortDescriptors = [sort]
 
     do {
         let friend_list = try vc.fetch(fetchFriend)
@@ -843,6 +847,31 @@ func deleteFriend(member_id: String) {
         let friend_data = try vc.fetch(fetchRequest).first
         if friend_data != nil {
             vc.delete(friend_data!)
+            deleteGroupFriend(member_id: member_id)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+
+    app.saveContext()
+}
+
+func deleteGroupFriend(member_id: String) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchRequest: NSFetchRequest<GROUP_MEMBER> = GROUP_MEMBER.fetchRequest()
+    let predicateString = "memberID == \"\(member_id)\""
+    
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+    
+    do {
+        let groupfriend_list = try vc.fetch(fetchRequest)
+        for groupfriend_data in groupfriend_list {
+            vc.delete(groupfriend_data)
         }
     } catch {
         print(error.localizedDescription)
@@ -1467,15 +1496,17 @@ func retrieveNotificationList() -> [NotificationData] {
             do {
                 let jsonData = notificationData.notificationData!.data(using: .utf8)
                 tmpData = try decoder.decode(NotificationData.self, from: jsonData!)
-                print("tmpData in notificationList = \(tmpData)")
+                //print("tmpData in notificationList = \(tmpData)")
                 returnList.append(tmpData)
             } catch {
                 print("retrieveNotificationList jsonData decode failed: \(error.localizedDescription)")
+                presentSimpleAlertMessage(title: "本地通知資料解碼錯誤", message: error.localizedDescription)
                 continue
             }
         }
     } catch {
         print(error.localizedDescription)
+        presentSimpleAlertMessage(title: "本地通知資料讀取錯誤", message: error.localizedDescription)
     }
     
     return returnList
@@ -1506,11 +1537,13 @@ func retrieveInvitationNotificationList() -> [NotificationData] {
                 }
             } catch {
                 print("jsonData decode failed: \(error.localizedDescription)")
+                presentSimpleAlertMessage(title: "團購邀請資料解碼錯誤", message: error.localizedDescription)
                 continue
             }
         }
     } catch {
         print(error.localizedDescription)
+        presentSimpleAlertMessage(title: "團購邀請資料讀取錯誤", message: error.localizedDescription)
     }
     
     return returnList
@@ -1581,6 +1614,7 @@ func insertNotification(notification: NotificationData) {
         notifyData.notificationData = jsonString
     } catch {
         print(error.localizedDescription)
+        presentSimpleAlertMessage(title: "遠端通知資料新增錯誤", message: error.localizedDescription)
         return
     }
 

@@ -117,7 +117,7 @@ class StatusSummaryTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -158,7 +158,18 @@ class StatusSummaryTableViewController: UITableViewController {
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
         }
-        
+
+        if indexPath.row == 3 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
+            
+            let iconImage: UIImage = UIImage(named: "Icon_Notify_Menu.png")!.withRenderingMode(.alwaysTemplate)
+            cell.setData(icon: iconImage, button_text: "訊息通知", action_type: BUTTON_ACTION_NOTIFY_SEND_MESSAGE)
+            
+            cell.delegate = self
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            return cell
+        }
+
         return super.tableView(tableView, cellForRowAt: indexPath)
     }
     
@@ -219,16 +230,16 @@ extension StatusSummaryTableViewController: BasicButtonDelegate {
                 }
 
                 let sender = PushNotificationSender()
-                
+
                 var dueTimeNotify: NotificationData = NotificationData()
                 let title: String = "團購相關訊息"
                 let body: String = "團購訂單的訂購時間即將截止，請儘速決定是否參與團購，謝謝。"
-                
+
                 let formatter = DateFormatter()
                 formatter.dateFormat = DATETIME_FORMATTER
                 let dateNow = Date()
                 let dateTimeString = formatter.string(from: dateNow)
-                
+
                 dueTimeNotify.messageTitle = title
                 dueTimeNotify.messageBody = body
                 dueTimeNotify.notificationType = NOTIFICATION_TYPE_MESSAGE_DUETIME
@@ -244,6 +255,66 @@ extension StatusSummaryTableViewController: BasicButtonDelegate {
                 dueTimeNotify.isRead = "N"
 
                 sender.sendPushNotification(to: memberContent.memberTokenID, title: title, body: body, data: dueTimeNotify)
+            }
+        }
+    }
+    
+    func notifySendMessage(sender: BasicButtonCell) {
+        print("StatusSummaryTableViewController receives BasicButtonDelegate.notifySendMessage")
+
+        let controller = UIAlertController(title: "請輸入訊息", message: nil, preferredStyle: .alert)
+
+        guard let messageController = self.storyboard?.instantiateViewController(withIdentifier: "NOTIFY_MESSAGE_INPUT_VC") as? NotificationMessageViewController else{
+            assertionFailure("[AssertionFailure] StoryBoard: NOTIFY_MESSAGE_INPUT_VC can't find!! (QRCodeViewController)")
+            return
+        }
+
+        controller.setValue(messageController, forKey: "contentViewController")
+        messageController.preferredContentSize.height = 200
+        controller.preferredContentSize.height = 200
+        controller.addChild(messageController)
+        messageController.delegate = self
+        
+        present(controller, animated: true, completion: nil)
+    }
+}
+
+extension StatusSummaryTableViewController: NotificationMessageDelegate {
+    func getNotificationMessage(sender: NotificationMessageViewController, message: String) {
+        let message_string = message
+        if !self.menuOrder.contentItems.isEmpty {
+            let tokenID = getMyTokenID()
+            for memberContent in self.menuOrder.contentItems {
+                if memberContent.memberTokenID == tokenID {
+                    continue
+                }
+
+                let sender = PushNotificationSender()
+                
+                var messageNotify: NotificationData = NotificationData()
+                let title: String = "團購相關訊息"
+                let body: String = "來自團購主的訂單訊息，請點擊觀看詳細訊息內容。"
+                
+                let formatter = DateFormatter()
+                formatter.dateFormat = DATETIME_FORMATTER
+                let dateNow = Date()
+                let dateTimeString = formatter.string(from: dateNow)
+                
+                messageNotify.messageTitle = title
+                messageNotify.messageBody = body
+                messageNotify.notificationType = NOTIFICATION_TYPE_MESSAGE_INFORMATION
+                messageNotify.receiveTime = dateTimeString
+                messageNotify.orderOwnerID = self.menuOrder.orderOwnerID
+                messageNotify.orderOwnerName = self.menuOrder.orderOwnerName
+                messageNotify.menuNumber = self.menuOrder.menuNumber
+                messageNotify.orderNumber = self.menuOrder.orderNumber
+                messageNotify.dueTime = self.menuOrder.dueTime
+                messageNotify.brandName = self.menuOrder.brandName
+                messageNotify.attendedMemberCount = self.menuOrder.contentItems.count
+                messageNotify.messageDetail = message_string
+                messageNotify.isRead = "N"
+
+                sender.sendPushNotification(to: memberContent.memberTokenID, title: title, body: body, data: messageNotify)
             }
         }
     }

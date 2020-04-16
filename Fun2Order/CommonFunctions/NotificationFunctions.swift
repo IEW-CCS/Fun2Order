@@ -10,14 +10,20 @@ import Foundation
 import UIKit
 import CoreData
 
-func getNotifications(completion: @escaping () -> Void) {
+func getNotifications(func_id: String, completion: @escaping () -> Void) {
+    var nCount: Int = 0
     let notifications = UNUserNotificationCenter.current()
+    print("[\(func_id)] calls getNotifications")
+    //let deliveredNotifications = notifications.getDeliveredNotifications
+    
     notifications.getDeliveredNotifications { (delivered_notifications) in
         for delivered_notification in delivered_notifications {
-            print("getNotifications -> setupNotification")
+            //print("getNotifications -> setupNotification")
+            print("&&&&&&&&&&&&&  getNotifications setupNotification")
             setupNotification(notity: delivered_notification)
+            nCount = nCount + 1
         }
-        
+        print("getNotifications -> Get [\(nCount)] notifications from Notification Center")
         notifications.removeAllDeliveredNotifications()
         DispatchQueue.main.async {
             setNotificationBadgeNumber()
@@ -29,20 +35,41 @@ func getNotifications(completion: @escaping () -> Void) {
 func getLaunchNotification(user_infos: [String: Any]) {
     var notificationData: NotificationData = NotificationData()
 
-    notificationData.messageID = user_infos["gcm.message_id"] as! String
-    notificationData.messageTitle = user_infos["messageTitle"] as! String
-    notificationData.messageBody = user_infos["messageBody"] as! String
-    notificationData.notificationType = user_infos["notificationType"] as! String
-    notificationData.receiveTime = user_infos["receiveTime"] as! String
-    notificationData.orderOwnerID = user_infos["orderOwnerID"] as! String
-    notificationData.orderOwnerName = user_infos["orderOwnerName"] as! String
-    notificationData.menuNumber = user_infos["menuNumber"] as! String
-    notificationData.orderNumber = user_infos["orderNumber"] as! String
-    notificationData.dueTime = user_infos["dueTime"] as! String
-    notificationData.brandName = user_infos["brandName"] as! String
-    notificationData.attendedMemberCount = Int(user_infos["attendedMemberCount"] as! String)!
-    notificationData.messageDetail = user_infos["messageDetail"] as! String
-    notificationData.isRead = user_infos["isRead"] as! String
+    guard let tmpMessageTtile = user_infos["messageTitle"] as? String,
+        let tmpMessageBody = user_infos["messageBody"] as? String,
+        let tmpMessageID = user_infos["gcm.message_id"] as? String,
+        let tmpNotificationType = user_infos["notificationType"] as? String,
+        let tmpReceiveTime = user_infos["receiveTime"] as? String,
+        let tmpOrderOwnerID = user_infos["orderOwnerID"] as? String,
+        let tmpOrderOwnerName = user_infos["orderOwnerName"] as? String,
+        let tmpMenuNumber = user_infos["menuNumber"] as? String,
+        let tmpOrderNumber = user_infos["orderNumber"] as? String,
+        let tmpDueTime = user_infos["dueTime"] as? String,
+        let tmpBrandName = user_infos["brandName"] as? String,
+        let tmpAttendedMemberCount = user_infos["attendedMemberCount"] as? String,
+        let tmpMessageDetail = user_infos["messageDetail"] as? String,
+        let tmpIsRead = user_infos["isRead"] as? String
+    else {
+        presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知資料格式錯誤")
+        return
+    }
+    
+    notificationData.messageTitle = tmpMessageTtile
+    notificationData.messageBody = tmpMessageBody
+    notificationData.messageID = tmpMessageID
+    notificationData.notificationType = tmpNotificationType
+    notificationData.receiveTime = tmpReceiveTime
+    notificationData.orderOwnerID = tmpOrderOwnerID
+    notificationData.orderOwnerName = tmpOrderOwnerName
+    notificationData.menuNumber = tmpMenuNumber
+    notificationData.orderNumber = tmpOrderNumber
+    notificationData.dueTime = tmpDueTime
+    notificationData.brandName = tmpBrandName
+    notificationData.attendedMemberCount = Int(tmpAttendedMemberCount) ?? 0
+    notificationData.messageDetail = tmpMessageDetail
+    notificationData.isRead = tmpIsRead
+
+    print("&&&&&&&&&&&&&  getLaunchNotification insertNotification")
     insertNotification(notification: notificationData)
     DispatchQueue.main.async {
         setNotificationBadgeNumber()
@@ -50,6 +77,7 @@ func getLaunchNotification(user_infos: [String: Any]) {
 }
 
 func getTappedNotification(notification: UNNotification) {
+    print("&&&&&&&&&&&&&  getTappedNotification setupNotification")
     setupNotification(notity: notification)
     UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
     //UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [notification.request.identifier])
@@ -64,20 +92,37 @@ func setupNotification(notity: UNNotification) {
 
     var notificationData: NotificationData = NotificationData()
 
-    notificationData.messageID = notity.request.content.userInfo["gcm.message_id"] as! String
+    guard let tmpMessageID = notity.request.content.userInfo["gcm.message_id"] as? String,
+        let tmpNotificationType = notity.request.content.userInfo["notificationType"] as? String,
+        let tmpReceiveTime = notity.request.content.userInfo["receiveTime"] as? String,
+        let tmpOrderOwnerID = notity.request.content.userInfo["orderOwnerID"] as? String,
+        let tmpOrderOwnerName = notity.request.content.userInfo["orderOwnerName"] as? String,
+        let tmpMenuNumber = notity.request.content.userInfo["menuNumber"] as? String,
+        let tmpOrderNumber = notity.request.content.userInfo["orderNumber"] as? String,
+        let tmpDueTime = notity.request.content.userInfo["dueTime"] as? String,
+        let tmpBrandName = notity.request.content.userInfo["brandName"] as? String,
+        let tmpAttendedMemberCount = notity.request.content.userInfo["attendedMemberCount"] as? String,
+        let tmpMessageDetail = notity.request.content.userInfo["messageDetail"] as? String,
+        let tmpIsRead = notity.request.content.userInfo["isRead"] as? String
+    else {
+        presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知資料格式錯誤")
+        return
+    }
+    
     notificationData.messageTitle = notity.request.content.title
     notificationData.messageBody = notity.request.content.body
-    notificationData.notificationType = notity.request.content.userInfo["notificationType"] as! String
-    notificationData.receiveTime = notity.request.content.userInfo["receiveTime"] as! String
-    notificationData.orderOwnerID = notity.request.content.userInfo["orderOwnerID"] as! String
-    notificationData.orderOwnerName = notity.request.content.userInfo["orderOwnerName"] as! String
-    notificationData.menuNumber = notity.request.content.userInfo["menuNumber"] as! String
-    notificationData.orderNumber = notity.request.content.userInfo["orderNumber"] as! String
-    notificationData.dueTime = notity.request.content.userInfo["dueTime"] as! String
-    notificationData.brandName = notity.request.content.userInfo["brandName"] as! String
-    notificationData.attendedMemberCount = Int(notity.request.content.userInfo["attendedMemberCount"] as! String)!
-    notificationData.messageDetail = notity.request.content.userInfo["messageDetail"] as! String
-    notificationData.isRead = notity.request.content.userInfo["isRead"] as! String
+    notificationData.messageID = tmpMessageID
+    notificationData.notificationType = tmpNotificationType
+    notificationData.receiveTime = tmpReceiveTime
+    notificationData.orderOwnerID = tmpOrderOwnerID
+    notificationData.orderOwnerName = tmpOrderOwnerName
+    notificationData.menuNumber = tmpMenuNumber
+    notificationData.orderNumber = tmpOrderNumber
+    notificationData.dueTime = tmpDueTime
+    notificationData.brandName = tmpBrandName
+    notificationData.attendedMemberCount = Int(tmpAttendedMemberCount) ?? 0
+    notificationData.messageDetail = tmpMessageDetail
+    notificationData.isRead = tmpIsRead
 
     //notificationData.isRead = notity.request.content.userInfo["isRead"] as! Bool
     insertNotification(notification: notificationData)
