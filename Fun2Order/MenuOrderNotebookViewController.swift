@@ -8,10 +8,12 @@
 
 import UIKit
 
+
 class MenuOrderNotebookViewController: UIViewController {
     @IBOutlet weak var buttonCopy: UIButton!
     @IBOutlet weak var segmentOption: UISegmentedControl!
     @IBOutlet weak var textViewContent: UITextView!
+    @IBOutlet weak var buttonShare: UIButton!
     
     var menuOrder: MenuOrder = MenuOrder()
     var filterItems: [MenuOrderMemberContent] = [MenuOrderMemberContent]()
@@ -23,6 +25,12 @@ class MenuOrderNotebookViewController: UIViewController {
         self.textViewContent.layer.borderColor = UIColor.darkGray.cgColor
         self.textViewContent.layer.cornerRadius = 6
         
+        self.buttonShare.setImage(UIImage(named: "Icon_Share.png")?.withRenderingMode(.alwaysTemplate), for: UIControl.State.normal)
+        self.buttonShare.setImage(UIImage(named: "Icon_Share.png")?.withRenderingMode(.alwaysTemplate), for: UIControl.State.selected)
+        //self.buttonShare.imageView?.image = UIImage(named: "Icon_Share.png")?.withRenderingMode(.alwaysTemplate)
+        self.buttonShare.imageView?.contentMode = .scaleAspectFit
+        self.buttonShare.imageView?.tintColor = UIColor.systemBlue
+
         setupSegmentOption()
     }
     
@@ -46,6 +54,20 @@ class MenuOrderNotebookViewController: UIViewController {
         UIPasteboard.general.string = self.textViewContent.text
     }
     
+    @IBAction func shareOrderInformation(_ sender: UIButton) {
+        //print("Share Button clieked")
+        if self.textViewContent.text == "" {
+            presentSimpleAlertMessage(title: "警告訊息", message: "目前訂單內容為空白，無可供分享內容，請稍候再試。")
+            return
+        }
+        
+        var msg: String = "Test message from James\n"
+        msg = msg + self.textViewContent.text
+        
+        let vc = UIActivityViewController(activityItems: [msg], applicationActivities: [])
+        present(vc, animated: true)
+    }
+    
     func setupSegmentOption() {
         //if self.menuOrder.locations.isEmpty {
         if self.menuOrder.locations == nil {
@@ -67,28 +89,6 @@ class MenuOrderNotebookViewController: UIViewController {
     }
     
     func getItemString(index: Int) -> String {
-/*
-        var itemString: String = ""
-        itemString = itemString + self.menuOrder.contentItems[index].orderContent.itemOwnerName + " " + self.menuOrder.contentItems[index].orderContent.itemProductName + " "
-        let spaceCount = itemString.lengthOfBytes(using: .utf8)
-        let prefixSpaces = String(repeating: " ", count: spaceCount)
-
-        if self.menuOrder.contentItems[index].orderContent.menuRecipes != nil {
-            for j in 0...self.menuOrder.contentItems[index].orderContent.menuRecipes!.count - 1 {
-                if self.menuOrder.contentItems[index].orderContent.menuRecipes![j].recipeItems != nil {
-                    for k in 0...self.menuOrder.contentItems[index].orderContent.menuRecipes![j].recipeItems!.count - 1 {
-                        itemString = itemString + self.menuOrder.contentItems[index].orderContent.menuRecipes![j].recipeItems![k].recipeName + " "
-                    }
-                }
-            }
-        }
-        
-        itemString = itemString + " * " + String(self.menuOrder.contentItems[index].orderContent.itemQuantity) + "\n"
-        if self.menuOrder.contentItems[index].orderContent.itemComments != "" {
-            itemString = itemString + prefixSpaces + self.menuOrder.contentItems[index].orderContent.itemComments + "\n"
-        }
-*/
-        
         var itemString: String = ""
         if self.menuOrder.contentItems[index].orderContent.menuProductItems != nil {
             for m in 0...self.menuOrder.contentItems[index].orderContent.menuProductItems!.count - 1 {
@@ -120,20 +120,6 @@ class MenuOrderNotebookViewController: UIViewController {
     }
     
     func getMergedItemRecipe(index: Int, product_index: Int) -> String {
-/*
-        var recipeString: String = ""
-        recipeString = recipeString + self.menuOrder.contentItems[index].orderContent.itemProductName + "  "
-        if self.menuOrder.contentItems[index].orderContent.menuRecipes != nil {
-            for j in 0...self.menuOrder.contentItems[index].orderContent.menuRecipes!.count - 1 {
-                if self.menuOrder.contentItems[index].orderContent.menuRecipes![j].recipeItems != nil {
-                    for k in 0...self.menuOrder.contentItems[index].orderContent.menuRecipes![j].recipeItems!.count - 1 {
-                        recipeString = recipeString + self.menuOrder.contentItems[index].orderContent.menuRecipes![j].recipeItems![k].recipeName + " "
-                    }
-                }
-            }
-        }
-*/
- 
         var recipeString: String = ""
         if self.menuOrder.contentItems[index].orderContent.menuProductItems != nil {
             //for m in 0...self.menuOrder.contentItems[index].orderContent.menuProductItems!.count - 1 {

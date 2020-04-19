@@ -141,7 +141,15 @@ class JoinGroupOrderTableViewController: UITableViewController {
     
     @objc func menuImageClicked(_ sender: UITapGestureRecognizer) {
         print("Menu Image tapped")
-        let imageView = sender.view as! UIImageView
+        guard let imageView = sender.view as? UIImageView else {
+            print("UIImageView is nil, just return")
+            return
+        }
+        
+        if imageView.image == nil {
+            print("imageView.image is nil, just return")
+            return
+        }
 
         let zoomView = ImageZoomView(frame: UIScreen.main.bounds, image: imageView.image!)
         zoomView.bounces = false

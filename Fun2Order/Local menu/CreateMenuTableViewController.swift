@@ -284,6 +284,27 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         present(controller, animated: true, completion: nil)
     }
     
+    @IBAction func editStoreInformation(_ sender: UIButton) {
+        let controller = UIAlertController(title: "請輸入店家聯絡資訊", message: nil, preferredStyle: .alert)
+
+        guard let storeController = self.storyboard?.instantiateViewController(withIdentifier: "STORE_CONTACT_VC") as? StoreContactInformationViewController else{
+            assertionFailure("[AssertionFailure] StoryBoard: STORE_CONTACT_VC can't find!! (StoreContactInformationViewController)")
+            return
+        }
+
+        controller.setValue(storeController, forKey: "contentViewController")
+        storeController.preferredContentSize.height = 200
+        controller.preferredContentSize.height = 200
+        controller.addChild(storeController)
+        if self.menuInformation.storeInfo != nil {
+            storeController.setData(store_info: self.menuInformation.storeInfo!)
+        }
+        storeController.delegate = self
+        
+        present(controller, animated: true, completion: nil)
+
+    }
+    
     @IBAction func addLocation(_ sender: UIButton) {
         let controller = UIAlertController(title: "請輸入地點", message: nil, preferredStyle: .alert)
         controller.addTextField { (textField) in
@@ -376,7 +397,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                 if self.isEditedMode {
                     cell.setData(icon: iconImage, button_text: "修改配方", action_type: BUTTON_ACTION_ASSIGN_RECIPE)
                 } else {
-                    cell.setData(icon: iconImage, button_text: "指定配方", action_type: BUTTON_ACTION_ASSIGN_RECIPE)
+                    cell.setData(icon: iconImage, button_text: "設定配方", action_type: BUTTON_ACTION_ASSIGN_RECIPE)
                 }
                 
                 cell.delegate = self
@@ -412,11 +433,12 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 3 {
+        if section == 2 || section == 3 {
             return 0
         }
         
-        return super.tableView(tableView, heightForHeaderInSection: section)
+        //return super.tableView(tableView, heightForHeaderInSection: section)
+        return 40
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -450,6 +472,12 @@ extension CreateMenuTableViewController: UIImagePickerControllerDelegate, UINavi
         self.menuIcon = iconImage
         self.isNeedSave = true
         dismiss(animated: true, completion: nil)
+    }
+}
+
+extension CreateMenuTableViewController: StoreContactInformationDelegate {
+    func getStoreContactInfo(sender: StoreContactInformationViewController, contact: StoreContactInformation) {
+        self.menuInformation.storeInfo = contact
     }
 }
 

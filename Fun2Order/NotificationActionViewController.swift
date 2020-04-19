@@ -91,15 +91,20 @@ class NotificationActionViewController: UIViewController {
                 } catch {
                     dispatchGroup.leave()
                     print("attendGroupOrder menuData jsonData decode failed: \(error.localizedDescription)")
+                    presentSimpleAlertMessage(title: "資料錯誤", message: "菜單資料讀取錯誤，請團購發起人重發。")
+                    return
                 }
             } else {
                 dispatchGroup.leave()
                 print("attendGroupOrder USER_MENU_INFORMATION snapshot doesn't exist!")
+                presentSimpleAlertMessage(title: "資料錯誤", message: "菜單資料不存在，請詢問團購發起人相關訊息。")
                 return
             }
         }) { (error) in
             dispatchGroup.leave()
             print(error.localizedDescription)
+            presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
+            return
         }
 
         let orderString = "USER_MENU_ORDER/\(self.notificationData.orderOwnerID)/\(self.notificationData.orderNumber)/contentItems"
@@ -126,15 +131,21 @@ class NotificationActionViewController: UIViewController {
                     }
                 } catch {
                     print("attendGroupOrder MenuOrderMemberContent jsonData decode failed: \(error.localizedDescription)")
+                    presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料讀取錯誤，請團購發起人重發。")
                     dispatchGroup.leave()
+                    return
                 }
             } else {
                 print("attendGroupOrder MenuOrderMemberContent snapshot doesn't exist!")
+                presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料不存在，請詢問團購發起人相關訊息。")
                 dispatchGroup.leave()
+                return
             }
         }) { (error) in
             print(error.localizedDescription)
             dispatchGroup.leave()
+            presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
+            return
         }
         
         dispatchGroup.notify(queue: .main) {
@@ -151,7 +162,6 @@ class NotificationActionViewController: UIViewController {
                 //joinController.delegate = self
                 self.navigationController?.show(joinController, sender: self)
             }
-
         }
     }
     

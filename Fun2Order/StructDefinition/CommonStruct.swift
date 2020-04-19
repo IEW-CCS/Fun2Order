@@ -237,6 +237,7 @@ struct MenuInformation: Codable {
     var locations: [String]?
     var menuItems :[MenuItem]?
     var menuRecipes: [MenuRecipe]?
+    var storeInfo: StoreContactInformation?
 
     func toAnyObject() -> Any {
         var menuItemsArray: [Any] = [Any]()
@@ -262,10 +263,11 @@ struct MenuInformation: Codable {
             "menuDescription": menuDescription,
             "brandCategory": brandCategory,
             "menuImageURL": menuImageURL,
+            "createTime": createTime,
             "locations": locations as Any,
             "menuItems": menuItemsArray,
             "menuRecipes": menuRecipesArray,
-            "createTime": createTime
+            "storeInfo": storeInfo?.toAnyObject() as Any
         ]
     }
 }
@@ -304,6 +306,20 @@ struct MenuRecipe: Codable {
             "isAllowedMulti": isAllowedMulti,
             "sequenceNumber": sequenceNumber,
             "recipeItems": recipeItemsArray
+        ]
+    }
+}
+
+struct StoreContactInformation: Codable {
+    var storeName: String?
+    var storeAddress: String?
+    var storePhoneNumber: String?
+    
+    func toAnyObject() -> Any? {
+        return [
+            "storeName": storeName as Any,
+            "storeAddress": storeAddress as Any,
+            "storePhoneNumber":storePhoneNumber as Any
         ]
     }
 }

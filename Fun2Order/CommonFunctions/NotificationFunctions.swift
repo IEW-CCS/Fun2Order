@@ -108,7 +108,7 @@ func setupNotification(notity: UNNotification) {
         presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知資料格式錯誤")
         return
     }
-    
+
     notificationData.messageTitle = notity.request.content.title
     notificationData.messageBody = notity.request.content.body
     notificationData.messageID = tmpMessageID

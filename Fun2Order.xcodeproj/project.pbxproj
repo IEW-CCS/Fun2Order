@@ -31,6 +31,7 @@
 		36159C162355E5ED00664D75 /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36159C152355E5ED00664D75 /* GlobalConstants.swift */; };
 		36159C1823569D7300664D75 /* ProductDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36159C1723569D7300664D75 /* ProductDetailTableViewController.swift */; };
 		3617CDD123F426D7006E4DBC /* MenuOrderBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617CDD023F426D7006E4DBC /* MenuOrderBoardViewController.swift */; };
+		3618AA73244BEFE400190F62 /* StoreContactInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3618AA72244BEFE400190F62 /* StoreContactInformationViewController.swift */; };
 		361C0B9B2398AA2C0086BB65 /* CommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361C0B992398AA2C0086BB65 /* CommentsCell.swift */; };
 		361C0B9C2398AA2C0086BB65 /* CommentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 361C0B9A2398AA2C0086BB65 /* CommentsCell.xib */; };
 		361C0B9F23993B9E0086BB65 /* CartOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361C0B9D23993B9E0086BB65 /* CartOrderCell.swift */; };
@@ -200,6 +201,7 @@
 		36AA19A823D531E70039A758 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 36AA19A423D531D90039A758 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		36AA19AD23D553480039A758 /* DashboardStatusSummaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36AA19AB23D553480039A758 /* DashboardStatusSummaryCell.xib */; };
 		36AA19AE23D553480039A758 /* DashboardStatusSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AA19AC23D553480039A758 /* DashboardStatusSummaryCell.swift */; };
+		36AE5B09244C334F00B4E307 /* Icon_Share.png in Resources */ = {isa = PBXBuildFile; fileRef = 36AE5B08244C334F00B4E307 /* Icon_Share.png */; };
 		36B6D9762401557E00041C2C /* MyFriendTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B6D9752401557E00041C2C /* MyFriendTableViewController.swift */; };
 		36B6D97924023FBF00041C2C /* FRIEND_TABLE+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B6D97824023FBF00041C2C /* FRIEND_TABLE+CoreDataProperties.swift */; };
 		36B6D97A24023FBF00041C2C /* FRIEND_TABLE+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B6D97724023FBF00041C2C /* FRIEND_TABLE+CoreDataClass.swift */; };
@@ -413,6 +415,7 @@
 		36159C152355E5ED00664D75 /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
 		36159C1723569D7300664D75 /* ProductDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailTableViewController.swift; sourceTree = "<group>"; };
 		3617CDD023F426D7006E4DBC /* MenuOrderBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOrderBoardViewController.swift; sourceTree = "<group>"; };
+		3618AA72244BEFE400190F62 /* StoreContactInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreContactInformationViewController.swift; sourceTree = "<group>"; };
 		361C0B992398AA2C0086BB65 /* CommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsCell.swift; sourceTree = "<group>"; };
 		361C0B9A2398AA2C0086BB65 /* CommentsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentsCell.xib; sourceTree = "<group>"; };
 		361C0B9D23993B9E0086BB65 /* CartOrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartOrderCell.swift; sourceTree = "<group>"; };
@@ -586,6 +589,7 @@
 		36AA199E23D531D90039A758 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "../Charts-master/Charts.xcodeproj"; sourceTree = "<group>"; };
 		36AA19AB23D553480039A758 /* DashboardStatusSummaryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DashboardStatusSummaryCell.xib; sourceTree = "<group>"; };
 		36AA19AC23D553480039A758 /* DashboardStatusSummaryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardStatusSummaryCell.swift; sourceTree = "<group>"; };
+		36AE5B08244C334F00B4E307 /* Icon_Share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Share.png; sourceTree = "<group>"; };
 		36B6D9752401557E00041C2C /* MyFriendTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFriendTableViewController.swift; sourceTree = "<group>"; };
 		36B6D97724023FBF00041C2C /* FRIEND_TABLE+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FRIEND_TABLE+CoreDataClass.swift"; sourceTree = "<group>"; };
 		36B6D97824023FBF00041C2C /* FRIEND_TABLE+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FRIEND_TABLE+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -781,6 +785,7 @@
 				3625ACCC23C707930037B865 /* MenuItemTableViewController.swift */,
 				3625ACCE23C707A30037B865 /* MenuLocationTableViewController.swift */,
 				3617CDD023F426D7006E4DBC /* MenuOrderBoardViewController.swift */,
+				3618AA72244BEFE400190F62 /* StoreContactInformationViewController.swift */,
 			);
 			path = "Local menu";
 			sourceTree = "<group>";
@@ -827,6 +832,7 @@
 				36C1F43F23D7DEC50004B0CD /* Icon_Notify_Menu.png */,
 				36C1F44223D7DEC50004B0CD /* Icon_Refresh.png */,
 				36EE4E442440B15C00AE2DE9 /* Icon_TrashCan.png */,
+				36AE5B08244C334F00B4E307 /* Icon_Share.png */,
 			);
 			path = icons;
 			sourceTree = "<group>";
@@ -1484,6 +1490,7 @@
 				36EE4E472440B15D00AE2DE9 /* Icon_TrashCan.png in Resources */,
 				3614E0E92358A9D900D23BA6 /* CategorySectionView.xib in Resources */,
 				3688A0AE235FDB9C001990CE /* MemberCell.xib in Resources */,
+				36AE5B09244C334F00B4E307 /* Icon_Share.png in Resources */,
 				36D583CF2354151500AEB84F /* 紅太陽@3x.png in Resources */,
 				3649CFB7235D430000C0F2EA /* Image_Friend5.png in Resources */,
 				36D583982353455200AEB84F /* 1.png in Resources */,
@@ -1716,6 +1723,7 @@
 				360EB73623C60A4900753469 /* CreateMenuTableViewController.swift in Sources */,
 				36B80C8D23B5E41E004359E4 /* GROUP_TABLE+CoreDataProperties.swift in Sources */,
 				3688A0A7235F3A8B001990CE /* GroupOrderViewController.swift in Sources */,
+				3618AA73244BEFE400190F62 /* StoreContactInformationViewController.swift in Sources */,
 				3617CDD123F426D7006E4DBC /* MenuOrderBoardViewController.swift in Sources */,
 				3675ED392388D15F003A94B7 /* PRODUCT_RECIPE+CoreDataProperties copy.swift in Sources */,
 				36D2872723D07F8900C0BA92 /* MENU_RECIPE_CATEGORY+CoreDataProperties.swift in Sources */,
@@ -1948,7 +1956,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -1976,7 +1984,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;

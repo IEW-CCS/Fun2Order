@@ -253,16 +253,6 @@ class HistoryTableViewController: UITableViewController {
         }
     }
 
-    /*
-        override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-            let delete = UITableViewRowAction(style: .default, title: "刪除") { (action, indexPath) in
-
-            }
-
-            return [delete]
-        }
-    */
-
     override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return "刪除"
     }
@@ -380,15 +370,20 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
                 } catch {
                     dispatchGroup.leave()
                     print("attendOrderInvitation jsonData decode failed: \(error.localizedDescription)")
+                    presentSimpleAlertMessage(title: "資料錯誤", message: "菜單資料讀取錯誤，請團購發起人重發。")
+                    return
                 }
             } else {
                 dispatchGroup.leave()
                 print("attendOrderInvitation snapshot doesn't exist!")
+                presentSimpleAlertMessage(title: "資料錯誤", message: "菜單資料不存在，請詢問團購發起人相關訊息。")
                 return
             }
         }) { (error) in
             dispatchGroup.leave()
             print(error.localizedDescription)
+            presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
+            return
         }
 
         let orderString = "USER_MENU_ORDER/\(self.invitationList[data_index].orderOwnerID)/\(self.invitationList[data_index].orderNumber)/contentItems"
@@ -413,20 +408,25 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
                         dispatchGroup.leave()
                     }
                 } catch {
-                    print("attendOrderInvitation jsonData decode failed: \(error.localizedDescription)")
+                    print("attendOrderInvitation MenuOrder jsonData decode failed: \(error.localizedDescription)")
+                    presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料讀取錯誤，請團購發起人重發。")
                     dispatchGroup.leave()
+                    return
                 }
             } else {
-                print("attendOrderInvitation snapshot doesn't exist!")
+                print("attendOrderInvitation MenuOrder snapshot doesn't exist!")
+                presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料不存在，請詢問團購發起人相關訊息。")
                 dispatchGroup.leave()
+                return
             }
         }) { (error) in
             print(error.localizedDescription)
+            presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
             dispatchGroup.leave()
+            return
         }
         
         dispatchGroup.notify(queue: .main) {
-            
             if downloadMenuInformation == true && downloadMenuOrder == true && memberIndex >= 0 {
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 guard let joinController = storyBoard.instantiateViewController(withIdentifier: "JOIN_ORDER_VC") as? JoinGroupOrderTableViewController else{
