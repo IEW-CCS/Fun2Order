@@ -121,6 +121,9 @@
 		3659705523B07FD4008CDD57 /* Icon_Password.png in Resources */ = {isa = PBXBuildFile; fileRef = 3659705423B07FD4008CDD57 /* Icon_Password.png */; };
 		3659705823B0A0BA008CDD57 /* ConfigFavoriteAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3659705623B0A0BA008CDD57 /* ConfigFavoriteAddressCell.swift */; };
 		3659705923B0A0BA008CDD57 /* ConfigFavoriteAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3659705723B0A0BA008CDD57 /* ConfigFavoriteAddressCell.xib */; };
+		365DF511244D3691004C47C4 /* OrderContentReportLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365DF510244D3691004C47C4 /* OrderContentReportLayout.swift */; };
+		365DF518244D57C9004C47C4 /* ReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365DF516244D57C9004C47C4 /* ReportCell.swift */; };
+		365DF519244D57C9004C47C4 /* ReportCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 365DF517244D57C9004C47C4 /* ReportCell.xib */; };
 		3666F6FD239F840000729E43 /* FAVORITE_ADDRESS+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3666F6FC239F840000729E43 /* FAVORITE_ADDRESS+CoreDataProperties.swift */; };
 		3666F6FE239F840000729E43 /* FAVORITE_ADDRESS+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3666F6FB239F840000729E43 /* FAVORITE_ADDRESS+CoreDataClass.swift */; };
 		3666F70823A2199800729E43 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3666F70723A2199800729E43 /* MyProfileViewController.swift */; };
@@ -507,6 +510,9 @@
 		3659705423B07FD4008CDD57 /* Icon_Password.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Password.png; sourceTree = "<group>"; };
 		3659705623B0A0BA008CDD57 /* ConfigFavoriteAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFavoriteAddressCell.swift; sourceTree = "<group>"; };
 		3659705723B0A0BA008CDD57 /* ConfigFavoriteAddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfigFavoriteAddressCell.xib; sourceTree = "<group>"; };
+		365DF510244D3691004C47C4 /* OrderContentReportLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderContentReportLayout.swift; sourceTree = "<group>"; };
+		365DF516244D57C9004C47C4 /* ReportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCell.swift; sourceTree = "<group>"; };
+		365DF517244D57C9004C47C4 /* ReportCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReportCell.xib; sourceTree = "<group>"; };
 		3666F6FB239F840000729E43 /* FAVORITE_ADDRESS+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FAVORITE_ADDRESS+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3666F6FC239F840000729E43 /* FAVORITE_ADDRESS+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FAVORITE_ADDRESS+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3666F70723A2199800729E43 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
@@ -1077,6 +1083,7 @@
 				36857C8223E19C4400B410B8 /* PushNotificationManager.swift */,
 				36857C7E23E19BD500B410B8 /* PushNotificationSender.swift */,
 				36857C8C23E3A7AC00B410B8 /* NotificationFunctions.swift */,
+				365DF510244D3691004C47C4 /* OrderContentReportLayout.swift */,
 			);
 			path = CommonFunctions;
 			sourceTree = "<group>";
@@ -1159,6 +1166,8 @@
 				36C6CAF623FAA5DE00C27DFB /* MenuHomeNativeAdCell.xib */,
 				368B712724209854007BFEB4 /* MenuListCategoryCell.swift */,
 				368B712824209854007BFEB4 /* MenuListCategoryCell.xib */,
+				365DF516244D57C9004C47C4 /* ReportCell.swift */,
+				365DF517244D57C9004C47C4 /* ReportCell.xib */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -1530,6 +1539,7 @@
 				36973AD123AB7343008804C5 /* Icon_Address.png in Resources */,
 				36D583E12354151500AEB84F /* 丸作@3x.jpg in Resources */,
 				36D583D12354151500AEB84F /* 柚豆@2x.jpg in Resources */,
+				365DF519244D57C9004C47C4 /* ReportCell.xib in Resources */,
 				3649CFB8235D430000C0F2EA /* Image_Me.png in Resources */,
 				36DC7A4C2356CB94009D48F5 /* 奶茶@3x.png in Resources */,
 				36C8C1BA235E8A2C002AD40F /* Image_QR_Code_original.png in Resources */,
@@ -1654,7 +1664,9 @@
 				36C8C1BE235E9B90002AD40F /* HistoryTableViewController.swift in Sources */,
 				3641C73F234CCEC30058CF26 /* AppDelegate.swift in Sources */,
 				364BEA1823F4F38C003A418C /* JoinInvitationCell.swift in Sources */,
+				365DF518244D57C9004C47C4 /* ReportCell.swift in Sources */,
 				3675ED49238ABE93003A94B7 /* FAVORITE_STORE+CoreDataClass.swift in Sources */,
+				365DF511244D3691004C47C4 /* OrderContentReportLayout.swift in Sources */,
 				36857C8323E19C4400B410B8 /* PushNotificationManager.swift in Sources */,
 				360EB73E23C60D4600753469 /* JoinGroupOrderTableViewController.swift in Sources */,
 				360EB73823C60B1500753469 /* MenuHomeTableViewController.swift in Sources */,
@@ -1956,7 +1968,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -1984,7 +1996,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;

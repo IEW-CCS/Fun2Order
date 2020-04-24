@@ -42,7 +42,10 @@ class NewProductCell: UITableViewCell {
                 }
             }
         }
-        contentString = contentString + "(\(item.itemComments))"
+        if item.itemComments != "" {
+            contentString = contentString + "(\(item.itemComments))"
+        }
+        
         self.labelRecipe.text = contentString
     }
 }

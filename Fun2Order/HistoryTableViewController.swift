@@ -84,7 +84,7 @@ class HistoryTableViewController: UITableViewController {
         //let pathString = "USER_MENU_ORDER/\(order_info.orderOwnerID)/\(order_info.orderNumber)"
         if let userID = Auth.auth().currentUser?.uid {
             pathString = "USER_MENU_ORDER/\(userID)"
-            print("pathString = \(pathString)")
+            //print("pathString = \(pathString)")
         } else {
             print("HistoryTableViewController queryMenuOrder: Auth.auth().currentUser?.uid is nil, just return")
         }
@@ -94,8 +94,8 @@ class HistoryTableViewController: UITableViewController {
             if snapshot.exists() {
                 let rawData = snapshot.value
                 let jsonData = try? JSONSerialization.data(withJSONObject: rawData as Any, options: [])
-                let jsonString = String(data: jsonData!, encoding: .utf8)!
-                print("jsonString = \(jsonString)")
+                //let jsonString = String(data: jsonData!, encoding: .utf8)!
+                //print("jsonString = \(jsonString)")
 
                 let decoder: JSONDecoder = JSONDecoder()
                 do {

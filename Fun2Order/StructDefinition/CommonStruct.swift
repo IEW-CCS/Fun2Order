@@ -464,6 +464,7 @@ struct MenuOrder: Codable  {
     var createTime: String = ""
     var dueTime: String = ""
     //var dueTime: String?
+    var storeInfo: StoreContactInformation?
     var contentItems: [MenuOrderMemberContent] = [MenuOrderMemberContent]()
     
     func toAnyObject() -> Any {
@@ -487,16 +488,10 @@ struct MenuOrder: Codable  {
             "brandName": brandName,
             "createTime": createTime,
             "dueTime": dueTime,
+            "storeInfo": storeInfo?.toAnyObject() as Any,
             "contentItems": itemsArray
         ]
     }
-}
-
-struct MergedContent {
-    var location: String = ""
-    var mergedRecipe: String = ""
-    var comments: String = ""
-    var quantity: Int = 0
 }
 
 struct NotificationData: Codable {
@@ -563,6 +558,34 @@ struct UserProfile: Codable {
     }
 }
 
+
+struct MergedContent {
+    var owner: String = ""
+    var productName: String = ""
+    var location: String = ""
+    var mergedRecipe: String = ""
+    var comments: String = ""
+    var quantity: Int = 0
+}
+
+struct ReportDataStruct {
+    var numberOfColumns: Int = 0
+    var sectionTitle: String = ""
+    var columnWidth: [CGFloat] = []
+    var columnHeaders: [String] = [String]()
+    var rawCellData: [[String]] = [[String]]()
+}
+
+struct ReportLayoutStruct {
+    var type: String = ""
+    var data: String = ""
+    var itemIndex: Int = 0
+    var sectionIndex: Int = 0
+    var cloumnIndex: Int = 0
+    var rowIndex: Int = 0
+    var rowCount: Int = 0
+    var width: CGFloat = 0
+}
 
 struct TestStruct: Codable {
     var messageID: String = ""

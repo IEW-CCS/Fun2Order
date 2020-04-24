@@ -292,9 +292,11 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
             return
         }
 
-        controller.setValue(storeController, forKey: "contentViewController")
         storeController.preferredContentSize.height = 200
         controller.preferredContentSize.height = 200
+        storeController.preferredContentSize.width = 320
+        controller.preferredContentSize.width = 320
+        controller.setValue(storeController, forKey: "contentViewController")
         controller.addChild(storeController)
         if self.menuInformation.storeInfo != nil {
             storeController.setData(store_info: self.menuInformation.storeInfo!)
