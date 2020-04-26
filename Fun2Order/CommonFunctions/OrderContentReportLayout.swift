@@ -12,7 +12,7 @@ import UIKit
 
 class OrderContentReportLayout: UICollectionViewLayout {
     private var layoutItemsArray: [ReportLayoutStruct] = [ReportLayoutStruct]()
-    private let cellHeight: CGFloat = 28
+    private let cellHeight: CGFloat = 30
     private let cellPadding: CGFloat = 5
     private var cache: [UICollectionViewLayoutAttributes] = []
     private var contentHeight: CGFloat = 0
@@ -26,7 +26,7 @@ class OrderContentReportLayout: UICollectionViewLayout {
         guard cache.isEmpty, let collectionView = collectionView else {
             return
         }
-                
+
         if self.layoutItemsArray.isEmpty {
             print("self.layoutItemsArray is empty, return error")
             return
@@ -50,10 +50,10 @@ class OrderContentReportLayout: UICollectionViewLayout {
                 height = CGFloat(self.layoutItemsArray[i].rowCount) * self.cellHeight
                 self.contentWidth = max(self.contentWidth, self.layoutItemsArray[i].width)
             } else {
-                if self.layoutItemsArray[i].cloumnIndex == 0 {
+                if self.layoutItemsArray[i].columnIndex == 0 {
                     xOffset = 0
                     firstColumnWidth = self.layoutItemsArray[i].width
-                } else if self.layoutItemsArray[i].cloumnIndex == 1 {
+                } else if self.layoutItemsArray[i].columnIndex == 1 {
                     xOffset = firstColumnWidth
                 } else {
                     xOffset = xOffset + self.layoutItemsArray[i - 1].width
@@ -62,12 +62,25 @@ class OrderContentReportLayout: UICollectionViewLayout {
                 width = self.layoutItemsArray[i].width
                 height = CGFloat(self.layoutItemsArray[i].rowCount) * self.cellHeight
             }
-            //print("xOffset[\(xOffset)], yOffset[\(yOffset)], data[\(self.layoutItemsArray[i].data)]")
+
             let frame = CGRect(x: xOffset, y: yOffset, width: width, height: height)
             self.contentHeight = max(self.contentHeight, frame.maxY)
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = frame
-                        
+            
+            if self.layoutItemsArray[i].columnIndex == 0 {
+                attributes.zIndex = 3
+            } else {
+                attributes.zIndex = 2
+            }
+
+            if self.layoutItemsArray[i].columnIndex == 0 && self.layoutItemsArray[i].type != REPORT_LAYOUT_TYPE_SECTION_HEADER{
+                var stickyFrame = attributes.frame
+                
+                stickyFrame.origin.x = collectionView.contentOffset.x
+                attributes.frame = stickyFrame.integral
+            }
+
             self.cache.append(attributes)
         }
 
@@ -88,6 +101,16 @@ class OrderContentReportLayout: UICollectionViewLayout {
         return self.cache[indexPath.item]
     }
     
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        return true
+    }
+    
+    override func invalidateLayout() {
+        super.invalidateLayout()
+        
+        self.cache.removeAll()
+    }
+
     func setLayoutItems(items: [ReportLayoutStruct]) {
         self.layoutItemsArray.removeAll()
         self.layoutItemsArray = items

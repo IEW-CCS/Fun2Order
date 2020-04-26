@@ -394,7 +394,7 @@ class MenuOrderNotebookViewController: UIViewController {
                 tmpLayoutItem.data = self.reportData[i].sectionTitle
                 tmpLayoutItem.itemIndex = itemIndex
                 tmpLayoutItem.sectionIndex = i
-                tmpLayoutItem.cloumnIndex = 0
+                tmpLayoutItem.columnIndex = 0
                 tmpLayoutItem.rowIndex = rowIndex
                 tmpLayoutItem.rowCount = 1
                 var totalWidth: CGFloat = 0
@@ -413,7 +413,7 @@ class MenuOrderNotebookViewController: UIViewController {
                 tmpLayoutItem.data = self.reportData[i].columnHeaders[j]
                 tmpLayoutItem.itemIndex = itemIndex
                 tmpLayoutItem.sectionIndex = i
-                tmpLayoutItem.cloumnIndex = j
+                tmpLayoutItem.columnIndex = j
                 tmpLayoutItem.rowIndex = rowIndex
                 tmpLayoutItem.rowCount = 1
                 tmpLayoutItem.width = self.reportData[i].columnWidth[j]
@@ -437,7 +437,7 @@ class MenuOrderNotebookViewController: UIViewController {
                             tmpLayoutItem.data = self.reportData[i].rawCellData[k][m]
                             tmpLayoutItem.itemIndex = itemIndex
                             tmpLayoutItem.sectionIndex = i
-                            tmpLayoutItem.cloumnIndex = m
+                            tmpLayoutItem.columnIndex = m
                             tmpLayoutItem.rowIndex = rowIndex
                             tmpLayoutItem.width = self.reportData[i].columnWidth[(m % self.reportData[i].numberOfColumns)]
                             var totalRowCount: Int = 0
@@ -457,7 +457,7 @@ class MenuOrderNotebookViewController: UIViewController {
                         tmpLayoutItem.data = self.reportData[i].rawCellData[k][m]
                         tmpLayoutItem.itemIndex = itemIndex
                         tmpLayoutItem.sectionIndex = i
-                        tmpLayoutItem.cloumnIndex = m
+                        tmpLayoutItem.columnIndex = m
                         tmpLayoutItem.rowIndex = rowIndex
                         tmpLayoutItem.rowCount = 1
                         tmpLayoutItem.width = self.reportData[i].columnWidth[(m % self.reportData[i].numberOfColumns)]

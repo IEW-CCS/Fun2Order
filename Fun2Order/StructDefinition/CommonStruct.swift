@@ -581,7 +581,7 @@ struct ReportLayoutStruct {
     var data: String = ""
     var itemIndex: Int = 0
     var sectionIndex: Int = 0
-    var cloumnIndex: Int = 0
+    var columnIndex: Int = 0
     var rowIndex: Int = 0
     var rowCount: Int = 0
     var width: CGFloat = 0

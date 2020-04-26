@@ -19,8 +19,11 @@ class ReportCell: UICollectionViewCell {
     func setData(title: String) {
         self.labelTitle.text = title
         self.labelTitle.textAlignment = .left
-        self.contentView.backgroundColor = UIColor.clear
-        self.backgroundView?.backgroundColor = UIColor.clear
+        
+        //self.contentView.backgroundColor = UIColor.clear
+        //self.backgroundView?.backgroundColor = UIColor.clear
+        self.contentView.backgroundColor = CUSTOM_COLOR_REPORT_BACKGROUND_LIGHT_YELLOW
+        self.backgroundView?.backgroundColor = CUSTOM_COLOR_REPORT_BACKGROUND_LIGHT_YELLOW
     }
     
     func setColumnHeaderStyle() {

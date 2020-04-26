@@ -2492,7 +2492,7 @@
                                 </connections>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1nV-92-0jZ">
-                                <rect key="frame" x="364" y="20" width="30" height="30"/>
+                                <rect key="frame" x="364" y="10.5" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="4nv-K2-yOs"/>
                                     <constraint firstAttribute="width" constant="30" id="a7A-lZ-DIO"/>
@@ -2503,7 +2503,7 @@
                                     <action selector="shareOrderInformation:" destination="jKV-hC-WaX" eventType="touchUpInside" id="g3y-gu-bHG"/>
                                 </connections>
                             </button>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ul6-sP-lBs">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" bounces="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ul6-sP-lBs">
                                 <rect key="frame" x="20" y="183" width="374" height="474"/>
                                 <color key="backgroundColor" red="1" green="1" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewLayout key="collectionViewLayout" id="HPF-YX-QQp" customClass="OrderContentReportLayout" customModule="Fun2Order" customModuleProvider="target"/>
@@ -2550,7 +2550,7 @@
                             <constraint firstItem="M3n-0a-0LC" firstAttribute="top" secondItem="FQ9-Ga-TYB" secondAttribute="bottom" constant="8" id="5H5-bg-dHB"/>
                             <constraint firstItem="8As-fN-4k2" firstAttribute="top" secondItem="dLh-ke-cbt" secondAttribute="bottom" constant="8" id="Cz9-bJ-lVw"/>
                             <constraint firstItem="FQ9-Ga-TYB" firstAttribute="leading" secondItem="L7z-0z-uWu" secondAttribute="leading" constant="20" id="ECG-KS-2We"/>
-                            <constraint firstItem="1nV-92-0jZ" firstAttribute="centerY" secondItem="FQ9-Ga-TYB" secondAttribute="centerY" id="HJu-f7-A9E"/>
+                            <constraint firstItem="1nV-92-0jZ" firstAttribute="bottom" secondItem="FQ9-Ga-TYB" secondAttribute="firstBaseline" id="HJu-f7-A9E"/>
                             <constraint firstItem="Ul6-sP-lBs" firstAttribute="top" secondItem="4ZP-N5-J9d" secondAttribute="bottom" constant="8" id="Khr-mb-TXh"/>
                             <constraint firstItem="L7z-0z-uWu" firstAttribute="trailing" secondItem="1nV-92-0jZ" secondAttribute="trailing" constant="20" id="NgU-xg-JDU"/>
                             <constraint firstItem="M3n-0a-0LC" firstAttribute="centerX" secondItem="4hd-cb-RE9" secondAttribute="centerX" id="O0J-rn-tvf"/>
@@ -3652,7 +3652,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="tEh-jb-Yam">
-                            <rect key="frame" x="0.0" y="-311" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
                                 <barButtonItem title="取消" id="1aH-bF-icT">
