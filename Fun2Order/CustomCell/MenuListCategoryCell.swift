@@ -39,6 +39,10 @@ class MenuListCategoryCell: UITableViewCell {
         
         self.buttonAbout.imageView?.tintColor = UIColor.systemBlue
         self.buttonCreateMenu.imageView?.tintColor = UIColor.systemBlue
+        
+        let app = UIApplication.shared.delegate as! AppDelegate
+        app.toolTipDelegate = self
+
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -92,8 +96,7 @@ class MenuListCategoryCell: UITableViewCell {
         
         self.scrollCategorySegment.setSelectedIndex(index: self.selectedIndex)
     }
-    
-    
+        
     @IBAction func clickAbout(_ sender: UIButton) {
         self.delegate?.displayAbout(sender: self)
     }
@@ -107,5 +110,31 @@ extension MenuListCategoryCell: ScrollUISegmentControllerDelegate {
     func selectItemAt(index: Int, onScrollUISegmentController scrollUISegmentController: ScrollUISegmentController) {
         print("select Item At [\(index)] in scrollUISegmentController with tag  \(scrollUISegmentController.tag) ")
         self.delegate?.categoryIndexChanged(sender: self, index: index)
+    }
+}
+
+extension MenuListCategoryCell: GuideToolTipDelegate {
+    func triggerCreateMenuTooltip(parent: UIView) {
+        //print("------------------------------------------------")
+        //print("triggerCreateMenuTooltip delegate function triggered!!")
+
+        let path = NSHomeDirectory() + "/Documents/GuideToolTip.plist"
+        let plist = NSMutableDictionary(contentsOfFile: path)
+        let toolTipOption = plist!["ToolTipOption"] as! Bool
+        let createMenuToolTip = plist!["showedCreateMenuToolTip"] as! Bool
+
+        if toolTipOption == true && createMenuToolTip == false {
+            DispatchQueue.main.async {
+                showGuideToolTip(text: "歡迎使用 Fun2Order\n從這裡開始\n製作您的第一張菜單", dir: PopTipDirection.down, parent: parent, target: self.buttonCreateMenu.frame, duration: 5)
+            }
+            if let writePlist = NSMutableDictionary(contentsOfFile: path) {
+                writePlist["showedCreateMenuToolTip"] = true
+                if writePlist.write(toFile: path, atomically: true) {
+                    print("Write showedCreateMenuToolTip to GuideToolTip.plist successfule.")
+                } else {
+                    print("Write showedCreateMenuToolTip to GuideToolTip.plist failed.")
+                }
+            }
+        }
     }
 }

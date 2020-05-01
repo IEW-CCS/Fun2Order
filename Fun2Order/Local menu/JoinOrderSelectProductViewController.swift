@@ -12,7 +12,7 @@ protocol JoinOrderSelectProductDelegate: class {
     func setProduct(menu_item: MenuProductItem)
 }
 
-class JoinOrderSelectProductViewController: UIViewController {
+class JoinOrderSelectProductViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var labelProductName: UITextField!
     @IBOutlet weak var labelQuantity: UILabel!
     @IBOutlet weak var stepperQuantity: UIStepper!
@@ -52,9 +52,22 @@ class JoinOrderSelectProductViewController: UIViewController {
         self.tableViewProduct.layer.borderColor = UIColor.lightGray.cgColor
         self.tableViewProduct.layer.cornerRadius = 6
         
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
+
         self.stepperQuantity.value = 1
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+          textField.resignFirstResponder()
+          return true
+    }
+    
+    @objc func dismissKeyBoard() {
+        self.view.endEditing(true)
+    }
+
     @IBAction func changeQuantity(_ sender: UIStepper) {
         let quantity = Int(sender.value)
         self.labelQuantity.text = String(quantity)

@@ -572,6 +572,7 @@ extension MenuOrderNotebookViewController: UICollectionViewDataSource, UICollect
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ReportCell", for: indexPath) as! ReportCell
 
         cell.setData(title: self.layoutItemsArray[indexPath.row].data)
+        
         switch self.layoutItemsArray[indexPath.row].type {
             case REPORT_LAYOUT_TYPE_SECTION_HEADER:
                 cell.setSectionHeaderStyle()
@@ -584,10 +585,30 @@ extension MenuOrderNotebookViewController: UICollectionViewDataSource, UICollect
             default:
                 break
         }
+        
         cell.tag = indexPath.row
         cell.layer.borderWidth = 0.5
         cell.layer.borderColor = UIColor.black.cgColor
         return cell
     }
 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! ReportCell
+        let direction = PopTipDirection.up
+
+        let popTip = PopTip()
+        popTip.font = UIFont(name: "Avenir-Medium", size: 15)!
+        popTip.shouldDismissOnTap = true
+        popTip.shouldDismissOnTapOutside = true
+        popTip.shouldDismissOnSwipeOutside = true
+        popTip.edgeMargin = 5
+        popTip.offset = 2
+        popTip.bubbleOffset = 0
+        popTip.edgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        popTip.arrowRadius = 1
+        popTip.bubbleColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
+
+        //popTip.bubbleColor = UIColor(red: 0.31, green: 0.57, blue: 0.87, alpha: 1)
+        popTip.show(text: self.layoutItemsArray[indexPath.row].data, direction: direction, maxWidth: 200, in: self.collectionReport, from: cell.frame)
+    }
 }

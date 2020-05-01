@@ -32,6 +32,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     var isEditedMode: Bool = false
     var testDate: Date = Date()
     weak var delegate: CreateMenuDelegate?
+    var updatedBrandCategory: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +59,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         
         self.savedMenuInformation = self.menuInformation
         refreshMenu()
+
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -213,6 +215,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                 }
                 print("New added brand category = \(category_string!)")
                 insertMenuBrandCategory(category: category_string!)
+                self.updateBrandCatogory()
                 self.labelCategory.text = category_string!
                 self.menuInformation.brandCategory = category_string!
                 alertWindow.isHidden = true
@@ -234,6 +237,8 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
             let category_string = textController.textFields?[0].text
             print("New added brand category = \(category_string!)")
             insertMenuBrandCategory(category: category_string!)
+            self.updatedBrandCategory = category_string!
+            self.updateBrandCatogory()
             self.labelCategory.text = category_string!
             self.menuInformation.brandCategory = category_string!
             alertTextWindow.isHidden = true
@@ -241,6 +246,24 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         
         textController.addAction(addAction)
         alertTextWindow = presentAlert(textController)
+    }
+    
+    func updateBrandCatogory() {
+        if Auth.auth().currentUser?.uid != nil {
+            downloadFBUserProfile(user_id: Auth.auth().currentUser!.uid, completion: receiveMyProfile)
+        }
+    }
+    
+    func receiveMyProfile(user_profile: UserProfile) {
+        var profile = user_profile
+        var brandList = [String]()
+        if profile.brandCategoryList == nil {
+            brandList.append(self.updatedBrandCategory)
+            profile.brandCategoryList = brandList
+        } else {
+            profile.brandCategoryList!.append(self.updatedBrandCategory)
+        }
+        uploadFBUserProfile(user_profile: profile)
     }
     
     @IBAction func selectMenuPhoto(_ sender: UIButton) {

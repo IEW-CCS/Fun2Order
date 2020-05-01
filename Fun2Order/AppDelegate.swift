@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var window: UIWindow?
     var myTabBar: UITabBar?
     weak var notificationDelegate: ApplicationRefreshNotificationDelegate?
+    weak var toolTipDelegate: GuideToolTipDelegate?
 
     func application(_ application: UIApplication,
                      willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -42,6 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         writeFirebaseConfig()
         writeAppConfig()
         writeSetupConfig()
+        writeToolTipConfig()
         FirebaseApp.configure()
 
         //GADMobileAds.sharedInstance().start(completionHandler: nil)
@@ -200,6 +202,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             try! fm.copyItem(atPath: src!, toPath: dst)
         }
     }
+    
+    func writeToolTipConfig() {
+        let fm = FileManager.default
+        let src = Bundle.main.path(forResource: "GuideToolTip", ofType: "plist")
+        let dst = NSHomeDirectory() + "/Documents/GuideToolTip.plist"
+        
+        if !fm.fileExists(atPath: dst) {
+            try! fm.copyItem(atPath: src!, toPath: dst)
+        }
+    }
+
     
     func saveInstanceID(instance_id: String) {
         let path = NSHomeDirectory() + "/Documents/AppConfig.plist"

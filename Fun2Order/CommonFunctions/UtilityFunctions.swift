@@ -198,8 +198,28 @@ func getMyTokenID() -> String {
     return tokenID
 }
 
+func showGuideToolTip(text: String, dir: PopTipDirection, parent: UIView, target: CGRect, duration: TimeInterval) {
+    let popTip = PopTip()
+    popTip.font = UIFont(name: "Avenir-Medium", size: 15)!
+    popTip.shouldDismissOnTap = true
+    popTip.shouldDismissOnTapOutside = true
+    popTip.shouldDismissOnSwipeOutside = true
+    popTip.edgeMargin = 5
+    popTip.offset = 2
+    popTip.bubbleOffset = 0
+    popTip.edgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+    popTip.arrowRadius = 1
+    //popTip.bubbleColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
+    //popTip.bubbleColor = UIColor.systemRed
+    popTip.bubbleColor = UIColor.systemBlue
+
+    //popTip.bubbleColor = UIColor(red: 0.31, green: 0.57, blue: 0.87, alpha: 1)
+    popTip.show(text: text, direction: dir, maxWidth: 200, in: parent, from: target, duration: duration)
+}
+
 class RuntimeUtils{
     class func delay(seconds delay:Double, closure:@escaping ()->()){
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay*Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
     }
 }
+

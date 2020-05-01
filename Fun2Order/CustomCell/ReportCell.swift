@@ -10,6 +10,7 @@ import UIKit
 
 class ReportCell: UICollectionViewCell {
     @IBOutlet weak var labelTitle: UILabel!
+    var cellData: String = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -17,6 +18,7 @@ class ReportCell: UICollectionViewCell {
     }
 
     func setData(title: String) {
+        self.cellData = title
         self.labelTitle.text = title
         self.labelTitle.textAlignment = .left
         
@@ -36,4 +38,5 @@ class ReportCell: UICollectionViewCell {
         self.contentView.backgroundColor = CUSTOM_COLOR_LIGHT_ORANGE
         self.backgroundView?.backgroundColor = CUSTOM_COLOR_LIGHT_ORANGE
     }
+    
 }

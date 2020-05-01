@@ -7,9 +7,13 @@
 //
 
 import UIKit
+import Firebase
 
 class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDelegate {
     var friendList: [Friend] = [Friend]()
+    var myProfile: UserProfile = UserProfile()
+    var updatedFriend: Friend = Friend()
+    var updatedFlag: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +53,13 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
                 let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
                     print("Confirm to delete this friend")
                     deleteFriend(member_id: self.friendList[sender.view!.tag].memberID)
+                    if Auth.auth().currentUser?.uid != nil {
+                        self.updatedFriend.memberID = self.friendList[sender.view!.tag].memberID
+                        self.updatedFriend.memberName = self.friendList[sender.view!.tag].memberName
+                        self.updatedFriend.memberNickname = self.friendList[sender.view!.tag].memberNickname
+                        self.updatedFlag = "D"
+                        downloadFBUserProfile(user_id: Auth.auth().currentUser!.uid, completion: self.receiveMyProfile)
+                    }
                     self.refreshFriendList()
                 }
                 
@@ -129,11 +140,43 @@ extension MyFriendTableViewController: ScanQRCodeDelegate {
 
         if isUserDuplicate {
             print("User ID is duplicate!")
-            presentSimpleAlertMessage(title: "警告訊息", message: "\(member_name)已存在於好友列表中")
+            presentSimpleAlertMessage(title: "警告訊息", message: "[\(member_name)]已存在於好友列表中")
             return
         } else {
             insertFriend(friend_info: newFriend)
+            if Auth.auth().currentUser?.uid != nil {
+                self.updatedFriend = newFriend
+                self.updatedFlag = "I"
+                downloadFBUserProfile(user_id: Auth.auth().currentUser!.uid, completion: receiveMyProfile)
+            }
             refreshFriendList()
+        }
+    }
+    
+    func receiveMyProfile(user_profile: UserProfile) {
+        switch self.updatedFlag {
+        case "I":
+            var profile = user_profile
+            var friendList = [String]()
+            if profile.friendList == nil {
+                friendList.append(self.updatedFriend.memberID)
+                profile.friendList = friendList
+            } else {
+                profile.friendList!.append(self.updatedFriend.memberID)
+            }
+            uploadFBUserProfile(user_profile: profile)
+            break
+            
+        case "D":
+            var profile = user_profile
+            if profile.friendList != nil {
+                profile.friendList!.removeAll(where: { $0 == self.updatedFriend.memberID })
+            }
+            uploadFBUserProfile(user_profile: profile)
+            break
+            
+        default:
+            break
         }
     }
 }

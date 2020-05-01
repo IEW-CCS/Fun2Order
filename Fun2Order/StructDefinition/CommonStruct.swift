@@ -543,6 +543,8 @@ struct UserProfile: Codable {
     var gender: String?
     var birthday: String?
     var address: String?
+    var friendList: [String]?
+    var brandCategoryList: [String]?
 
     func toAnyObject() -> Any {
         return [
@@ -551,13 +553,14 @@ struct UserProfile: Codable {
             "phoneNumber": phoneNumber,
             "tokenID": tokenID,
             "photoURL": photoURL,
-            "gender": gender,
-            "birthday": birthday,
-            "address": address
+            "gender": gender as Any,
+            "birthday": birthday as Any,
+            "address": address as Any,
+            "friendList": friendList as Any,
+            "brandCategoryList": brandCategoryList as Any
         ]
     }
 }
-
 
 struct MergedContent {
     var owner: String = ""

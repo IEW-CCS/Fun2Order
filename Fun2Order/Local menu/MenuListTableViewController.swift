@@ -39,6 +39,12 @@ class MenuListTableViewController: UITableViewController {
         self.tableView.register(categoryCellViewNib, forCellReuseIdentifier: "MenuListCategoryCell")
 
         setupAdLoader()
+
+        //testResetCreateMenuToolTip()
+        //testResetMyProfileToolTip()
+        //testResetMyFriendToolTip()
+        //testResetMyGroupToolTip()
+        //testResetGroupOrderToolTip()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -51,6 +57,7 @@ class MenuListTableViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: false)
+        //showMyProfileTabBarToolTip()
     }
 
     func downloadFBMenuInformation(select_index: Int) {
@@ -87,6 +94,10 @@ class MenuListTableViewController: UITableViewController {
                     self.selectedIndex = select_index
                     self.filterMenuInfosByCategory()
                     self.tableView.reloadData()
+
+                    let app = UIApplication.shared.delegate as! AppDelegate
+                    app.toolTipDelegate?.triggerCreateMenuTooltip(parent: self.view)
+                    self.showMyProfileTabBarToolTip()
                 } catch {
                     print("downloadFBMenuInformation jsonData decode failed: \(error.localizedDescription)")
                     return
@@ -94,11 +105,67 @@ class MenuListTableViewController: UITableViewController {
             } else {
                 self.tableView.reloadData()
                 print("downloadFBMenuInformation snapshot doesn't exist!")
+                let app = UIApplication.shared.delegate as! AppDelegate
+                app.toolTipDelegate?.triggerCreateMenuTooltip(parent: self.view)
+
                 return
             }
         }) { (error) in
             print("downloadFBMenuInformation: \(error.localizedDescription)")
         }
+    }
+    
+    func showMyProfileTabBarToolTip() {
+        if self.menuInfos.isEmpty {
+            print("showMyProfileTabBarToolTip -> self.menuInfos is Empty")
+            return
+        } else {
+            if self.menuInfos.count > 1 {
+                print("showMyProfileTabBarToolTip -> self.menuInfos.count = [\(self.menuInfos.count)]")
+                return
+            }
+        }
+        
+        let path = NSHomeDirectory() + "/Documents/GuideToolTip.plist"
+        let plist = NSMutableDictionary(contentsOfFile: path)
+        let toolTipOption = plist!["ToolTipOption"] as! Bool
+        let myProfileToolTip = plist!["showedMyProfileToolTip"] as! Bool
+
+        print("toolTipOption =  \(toolTipOption)")
+        print("myProfileToolTip = \(myProfileToolTip)")
+        
+        if toolTipOption == true && myProfileToolTip == false {
+            let app = UIApplication.shared.delegate as! AppDelegate
+/*
+            if let tabBar = app.myTabBar {
+                let frame = CGRect(x: (tabBar.frame.minX + tabBar.frame.maxX) * 3 / 4, y: tabBar.frame.minY, width: (tabBar.frame.minX + tabBar.frame.maxX) / 4, height: tabBar.frame.maxY - tabBar.frame.minY)
+
+                DispatchQueue.main.async {
+                    showGuideToolTip(text: "恭喜您完成第一張菜單\n接下來請從這裡\n加入您的好友並建立群組\n之後就可使用揪團功能", dir: PopTipDirection.up, parent: self.view, target: frame, duration: 10)
+                }
+            }
+*/
+            var tmpViews: [UIView] = [UIView]()
+            if let tabViews = app.myTabBar?.subviews {
+                tmpViews = tabViews.sorted(by: {$0.frame.minX > $1.frame.minX})
+            }
+            
+            let myProfileView = tmpViews[0]
+            DispatchQueue.main.async {
+                showGuideToolTip(text: "恭喜您完成第一張菜單\n接下來請從這裡\n加入您的好友並建立群組\n之後就可使用揪團功能", dir: PopTipDirection.up, parent: app.myTabBar!, target: myProfileView.frame, duration: 8)
+            }
+
+            if let writePlist = NSMutableDictionary(contentsOfFile: path) {
+                writePlist["showedMyProfileToolTip"] = true
+                if writePlist.write(toFile: path, atomically: true) {
+                    print("Write showedMyProfileToolTip to GuideToolTip.plist successfule.")
+                } else {
+                    print("Write showedMyProfileToolTip to GuideToolTip.plist failed.")
+                }
+            }
+
+        }
+
     }
 
     func filterMenuInfosByCategory() {
@@ -408,6 +475,5 @@ extension MenuListTableViewController: MenuListCategoryCellDelegate {
         
         menuCreateController.delegate = self
         navigationController?.show(menuCreateController, sender: self)
-
     }
 }

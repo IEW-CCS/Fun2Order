@@ -12,7 +12,7 @@ import UIKit
 
 class OrderContentReportLayout: UICollectionViewLayout {
     private var layoutItemsArray: [ReportLayoutStruct] = [ReportLayoutStruct]()
-    private let cellHeight: CGFloat = 30
+    private let cellHeight: CGFloat = 36
     private let cellPadding: CGFloat = 5
     private var cache: [UICollectionViewLayoutAttributes] = []
     private var contentHeight: CGFloat = 0
@@ -33,7 +33,7 @@ class OrderContentReportLayout: UICollectionViewLayout {
         }
 
         let totalItems = collectionView.numberOfItems(inSection: 0)
-        print("Total number of items for UICollectionView is [\(totalItems)]")
+        //print("Total number of items for UICollectionView is [\(totalItems)]")
 
         var xOffset: CGFloat = 0
         var firstColumnWidth: CGFloat = 0

@@ -856,6 +856,26 @@ func deleteFriend(member_id: String) {
     app.saveContext()
 }
 
+func deleteAllFriends() {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    
+    vc = app.persistentContainer.viewContext
+
+    let fetchRequest: NSFetchRequest<FRIEND_TABLE> = FRIEND_TABLE.fetchRequest()
+
+    do {
+        let friendList = try vc.fetch(fetchRequest)
+        for friendData in friendList {
+            vc.delete(friendData)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+
+    app.saveContext()
+}
+
 func deleteGroupFriend(member_id: String) {
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
@@ -1455,6 +1475,24 @@ func deleteMenuBrandCategory(category: String) {
     
     app.saveContext()
 }
+
+func deleteAllMenuBrandCategory() {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<MENU_BRAND_CATEGORY> = MENU_BRAND_CATEGORY.fetchRequest()
+
+    do {
+        let categoryList = try vc.fetch(fetchRequest)
+        for categoryData in categoryList {
+            vc.delete(categoryData)
+        }
+    } catch {
+        print(error.localizedDescription)
+    }
+    
+    app.saveContext()}
 
 func retrieveMemberImage(user_id: String) -> UIImage {
     let app = UIApplication.shared.delegate as! AppDelegate

@@ -61,6 +61,12 @@
 		3625ACDF23C962F00037B865 /* MenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3625ACDD23C962F00037B865 /* MenuItemCell.xib */; };
 		3625ACE223CAFE0C0037B865 /* MENU_BRAND_CATEGORY+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3625ACE023CAFE0C0037B865 /* MENU_BRAND_CATEGORY+CoreDataClass.swift */; };
 		3625ACE323CAFE0C0037B865 /* MENU_BRAND_CATEGORY+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3625ACE123CAFE0C0037B865 /* MENU_BRAND_CATEGORY+CoreDataProperties.swift */; };
+		3625BB2824581DAE00330816 /* PopTip+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3625BB2524581DAD00330816 /* PopTip+Draw.swift */; };
+		3625BB2924581DAE00330816 /* PopTip+Transitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3625BB2624581DAE00330816 /* PopTip+Transitions.swift */; };
+		3625BB2A24581DAE00330816 /* PopTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3625BB2724581DAE00330816 /* PopTip.swift */; };
+		3625BB2C245869CE00330816 /* ToolTipDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3625BB2B245869CE00330816 /* ToolTipDelegate.swift */; };
+		3625BB33245A5E8500330816 /* GuideToolTip.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3625BB32245A5E8500330816 /* GuideToolTip.plist */; };
+		3625BB35245A9C7500330816 /* TestFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3625BB34245A9C7500330816 /* TestFunctions.swift */; };
 		362B9102234F27110079A108 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362B9101234F27110079A108 /* HomeViewController.swift */; };
 		362C481E235B48950010C845 /* Add_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 362C481D235B48950010C845 /* Add_Icon.png */; };
 		362C4821235B56550010C845 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362C481F235B56550010C845 /* RecipeCell.swift */; };
@@ -448,6 +454,12 @@
 		3625ACDD23C962F00037B865 /* MenuItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuItemCell.xib; sourceTree = "<group>"; };
 		3625ACE023CAFE0C0037B865 /* MENU_BRAND_CATEGORY+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MENU_BRAND_CATEGORY+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3625ACE123CAFE0C0037B865 /* MENU_BRAND_CATEGORY+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MENU_BRAND_CATEGORY+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3625BB2524581DAD00330816 /* PopTip+Draw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Draw.swift"; sourceTree = "<group>"; };
+		3625BB2624581DAE00330816 /* PopTip+Transitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopTip+Transitions.swift"; sourceTree = "<group>"; };
+		3625BB2724581DAE00330816 /* PopTip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopTip.swift; sourceTree = "<group>"; };
+		3625BB2B245869CE00330816 /* ToolTipDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTipDelegate.swift; sourceTree = "<group>"; };
+		3625BB32245A5E8500330816 /* GuideToolTip.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = GuideToolTip.plist; sourceTree = "<group>"; };
+		3625BB34245A9C7500330816 /* TestFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFunctions.swift; sourceTree = "<group>"; };
 		362B9101234F27110079A108 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		362C481D235B48950010C845 /* Add_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Add_Icon.png; sourceTree = "<group>"; };
 		362C481F235B56550010C845 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
@@ -843,6 +855,16 @@
 			path = icons;
 			sourceTree = "<group>";
 		};
+		3625BB2224581D7D00330816 /* AMPopTip */ = {
+			isa = PBXGroup;
+			children = (
+				3625BB2724581DAE00330816 /* PopTip.swift */,
+				3625BB2524581DAD00330816 /* PopTip+Draw.swift */,
+				3625BB2624581DAE00330816 /* PopTip+Transitions.swift */,
+			);
+			path = AMPopTip;
+			sourceTree = "<group>";
+		};
 		3641C732234CCEC30058CF26 = {
 			isa = PBXGroup;
 			children = (
@@ -866,6 +888,7 @@
 		3641C73D234CCEC30058CF26 /* Fun2Order */ = {
 			isa = PBXGroup;
 			children = (
+				3625BB2224581D7D00330816 /* AMPopTip */,
 				367CE57523C02D2200C0840D /* Fun2Order.entitlements */,
 				36159C07235493C100664D75 /* StructDefinition */,
 				36C0B372236A8E2500B56C75 /* CommonFunctions */,
@@ -881,6 +904,7 @@
 				3641C74F234CCEC40058CF26 /* Info.plist */,
 				363D9D262371C2180038E136 /* AppConfig.plist */,
 				36B80CA023B9B715004359E4 /* MyProfile.plist */,
+				3625BB32245A5E8500330816 /* GuideToolTip.plist */,
 				F505DDF123696BF900E3F681 /* GoogleService-Info.plist */,
 				3641C75B234DD2F40058CF26 /* Resources */,
 				3641C744234CCEC30058CF26 /* Main.storyboard */,
@@ -1084,6 +1108,8 @@
 				36857C7E23E19BD500B410B8 /* PushNotificationSender.swift */,
 				36857C8C23E3A7AC00B410B8 /* NotificationFunctions.swift */,
 				365DF510244D3691004C47C4 /* OrderContentReportLayout.swift */,
+				3625BB2B245869CE00330816 /* ToolTipDelegate.swift */,
+				3625BB34245A9C7500330816 /* TestFunctions.swift */,
 			);
 			path = CommonFunctions;
 			sourceTree = "<group>";
@@ -1441,6 +1467,7 @@
 				36C1F44423D7DEC50004B0CD /* Icon_Refresh.png in Resources */,
 				36D583D32354151500AEB84F /* 五十嵐@3x.png in Resources */,
 				36D583E72354151500AEB84F /* 五十嵐@2x.png in Resources */,
+				3625BB33245A5E8500330816 /* GuideToolTip.plist in Resources */,
 				36C8C1BC235E8AC6002AD40F /* Image_QR_Code.png in Resources */,
 				36D583EA2354151500AEB84F /* 公館手作@3x.jpg in Resources */,
 				36DC7A302356CB94009D48F5 /* 紅茶@2x.png in Resources */,
@@ -1682,6 +1709,7 @@
 				3641C757234CD1620058CF26 /* SceneDelegate.swift in Sources */,
 				3675ED372388D15F003A94B7 /* STORE_BUSINESS_HOURS+CoreDataProperties copy.swift in Sources */,
 				3625ACDA23C87E6C0037B865 /* MenuLocationCell.swift in Sources */,
+				3625BB2A24581DAE00330816 /* PopTip.swift in Sources */,
 				36857C9B23E8F16800B410B8 /* JoinOrderSelectProductViewController.swift in Sources */,
 				36857C7F23E19BD500B410B8 /* PushNotificationSender.swift in Sources */,
 				36D583A92354038E00AEB84F /* BrandListCollectionViewController.swift in Sources */,
@@ -1696,6 +1724,7 @@
 				368B712924209854007BFEB4 /* MenuListCategoryCell.swift in Sources */,
 				36B6D97E2405625000041C2C /* ImageZoomView.swift in Sources */,
 				36857CA223E9428F00B410B8 /* MENU_INFORMATION+CoreDataClass.swift in Sources */,
+				3625BB2824581DAE00330816 /* PopTip+Draw.swift in Sources */,
 				36B80C8F23B5E41E004359E4 /* GROUP_TABLE+CoreDataClass.swift in Sources */,
 				36159C1823569D7300664D75 /* ProductDetailTableViewController.swift in Sources */,
 				3600BCA52396486500BC6D84 /* ORDER_CONTENT_ITEM+CoreDataProperties.swift in Sources */,
@@ -1780,6 +1809,7 @@
 				3675ED382388D15F003A94B7 /* CODE_TABLE+CoreDataProperties copy.swift in Sources */,
 				3659705023B06A6C008CDD57 /* ConfigFavoriteStoreCell.swift in Sources */,
 				3625ACC523C6BF3F0037B865 /* MENU_RECIPE_TEMPLATE+CoreDataClass.swift in Sources */,
+				3625BB35245A9C7500330816 /* TestFunctions.swift in Sources */,
 				362259A223926B7100B637D0 /* FAVORITE_PRODUCT_RECIPE+CoreDataProperties.swift in Sources */,
 				362B9102234F27110079A108 /* HomeViewController.swift in Sources */,
 				360EB73A23C60C7100753469 /* CreateRecipeTableViewController.swift in Sources */,
@@ -1787,6 +1817,7 @@
 				3675ED3E2388D15F003A94B7 /* STORE_BUSINESS_HOURS+CoreDataClass copy.swift in Sources */,
 				367CE57823C1606100C0840D /* SelectMemberCell.swift in Sources */,
 				36AA199323D523340039A758 /* HistoryDetailViewController.swift in Sources */,
+				3625BB2924581DAE00330816 /* PopTip+Transitions.swift in Sources */,
 				366E126923502B9100BFFF45 /* FSPagerCollectionView.swift in Sources */,
 				36973AC323AB54A0008804C5 /* BasicInformationTableViewController.swift in Sources */,
 				36206DA42443FE12002A4416 /* NotificationMessageViewController.swift in Sources */,
@@ -1803,6 +1834,7 @@
 				36B6D97C240412F400041C2C /* GroupFriendListTableViewController.swift in Sources */,
 				3625ACCD23C707930037B865 /* MenuItemTableViewController.swift in Sources */,
 				36857CA323E9428F00B410B8 /* MENU_ICON+CoreDataProperties.swift in Sources */,
+				3625BB2C245869CE00330816 /* ToolTipDelegate.swift in Sources */,
 				36D5838A2353011000AEB84F /* SelectStoreCell.swift in Sources */,
 				3600BC8D2394012800BC6D84 /* ORDER_PRODUCT_RECIPE+CoreDataClass.swift in Sources */,
 				36AA198D23D51D330039A758 /* StatusSummaryTableViewController.swift in Sources */,
@@ -1968,7 +2000,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -1996,7 +2028,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;

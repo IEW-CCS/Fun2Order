@@ -19,7 +19,7 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var segmentControl: UISegmentedControl!    
     
     var segmentIndicator = UIView()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSegment()
@@ -62,6 +62,140 @@ class MyProfileViewController: UIViewController {
         navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        //testResetMyFriendToolTip()
+        //testResetGroupOrderToolTip()
+        showMyFriendToolTip()
+        showMyGroupToolTip()
+        showGroupOrderToolTip()
+    }
+    
+    func showMyFriendToolTip() {
+        let path = NSHomeDirectory() + "/Documents/GuideToolTip.plist"
+        let plist = NSMutableDictionary(contentsOfFile: path)
+        let toolTipOption = plist!["ToolTipOption"] as! Bool
+        let myFriendToolTip = plist!["showedMyFriendToolTip"] as! Bool
+        let myProfileToolTip = plist!["showedMyProfileToolTip"] as! Bool
+        
+        if myFriendToolTip == true || toolTipOption == false {
+            print("myFriendToolTip is true, so skip to show my friend tooltip")
+            return
+        }
+        
+        if myProfileToolTip == false {
+            print("showedMyProfileToolTip is false")
+            return
+        }
+                
+        let frame = CGRect(x: (self.view.frame.minX + self.view.frame.maxX) / 3, y: self.segmentControl.frame.minY, width: (self.view.frame.minX + self.view.frame.maxX) / 3, height: (self.segmentControl.frame.maxY - self.segmentControl.frame.minY))
+        DispatchQueue.main.async {
+            showGuideToolTip(text: "恭喜您加入第一張菜單\n接下來請從這裡開始\n加入您的好友", dir: PopTipDirection.down, parent: self.view, target: frame, duration: 5)
+        }
+        
+        if let writePlist = NSMutableDictionary(contentsOfFile: path) {
+            writePlist["showedMyFriendToolTip"] = true
+            if writePlist.write(toFile: path, atomically: true) {
+                print("Write showedMyFriendToolTip to GuideToolTip.plist successfule.")
+            } else {
+                print("Write showedMyFriendToolTip to GuideToolTip.plist failed.")
+            }
+        }
+
+    }
+    
+    func showMyGroupToolTip() {
+        let path = NSHomeDirectory() + "/Documents/GuideToolTip.plist"
+        let plist = NSMutableDictionary(contentsOfFile: path)
+        let toolTipOption = plist!["ToolTipOption"] as! Bool
+        let myFriendToolTip = plist!["showedMyFriendToolTip"] as! Bool
+        let myGroupToolTip = plist!["showedMyGroupToolTip"] as! Bool
+
+        if myGroupToolTip == true || toolTipOption == false {
+            print("myGroupToolTip is true, so skip to show my group tooltip")
+            return
+        }
+
+        if myFriendToolTip == false {
+            print("showedMyFriendToolTip is false")
+            return
+        }
+
+        let friendList = retrieveFriendList()
+        if friendList.isEmpty {
+            print("showMyFriendToolTip -> Friend List is Empty")
+            return
+        } else {
+            if friendList.count > 1 {
+                print("showMyFriendToolTip -> Friend List count is more than 1")
+                return
+            }
+        }
+
+        let frame = CGRect(x: (self.view.frame.minX + self.view.frame.maxX) * 2 / 3, y: self.segmentControl.frame.minY, width: (self.view.frame.minX + self.view.frame.maxX) / 3, height: (self.segmentControl.frame.maxY - self.segmentControl.frame.minY))
+        DispatchQueue.main.async {
+            showGuideToolTip(text: "您已加入第一個好友\n接下來請從這裡開始\n編輯群組並加入好友", dir: PopTipDirection.down, parent: self.view, target: frame, duration: 5)
+        }
+
+        if let writePlist = NSMutableDictionary(contentsOfFile: path) {
+            writePlist["showedMyGroupToolTip"] = true
+            if writePlist.write(toFile: path, atomically: true) {
+                print("Write showedMyGroupToolTip to GuideToolTip.plist successfule.")
+            } else {
+                print("Write showedMyGroupToolTip to GuideToolTip.plist failed.")
+            }
+        }
+
+    }
+    
+    func showGroupOrderToolTip() {
+        let path = NSHomeDirectory() + "/Documents/GuideToolTip.plist"
+        let plist = NSMutableDictionary(contentsOfFile: path)
+        let toolTipOption = plist!["ToolTipOption"] as! Bool
+        let myGroupToolTip = plist!["showedMyGroupToolTip"] as! Bool
+        let groupOrderToolTip = plist!["showedGroupOrderToolTip"] as! Bool
+
+        if groupOrderToolTip == true || toolTipOption == false {
+            print("groupOrderToolTip is true, so skip to show group order tooltip")
+            return
+        }
+        
+        if myGroupToolTip == false {
+            print("showedMyGroupToolTip is false")
+            return
+        }
+
+        let groupList = retrieveGroupList()
+        if groupList.isEmpty {
+            print("showMyGroupToolTip -> Group List is Empty, tooltip is non-necessary")
+            return
+        } else {
+            if groupList.count > 1 {
+                print("showMyGroupToolTip -> Group List count is more than 1")
+                return
+            }
+        }
+        
+        let app = UIApplication.shared.delegate as! AppDelegate
+                
+        if let tabBar = app.myTabBar {
+            let frame = CGRect(x: 0, y: tabBar.frame.minY, width: (tabBar.frame.minX + tabBar.frame.maxX) / 4, height: tabBar.frame.maxY - tabBar.frame.minY)
+            
+            DispatchQueue.main.async {
+                showGuideToolTip(text: "太好了，將好友加入群組後\n接下來就可以從菜單首頁\n開始邀情您的好友\n一起參加揪團", dir: PopTipDirection.up, parent: self.view, target: frame, duration: 8)
+            }
+        }
+
+        if let writePlist = NSMutableDictionary(contentsOfFile: path) {
+            writePlist["showedGroupOrderToolTip"] = true
+            if writePlist.write(toFile: path, atomically: true) {
+                print("Write showedGroupOrderToolTip to GuideToolTip.plist successfule.")
+            } else {
+                print("Write showedGroupOrderToolTip to GuideToolTip.plist failed.")
+            }
+        }
+
+    }
+
     @objc func handleImageTap(_ sender: UITapGestureRecognizer) {
         print("Group Image View is tapped")
         let controller = UIAlertController(title: "選取照片來源", message: nil, preferredStyle: .actionSheet)
@@ -218,12 +352,6 @@ class MyProfileViewController: UIViewController {
         if let pageIndex = notification.object as? Int {
             print("MyProfileViewController received PageChange notification for page[\(pageIndex)]")
             self.segmentControl.selectedSegmentIndex = pageIndex
-            /*
-             self.segmentIndicator.centerXAnchor.constraint(equalTo: self.segmentControl.subviews[getSubViewIndex()].centerXAnchor).isActive = true
-             UIView.animate(withDuration: 0.1, animations: {
-                 self.view.layoutIfNeeded()
-             })
-             */
         }
     }
     
@@ -247,7 +375,6 @@ extension MyProfileViewController: UIImagePickerControllerDelegate, UINavigation
         let image = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
         let newImage = resizeImage(image: image, width: 120)
         self.imageMyPhoto.image = newImage
-        //self.saveUserImage(user_image: newImage)
         dismiss(animated: true, completion: nil)
     }
 }
