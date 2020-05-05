@@ -139,7 +139,7 @@ extension JoinOrderSelectProductViewController: JoinOrderSelectRecipeDelegate {
             var tmpMenuRecipes: [MenuRecipe] = [MenuRecipe]()
             for i in 0...self.menuRecipes.count - 1 {
                 var tmpMenuRecipe: MenuRecipe = MenuRecipe()
-                tmpMenuRecipe.isAllowedMulti = self.menuRecipes[i].isAllowedMulti
+                tmpMenuRecipe.allowedMultiFlag = self.menuRecipes[i].allowedMultiFlag
                 tmpMenuRecipe.recipeCategory = self.menuRecipes[i].recipeCategory
                 tmpMenuRecipe.sequenceNumber = self.menuRecipes[i].sequenceNumber
                 var isFound: Bool = false

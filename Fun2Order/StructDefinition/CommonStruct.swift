@@ -288,7 +288,8 @@ struct MenuItem: Codable {
 
 struct MenuRecipe: Codable {
     var recipeCategory: String = ""
-    var isAllowedMulti: Bool = false
+    //var isAllowedMulti: Bool = false
+    var allowedMultiFlag: Bool = false
     var sequenceNumber: Int = 0
     var recipeItems: [RecipeItem]?
     
@@ -303,7 +304,8 @@ struct MenuRecipe: Codable {
         
         return [
             "recipeCategory": recipeCategory,
-            "isAllowedMulti": isAllowedMulti,
+            //"isAllowedMulti": isAllowedMulti,
+            "allowedMultiFlag": allowedMultiFlag,
             "sequenceNumber": sequenceNumber,
             "recipeItems": recipeItemsArray
         ]
@@ -384,7 +386,8 @@ struct MenuOrderContentItem: Codable  {
     var itemFinalPrice: Int = 0
     //var itemComments: String = ""
     var location: String = ""
-    var isPayChecked: Bool = false
+    //var isPayChecked: Bool = false
+    var payCheckedFlag: Bool = false
     var payNumber: Int = 0
     var payTime: String = ""
     var createTime: String = ""
@@ -423,7 +426,8 @@ struct MenuOrderContentItem: Codable  {
             "itemFinalPrice": itemFinalPrice,
             //"itemComments": itemComments,
             "location": location,
-            "isPayChecked": isPayChecked,
+            //"isPayChecked": isPayChecked,
+            "payCheckedFlag": payCheckedFlag,
             "payNumber": payNumber,
             "payTime": payTime,
             "createTime": createTime,

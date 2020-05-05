@@ -250,7 +250,7 @@ class MenuRecipeCell: UITableViewCell {
             //delegate?.setMenuRecipe(cell: self, menu_recipe: self.menuRecipe, data_index: index)
             delegate?.setMenuRecipe(cell: self, menu_recipe: self.menuRecipe, data_index: self.tag)
             
-            if !self.menuRecipe.isAllowedMulti {  //Allow to Select only one recipe item
+            if !self.menuRecipe.allowedMultiFlag {  //Allow to Select only one recipe item
                 if self.menuRecipe.recipeItems![index].checkedFlag {
                     selectedItem.setSelected()
                     for i in 0...self.menuRecipe.recipeItems!.count - 1 {

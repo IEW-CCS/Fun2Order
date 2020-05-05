@@ -187,7 +187,8 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
         self.menuOrder.orderType = ORDER_TYPE_MENU
         self.menuOrder.orderStatus = ORDER_STATUS_READY
         self.menuOrder.orderOwnerID = self.menuInformation.userID
-        self.menuOrder.orderOwnerName = (Auth.auth().currentUser?.displayName)!
+        //self.menuOrder.orderOwnerName = (Auth.auth().currentUser?.displayName)!
+        self.menuOrder.orderOwnerName = getMyUserName()
         self.menuOrder.orderTotalQuantity = 0
         self.menuOrder.orderTotalPrice = 0
         self.menuOrder.brandName = self.menuInformation.brandName
@@ -222,7 +223,8 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
             myContent.memberTokenID = getMyTokenID()
             myItem.orderNumber = self.menuOrder.orderNumber
             myItem.itemOwnerID = self.menuInformation.userID
-            myItem.itemOwnerName = self.menuInformation.userName
+            //myItem.itemOwnerName = self.menuInformation.userName
+            myItem.itemOwnerName = getMyUserName()
             myItem.replyStatus = MENU_ORDER_REPLY_STATUS_WAIT
             myItem.createTime = self.menuOrder.createTime
             myContent.orderContent = myItem
@@ -361,6 +363,9 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
     }
     
     @IBAction func sendGroupOrder(_ sender: UIButton) {
+        let friendList = retrieveFriendList()
+        print("\(friendList)")
+        
         if self.memberList.isEmpty {
             print("Selected Group's member list is empty")
             presentSimpleAlertMessage(title: "錯誤訊息", message: "此團購訂單尚未指定任何參與者，請重新選取參與者")
@@ -439,7 +444,7 @@ extension GroupOrderViewController: UITableViewDelegate, UITableViewDataSource {
         header.backgroundView?.layer.backgroundColor = UIColor.clear.cgColor
         header.textLabel?.textAlignment = .center
         if !self.groupList.isEmpty {
-            header.textLabel?.text = "\(self.groupList[self.selectedGroupIndex].groupName)  會員列表"
+            header.textLabel?.text = "\(self.groupList[self.selectedGroupIndex].groupName)  好友列表"
         }
         
     }

@@ -128,7 +128,7 @@ class MemberGroupViewController: UIViewController {
             
             let deleteAction = UIAlertAction(title: "刪除群組", style: .default) { (_) in
                 print("Delete Group[\(sender.view!.tag)] Information")
-                let alertController = UIAlertController(title: "刪除群組資訊", message: "刪除群組會一併刪除與此群組有關的會員資訊，確定要刪除此群組資訊嗎？", preferredStyle: .alert)
+                let alertController = UIAlertController(title: "刪除群組資訊", message: "刪除群組會一併解除與此群組相關的好友連結關係，確定要刪除此群組資訊嗎？", preferredStyle: .alert)
 
                 let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
                     print("Confirm to delete this geoup")
@@ -354,7 +354,7 @@ extension MemberGroupViewController: UITableViewDelegate, UITableViewDataSource 
 
         if !self.groupList.isEmpty {
             header.textLabel?.textAlignment = .center
-            header.textLabel?.text = "\(self.groupList[self.selectedGroupIndex].groupName)  會員列表"
+            header.textLabel?.text = "\(self.groupList[self.selectedGroupIndex].groupName)  好友列表"
         } else {
             header.textLabel?.text = ""
         }

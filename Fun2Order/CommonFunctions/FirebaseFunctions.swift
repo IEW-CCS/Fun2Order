@@ -222,7 +222,7 @@ func testFunction1() {
     
     category.recipeCategory = "容量"
     category.sequenceNumber = 1
-    category.isAllowedMulti = false
+    category.allowedMultiFlag = false
     item.recipeName = "小杯"
     item.sequenceNumber = 1
     category.recipeItems?.append(item)
@@ -240,7 +240,7 @@ func testFunction1() {
     category.recipeItems?.removeAll()
     category.recipeCategory = "冷飲溫度"
     category.sequenceNumber = 2
-    category.isAllowedMulti = false
+    category.allowedMultiFlag = false
     item.recipeName = "完全去冰"
     item.sequenceNumber = 1
     category.recipeItems?.append(item)
@@ -261,7 +261,7 @@ func testFunction1() {
     category.recipeItems?.removeAll()
     category.recipeCategory = "熱飲溫度"
     category.sequenceNumber = 3
-    category.isAllowedMulti = false
+    category.allowedMultiFlag = false
     item.recipeName = "常溫"
     item.sequenceNumber = 1
     category.recipeItems?.append(item)
@@ -276,7 +276,7 @@ func testFunction1() {
     category.recipeItems?.removeAll()
     category.recipeCategory = "甜度一"
     category.sequenceNumber = 4
-    category.isAllowedMulti = false
+    category.allowedMultiFlag = false
     item.recipeName = "無糖"
     item.sequenceNumber = 1
     category.recipeItems?.append(item)
@@ -297,7 +297,7 @@ func testFunction1() {
     category.recipeItems?.removeAll()
     category.recipeCategory = "甜度二"
     category.sequenceNumber = 5
-    category.isAllowedMulti = false
+    category.allowedMultiFlag = false
     item.recipeName = "一分糖"
     item.sequenceNumber = 1
     category.recipeItems?.append(item)
@@ -333,7 +333,7 @@ func testFunction1() {
     category.recipeItems?.removeAll()
     category.recipeCategory = "配料"
     category.sequenceNumber = 6
-    category.isAllowedMulti = true
+    category.allowedMultiFlag = true
     item.recipeName = "波霸"
     item.sequenceNumber = 1
     category.recipeItems?.append(item)
@@ -360,7 +360,7 @@ func testFunction2() {
     
     category.recipeCategory = "容量"
     category.sequenceNumber = 1
-    category.isAllowedMulti = false
+    category.allowedMultiFlag = false
     item.recipeName = "中杯"
     item.sequenceNumber = 1
     category.recipeItems?.append(item)
@@ -372,7 +372,7 @@ func testFunction2() {
     category.recipeItems?.removeAll()
     category.recipeCategory = "冷飲溫度"
     category.sequenceNumber = 2
-    category.isAllowedMulti = false
+    category.allowedMultiFlag = false
     item.recipeName = "完全去冰"
     item.sequenceNumber = 1
     category.recipeItems?.append(item)
@@ -393,7 +393,7 @@ func testFunction2() {
     category.recipeItems?.removeAll()
     category.recipeCategory = "甜度"
     category.sequenceNumber = 3
-    category.isAllowedMulti = false
+    category.allowedMultiFlag = false
     item.recipeName = "無糖"
     item.sequenceNumber = 1
     category.recipeItems?.append(item)
@@ -414,7 +414,7 @@ func testFunction2() {
     category.recipeItems?.removeAll()
     category.recipeCategory = "配料"
     category.sequenceNumber = 4
-    category.isAllowedMulti = true
+    category.allowedMultiFlag = true
     item.recipeName = "波霸"
     item.sequenceNumber = 1
     category.recipeItems?.append(item)

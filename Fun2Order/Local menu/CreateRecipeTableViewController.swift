@@ -216,7 +216,7 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
 
             var menuRecipeData: MenuRecipe = MenuRecipe()
             menuRecipeData.recipeCategory = category_controller.getRecipeCategory()!
-            menuRecipeData.isAllowedMulti = category_controller.getCheckStatus()
+            menuRecipeData.allowedMultiFlag = category_controller.getCheckStatus()
             if self.menuRecipes == nil {
                 menuRecipeData.sequenceNumber = 1
                 self.menuRecipes = [MenuRecipe]()
@@ -272,7 +272,7 @@ extension CreateRecipeTableViewController: BasicButtonDelegate {
                     var finalRecipe: MenuRecipe = MenuRecipe()
                     finalRecipe.sequenceNumber = self.menuRecipes![i].sequenceNumber
                     finalRecipe.recipeCategory = self.menuRecipes![i].recipeCategory
-                    finalRecipe.isAllowedMulti = self.menuRecipes![i].isAllowedMulti
+                    finalRecipe.allowedMultiFlag = self.menuRecipes![i].allowedMultiFlag
                     finalRecipe.recipeItems = recipeItems
                     
                     if tmpData == nil {

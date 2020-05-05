@@ -256,6 +256,7 @@ extension StatusSummaryTableViewController: BasicButtonDelegate {
 
                 sender.sendPushNotification(to: memberContent.memberTokenID, title: title, body: body, data: dueTimeNotify)
             }
+            presentSimpleAlertMessage(title: "訊息", message: "已對尚未回覆者發出催訂通知")
         }
     }
     

@@ -57,7 +57,7 @@ class EditPaymentCell: UITableViewCell {
             }
             
             self.labelPrice.text = priceString
-            self.itemContent.orderContent.isPayChecked = true
+            self.itemContent.orderContent.payCheckedFlag = true
             self.itemContent.orderContent.payNumber = Int((controller.textFields?[0].text)!)!
             let formatter = DateFormatter()
             formatter.dateFormat = TAIWAN_DATETIME_FORMATTER
@@ -103,7 +103,7 @@ class EditPaymentCell: UITableViewCell {
         downloadFBMemberImage(member_id: self.itemContent.memberID, completion: receiveMemberImage)
         
         self.labelMemberName.text = item_content.orderContent.itemOwnerName
-        if !item_content.orderContent.isPayChecked {
+        if !item_content.orderContent.payCheckedFlag {
             self.labelPayStatus.text = "尚未付款"
             self.labelPayTime.text = ""
             self.labelPrice.text = ""

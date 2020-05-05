@@ -90,6 +90,12 @@ class BasicInformationTableViewController: UITableViewController {
     }
 
     func saveSetupConfig() {
+        if self.labelUserName.text == nil || self.labelUserName.text == "" {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "姓名欄位不可為空白，請重新輸入")
+            return
+        }
+        
+        self.myProfile.userName = self.labelUserName.text!
         self.myProfile.gender = self.labelGender.text
         self.myProfile.birthday = self.labelBirthday.text
         self.myProfile.address = self.labelAddress.text
@@ -119,6 +125,7 @@ class BasicInformationTableViewController: UITableViewController {
                 }
             })
 
+            presentSimpleAlertMessage(title: "訊息", message: "基本資料已成功更新")
             NotificationCenter.default.post(name: NSNotification.Name("UpdateProfile"), object: self.labelUserName.text)
         }
     }
@@ -184,6 +191,10 @@ class BasicInformationTableViewController: UITableViewController {
         
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             let username_string = controller.textFields?[0].text
+            if username_string == nil || username_string == "" {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "姓名欄位不可為空白，請重新輸入")
+                return
+            }
             self.labelUserName.text = username_string!
             //self.saveSetupConfig()
             NotificationCenter.default.post(name: NSNotification.Name("RefreshProfile"), object: self.labelUserName.text)

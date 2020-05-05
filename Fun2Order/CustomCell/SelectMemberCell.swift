@@ -18,7 +18,8 @@ class SelectMemberCell: UITableViewCell {
     @IBOutlet weak var selectCheckBox: Checkbox!
     var checkStatus: Bool = true
     weak var delegate: SetMemberSelectedStatusDelegate?
-    
+    let semaphore = DispatchSemaphore(value: 2)
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.backView.layer.borderWidth = CGFloat(1.0)
@@ -44,6 +45,19 @@ class SelectMemberCell: UITableViewCell {
     
     func receiveUserProfile(user_profile: UserProfile) {
         self.memberLabel.text = user_profile.userName
+        DispatchQueue.main.async {
+            let result = self.semaphore.wait(timeout: DispatchTime.distantFuture)
+            print(result)
+            print("updateFriend")
+            updateFriend(member_id: user_profile.userID, member_name: user_profile.userName)
+            self.semaphore.signal()
+        }
+        DispatchQueue.main.async {
+            let result = self.semaphore.wait(timeout: DispatchTime.distantFuture)
+            print(result)
+            updateGroupFriend(member_id: user_profile.userID, member_name: user_profile.userName)
+            self.semaphore.signal()
+        }
     }
 
     func setData(image: UIImage, name: String) {

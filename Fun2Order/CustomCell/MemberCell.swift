@@ -12,7 +12,9 @@ class MemberCell: UITableViewCell {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var memberImage: UIImageView!
     @IBOutlet weak var memberLabel: UILabel!
-    
+
+    let semaphore = DispatchSemaphore(value: 2)
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.backView.layer.borderWidth = CGFloat(1.0)
@@ -35,6 +37,18 @@ class MemberCell: UITableViewCell {
     
     func receiveUserProfile(user_profile: UserProfile) {
         self.memberLabel.text = user_profile.userName
+        DispatchQueue.main.async {
+            let result = self.semaphore.wait(timeout: DispatchTime.distantFuture)
+            print(result)
+            updateFriend(member_id: user_profile.userID, member_name: user_profile.userName)
+            self.semaphore.signal()
+        }
+        DispatchQueue.main.async {
+            let result = self.semaphore.wait(timeout: DispatchTime.distantFuture)
+            print(result)
+            updateGroupFriend(member_id: user_profile.userID, member_name: user_profile.userName)
+            self.semaphore.signal()
+        }
     }
     
     func setData(image: UIImage, name: String) {

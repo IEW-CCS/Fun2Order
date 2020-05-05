@@ -900,7 +900,7 @@ func deleteGroupFriend(member_id: String) {
     app.saveContext()
 }
 
-func updateFriend(member_id: String, nick_name: String) {
+func updateFriend(member_id: String, member_name: String) {
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
     vc = app.persistentContainer.viewContext
@@ -914,7 +914,7 @@ func updateFriend(member_id: String, nick_name: String) {
     do {
         let friendData = try vc.fetch(fetchRequest).first
         if friendData != nil {
-            friendData?.setValue(nick_name, forKey: "memberNickname")
+            friendData!.setValue(member_name, forKey: "memberName")
         }
     } catch {
         print(error.localizedDescription)
@@ -923,6 +923,30 @@ func updateFriend(member_id: String, nick_name: String) {
     
     app.saveContext()
 
+}
+
+func updateGroupFriend(member_id: String, member_name: String) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<GROUP_MEMBER> = GROUP_MEMBER.fetchRequest()
+    let predicateString = "memberID == \"\(member_id)\""
+
+    let predicate = NSPredicate(format: predicateString)
+    fetchRequest.predicate = predicate
+
+    do {
+        let memberList = try vc.fetch(fetchRequest)
+        for memberData in memberList {
+            memberData.setValue(member_name, forKey: "memberName")
+        }
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+    
+    app.saveContext()
 }
 
 func deleteOrderProduct(brand_id: Int, store_id: Int, order_number: String, item_number: Int) -> Bool {
@@ -1194,7 +1218,7 @@ func retrieveMenuInformationByID(menu_number: String) -> MenuInformation? {
             var menuRecipe: MenuRecipe = MenuRecipe()
             menuRecipe.sequenceNumber = Int(categoryData.sequenceNumber)
             menuRecipe.recipeCategory = categoryData.recipeCategory!
-            menuRecipe.isAllowedMulti = categoryData.isAllowedMulti
+            menuRecipe.allowedMultiFlag = categoryData.isAllowedMulti
             
             let fetchRecipeItem: NSFetchRequest<MENU_RECIPE> = MENU_RECIPE.fetchRequest()
             let pRecipeItem = "menuNumber == \"\(menu_number)\" AND recipeCategory == \"\(categoryData.recipeCategory!)\""
@@ -1271,7 +1295,7 @@ func insertMenuInformation(menu_info: MenuInformation) {
             recipeCategory.menuNumber = menu_info.menuNumber
             recipeCategory.sequenceNumber = Int16(menu_info.menuRecipes![i].sequenceNumber)
             recipeCategory.recipeCategory = menu_info.menuRecipes![i].recipeCategory
-            recipeCategory.isAllowedMulti = menu_info.menuRecipes![i].isAllowedMulti
+            recipeCategory.isAllowedMulti = menu_info.menuRecipes![i].allowedMultiFlag
         }
     }
     app.saveContext()

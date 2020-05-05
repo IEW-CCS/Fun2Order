@@ -198,6 +198,14 @@ func getMyTokenID() -> String {
     return tokenID
 }
 
+func getMyUserName() -> String {
+    let path = NSHomeDirectory() + "/Documents/MyProfile.plist"
+    let plist = NSMutableDictionary(contentsOfFile: path)
+    let userName = plist!["UserName"] as! String
+    
+    return userName
+}
+
 func showGuideToolTip(text: String, dir: PopTipDirection, parent: UIView, target: CGRect, duration: TimeInterval) {
     let popTip = PopTip()
     popTip.font = UIFont(name: "Avenir-Medium", size: 15)!

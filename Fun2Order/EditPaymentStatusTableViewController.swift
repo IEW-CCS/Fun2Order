@@ -75,7 +75,7 @@ class EditPaymentStatusTableViewController: UITableViewController {
 
 extension EditPaymentStatusTableViewController: EditPaymentDelegate {
     func updatePaymentInformation(sender: EditPaymentCell, index: Int, new_content: MenuOrderMemberContent) {
-        self.menuOrder.contentItems[self.originalIndex[index]].orderContent.isPayChecked = true
+        self.menuOrder.contentItems[self.originalIndex[index]].orderContent.payCheckedFlag = true
         self.menuOrder.contentItems[self.originalIndex[index]].orderContent.payNumber = new_content.orderContent.payNumber
         self.menuOrder.contentItems[self.originalIndex[index]].orderContent.payTime = new_content.orderContent.payTime
         refreshMenuOrder()
