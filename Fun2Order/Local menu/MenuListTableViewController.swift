@@ -40,11 +40,6 @@ class MenuListTableViewController: UITableViewController {
 
         setupAdLoader()
 
-        //testResetCreateMenuToolTip()
-        //testResetMyProfileToolTip()
-        //testResetMyFriendToolTip()
-        //testResetMyGroupToolTip()
-        //testResetGroupOrderToolTip()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -73,7 +68,35 @@ class MenuListTableViewController: UITableViewController {
 
         databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
+                let childEnumerator = snapshot.children
+                
+                let childDecoder: JSONDecoder = JSONDecoder()
+                while let childData = childEnumerator.nextObject() as? DataSnapshot {
+                    //print("child = \(childData)")
+                    do {
+                        let childJsonData = try? JSONSerialization.data(withJSONObject: childData.value as Any, options: [])
+                        let realData = try childDecoder.decode(MenuInformation.self, from: childJsonData!)
+                        self.menuInfos.append(realData)
+                        print("Success: \(realData.brandName)")
+                    } catch {
+                        print("downloadFBMenuInformation jsonData decode failed: \(error.localizedDescription)")
+                        continue
+                    }
+                }
+                self.menuInfos.sort(by: {$0.createTime > $1.createTime})
+
+                self.menuBrandCategory = retrieveMenuBrandCategory()
+                self.selectedIndex = select_index
+                self.filterMenuInfosByCategory()
+                self.tableView.reloadData()
+
+                let app = UIApplication.shared.delegate as! AppDelegate
+                app.toolTipDelegate?.triggerCreateMenuTooltip(parent: self.view)
+                self.showMyProfileTabBarToolTip()
+
+/*
                 let rawData = snapshot.value
+                
                 let jsonData = try? JSONSerialization.data(withJSONObject: rawData as Any, options: [])
                 //let jsonString = String(data: jsonData!, encoding: .utf8)!
                 //print("jsonString = \(jsonString)")
@@ -102,6 +125,7 @@ class MenuListTableViewController: UITableViewController {
                     print("downloadFBMenuInformation jsonData decode failed: \(error.localizedDescription)")
                     return
                 }
+*/
             } else {
                 self.tableView.reloadData()
                 print("downloadFBMenuInformation snapshot doesn't exist!")

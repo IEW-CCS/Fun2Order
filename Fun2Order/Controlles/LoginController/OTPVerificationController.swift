@@ -20,7 +20,6 @@ class OTPVerificationController: UIViewController,OtpViewDelegate {
     var userName: String = ""
     
     func EnterOTP(otp: String) {
-      
         Auth.auth().settings!.isAppVerificationDisabledForTesting = true
         
         let credential = PhoneAuthProvider.provider().credential(withVerificationID: self._verificationID , verificationCode: "\(otp)")

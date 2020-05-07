@@ -79,26 +79,31 @@ class MenuRecipeCell: UITableViewCell {
         //if recipe_data.recipeItems!.isEmpty {
         if recipe_data.recipeItems == nil {
             //totalRowCount = totalRowCount + 1
-            rowCountIndex = totalRowCount
-            itemY2 = CGFloat(self.backView.frame.maxY + CGFloat((ITEM_HEIGHT_SPACE + ITEM_HEIGHT)*rowCountIndex + 8))
-            let buttonRect = CGRect(x: CGFloat(self.backView.frame.minX + CGFloat(ITEM_WIDTH_SPACE + initMargin)), y: CGFloat(itemY2), width: CGFloat(BUTTON_WIDTH), height: CGFloat(ITEM_HEIGHT))
+            if !self.isSelectRecipeMode {
+                rowCountIndex = totalRowCount
+                itemY2 = CGFloat(self.backView.frame.maxY + CGFloat((ITEM_HEIGHT_SPACE + ITEM_HEIGHT)*rowCountIndex + 8))
+                let buttonRect = CGRect(x: CGFloat(self.backView.frame.minX + CGFloat(ITEM_WIDTH_SPACE + initMargin)), y: CGFloat(itemY2), width: CGFloat(BUTTON_WIDTH), height: CGFloat(ITEM_HEIGHT))
 
-            let addButton = UIButton(frame: buttonRect)
-            addButton.setImage(UIImage(named: "Icon_Add_Group.png")!, for: .normal)
-            //addButton.setImage(UIImage(named: "Add_Icon.png")!, for: .normal)
-            addButton.imageView?.contentMode = .scaleAspectFit
-            if let tintImageAdd = addButton.imageView?.image {
-                let colorlessImage = tintImageAdd.withRenderingMode(.alwaysTemplate)
-                addButton.imageView?.image = colorlessImage
-                addButton.imageView?.tintColor = UIColor.lightGray
+                let addButton = UIButton(frame: buttonRect)
+                addButton.setImage(UIImage(named: "Icon_Add_Group.png")!, for: .normal)
+                //addButton.setImage(UIImage(named: "Add_Icon.png")!, for: .normal)
+                addButton.imageView?.contentMode = .scaleAspectFit
+                if let tintImageAdd = addButton.imageView?.image {
+                    let colorlessImage = tintImageAdd.withRenderingMode(.alwaysTemplate)
+                    addButton.imageView?.image = colorlessImage
+                    addButton.imageView?.tintColor = UIColor.lightGray
+                }
+
+                self.addSubview(addButton)
+                
+                let tapGesture = UITapGestureRecognizer(target: self, action:#selector(self.addItemClicked(_:)))
+                addButton.addGestureRecognizer(tapGesture)
+                cellTotalHeight = cellTotalHeight + (ITEM_HEIGHT_SPACE + ITEM_HEIGHT)*(totalRowCount + 1)
+                self.cellHeight = cellTotalHeight + CELL_MARGIN_HEIGHT
+            } else {
+                cellTotalHeight = cellTotalHeight + (ITEM_HEIGHT_SPACE + ITEM_HEIGHT)*(totalRowCount + 1)
+                self.cellHeight = cellTotalHeight + CELL_MARGIN_HEIGHT
             }
-
-            self.addSubview(addButton)
-            
-            let tapGesture = UITapGestureRecognizer(target: self, action:#selector(self.addItemClicked(_:)))
-            addButton.addGestureRecognizer(tapGesture)
-            cellTotalHeight = cellTotalHeight + (ITEM_HEIGHT_SPACE + ITEM_HEIGHT)*(totalRowCount + 1)
-            self.cellHeight = cellTotalHeight + CELL_MARGIN_HEIGHT
             
             return
         }

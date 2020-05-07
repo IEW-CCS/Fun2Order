@@ -85,15 +85,15 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
             print("checkbox is checked: \(isChecked)")
             self.isAttended = isChecked
         }
-        
+
         self.labelDueDate.text = nil
-        
+
         self.groupList = retrieveGroupList()
         if self.groupList.count > 0 {
             self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
             self.memberTableView.reloadData()
         }
-        
+
         if self.orderType == ORDER_TYPE_MENU {
             self.labelTitle.text = self.menuInformation.brandName
         } else {
@@ -213,6 +213,8 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
             formatter2.dateFormat = DATETIME_FORMATTER
             self.menuOrder.dueTime = formatter2.string(from: timeData!)
         }
+        
+        self.menuOrder.storeInfo = self.menuInformation.storeInfo
         
         if self.isAttended {
             var myContent: MenuOrderMemberContent = MenuOrderMemberContent()

@@ -92,6 +92,24 @@ class HistoryTableViewController: UITableViewController {
         self.menuOrderList.removeAll()
         databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
+                let childEnumerator = snapshot.children
+                
+                let childDecoder: JSONDecoder = JSONDecoder()
+                while let childData = childEnumerator.nextObject() as? DataSnapshot {
+                    //print("child = \(childData)")
+                    do {
+                        let childJsonData = try? JSONSerialization.data(withJSONObject: childData.value as Any, options: [])
+                        let realData = try childDecoder.decode(MenuOrder.self, from: childJsonData!)
+                        self.menuOrderList.append(realData)
+                    } catch {
+                        print("queryMenuOrder jsonData decode failed: \(error.localizedDescription)")
+                        continue
+                    }
+                    self.menuOrderList.sort(by: {$0.createTime > $1.createTime })
+                    
+                    self.tableView.reloadData()
+                }
+/*
                 let rawData = snapshot.value
                 let jsonData = try? JSONSerialization.data(withJSONObject: rawData as Any, options: [])
                 //let jsonString = String(data: jsonData!, encoding: .utf8)!
@@ -112,6 +130,7 @@ class HistoryTableViewController: UITableViewController {
                     print("jsonData decode failed: \(error.localizedDescription)")
                     return
                 }
+*/
             } else {
                 self.tableView.reloadData()
                 print("queryMenuOrder snapshot doesn't exist!")
