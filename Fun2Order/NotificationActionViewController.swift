@@ -23,7 +23,7 @@ class NotificationActionViewController: UIViewController {
     
     var notificationData: NotificationData = NotificationData()
     var indexPath: IndexPath = IndexPath()
-    var interstitialAd: GADInterstitial!
+    //var interstitialAd: GADInterstitial!
 
     let app = UIApplication.shared.delegate as! AppDelegate
     weak var refreshNotificationDelegate: ApplicationRefreshNotificationDelegate?
@@ -37,6 +37,7 @@ class NotificationActionViewController: UIViewController {
         setData(notification: self.notificationData)
     }
 
+/*
     func setupInterstitialAd() {
         // Test Interstitla Video Ad
         self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/5135589807")
@@ -49,6 +50,7 @@ class NotificationActionViewController: UIViewController {
         self.interstitialAd.delegate = self
 
     }
+*/
     
     @IBAction func attendGroupOrder(_ sender: UIButton) {
         let dispatchGroup = DispatchGroup()
@@ -66,7 +68,7 @@ class NotificationActionViewController: UIViewController {
             return
         }
 
-        self.setupInterstitialAd()
+        //self.setupInterstitialAd()
 
         let databaseRef = Database.database().reference()
         
@@ -302,6 +304,7 @@ class NotificationActionViewController: UIViewController {
     }
 }
 
+/*
 extension NotificationActionViewController: GADInterstitialDelegate {
     /// Tells the delegate an ad request succeeded.
     func interstitialDidReceiveAd(_ ad: GADInterstitial) {
@@ -339,3 +342,4 @@ extension NotificationActionViewController: GADInterstitialDelegate {
         print("interstitialWillLeaveApplication")
     }
 }
+*/

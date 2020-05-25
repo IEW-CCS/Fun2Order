@@ -18,11 +18,11 @@ class NotificationActionCell: UITableViewCell {
     @IBOutlet weak var backView: ShadowGradientView!
     
     var notificationData: NotificationData = NotificationData()
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.labelReplyStatus.text = ""
-        // Initialization code
+        self.textViewMessageBody.canCancelContentTouches = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -56,13 +56,16 @@ class NotificationActionCell: UITableViewCell {
                 
             case NOTIFICATION_TYPE_MESSAGE_INFORMATION:
                 self.labelNotificationType.text = "團購訊息"
+                self.labelNotificationType.textColor = UIColor.systemPurple
                 break
                 
             case NOTIFICATION_TYPE_ACTION_JOIN_ORDER:
                 self.labelNotificationType.text = "團購邀請"
+                self.labelNotificationType.textColor = UIColor.systemBlue
                 break
                 
             default:
+                self.labelNotificationType.textColor = UIColor.black
                 break
         }
         

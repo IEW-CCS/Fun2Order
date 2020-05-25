@@ -89,7 +89,7 @@ class MyProfileViewController: UIViewController {
                 
         let frame = CGRect(x: (self.view.frame.minX + self.view.frame.maxX) / 3, y: self.segmentControl.frame.minY, width: (self.view.frame.minX + self.view.frame.maxX) / 3, height: (self.segmentControl.frame.maxY - self.segmentControl.frame.minY))
         DispatchQueue.main.async {
-            showGuideToolTip(text: "恭喜您加入第一張菜單\n接下來請從這裡開始\n加入您的好友", dir: PopTipDirection.down, parent: self.view, target: frame, duration: 5)
+            showGuideToolTip(text: "恭喜您加入第一張菜單\n接下來請從這裡開始\n加入您的好友", dir: PopTipDirection.down, parent: self.view, target: frame, duration: 8)
         }
         
         if let writePlist = NSMutableDictionary(contentsOfFile: path) {
@@ -133,7 +133,7 @@ class MyProfileViewController: UIViewController {
 
         let frame = CGRect(x: (self.view.frame.minX + self.view.frame.maxX) * 2 / 3, y: self.segmentControl.frame.minY, width: (self.view.frame.minX + self.view.frame.maxX) / 3, height: (self.segmentControl.frame.maxY - self.segmentControl.frame.minY))
         DispatchQueue.main.async {
-            showGuideToolTip(text: "您已加入第一個好友\n接下來請從這裡開始\n編輯群組並加入好友", dir: PopTipDirection.down, parent: self.view, target: frame, duration: 5)
+            showGuideToolTip(text: "您已加入第一個好友\n接下來請從這裡開始\n編輯群組並加入好友", dir: PopTipDirection.down, parent: self.view, target: frame, duration: 8)
         }
 
         if let writePlist = NSMutableDictionary(contentsOfFile: path) {

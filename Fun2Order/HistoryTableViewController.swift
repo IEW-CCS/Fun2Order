@@ -16,7 +16,7 @@ class HistoryTableViewController: UITableViewController {
     
     var menuOrderList: [MenuOrder] = [MenuOrder]()
     var invitationList: [NotificationData] = [NotificationData]()
-    var interstitialAd: GADInterstitial!
+    //var interstitialAd: GADInterstitial!
     
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
@@ -50,7 +50,8 @@ class HistoryTableViewController: UITableViewController {
         self.tabBarController?.title = "歷史紀錄"
         navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
     }
-    
+
+/*
     func setupInterstitialAd() {
         // Test Interstitla Video Ad
         self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/5135589807")
@@ -62,6 +63,7 @@ class HistoryTableViewController: UITableViewController {
         self.interstitialAd.load(adRequest)
         self.interstitialAd.delegate = self
     }
+*/
     
     @IBAction func changeHistoryType(_ sender: UISegmentedControl) {
         if self.segmentType.selectedSegmentIndex == 0 {
@@ -217,7 +219,6 @@ class HistoryTableViewController: UITableViewController {
             cell.tag = indexPath.row
             return cell
         }
-
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -261,7 +262,6 @@ class HistoryTableViewController: UITableViewController {
         } else {
             
         }
-
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -364,7 +364,7 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
             return
         }
 
-        self.setupInterstitialAd()
+        //self.setupInterstitialAd()
         
         let databaseRef = Database.database().reference()
         
@@ -508,6 +508,7 @@ extension HistoryTableViewController: JoinGroupOrderDelegate {
     }
 }
 
+/*
 extension HistoryTableViewController: GADInterstitialDelegate {
     /// Tells the delegate an ad request succeeded.
     func interstitialDidReceiveAd(_ ad: GADInterstitial) {
@@ -545,3 +546,4 @@ extension HistoryTableViewController: GADInterstitialDelegate {
         print("interstitialWillLeaveApplication")
     }
 }
+*/

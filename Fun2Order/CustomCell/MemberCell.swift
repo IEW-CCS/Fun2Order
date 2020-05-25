@@ -35,18 +35,22 @@ class MemberCell: UITableViewCell {
         self.memberImage.image = member_image
     }
     
-    func receiveUserProfile(user_profile: UserProfile) {
-        self.memberLabel.text = user_profile.userName
+    func receiveUserProfile(user_profile: UserProfile?) {
+        if user_profile == nil {
+            return
+        }
+        
+        self.memberLabel.text = user_profile!.userName
         DispatchQueue.main.async {
             let result = self.semaphore.wait(timeout: DispatchTime.distantFuture)
             print(result)
-            updateFriend(member_id: user_profile.userID, member_name: user_profile.userName)
+            updateFriend(member_id: user_profile!.userID, member_name: user_profile!.userName)
             self.semaphore.signal()
         }
         DispatchQueue.main.async {
             let result = self.semaphore.wait(timeout: DispatchTime.distantFuture)
             print(result)
-            updateGroupFriend(member_id: user_profile.userID, member_name: user_profile.userName)
+            updateGroupFriend(member_id: user_profile!.userID, member_name: user_profile!.userName)
             self.semaphore.signal()
         }
     }

@@ -15,7 +15,9 @@ protocol CreateRecipeDelegate: class {
 
 class CreateRecipeTableViewController: UITableViewController {
     var brandCategory: [String] = [String]()
+    var customBrandCategory: [String] = [String]()
     var menuRecipeTemplates: [MenuRecipeTemplate] = [MenuRecipeTemplate]()
+    var customRecipeTemplate: [MenuRecipeTemplate] = [MenuRecipeTemplate]()
     var selectedTemoplateIndex:Int = -1
     var cellHeight = [Int]();
     var isEditedMode: Bool = false
@@ -64,12 +66,18 @@ class CreateRecipeTableViewController: UITableViewController {
             assertionFailure("[AssertionFailure] StoryBoard: TEMPLATE_VC can't find!! (QRCodeViewController)")
             return
         }
+        
+        templateController.preferredContentSize.height = 280
+        //templateController.preferredContentSize.width = self.tableView.frame.width - 20
+        //templateController.preferredContentSize.width = 380
+        controller.preferredContentSize.height = 280
+        //controller.preferredContentSize.width = self.tableView.frame.width - 20
+        //controller.preferredContentSize.width = 380
 
         controller.setValue(templateController, forKey: "contentViewController")
-        templateController.preferredContentSize.height = 200
-        controller.preferredContentSize.height = 200
+
         controller.addChild(templateController)
-        templateController.setData(template_ids: self.brandCategory)
+        templateController.setData(template_ids: self.brandCategory, custom_template_ids: self.customBrandCategory)
         templateController.delegate = self
         
         present(controller, animated: true, completion: nil)
@@ -143,17 +151,45 @@ extension CreateRecipeTableViewController: MenuRecipeCellDelegate {
 
 extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate {
     func queryMenuRecipeTemplateData(cell: UITableViewCell) {
+        let dispatchGroup = DispatchGroup()
+
         let databaseRef = Database.database().reference()
         let templateDatabasePath = "MENU_RECIPE_TEMPLATE"
         //testFunction1()
         //testFunction2()
+        dispatchGroup.enter()
         databaseRef.child(templateDatabasePath).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
-                let templateDictionary = snapshot.value
-                let jsonData = try? JSONSerialization.data(withJSONObject: templateDictionary as Any, options: [])
+                //let templateDictionary = snapshot.value
+                //let jsonData = try? JSONSerialization.data(withJSONObject: templateDictionary as Any, options: [])
                 //let jsonString = String(data: jsonData!, encoding: .utf8)!
                 //print("jsonString = \(jsonString)")
+                self.menuRecipeTemplates.removeAll()
+                
+                let childEnumerator = snapshot.children
+                
+                let childDecoder: JSONDecoder = JSONDecoder()
+                while let childData = childEnumerator.nextObject() as? DataSnapshot {
+                    do {
+                        let childJsonData = try? JSONSerialization.data(withJSONObject: childData.value as Any, options: [])
+                        let realData = try childDecoder.decode(MenuRecipeTemplate.self, from: childJsonData!)
+                        self.menuRecipeTemplates.append(realData)
+                    } catch {
+                        print("queryMenuRecipeTemplateData jsonData decode failed: \(error.localizedDescription)")
+                        continue
+                    }
+                }
 
+                if !self.menuRecipeTemplates.isEmpty {
+                    self.menuRecipeTemplates.sort(by: {$0.sequenceNumber < $1.sequenceNumber})
+                    self.brandCategory.removeAll()
+                    for i in 0...self.menuRecipeTemplates.count - 1 {
+                        self.brandCategory.append(self.menuRecipeTemplates[i].templateName)
+                    }
+                }
+                dispatchGroup.leave()
+
+/*
                 let decoder: JSONDecoder = JSONDecoder()
                 do {
                     let templateArray = try decoder.decode([String:MenuRecipeTemplate].self, from: jsonData!)
@@ -170,17 +206,97 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
                         for i in 0...self.menuRecipeTemplates.count - 1 {
                             self.brandCategory.append(self.menuRecipeTemplates[i].templateName)
                         }
-                        self.displayTemplate()
+                        dispatchGroup.leave()
+                        //self.displayTemplate()
                     }
                 } catch {
                     print("jsonData decode failed: \(error.localizedDescription)")
+                    dispatchGroup.leave()
                 }
+*/
             } else {
-                print("queryTemplateData snapshot doesn't exist!")
+                print("queryMenuRecipeTemplateData snapshot doesn't exist!")
+                dispatchGroup.leave()
                 return
             }
         }) { (error) in
             print(error.localizedDescription)
+            dispatchGroup.leave()
+        }
+
+        let customTemplateDatabasePath = "USER_CUSTOM_RECIPE_TEMPLATE/\(Auth.auth().currentUser!.uid)"
+        dispatchGroup.enter()
+        databaseRef.child(customTemplateDatabasePath).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                //let templateDictionary = snapshot.value
+                //let jsonData = try? JSONSerialization.data(withJSONObject: templateDictionary as Any, options: [])
+                //let jsonString = String(data: jsonData!, encoding: .utf8)!
+                //print("jsonString = \(jsonString)")
+                
+                self.customRecipeTemplate.removeAll()
+                
+                let childEnumerator = snapshot.children
+                
+                let childDecoder: JSONDecoder = JSONDecoder()
+                while let childData = childEnumerator.nextObject() as? DataSnapshot {
+                    //print("child = \(childData)")
+                    do {
+                        let childJsonData = try? JSONSerialization.data(withJSONObject: childData.value as Any, options: [])
+                        let realData = try childDecoder.decode(MenuRecipeTemplate.self, from: childJsonData!)
+                        self.customRecipeTemplate.append(realData)
+                        //print("Success: \(realData.brandName)")
+                    } catch {
+                        print("queryMenuRecipeTemplateData jsonData decode failed: \(error.localizedDescription)")
+                        continue
+                    }
+                }
+                
+                if !self.customRecipeTemplate.isEmpty {
+                    self.customRecipeTemplate.sort(by: {$0.sequenceNumber < $1.sequenceNumber})
+                    self.customBrandCategory.removeAll()
+                    for i in 0...self.customRecipeTemplate.count - 1 {
+                        self.customBrandCategory.append(self.customRecipeTemplate[i].templateName)
+                    }
+                }
+                dispatchGroup.leave()
+
+/*
+                let decoder: JSONDecoder = JSONDecoder()
+                do {
+                    let templateArray = try decoder.decode([String:MenuRecipeTemplate].self, from: jsonData!)
+                    self.customRecipeTemplate.removeAll()
+                    
+                    for keyValuePair in templateArray {
+                        //self.brandCategory.append(keyValuePair.key)
+                        self.customRecipeTemplate.append(keyValuePair.value)
+                    }
+                    
+                    if !self.customRecipeTemplate.isEmpty {
+                        self.customRecipeTemplate.sort(by: {$0.sequenceNumber < $1.sequenceNumber})
+                        self.customBrandCategory.removeAll()
+                        for i in 0...self.customRecipeTemplate.count - 1 {
+                            self.customBrandCategory.append(self.customRecipeTemplate[i].templateName)
+                        }
+                        dispatchGroup.leave()
+                        //self.displayTemplate()
+                    }
+                } catch {
+                    print("jsonData decode failed: \(error.localizedDescription)")
+                    dispatchGroup.leave()
+                }
+*/
+            } else {
+                print("queryMenuRecipeTemplateData snapshot doesn't exist!")
+                dispatchGroup.leave()
+                return
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+            dispatchGroup.leave()
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            self.displayTemplate()
         }
     }
     
@@ -240,6 +356,82 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
 
         present(controller, animated: true, completion: nil)
     }
+    
+    func saveMenuRecipeTemplate(cell: UITableViewCell) {
+        //print("CreateRecipeTableViewController receive BasicButtonDelegate.setupRecipe")
+        
+        if self.menuRecipes == nil {
+            presentSimpleAlertMessage(title: "警告訊息", message: "目前自訂的範本內容為空白，因此無法儲存，請新增資料後再試一次。")
+            return
+        } else {
+            let controller = UIAlertController(title: "請輸入範本名稱", message: nil, preferredStyle: .alert)
+            controller.addTextField { (textField) in
+                textField.placeholder = "範本名稱"
+            }
+            
+            let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
+                print("Cancel to save custom recipe template!")
+            }
+            
+            cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+            controller.addAction(cancelAction)
+            
+            let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                let templateName = controller.textFields?[0].text
+                if templateName == nil || templateName == "" {
+                    presentSimpleAlertMessage(title: "錯誤訊息", message: "範本名稱不可為空白，請重新輸入")
+                    return
+                }
+
+                var tmpData: [MenuRecipe]?
+                
+                for i in 0...self.menuRecipes!.count - 1 {
+                    var recipeItems: [RecipeItem] = [RecipeItem]()
+                    if self.menuRecipes![i].recipeItems != nil {
+                        for j in 0...self.menuRecipes![i].recipeItems!.count - 1 {
+                            //if self.menuRecipes![i].recipeItems![j].checkedFlag {
+                                var tmpItem: RecipeItem = RecipeItem()
+                                tmpItem.sequenceNumber = self.menuRecipes![i].recipeItems![j].sequenceNumber
+                                tmpItem.checkedFlag = true
+                                tmpItem.recipeName = self.menuRecipes![i].recipeItems![j].recipeName
+                                
+                                recipeItems.append(tmpItem)
+                            //}
+                        }
+                    }
+                    
+                    if !recipeItems.isEmpty {
+                        var finalRecipe: MenuRecipe = MenuRecipe()
+                        finalRecipe.sequenceNumber = self.menuRecipes![i].sequenceNumber
+                        finalRecipe.recipeCategory = self.menuRecipes![i].recipeCategory
+                        finalRecipe.allowedMultiFlag = self.menuRecipes![i].allowedMultiFlag
+                        finalRecipe.recipeItems = recipeItems
+                        
+                        if tmpData == nil {
+                            tmpData = [MenuRecipe]()
+                        }
+                        tmpData?.append(finalRecipe)
+                    }
+                }
+
+                if tmpData != nil {
+                    var templateData: MenuRecipeTemplate = MenuRecipeTemplate()
+                    templateData.sequenceNumber = getRecipeTemplateLastSequenceNumber()
+                    templateData.templateName = templateName!
+                    templateData.menuRecipes = tmpData!
+                    
+                    if Auth.auth().currentUser?.uid != nil {
+                        uploadFBMenuRecipeTemplate(user_id: Auth.auth().currentUser!.uid, template: templateData)
+                    }
+                }
+                
+            }
+            okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+            controller.addAction(okAction)
+            
+            present(controller, animated: true, completion: nil)
+        }
+    }
 }
 
 extension CreateRecipeTableViewController: BasicButtonDelegate {
@@ -290,22 +482,44 @@ extension CreateRecipeTableViewController: BasicButtonDelegate {
 }
 
 extension CreateRecipeTableViewController: MenuTemplateDelegate {
-    func sendTemplateSelectedIndex(sender: TemplateViewController, index: Int) {
+    func sendTemplateSelectedIndex(sender: TemplateViewController, type: Int, index: Int) {
+        if type == 0 && self.customRecipeTemplate.isEmpty {
+            return
+        }
+        
+        if type == 1 && self.menuRecipeTemplates.isEmpty {
+            return
+        }
+        
         self.selectedTemoplateIndex = index
         //let indexPath = IndexPath(row: 0, section: 0)
         //let cell = self.tableView.cellForRow(at: indexPath) as! SelectMenuRecipeTemplateCell
         //cell.setData(template_name: self.brandCategory[templateIndex])
         cellHeight.removeAll()
-        cellHeight = Array(repeating: 0, count: self.menuRecipeTemplates[self.selectedTemoplateIndex].menuRecipes.count)
+        if type == 0 {
+            cellHeight = Array(repeating: 0, count: self.customRecipeTemplate[self.selectedTemoplateIndex].menuRecipes.count)
 
-        if self.menuRecipes != nil {
-            self.menuRecipes!.removeAll()
-        } else {
-            self.menuRecipes = [MenuRecipe]()
+            if self.menuRecipes != nil {
+                self.menuRecipes!.removeAll()
+            } else {
+                self.menuRecipes = [MenuRecipe]()
+            }
+            self.menuRecipes = Array<MenuRecipe>(repeating: MenuRecipe(), count: self.customRecipeTemplate[self.selectedTemoplateIndex].menuRecipes.count)
+
+            self.menuRecipes = self.customRecipeTemplate[self.selectedTemoplateIndex].menuRecipes
+            self.tableView.reloadData()
+        } else if type == 1 {
+            cellHeight = Array(repeating: 0, count: self.menuRecipeTemplates[self.selectedTemoplateIndex].menuRecipes.count)
+
+            if self.menuRecipes != nil {
+                self.menuRecipes!.removeAll()
+            } else {
+                self.menuRecipes = [MenuRecipe]()
+            }
+            self.menuRecipes = Array<MenuRecipe>(repeating: MenuRecipe(), count: self.menuRecipeTemplates[self.selectedTemoplateIndex].menuRecipes.count)
+
+            self.menuRecipes = self.menuRecipeTemplates[self.selectedTemoplateIndex].menuRecipes
+            self.tableView.reloadData()
         }
-        self.menuRecipes = Array<MenuRecipe>(repeating: MenuRecipe(), count: self.menuRecipeTemplates[self.selectedTemoplateIndex].menuRecipes.count)
-
-        self.menuRecipes = self.menuRecipeTemplates[self.selectedTemoplateIndex].menuRecipes
-        self.tableView.reloadData()
     }
 }

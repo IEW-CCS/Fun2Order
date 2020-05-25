@@ -9,36 +9,45 @@
 import UIKit
 
 protocol MenuTemplateDelegate: class {
-    func sendTemplateSelectedIndex(sender: TemplateViewController, index: Int)
+    func sendTemplateSelectedIndex(sender: TemplateViewController, type: Int, index: Int)
 }
 
 class TemplateViewController: UIViewController {
     @IBOutlet weak var templatePickerView: UIPickerView!
     @IBOutlet weak var buttonCancel: UIButton!
     @IBOutlet weak var buttonOK: UIButton!
+    @IBOutlet weak var segmentType: UISegmentedControl!
     
     var templateArray: [String] = [String]()
+    var customTemplateArray: [String] = [String]()
     var selectedTemplateIndex: Int = 0
+    var selectedTypeIndex: Int = 0
     weak var delegate: MenuTemplateDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.segmentType.selectedSegmentIndex = 0
         self.templatePickerView.delegate = self
         self.templatePickerView.dataSource = self
     }
 
+    @IBAction func changeTemplateType(_ sender: UISegmentedControl) {
+        self.selectedTypeIndex = sender.selectedSegmentIndex
+        self.templatePickerView.reloadAllComponents()
+    }
+    
     @IBAction func cancelSelect(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func confirmSelect(_ sender: UIButton) {
-        NotificationCenter.default.post(name: NSNotification.Name("SelectTemplate"), object: self.selectedTemplateIndex)
-        delegate?.sendTemplateSelectedIndex(sender: self, index: self.selectedTemplateIndex)
+        delegate?.sendTemplateSelectedIndex(sender: self, type: self.selectedTypeIndex, index: self.selectedTemplateIndex)
         self.dismiss(animated: true, completion: nil)
     }
     
-    func setData(template_ids: [String]) {
+    func setData(template_ids: [String], custom_template_ids: [String]) {
         self.templateArray = template_ids
+        self.customTemplateArray = custom_template_ids
         self.templatePickerView.reloadAllComponents()
     }
 }
@@ -49,15 +58,27 @@ extension TemplateViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if !self.templateArray.isEmpty {
-            return self.templateArray.count
+        if self.selectedTypeIndex == 0 {
+            if !self.customTemplateArray.isEmpty {
+                return self.customTemplateArray.count
+            }
+        } else if self.selectedTypeIndex == 1 {
+            if !self.templateArray.isEmpty {
+                return self.templateArray.count
+            }
         }
         
         return 0
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return self.templateArray[row]
+        if self.selectedTypeIndex == 0 {
+            return self.customTemplateArray[row]
+        } else if self.selectedTypeIndex == 1 {
+            return self.templateArray[row]
+        }
+        
+        return ""
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -65,3 +86,4 @@ extension TemplateViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         print("TemplateViewController self.selectedTemplateIndex = \(self.selectedTemplateIndex)")
     }
 }
+

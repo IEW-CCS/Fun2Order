@@ -15,15 +15,37 @@ func uploadUserProfileTokenID(user_id: String, token_id: String) {
     databaseRef.child(pathString).setValue(token_id)
 }
 
-func deleteFBMenuInformation(user_id: String, menu_number: String, image_url: String) {
+func deleteFBMenuInformation(menu_info: MenuInformation) {
     let databaseRef = Database.database().reference()
-    let pathString = "USER_MENU_INFORMATION/\(user_id)/\(menu_number)"
+    let pathString = "USER_MENU_INFORMATION/\(menu_info.userID)/\(menu_info.menuNumber)"
     databaseRef.child(pathString).removeValue()
     
-    if image_url != "" {
+    if menu_info.menuImageURL != "" {
         let storageRef = Storage.storage().reference()
-        let storagePath = image_url
+        let storagePath = menu_info.menuImageURL
         storageRef.child(storagePath).delete(completion: nil)
+    }
+    
+    if menu_info.multiMenuImageURL != nil {
+        let dispatchGroup = DispatchGroup()
+
+        for i in 0...menu_info.multiMenuImageURL!.count - 1 {
+            let newPath = menu_info.multiMenuImageURL![i]
+            let newRef = Storage.storage().reference()
+            
+            dispatchGroup.enter()
+            newRef.child(newPath).delete(completion: {(error) in
+                if error == nil {
+                    dispatchGroup.leave()
+                }
+            })
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            let folderPath = "Menu_Image/\(menu_info.userID)/\(menu_info.menuNumber)"
+            let storageRef = Storage.storage().reference()
+            storageRef.child(folderPath).delete(completion: nil)
+        }
     }
 }
 
@@ -35,6 +57,57 @@ func deleteFBMenuOrderInformation(user_id: String, order_number: String) {
 
 func downloadTokenID(user_id: String) {
     
+}
+
+func downloadFBMultiMenuImages(images_url: [String], completion: @escaping([UIImage]?) -> Void) {
+    var returnImages: [UIImage]?
+    var returnIndex: [Int] = [Int]()
+    let dispatchGroup: DispatchGroup = DispatchGroup()
+    
+    if images_url.isEmpty {
+        completion(nil)
+    }
+    
+    for i in 0...images_url.count - 1 {
+        if images_url[i] != "" {
+            dispatchGroup.enter()
+            let storageRef = Storage.storage().reference()
+            storageRef.child(images_url[i]).getData(maxSize: 3 * 2048 * 2048, completion: { (data, error) in
+                if let error = error {
+                    presentSimpleAlertMessage(title: "存取影像錯誤", message: error.localizedDescription)
+                    dispatchGroup.leave()
+                    return
+                }
+                
+                if data != nil {
+                    if let imageData = UIImage(data: data!) {
+                        if returnImages == nil {
+                            returnImages = [UIImage]()
+                        }
+                        returnIndex.append(i)
+                        returnImages!.append(imageData)
+                    }
+                    
+                    dispatchGroup.leave()
+                } else {
+                    dispatchGroup.leave()
+                }
+            })
+        }
+    }
+    
+    dispatchGroup.notify(queue: .main) {
+        print("returnIndex = \(returnIndex)")
+        if returnImages != nil {
+            //self.menuInfos.sort(by: {$0.createTime > $1.createTime})
+            if returnImages!.count == returnIndex.count {
+                let combinedArray = zip(returnIndex, returnImages!).sorted(by: { $0.0 < $1.0})
+                print("Sorted index array = \(combinedArray.map { $0.0 })")
+                returnImages = combinedArray.map { $0.1 }
+            }
+        }
+        completion(returnImages)
+    }
 }
 
 func downloadFBMenuImage(menu_url: String, completion: @escaping(UIImage) -> Void) {
@@ -95,7 +168,7 @@ func downloadFBMemberImage(member_id: String, completion: @escaping (UIImage) ->
 
 }
 
-func downloadFBUserProfile(user_id: String, completion: @escaping (UserProfile) -> Void) {
+func downloadFBUserProfile(user_id: String, completion: @escaping (UserProfile?) -> Void) {
     var userData: UserProfile = UserProfile()
     let databaseRef = Database.database().reference()
     let pathString = "USER_PROFILE/\(user_id)"
@@ -115,14 +188,15 @@ func downloadFBUserProfile(user_id: String, completion: @escaping (UserProfile) 
                 completion(userData)
             } catch {
                 print("downloadFBUserProfile userData jsonData decode failed: \(error.localizedDescription)")
+                completion(nil)
             }
         } else {
             print("downloadFBUserProfile USER_PROFILE snapshot doesn't exist!")
-            return
+            completion(nil)
         }
     })  { (error) in
         print("downloadFBUserProfile Firebase error = \(error.localizedDescription)")
-        return
+        completion(nil)
     }
 }
 
@@ -170,6 +244,12 @@ func uploadFBMenuOrderContentItem(item: MenuOrderMemberContent, completion: @esc
     }
 }
 
+func uploadFBMenuRecipeTemplate(user_id: String, template: MenuRecipeTemplate) {
+    let databaseRef = Database.database().reference()
+    let pathString = "USER_CUSTOM_RECIPE_TEMPLATE/\(user_id)/\(template.templateName)"
+    
+    databaseRef.child(pathString).setValue(template.toAnyObject())
+}
 
 func testFirebaseJSONUpload() {
     var tmpData: TestStruct = TestStruct()

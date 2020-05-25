@@ -11,17 +11,18 @@ import Firebase
 
 protocol SelectMenuRecipeTemplateCellDelegate: class {
     func queryMenuRecipeTemplateData(cell: UITableViewCell)
+    func saveMenuRecipeTemplate(cell: UITableViewCell)
     func addNewRecipeCategory(cell: UITableViewCell)
 }
 
 class SelectMenuRecipeTemplateCell: UITableViewCell {
     @IBOutlet weak var buttonSelectTemplate: UIButton!
-    @IBOutlet weak var labelTemplateName: UILabel!
+    //@IBOutlet weak var labelTemplateName: UILabel!
     weak var delegate: SelectMenuRecipeTemplateCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.labelTemplateName.text = ""
+        //self.labelTemplateName.text = ""
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -37,7 +38,11 @@ class SelectMenuRecipeTemplateCell: UITableViewCell {
         delegate?.addNewRecipeCategory(cell: self)
     }
     
+    @IBAction func saveTemplate(_ sender: UIButton) {
+        delegate?.saveMenuRecipeTemplate(cell: self)
+    }
+    
     func setData(template_name: String) {
-        self.labelTemplateName.text = template_name
+        //self.labelTemplateName.text = template_name
     }
 }

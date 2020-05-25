@@ -1680,6 +1680,7 @@ func insertNotification(notification: NotificationData) {
         return
     }
 
+    
     app.saveContext()
 }
 

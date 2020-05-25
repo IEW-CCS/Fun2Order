@@ -148,15 +148,21 @@ extension MyFriendTableViewController: ScanQRCodeDelegate {
                 self.updatedFriend = newFriend
                 self.updatedFlag = "I"
                 downloadFBUserProfile(user_id: Auth.auth().currentUser!.uid, completion: receiveMyProfile)
+                downloadFBUserProfile(user_id: newFriend.memberID, completion: receiveNewFriendProfile)
             }
             refreshFriendList()
         }
     }
     
-    func receiveMyProfile(user_profile: UserProfile) {
+    func receiveMyProfile(user_profile: UserProfile?) {
+        if user_profile == nil {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "存取使用者資料發生錯誤")
+            return
+        }
+
         switch self.updatedFlag {
         case "I":
-            var profile = user_profile
+            var profile = user_profile!
             var friendList = [String]()
             if profile.friendList == nil {
                 friendList.append(self.updatedFriend.memberID)
@@ -168,7 +174,7 @@ extension MyFriendTableViewController: ScanQRCodeDelegate {
             break
             
         case "D":
-            var profile = user_profile
+            var profile = user_profile!
             if profile.friendList != nil {
                 profile.friendList!.removeAll(where: { $0 == self.updatedFriend.memberID })
             }
@@ -179,4 +185,37 @@ extension MyFriendTableViewController: ScanQRCodeDelegate {
             break
         }
     }
+
+    func receiveNewFriendProfile(user_profile: UserProfile?) {
+        if user_profile == nil {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "存取使用者資料發生錯誤")
+            return
+        }
+
+        var notifyData: NotificationData = NotificationData()
+        let sender = PushNotificationSender()
+        let myName: String = getMyUserName()
+
+        let title: String = "好友邀請"
+        let body: String = "『\(myName)』已將您加入好友，請問您願意將『\(myName)』也加入成為您的好友嗎？"
+
+        notifyData.messageTitle = title
+        notifyData.messageBody = body
+        notifyData.notificationType = NOTIFICATION_TYPE_NEW_FRIEND
+        //notifyData.receiveTime = dateTimeString
+        notifyData.orderOwnerID = Auth.auth().currentUser!.uid
+        notifyData.orderOwnerName = myName
+        //notifyData.menuNumber = self.menuOrder.menuNumber
+        //notifyData.orderNumber = self.menuOrder.orderNumber
+        //notifyData.dueTime = self.menuOrder.dueTime
+        //notifyData.brandName = self.menuOrder.brandName
+        //notifyData.attendedMemberCount = self.menuOrder.contentItems.count
+        notifyData.messageDetail = user_profile!.userID
+        notifyData.isRead = "N"
+
+        //sender.sendNewFriendActionPushNotification(to: user_profile.tokenID, title: title, body: body, data: notifyData)
+        sender.sendPushNotification(to: user_profile!.tokenID, title: title, body: body, data: notifyData)
+
+    }
+
 }

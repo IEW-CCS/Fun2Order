@@ -51,9 +51,14 @@ class HomeTabBar : UITabBarController
         }
     }
 
-    func reloadUserInfo(user_profile: UserProfile) {
+    func reloadUserInfo(user_profile: UserProfile?) {
+        if user_profile == nil {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "存取使用者資料發生錯誤")
+            return
+        }
+
         // For not first time using Fun2Order but first updated to version 0.9.14
-        var profile = uploadLocalInformation(user_profile: user_profile)
+        let profile = uploadLocalInformation(user_profile: user_profile!)
         
         //let profile = user_profile
         

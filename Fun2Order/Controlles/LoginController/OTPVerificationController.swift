@@ -109,6 +109,10 @@ class OTPVerificationController: UIViewController,OtpViewDelegate {
         userNameController.preferredContentSize.height = 220
         userNameController.preferredContentSize.width = 320
         
+        if Auth.auth().currentUser?.uid != nil {
+            userNameController.userID = Auth.auth().currentUser!.uid
+        }
+        
         userNameController.delegate = self
         controller.preferredContentSize.height = 220
         controller.preferredContentSize.width = 320

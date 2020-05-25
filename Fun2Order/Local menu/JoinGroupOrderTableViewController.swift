@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import Firebase
+import GoogleMobileAds
 
 protocol JoinGroupOrderDelegate: class {
     func refreshHistoryInvitationList(sender: JoinGroupOrderTableViewController)
@@ -16,14 +17,16 @@ protocol JoinGroupOrderDelegate: class {
 
 class JoinGroupOrderTableViewController: UITableViewController {
     @IBOutlet weak var labelBrandName: UILabel!
-    @IBOutlet weak var imageMenu: UIImageView!
+    //@IBOutlet weak var imageMenu: UIImageView!
     @IBOutlet weak var segmentLocation: UISegmentedControl!
     @IBOutlet weak var buttonConfirm: UIButton!
+    @IBOutlet weak var textViewDescription: UITextView!
     
     var menuInformation: MenuInformation = MenuInformation()
     var memberContent: MenuOrderMemberContent = MenuOrderMemberContent()
     var menuOrder: MenuOrder?
     var memberIndex: Int = -1
+    var interstitialAd: GADInterstitial!
     //var menuProductItems: [MenuProductItem]?
     //var menuItem: MenuItem = MenuItem()
     //var menuRecipes: [MenuRecipe] = [MenuRecipe]()
@@ -33,26 +36,37 @@ class JoinGroupOrderTableViewController: UITableViewController {
     let app = UIApplication.shared.delegate as! AppDelegate
     weak var refreshNotificationDelegate: ApplicationRefreshNotificationDelegate?
     weak var delegate: JoinGroupOrderDelegate?
+    var imageArray: [UIImage] = [UIImage]()
+    var menuDescription: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
         refreshNotificationDelegate = app.notificationDelegate
 
-        self.imageMenu.layer.borderWidth = 1.0
-        self.imageMenu.layer.borderColor = UIColor.lightGray.cgColor
-        self.imageMenu.layer.cornerRadius = 6
+        self.textViewDescription.layer.borderWidth = 1
+        self.textViewDescription.layer.borderColor = UIColor.lightGray.cgColor
+        self.textViewDescription.layer.cornerRadius = 6
+        self.textViewDescription.text = ""
 
         let productCellViewNib: UINib = UINib(nibName: "NewProductCell", bundle: nil)
         self.tableView.register(productCellViewNib, forCellReuseIdentifier: "NewProductCell")
-
-        let tapGesture = UITapGestureRecognizer(target: self, action:#selector(self.menuImageClicked(_:)))
-        imageMenu.isUserInteractionEnabled = true
-        imageMenu.addGestureRecognizer(tapGesture)
-
-        refreshJoinGroupOrder()
         
+        setupInterstitialAd()
+        //refreshJoinGroupOrder()
     }
-    
+
+    func setupInterstitialAd() {
+        // Test Interstitla Video Ad
+        self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/5135589807")
+
+        // My real Interstitial Ad
+        //self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-9511677579097261/6069385370")
+
+        let adRequest = GADRequest()
+        self.interstitialAd.load(adRequest)
+        self.interstitialAd.delegate = self
+    }
+
     @IBAction func confirmToJoinOrder(_ sender: UIButton) {
         if self.memberIndex < 0 {
             print("memberIndex wrong in JoinGroupOrderTableViewController !!")
@@ -62,14 +76,14 @@ class JoinGroupOrderTableViewController: UITableViewController {
         if self.menuInformation.locations != nil {
             if self.segmentLocation.selectedSegmentIndex < 0 {
                 // User does not select location, show alert
-                print("Doesn't not select location, just return")
+                print("Doesn't select location, just return")
                 presentSimpleAlertMessage(title: "錯誤訊息", message: "尚未選擇地點，請重新選取地點資訊")
                 return
             } else {
                 self.memberContent.orderContent.location = self.menuInformation.locations![self.segmentLocation.selectedSegmentIndex]
             }
         }
-        
+         
         if self.memberContent.orderContent.menuProductItems == nil {
             presentSimpleAlertMessage(title: "錯誤訊息", message: "尚未輸入任何產品資訊，請重新輸入")
             return
@@ -82,6 +96,7 @@ class JoinGroupOrderTableViewController: UITableViewController {
         }
 
         self.memberContent.orderContent.replyStatus = MENU_ORDER_REPLY_STATUS_ACCEPT
+        self.memberContent.orderContent.itemOwnerName = getMyUserName()
         
         let databaseRef = Database.database().reference()
         let pathString = "USER_MENU_ORDER/\(self.memberContent.orderOwnerID)/\(self.memberContent.orderContent.orderNumber)/contentItems/\(self.memberIndex)"
@@ -104,14 +119,36 @@ class JoinGroupOrderTableViewController: UITableViewController {
     
     func refreshJoinGroupOrder() {
         self.labelBrandName.text = self.menuInformation.brandName
-        //self.labelProductQuantity.text = ""
+        self.textViewDescription.text = self.menuInformation.menuDescription
+        self.menuDescription = self.menuInformation.menuDescription
         setupLocationSegment()
-        downloadFBMenuImage(menu_url: self.menuInformation.menuImageURL, completion: receiveMenuImage)
-        //downloadMenuImage()
+        //downloadFBMenuImage(menu_url: self.menuInformation.menuImageURL, completion: receiveMenuImage)
+        if self.menuInformation.multiMenuImageURL != nil {
+            downloadFBMultiMenuImages(images_url: self.menuInformation.multiMenuImageURL!, completion: receivedMultiMenuImages)
+        } else {
+            if self.menuInformation.menuImageURL != "" {
+                downloadFBMultiMenuImages(images_url: [self.menuInformation.menuImageURL], completion: receivedOriginalSingleMenuImage)
+            }
+        }
+
+    }
+
+    func receivedMultiMenuImages(images: [UIImage]?) {
+        if images != nil {
+            self.imageArray = images!
+            self.tableView.reloadData()
+        } else {
+            if self.menuInformation.menuImageURL != "" {
+                downloadFBMultiMenuImages(images_url: [self.menuInformation.menuImageURL], completion: receivedOriginalSingleMenuImage)
+            }
+        }
     }
     
-    func receiveMenuImage(menu_image: UIImage) {
-        self.imageMenu.image = menu_image
+    func receivedOriginalSingleMenuImage(images: [UIImage]?) {
+        if images != nil {
+            self.imageArray.append(images![0])
+            self.tableView.reloadData()
+        }
     }
     
     @IBAction func changeLocationIndex(_ sender: UISegmentedControl) {
@@ -139,35 +176,6 @@ class JoinGroupOrderTableViewController: UITableViewController {
         print("self.segmentLocation.selectedSegmentIndex = \(self.segmentLocation.selectedSegmentIndex)")
     }
     
-    @objc func menuImageClicked(_ sender: UITapGestureRecognizer) {
-        print("Menu Image tapped")
-        guard let imageView = sender.view as? UIImageView else {
-            print("UIImageView is nil, just return")
-            return
-        }
-        
-        if imageView.image == nil {
-            print("imageView.image is nil, just return")
-            return
-        }
-
-        let zoomView = ImageZoomView(frame: UIScreen.main.bounds, image: imageView.image!)
-        zoomView.bounces = false
-        //let zoomView = ImageZoomView(frame: self.view.bounds, image: imageView.image!)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
-        tap.cancelsTouchesInView = false
-        zoomView.addGestureRecognizer(tap)
-        self.view.addSubview(zoomView)
-        self.navigationController?.isNavigationBarHidden = true
-        self.tabBarController?.tabBar.isHidden = true
-
-    }
-    
-    @objc func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
-        self.navigationController?.isNavigationBarHidden = false
-        self.tabBarController?.tabBar.isHidden = false
-        sender.view?.removeFromSuperview()
-    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 1 {
@@ -182,6 +190,33 @@ class JoinGroupOrderTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 && indexPath.row == 2 {
+            let cell = super.tableView(tableView, cellForRowAt: indexPath)
+            for view in cell.subviews {
+                if view.isKind(of: UIImageView.self) {
+                    view.removeFromSuperview()
+                }
+            }
+
+            if !self.imageArray.isEmpty {
+                cell.contentView.contentMode = .scaleAspectFit
+                let rectArray = calculateImagePosition(frame: cell.frame)
+                print("rectArray = \(rectArray)")
+                for i in 0...self.imageArray.count - 1 {
+                    let imageView = UIImageView(frame: rectArray[i])
+                    imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight, .flexibleBottomMargin, .flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin]
+                    imageView.contentMode = .scaleAspectFit
+                    imageView.layer.borderWidth = 1.0
+                    imageView.layer.borderColor = UIColor.darkGray.cgColor
+                    imageView.layer.cornerRadius = 6
+                    imageView.image = self.imageArray[i]
+                    cell.addSubview(imageView)
+                }
+            }
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            return cell
+        }
+
         if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NewProductCell", for: indexPath) as! NewProductCell
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
@@ -195,8 +230,23 @@ class JoinGroupOrderTableViewController: UITableViewController {
         return super.tableView(tableView, cellForRowAt: indexPath)
     }
 
+    func calculateImagePosition(frame: CGRect) -> [CGRect] {
+        var returnRect: [CGRect] = [CGRect]()
+        let imageCount = self.imageArray.count
+        let X_INSET: CGFloat = 10
+        let Y_INSET: CGFloat = 10
+
+        let scaleWidth = frame.width / CGFloat(imageCount)
+        for i in 0...imageCount - 1 {
+            let rect = CGRect(x: X_INSET + CGFloat(i) * scaleWidth, y: Y_INSET, width: scaleWidth - X_INSET * 2, height: frame.height - Y_INSET * 2)
+            returnRect.append(rect)
+        }
+        
+        return returnRect
+    }
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 && indexPath.row == 2 {
+        if indexPath.section == 0 && indexPath.row == 4 {
             print("Enter tableView didSelectRowAt function")
             let databaseRef = Database.database().reference()
             let orderString = "USER_MENU_ORDER/\(self.memberContent.orderOwnerID)/\(self.memberContent.orderContent.orderNumber)"
@@ -256,16 +306,6 @@ class JoinGroupOrderTableViewController: UITableViewController {
         return true
     }
 
-/*
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .default, title: "刪除") { (action, indexPath) in
-
-        }
-
-        return [delete]
-    }
-*/
-
     override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return "刪除"
     }
@@ -296,6 +336,15 @@ class JoinGroupOrderTableViewController: UITableViewController {
             if let controllerProduct = segue.destination as? JoinOrderSelectProductViewController {
                 controllerProduct.menuInformation = self.menuInformation
                 controllerProduct.delegate = self
+            }
+        }
+
+        if segue.identifier == "ShowMenuImage" {
+            if let controllerImage = segue.destination as? MenuImageDescriptionTableViewController {
+                controllerImage.imageArray = self.imageArray
+                controllerImage.menuDescription = self.menuInformation.menuDescription
+                controllerImage.isDisplayMode = true
+                //controllerImage.delegate = self
             }
         }
 
@@ -361,5 +410,45 @@ extension JoinGroupOrderTableViewController: MenuOrderBoardDelegate {
             let sectionIndex = IndexSet(integer: 1)
             self.tableView.reloadSections(sectionIndex, with: .automatic)
         }
+    }
+}
+
+extension JoinGroupOrderTableViewController: GADInterstitialDelegate {
+    /// Tells the delegate an ad request succeeded.
+    func interstitialDidReceiveAd(_ ad: GADInterstitial) {
+        print("interstitialDidReceiveAd")
+        if self.interstitialAd.isReady {
+            self.interstitialAd.present(fromRootViewController: self)
+            refreshJoinGroupOrder()
+        } else {
+            print("Interstitial Ad is not ready !!")
+        }
+    }
+
+    /// Tells the delegate an ad request failed.
+    func interstitial(_ ad: GADInterstitial, didFailToReceiveAdWithError error: GADRequestError) {
+        print("interstitial:didFailToReceiveAdWithError: \(error.localizedDescription)")
+        refreshJoinGroupOrder()
+    }
+
+    /// Tells the delegate that an interstitial will be presented.
+    func interstitialWillPresentScreen(_ ad: GADInterstitial) {
+        print("interstitialWillPresentScreen")
+    }
+
+    /// Tells the delegate the interstitial is to be animated off the screen.
+    func interstitialWillDismissScreen(_ ad: GADInterstitial) {
+        print("interstitialWillDismissScreen")
+    }
+
+    /// Tells the delegate the interstitial had been animated off the screen.
+    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
+        print("interstitialDidDismissScreen")
+    }
+
+    /// Tells the delegate that a user click will open another app
+    /// (such as the App Store), backgrounding the current app.
+    func interstitialWillLeaveApplication(_ ad: GADInterstitial) {
+        print("interstitialWillLeaveApplication")
     }
 }

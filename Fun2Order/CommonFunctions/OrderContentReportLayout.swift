@@ -32,7 +32,7 @@ class OrderContentReportLayout: UICollectionViewLayout {
             return
         }
 
-        let totalItems = collectionView.numberOfItems(inSection: 0)
+        //let totalItems = collectionView.numberOfItems(inSection: 0)
         //print("Total number of items for UICollectionView is [\(totalItems)]")
 
         var xOffset: CGFloat = 0

@@ -17,10 +17,31 @@ class UserNameViewController: UIViewController {
     @IBOutlet weak var buttonConfirm: UIButton!
     
     weak var delegate: UserNameDelegate?
+    var userID: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        setupUserName(user_id: self.userID)
+    }
+    
+    func setupUserName(user_id: String) {
+        if user_id == "" {
+            return
+        }
+        
+        downloadFBUserProfile(user_id: user_id, completion: receiveOldProfileData)
+    }
+    
+    func receiveOldProfileData(user_profile: UserProfile?) {
+        if user_profile == nil {
+            return
+        }
+        
+        self.labelUserName.text = user_profile!.userName
     }
     
     @IBAction func ClickToSetUserName(_ sender: UIButton) {

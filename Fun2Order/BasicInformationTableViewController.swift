@@ -59,14 +59,19 @@ class BasicInformationTableViewController: UITableViewController {
         self.imageAddress.tintColor = CUSTOM_COLOR_EMERALD_GREEN
     }
     
-    func setupBasicInformation(user_profile: UserProfile) {
-        self.myProfile = user_profile
-        self.myUserID = user_profile.userID
-        self.labelPhoneNumber.text = user_profile.phoneNumber
-        self.labelUserName.text = user_profile.userName
-        self.labelGender.text = user_profile.gender
-        self.labelBirthday.text = user_profile.birthday
-        self.labelAddress.text = user_profile.address
+    func setupBasicInformation(user_profile: UserProfile?) {
+        if user_profile == nil {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "存取使用者資料發生錯誤")
+            return
+        }
+        
+        self.myProfile = user_profile!
+        self.myUserID = user_profile!.userID
+        self.labelPhoneNumber.text = user_profile!.phoneNumber
+        self.labelUserName.text = user_profile!.userName
+        self.labelGender.text = user_profile!.gender
+        self.labelBirthday.text = user_profile!.birthday
+        self.labelAddress.text = user_profile!.address
     }
     
     func tmpDeleteProfile() {

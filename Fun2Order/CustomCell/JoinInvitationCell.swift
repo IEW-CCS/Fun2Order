@@ -115,6 +115,7 @@ class JoinInvitationCell: UITableViewCell {
         } else {
             self.buttonAttend.isEnabled = true
             self.buttonReject.isEnabled = true
+            self.labelBrandName.textColor = UIColor.black
         }
     }
 }

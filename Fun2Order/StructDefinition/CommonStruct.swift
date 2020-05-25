@@ -17,7 +17,7 @@ struct FavoriteStoreInfo {
     var storeDescription: String
     var storeBrandImage: UIImage
     var insertDateTime: Date
-    
+
     init() {
         self.brandID = 0
         self.storeID = 0
@@ -233,6 +233,7 @@ struct MenuInformation: Codable {
     var menuDescription: String = ""
     var brandCategory: String = ""
     var menuImageURL: String = ""
+    var multiMenuImageURL: [String]?
     var createTime: String = ""
     var locations: [String]?
     var menuItems :[MenuItem]?
@@ -263,6 +264,7 @@ struct MenuInformation: Codable {
             "menuDescription": menuDescription,
             "brandCategory": brandCategory,
             "menuImageURL": menuImageURL,
+            "multiMenuImageURL": multiMenuImageURL as Any,
             "createTime": createTime,
             "locations": locations as Any,
             "menuItems": menuItemsArray,

@@ -225,6 +225,32 @@ func showGuideToolTip(text: String, dir: PopTipDirection, parent: UIView, target
     popTip.show(text: text, direction: dir, maxWidth: 200, in: parent, from: target, duration: duration)
 }
 
+func getRecipeTemplateLastSequenceNumber() -> Int {
+    var sequenceNumber: Int = 0
+
+    let path = NSHomeDirectory() + "/Documents/AppConfig.plist"
+    if let plist = NSMutableDictionary(contentsOfFile: path) {
+        guard let serialID = plist["RecipeTemplateSerial"] as? Int else {
+            print("RecipeTemplateSerial key did not exist in AppConfig.plist, insert this key")
+            plist.addEntries(from: ["RecipeTemplateSerial": 1])
+            sequenceNumber = 1
+            plist["RecipeTemplateSerial"] = sequenceNumber
+            if !plist.write(toFile: path, atomically: true) {
+                print("Save AppConfig.plist failed")
+            }
+            return sequenceNumber
+        }
+        
+        sequenceNumber = serialID + 1
+        plist["RecipeTemplateSerial"] = sequenceNumber
+        if !plist.write(toFile: path, atomically: true) {
+            print("Save AppConfig.plist failed")
+        }
+    }
+
+    return sequenceNumber
+}
+
 class RuntimeUtils{
     class func delay(seconds delay:Double, closure:@escaping ()->()){
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay*Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)

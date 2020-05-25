@@ -24,6 +24,9 @@ class EntryViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: false)
+        self.buttonGuest.isEnabled = false
+        self.buttonGuest.isHidden = true
+
         if(Auth.auth().currentUser?.uid != nil)
         {
             print("Auth.auth().currentUser?.displayName = \(String(describing: Auth.auth().currentUser?.displayName))")
@@ -96,6 +99,9 @@ class EntryViewController: UIViewController {
         userNameController.preferredContentSize.height = 220
         userNameController.preferredContentSize.width = 320
         
+        if Auth.auth().currentUser?.uid != nil {
+            userNameController.userID = Auth.auth().currentUser!.uid
+        }
         userNameController.delegate = self
         controller.preferredContentSize.height = 220
         controller.preferredContentSize.width = 320

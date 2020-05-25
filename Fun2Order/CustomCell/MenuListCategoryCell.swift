@@ -66,7 +66,7 @@ class MenuListCategoryCell: UITableViewCell {
         }
     }
 
-    func setData(menu_exist_flag: Bool, items: [String]) {
+    func setData(menu_exist_flag: Bool, items: [String], selected_index: Int) {
         self.isMenuExist = menu_exist_flag
         //self.itemsArray = items
         //self.scrollCategorySegment.segmentItems = items
@@ -91,12 +91,12 @@ class MenuListCategoryCell: UITableViewCell {
             self.itemsArray.append("未分類")
             self.scrollCategorySegment.segmentItems = self.itemsArray
             //self.scrollCategorySegment.createSegment()
-            self.selectedIndex = 0
+            self.selectedIndex = selected_index
         }
         
         self.scrollCategorySegment.setSelectedIndex(index: self.selectedIndex)
     }
-        
+
     @IBAction func clickAbout(_ sender: UIButton) {
         self.delegate?.displayAbout(sender: self)
     }
@@ -125,7 +125,7 @@ extension MenuListCategoryCell: GuideToolTipDelegate {
 
         if toolTipOption == true && createMenuToolTip == false {
             DispatchQueue.main.async {
-                showGuideToolTip(text: "歡迎使用 Fun2Order\n從這裡開始\n製作您的第一張菜單", dir: PopTipDirection.down, parent: parent, target: self.buttonCreateMenu.frame, duration: 5)
+                showGuideToolTip(text: "歡迎使用 Fun2Order\n從這裡開始\n製作您的第一張菜單", dir: PopTipDirection.down, parent: parent, target: self.buttonCreateMenu.frame, duration: 8)
             }
             if let writePlist = NSMutableDictionary(contentsOfFile: path) {
                 writePlist["showedCreateMenuToolTip"] = true

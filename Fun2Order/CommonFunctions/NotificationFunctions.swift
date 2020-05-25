@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import CoreData
+import Firebase
 
 func getNotifications(func_id: String, completion: @escaping () -> Void) {
     var nCount: Int = 0
@@ -53,7 +54,12 @@ func getLaunchNotification(user_infos: [String: Any]) {
         presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知資料格式錯誤")
         return
     }
-    
+
+    if tmpNotificationType == NOTIFICATION_TYPE_NEW_FRIEND {
+        addNewFriendRequestNotification(message: tmpMessageBody, friend_id: tmpOrderOwnerID, friend_name: tmpOrderOwnerName)
+        return
+    }
+
     notificationData.messageTitle = tmpMessageTtile
     notificationData.messageBody = tmpMessageBody
     notificationData.messageID = tmpMessageID
@@ -90,6 +96,8 @@ func getTappedNotification(notification: UNNotification) {
 func setupNotification(notity: UNNotification) {
     //print("Delivered notification userInfo = \(notity.request.content.userInfo)")
 
+    let semaphore = DispatchSemaphore(value: 3)
+
     var notificationData: NotificationData = NotificationData()
 
     guard let tmpMessageID = notity.request.content.userInfo["gcm.message_id"] as? String,
@@ -106,6 +114,11 @@ func setupNotification(notity: UNNotification) {
         let tmpIsRead = notity.request.content.userInfo["isRead"] as? String
     else {
         presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知資料格式錯誤")
+        return
+    }
+    
+    if tmpNotificationType == NOTIFICATION_TYPE_NEW_FRIEND {
+        addNewFriendRequestNotification(message: notity.request.content.body, friend_id: tmpOrderOwnerID, friend_name: tmpOrderOwnerName)
         return
     }
 
@@ -125,7 +138,10 @@ func setupNotification(notity: UNNotification) {
     notificationData.isRead = tmpIsRead
 
     //notificationData.isRead = notity.request.content.userInfo["isRead"] as! Bool
+    let result = semaphore.wait(timeout: DispatchTime.distantFuture)
+    print(result)
     insertNotification(notification: notificationData)
+    semaphore.signal()
     //notifications.removeAllDeliveredNotifications()
     DispatchQueue.main.async {
         setNotificationBadgeNumber()
@@ -151,4 +167,77 @@ func setTabBarBadgeNumber(badge: Int) {
             tabItem.badgeValue = String(badge)
         }
     }
+}
+
+func addNewFriendRequestNotification(message: String, friend_id: String, friend_name: String) {
+    print("Handle addNewFriendRequestNotification!!")
+    //presentSimpleAlertMessage(title: "好友邀請", message: message)
+    var alertWindow: UIWindow!
+
+    let controller = UIAlertController(title: "好友邀請", message: message, preferredStyle: .alert)
+    controller.view.tintColor = CUSTOM_COLOR_EMERALD_GREEN
+
+    let addAction = UIAlertAction(title: "加入好友", style: .default) { (_) in
+        print("Click to add new friend: [\(friend_id)]")
+
+        var isUserDuplicate: Bool = false
+        var newFriend: Friend = Friend()
+        newFriend.memberID = friend_id
+        newFriend.memberName = friend_name
+        let friendList = retrieveFriendList()
+        if !friendList.isEmpty {
+            for i in 0...friendList.count - 1 {
+                if friendList[i].memberID == friend_id {
+                    isUserDuplicate = true
+                    break
+                }
+            }
+        }
+
+        if isUserDuplicate {
+            print("User ID is duplicate!")
+            presentSimpleAlertMessage(title: "警告訊息", message: "[\(friend_name)]已存在於好友列表中")
+            return
+        } else {
+            insertFriend(friend_info: newFriend)
+            if Auth.auth().currentUser?.uid != nil {
+                let app = UIApplication.shared.delegate as! AppDelegate
+                app.newFriendID = friend_id
+                downloadFBUserProfile(user_id: Auth.auth().currentUser!.uid, completion: receiveMyProfileToUpdateFriendList)
+            }
+        }
+        alertWindow.isHidden = true
+    }
+    
+    addAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+    controller.addAction(addAction)
+
+    let cancelAction = UIAlertAction(title: "暫不加入", style: .default) { (_) in
+        print("Click to cancel new friend: [\(friend_id)]")
+        alertWindow.isHidden = true
+    }
+    
+    cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+    controller.addAction(cancelAction)
+        
+    alertWindow = presentAlert(controller)
+}
+
+func receiveMyProfileToUpdateFriendList(user_profile: UserProfile?) {
+    if user_profile == nil {
+        presentSimpleAlertMessage(title: "錯誤訊息", message: "存取好友資訊錯誤")
+        return
+    }
+    
+    let app = UIApplication.shared.delegate as! AppDelegate
+    let updatedFriendID = app.newFriendID
+    var profile = user_profile!
+    var friendList = [String]()
+    if profile.friendList == nil {
+        friendList.append(updatedFriendID)
+        profile.friendList = friendList
+    } else {
+        profile.friendList!.append(updatedFriendID)
+    }
+    uploadFBUserProfile(user_profile: profile)
 }

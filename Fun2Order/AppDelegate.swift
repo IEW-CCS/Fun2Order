@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var myTabBar: UITabBar?
     weak var notificationDelegate: ApplicationRefreshNotificationDelegate?
     weak var toolTipDelegate: GuideToolTipDelegate?
+    var newFriendID: String = ""
 
     func application(_ application: UIApplication,
                      willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -46,6 +47,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         writeToolTipConfig()
         FirebaseApp.configure()
 
+        //let addNewFriendAction = UNNotificationAction(identifier: "addNewFriendAction", title: "加入好友", options: [.foreground])
+        //let cancelNewFriendAction = UNNotificationAction(identifier: "cancelNewFriendAction", title: "暫不加入", options: [])
+        //let category = UNNotificationCategory(identifier: "newFriendCategory", actions: [addNewFriendAction, cancelNewFriendAction], intentIdentifiers: [], options: [])
+        
         //GADMobileAds.sharedInstance().start(completionHandler: nil)
         GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["2077ef9a63d2b398840261c8221a0c9b"]
 
@@ -53,6 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             UNUserNotificationCenter.current().delegate = self
             let authOptions: UNAuthorizationOptions = [.alert, .badge]
             UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: {_, _ in })
+            //UNUserNotificationCenter.current().setNotificationCategories([category])
             application.registerForRemoteNotifications()
         } else {
             let settings: UIUserNotificationSettings =
@@ -102,6 +108,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         print("-------- userNotificationCenter  didReceive response")
+/*
+        switch response.actionIdentifier {
+        case "addNewFriendAction":
+            print("Click addNewFriendAction button!!")
+            completionHandler()
+            return
+        
+        case "cancelNewFriendAction":
+            print("Click addNewFriendAction button!!")
+            completionHandler()
+            return
+            
+        default:
+            break
+        }
+*/
+        
         getTappedNotification(notification: response.notification)
         getNotifications(func_id: "userNotificationCenter didReceive", completion: refreshNotifyList)
         completionHandler()
@@ -112,8 +135,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("-------- userNotificationCenter willPresent")
-        getTappedNotification(notification: notification)
-        self.notificationDelegate?.refreshNotificationList()
         
         guard let isReadFlag = notification.request.content.userInfo["isRead"] as? String else {
             presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知資料格式錯誤")
@@ -121,10 +142,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             return
         }
         
-        if isReadFlag == "Y" {
+        guard let notificationType = notification.request.content.userInfo["notificationType"] as? String else {
+            presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知資料格式錯誤")
             completionHandler([])
+            return
+        }
+
+        if isReadFlag == "Y" || notificationType == NOTIFICATION_TYPE_NEW_FRIEND {
+            completionHandler([])
+            getTappedNotification(notification: notification)
+            self.notificationDelegate?.refreshNotificationList()
         } else {
             completionHandler(UNNotificationPresentationOptions.alert)
+            getTappedNotification(notification: notification)
+            self.notificationDelegate?.refreshNotificationList()
         }
     }
 

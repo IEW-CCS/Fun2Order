@@ -19,10 +19,11 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     @IBOutlet weak var labelCategory: UILabel!
     @IBOutlet weak var textViewDescription: UITextView!
     @IBOutlet weak var buttonMenuImage: UIButton!
-    @IBOutlet weak var imageMenuPhoto: UIImageView!
+    //@IBOutlet weak var imageMenuPhoto: UIImageView!
     @IBOutlet weak var buttonProduct: UIButton!
     @IBOutlet weak var labelLocationCount: UILabel!
     @IBOutlet weak var labelProductCount: UILabel!
+    //@IBOutlet weak var imagePagerView: FSPagerView!
     
     var menuInformation: MenuInformation = MenuInformation()
     //var menuIcon: UIImage = UIImage()
@@ -33,7 +34,11 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     var testDate: Date = Date()
     weak var delegate: CreateMenuDelegate?
     var updatedBrandCategory: String = ""
-    
+    var imageArray: [UIImage] = [UIImage]()
+    var menuDescription: String = ""
+    var originalMennuImagePathList: [String]?
+    var brandCategoryIndex: Int = -1
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -44,11 +49,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         self.textViewDescription.layer.borderColor = UIColor.lightGray.cgColor
         self.textViewDescription.layer.cornerRadius = 6
         self.textViewDescription.text = ""
-        
-        self.imageMenuPhoto.layer.borderWidth = 1
-        self.imageMenuPhoto.layer.borderColor = UIColor.lightGray.cgColor
-        self.imageMenuPhoto.layer.cornerRadius = 6
-        
+                
         self.labelCategory.text = ""
         
         self.textBrandName.delegate = self
@@ -56,7 +57,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
-        
+                
         self.savedMenuInformation = self.menuInformation
         refreshMenu()
 
@@ -71,13 +72,6 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         self.view.endEditing(true)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        //print("CreateMenuTableViewController enters viewDidDisappear")
-        //self.dismiss(animated: true, completion: {
-            //print("CreateMenuTableViewController dismissed")
-        //})
-    }
-    
     func refreshMenu() {
         var locationCount: Int = 0
         var itemCount: Int = 0
@@ -89,6 +83,16 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         self.textBrandName.text = self.menuInformation.brandName
         self.labelCategory.text = self.menuInformation.brandCategory
         self.textViewDescription.text = self.menuInformation.menuDescription
+        
+        if self.menuInformation.multiMenuImageURL != nil {
+            downloadFBMultiMenuImages(images_url: self.menuInformation.multiMenuImageURL!, completion: receivedMultiMenuImages)
+        } else {
+            if self.menuInformation.menuImageURL != "" {
+                downloadFBMultiMenuImages(images_url: [self.menuInformation.menuImageURL], completion: receivedOriginalSingleMenuImage)
+            }
+        }
+
+/*
         if self.menuInformation.menuImageURL != "" {
             let storageRef = Storage.storage().reference()
             storageRef.child(self.menuInformation.menuImageURL).getData(maxSize: 3 * 2048 * 2048, completion: { (data, error) in
@@ -101,14 +105,16 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                     }
                 }
                 
-                self.imageMenuPhoto.image = UIImage(data: data!)!
-                if self.menuIcon == nil {
-                    self.menuIcon = UIImage()
+                //self.imageMenuPhoto.image = UIImage(data: data!)!
+                if !self.imageArray.isEmpty {
+                    if self.menuIcon == nil {
+                        self.menuIcon = UIImage()
+                    }
+                    self.menuIcon = resizeImage(image: self.imageArray[0], width: CGFloat(MENU_ICON_WIDTH))
                 }
-                self.menuIcon = resizeImage(image: self.imageMenuPhoto.image!, width: CGFloat(MENU_ICON_WIDTH))
             })
         }
-        
+*/
         if self.menuInformation.locations != nil {
             locationCount = self.menuInformation.locations!.count
         }
@@ -122,6 +128,36 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
 
     }
 
+    func receivedMultiMenuImages(images: [UIImage]?) {
+        if images != nil {
+            self.imageArray = images!
+            if !self.imageArray.isEmpty {
+                if self.menuIcon == nil {
+                    self.menuIcon = UIImage()
+                }
+                self.menuIcon = resizeImage(image: self.imageArray[0], width: CGFloat(MENU_ICON_WIDTH))
+            }
+            self.tableView.reloadData()
+        } else {
+            if self.menuInformation.menuImageURL != "" {
+                downloadFBMultiMenuImages(images_url: [self.menuInformation.menuImageURL], completion: receivedOriginalSingleMenuImage)
+            }
+        }
+    }
+    
+    func receivedOriginalSingleMenuImage(images: [UIImage]?) {
+        if images != nil {
+            self.imageArray.append(images![0])
+            if !self.imageArray.isEmpty {
+                if self.menuIcon == nil {
+                    self.menuIcon = UIImage()
+                }
+                self.menuIcon = resizeImage(image: self.imageArray[0], width: CGFloat(MENU_ICON_WIDTH))
+            }
+            self.tableView.reloadData()
+        }
+    }
+    
     func generateMenuNumber(date: Date) -> String {
         let timeZone = TimeZone.init(identifier: "UTC+8")
         let formatter = DateFormatter()
@@ -146,10 +182,10 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     }
     
     func uploadMenuInformation(menu_info: MenuInformation) {
-        let menuImage = self.imageMenuPhoto.image
-        if menuImage != nil {
+        if !self.imageArray.isEmpty {
+            let menuImage = self.imageArray[0]
             let storageRef = Storage.storage().reference().child(menu_info.menuImageURL)
-            let newImage = resizeImage(image: menuImage!, width: 1440)
+            let newImage = resizeImage(image: menuImage, width: 1440)
             let uploadData = newImage.jpegData(compressionQuality: 0.5)
             if uploadData != nil {
                 storageRef.putData(uploadData!, metadata: nil, completion: { (data, error) in
@@ -159,21 +195,62 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                     }
                 })
             }
+
+            if self.originalMennuImagePathList == nil {
+                uploadMultiMenuImages()
+            } else {
+                let dispatchGroup = DispatchGroup()
+
+                for i in 0...self.originalMennuImagePathList!.count - 1 {
+                    let newPath = self.originalMennuImagePathList![i]
+                    let newRef = Storage.storage().reference()
+                    
+                    dispatchGroup.enter()
+                    newRef.child(newPath).delete(completion: {(error) in
+                        if error == nil {
+                            dispatchGroup.leave()
+                        }
+                    })
+                }
+                
+                dispatchGroup.notify(queue: .main) {
+                    self.uploadMultiMenuImages()
+                }
+            }
+            
         }
-        
+ 
         let databaseRef = Database.database().reference()
         let pathString = "USER_MENU_INFORMATION/\(menu_info.userID)/\(menu_info.menuNumber)"
         //print("menu_info transformed object = \(menu_info.toAnyObject())")
-        
         databaseRef.child(pathString).setValue(menu_info.toAnyObject()) { (_, _) in
             print("CreateMenuTableViewController uploadMenuInformation -> Firebase setValue of Menu Information successful")
-            // Send notification to refresh Menu List function
-            //NotificationCenter.default.post(name: NSNotification.Name("RefreshMenuList"), object: nil)
             self.delegate?.refreshMenuList(sender: self)
             self.navigationController?.popViewController(animated: true)
         }
     }
+    
+    func uploadMultiMenuImages() {
+        //let newPath = "Menu_Image/\(self.menuInformation.userID)/\(self.menuInformation.menuNumber)/"
+        
+        let newRef = Storage.storage().reference()
 
+        for i in 0...self.imageArray.count - 1 {
+            let newImage = resizeImage(image: self.imageArray[i], width: 1440)
+            let uploadData = newImage.jpegData(compressionQuality: 0.5)
+            //let imagePath = newPath + "\(i).jpeg"
+            let imagePath = self.menuInformation.multiMenuImageURL![i]
+            if uploadData != nil {
+                newRef.child(imagePath).putData(uploadData!, metadata: nil, completion: { (data, error) in
+                    if error != nil {
+                        print(error!.localizedDescription)
+                        return
+                    }
+                })
+            }
+        }
+    }
+    
     @IBAction func selectBrandCategory(_ sender: UIButton) {
         var alertWindow: UIWindow!
         var alertTextWindow: UIWindow!
@@ -254,8 +331,13 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         }
     }
     
-    func receiveMyProfile(user_profile: UserProfile) {
-        var profile = user_profile
+    func receiveMyProfile(user_profile: UserProfile?) {
+        if user_profile == nil {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "存取使用者資料發生錯誤")
+            return
+        }
+        
+        var profile = user_profile!
         var brandList = [String]()
         if profile.brandCategoryList == nil {
             brandList.append(self.updatedBrandCategory)
@@ -265,48 +347,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         }
         uploadFBUserProfile(user_profile: profile)
     }
-    
-    @IBAction func selectMenuPhoto(_ sender: UIButton) {
-        let controller = UIAlertController(title: "選取照片來源", message: nil, preferredStyle: .actionSheet)
         
-        let photoAction = UIAlertAction(title: "相簿", style: .default) { (_) in
-            // Add code to pick a photo from Album
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                let imagePicker = UIImagePickerController()
-                imagePicker.sourceType = .photoLibrary
-                //imagePicker.allowsEditing = true
-                imagePicker.delegate = self
-                
-                self.show(imagePicker, sender: self)
-            }
-        }
-        
-        photoAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
-        controller.addAction(photoAction)
-        
-        let cameraAction = UIAlertAction(title: "相機", style: .default) { (_) in
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                let imagePicker = UIImagePickerController()
-                imagePicker.sourceType = .camera
-                //imagePicker.allowsEditing = true
-                imagePicker.delegate = self
-                
-                self.show(imagePicker, sender: self)
-            }
-        }
-        
-        cameraAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
-        controller.addAction(cameraAction)
-        
-        let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
-           print("Cancel update")
-        }
-        cancelAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
-        controller.addAction(cancelAction)
-        
-        present(controller, animated: true, completion: nil)
-    }
-    
     @IBAction func editStoreInformation(_ sender: UIButton) {
         let controller = UIAlertController(title: "請輸入店家聯絡資訊", message: nil, preferredStyle: .alert)
 
@@ -445,11 +486,72 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                 return cell
             }
         }
+        
+        if indexPath.section == 0 && indexPath.row == 3 {
+            let cell = super.tableView(tableView, cellForRowAt: indexPath)
+            for view in cell.subviews {
+                if view.isKind(of: UIImageView.self) {
+                    view.removeFromSuperview()
+                }
+            }
 
-        return super.tableView(tableView, cellForRowAt: indexPath)
+            if !self.imageArray.isEmpty {
+                let rectArray = calculateImagePosition(frame: cell.frame)
+                print("rectArray = \(rectArray)")
+                for i in 0...self.imageArray.count - 1 {
+                    let imageView = UIImageView(frame: rectArray[i])
+                    imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight, .flexibleBottomMargin, .flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin]
+                    imageView.contentMode = .scaleAspectFit
+                    imageView.layer.borderWidth = 1.0
+                    imageView.layer.borderColor = UIColor.darkGray.cgColor
+                    imageView.layer.cornerRadius = 6
+                    imageView.image = self.imageArray[i]
+                    cell.addSubview(imageView)
+                }
+            }
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            return cell
+        }
+
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        
+        return cell
     }
 
+    func calculateImagePosition(frame: CGRect) -> [CGRect] {
+        var returnRect: [CGRect] = [CGRect]()
+        let imageCount = self.imageArray.count
+        let X_INSET: CGFloat = 10
+        let Y_INSET: CGFloat = 10
+
+        let scaleWidth = frame.width / CGFloat(imageCount)
+        for i in 0...imageCount - 1 {
+            let rect = CGRect(x: X_INSET + CGFloat(i) * scaleWidth, y: Y_INSET, width: scaleWidth - X_INSET * 2, height: frame.height - Y_INSET * 2)
+            returnRect.append(rect)
+        }
+        
+        return returnRect
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+/*
+        if indexPath.section == 0 && indexPath.row == 2 {
+            if self.menuInformation.menuDescription == "" {
+                return 0
+            } else {
+                return 70
+            }
+        }
+        
+        if indexPath.section == 0 && indexPath.row == 3 {
+            if self.imageArray.isEmpty {
+                return 0
+            } else {
+                return 145
+            }
+        }
+*/
         if indexPath.section == 3 {
             return 54
         }
@@ -467,6 +569,14 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowMenuImage" {
+            if let controllerImage = segue.destination as? MenuImageDescriptionTableViewController {
+                controllerImage.imageArray = self.imageArray
+                controllerImage.menuDescription = self.menuInformation.menuDescription
+                controllerImage.delegate = self
+            }
+        }
+
         if segue.identifier == "ShowLocation" {
             if let controllerLocation = segue.destination as? MenuLocationTableViewController {
                 controllerLocation.locationArray = self.menuInformation.locations
@@ -485,24 +595,24 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
 
 }
 
-extension CreateMenuTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-        //let newImage = resizeImage(image: image, width: 1024)
-        self.imageMenuPhoto.image = image
-        let iconImage = resizeImage(image: image, width: CGFloat(MENU_ICON_WIDTH))
-        if self.menuIcon == nil {
-            self.menuIcon = UIImage()
-        }
-        self.menuIcon = iconImage
-        self.isNeedSave = true
-        dismiss(animated: true, completion: nil)
-    }
-}
-
 extension CreateMenuTableViewController: StoreContactInformationDelegate {
     func getStoreContactInfo(sender: StoreContactInformationViewController, contact: StoreContactInformation) {
         self.menuInformation.storeInfo = contact
+    }
+}
+
+extension CreateMenuTableViewController: MenuImageDescriptionDelegate {
+    func getMenuImageDescription(sender: MenuImageDescriptionTableViewController, menu_images: [UIImage], menu_description: String) {
+        self.imageArray = menu_images
+        self.menuDescription = menu_description
+        
+        self.textViewDescription.text = self.menuDescription
+        self.menuInformation.menuDescription = menu_description
+        if !self.imageArray.isEmpty {
+            self.menuIcon = resizeImage(image: self.imageArray[0], width: CGFloat(MENU_ICON_WIDTH))
+        }
+        
+        self.tableView.reloadData()
     }
 }
 
@@ -572,12 +682,24 @@ extension CreateMenuTableViewController: BasicButtonDelegate {
             self.menuInformation.userID = "Guest"
             self.menuInformation.userName = "Guest"
         }
-        
-        if self.imageMenuPhoto.image != nil {
+
+        self.originalMennuImagePathList = self.menuInformation.multiMenuImageURL
+        if !self.imageArray.isEmpty {
             self.menuInformation.menuImageURL = generateMenuImageURL(user_id: self.menuInformation.userID, menu_number: self.menuInformation.menuNumber)
             deleteMenuIcon(menu_number: self.menuInformation.menuNumber)
             if self.menuIcon != nil {
                 insertMenuIcon(menu_number: self.menuInformation.menuNumber, menu_icon: self.menuIcon!)
+            }
+            
+            if self.menuInformation.multiMenuImageURL == nil {
+                self.menuInformation.multiMenuImageURL = [String]()
+            } else {
+                self.menuInformation.multiMenuImageURL!.removeAll()
+            }
+            
+            for i in 0...self.imageArray.count - 1 {
+                let newPath = "Menu_Image/\(self.menuInformation.userID)/\(self.menuInformation.menuNumber)/\(i).jpeg"
+                self.menuInformation.multiMenuImageURL!.append(newPath)
             }
         }
 

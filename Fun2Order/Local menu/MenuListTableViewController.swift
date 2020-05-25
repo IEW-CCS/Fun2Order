@@ -94,38 +94,6 @@ class MenuListTableViewController: UITableViewController {
                 app.toolTipDelegate?.triggerCreateMenuTooltip(parent: self.view)
                 self.showMyProfileTabBarToolTip()
 
-/*
-                let rawData = snapshot.value
-                
-                let jsonData = try? JSONSerialization.data(withJSONObject: rawData as Any, options: [])
-                //let jsonString = String(data: jsonData!, encoding: .utf8)!
-                //print("jsonString = \(jsonString)")
-
-                let decoder: JSONDecoder = JSONDecoder()
-                do {
-                    let listData = try decoder.decode([String:MenuInformation].self, from: jsonData!)
-                    print("downloadFBMenuInformation jason decoded successful")
-                    //print("listData = \(listData)")
-                    
-                    for keyValuePair in listData {
-                        self.menuInfos.append(keyValuePair.value)
-                    }
-                    
-                    self.menuInfos.sort(by: {$0.createTime > $1.createTime})
-
-                    self.menuBrandCategory = retrieveMenuBrandCategory()
-                    self.selectedIndex = select_index
-                    self.filterMenuInfosByCategory()
-                    self.tableView.reloadData()
-
-                    let app = UIApplication.shared.delegate as! AppDelegate
-                    app.toolTipDelegate?.triggerCreateMenuTooltip(parent: self.view)
-                    self.showMyProfileTabBarToolTip()
-                } catch {
-                    print("downloadFBMenuInformation jsonData decode failed: \(error.localizedDescription)")
-                    return
-                }
-*/
             } else {
                 self.tableView.reloadData()
                 print("downloadFBMenuInformation snapshot doesn't exist!")
@@ -160,15 +128,7 @@ class MenuListTableViewController: UITableViewController {
         
         if toolTipOption == true && myProfileToolTip == false {
             let app = UIApplication.shared.delegate as! AppDelegate
-/*
-            if let tabBar = app.myTabBar {
-                let frame = CGRect(x: (tabBar.frame.minX + tabBar.frame.maxX) * 3 / 4, y: tabBar.frame.minY, width: (tabBar.frame.minX + tabBar.frame.maxX) / 4, height: tabBar.frame.maxY - tabBar.frame.minY)
 
-                DispatchQueue.main.async {
-                    showGuideToolTip(text: "恭喜您完成第一張菜單\n接下來請從這裡\n加入您的好友並建立群組\n之後就可使用揪團功能", dir: PopTipDirection.up, parent: self.view, target: frame, duration: 10)
-                }
-            }
-*/
             var tmpViews: [UIView] = [UIView]()
             if let tabViews = app.myTabBar?.subviews {
                 tmpViews = tabViews.sorted(by: {$0.frame.minX > $1.frame.minX})
@@ -196,8 +156,9 @@ class MenuListTableViewController: UITableViewController {
         self.menuInfosByCategory.removeAll()
         // Add empty MenuInformation for NativeAd
         let tmpMenuInfo: MenuInformation = MenuInformation()
-        self.menuInfosByCategory.append(tmpMenuInfo)
+        self.menuInfosByCategory.append(tmpMenuInfo)  //Add an empty menu information for Ad cell
         self.adIndex = 0
+        
         
         if !self.menuInfos.isEmpty {
             var categoryString: String = ""
@@ -238,7 +199,8 @@ class MenuListTableViewController: UITableViewController {
 
     func deleteMenuInfo(index: IndexPath) {
         deleteMenuIcon(menu_number: self.menuInfosByCategory[index.row].menuNumber)
-        deleteFBMenuInformation(user_id: self.menuInfosByCategory[index.row].userID, menu_number: self.menuInfosByCategory[index.row].menuNumber, image_url: self.menuInfosByCategory[index.row].menuImageURL)
+        //deleteFBMenuInformation(user_id: self.menuInfosByCategory[index.row].userID, menu_number: self.menuInfosByCategory[index.row].menuNumber, image_url: self.menuInfosByCategory[index.row].menuImageURL)
+        deleteFBMenuInformation(menu_info: self.menuInfosByCategory[index.row])
 
         print("MenuListTableViewController deleteMenuInfo downloadFBMenuInformation")
         downloadFBMenuInformation(select_index: self.selectedIndex)
@@ -279,9 +241,9 @@ class MenuListTableViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MenuListCategoryCell", for: indexPath) as! MenuListCategoryCell
             
             if self.menuInfos.isEmpty {
-                cell.setData(menu_exist_flag: false, items: self.menuBrandCategory)
+                cell.setData(menu_exist_flag: false, items: self.menuBrandCategory, selected_index: self.selectedIndex)
             } else {
-                cell.setData(menu_exist_flag: true, items: self.menuBrandCategory)
+                cell.setData(menu_exist_flag: true, items: self.menuBrandCategory, selected_index: self.selectedIndex)
             }
             
             cell.delegate = self
@@ -377,20 +339,6 @@ class MenuListTableViewController: UITableViewController {
             return true
         }
     }
-
-/*
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .destructive, title: "刪除") { (action, indexPath) in
-
-        }
-        //(UIButton.appearance(whenContainedInInstancesOf: [UIView.self])).setImage(UIImage(named: "Icon_TrashCan.png"), for: .normal)
-        //let iconImage = UIImage(named: "Icon_TrashCan.png")?.withRenderingMode(.alwaysTemplate)
-
-        //iconImage.tintColor = UIColor.white
-        //delete.backgroundColor = UIColor(patternImage: iconImage!)
-        return [delete]
-    }
-*/
     
     override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return "刪除"

@@ -16,11 +16,14 @@ class ImageZoomView: UIScrollView, UIScrollViewDelegate {
     convenience init(frame: CGRect, image: UIImage) {
         self.init(frame: frame)
         backgroundColor = UIColor.black
-        
-        imageView = UIImageView(image: image)
-        imageView.frame = frame
+
+        let imageView = UIImageView(frame: frame)
+        //imageView = UIImageView(image: image)
+        //imageView.frame = frame
+        imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight, .flexibleBottomMargin, .flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin]
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = true
+        imageView.image = image
         addSubview(imageView)
         
         //imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
@@ -33,8 +36,8 @@ class ImageZoomView: UIScrollView, UIScrollViewDelegate {
     }
     
     func setupScrollView() {
-        minimumZoomScale = 0.8
-        maximumZoomScale = 2.0
+        minimumZoomScale = 0.6
+        maximumZoomScale = 2.5
         delegate = self
     }
     

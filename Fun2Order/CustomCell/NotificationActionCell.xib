@@ -39,7 +39,7 @@
                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" editable="NO" text="Message Body" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ab-qm-oGU">
+                    <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" editable="NO" text="Message Body" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ab-qm-oGU">
                         <rect key="frame" x="15" y="87" width="290" height="48"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <accessibility key="accessibilityConfiguration">
