@@ -38,6 +38,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     var menuDescription: String = ""
     var originalMennuImagePathList: [String]?
     var brandCategoryIndex: Int = -1
+    let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +50,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         self.textViewDescription.layer.borderColor = UIColor.lightGray.cgColor
         self.textViewDescription.layer.cornerRadius = 6
         self.textViewDescription.text = ""
-                
+        
         self.labelCategory.text = ""
         
         self.textBrandName.delegate = self
@@ -57,10 +58,13 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
-                
-        self.savedMenuInformation = self.menuInformation
-        refreshMenu()
 
+        self.savedMenuInformation = self.menuInformation
+        
+        self.activityIndicator.frame = self.view.bounds
+        self.view.addSubview(self.activityIndicator)
+        
+        refreshMenu()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -183,6 +187,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     
     func uploadMenuInformation(menu_info: MenuInformation) {
         if !self.imageArray.isEmpty {
+            self.activityIndicator.startAnimating()
             let menuImage = self.imageArray[0]
             let storageRef = Storage.storage().reference().child(menu_info.menuImageURL)
             let newImage = resizeImage(image: menuImage, width: 1440)
@@ -197,7 +202,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
             }
 
             if self.originalMennuImagePathList == nil {
-                uploadMultiMenuImages()
+                uploadMultiMenuImages(menu_info: menu_info)
             } else {
                 let dispatchGroup = DispatchGroup()
 
@@ -214,28 +219,30 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                 }
                 
                 dispatchGroup.notify(queue: .main) {
-                    self.uploadMultiMenuImages()
+                    self.uploadMultiMenuImages(menu_info: menu_info)
                 }
             }
             
         }
- 
+/*
         let databaseRef = Database.database().reference()
         let pathString = "USER_MENU_INFORMATION/\(menu_info.userID)/\(menu_info.menuNumber)"
-        //print("menu_info transformed object = \(menu_info.toAnyObject())")
         databaseRef.child(pathString).setValue(menu_info.toAnyObject()) { (_, _) in
             print("CreateMenuTableViewController uploadMenuInformation -> Firebase setValue of Menu Information successful")
             self.delegate?.refreshMenuList(sender: self)
             self.navigationController?.popViewController(animated: true)
         }
+ */
     }
     
-    func uploadMultiMenuImages() {
+    func uploadMultiMenuImages(menu_info: MenuInformation) {
         //let newPath = "Menu_Image/\(self.menuInformation.userID)/\(self.menuInformation.menuNumber)/"
-        
+        let dispatchGroup = DispatchGroup()
+
         let newRef = Storage.storage().reference()
 
         for i in 0...self.imageArray.count - 1 {
+            dispatchGroup.enter()
             let newImage = resizeImage(image: self.imageArray[i], width: 1440)
             let uploadData = newImage.jpegData(compressionQuality: 0.5)
             //let imagePath = newPath + "\(i).jpeg"
@@ -246,7 +253,21 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                         print(error!.localizedDescription)
                         return
                     }
+                    dispatchGroup.leave()
                 })
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            let databaseRef = Database.database().reference()
+            let pathString = "USER_MENU_INFORMATION/\(menu_info.userID)/\(menu_info.menuNumber)"
+            databaseRef.child(pathString).setValue(menu_info.toAnyObject()) { (_, _) in
+                print("CreateMenuTableViewController uploadMenuInformation -> Firebase setValue of Menu Information successful")
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.removeFromSuperview()
+                presentSimpleAlertMessage(title: "訊息", message: "菜單資料已成功儲存")
+                self.delegate?.refreshMenuList(sender: self)
+                self.navigationController?.popViewController(animated: true)
             }
         }
     }
