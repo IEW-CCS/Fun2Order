@@ -13,6 +13,7 @@ class BannerDetailViewController: UIViewController {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var bannerImage: UIImageView!
     @IBOutlet weak var txtDescription: UILabel!
+    @IBOutlet weak var buttonURL: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +22,12 @@ class BannerDetailViewController: UIViewController {
         setupAboutInfo()
     }
 
+    @IBAction func openWebSite(_ sender: UIButton) {
+        if let url = URL(string: "http://www.iew-pro.com") {
+            UIApplication.shared.open(url)
+        }
+    }
+    
     @IBAction func closeBanner(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }

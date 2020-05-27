@@ -2014,18 +2014,24 @@
                                     <constraint firstAttribute="width" constant="280" id="qJ5-Sm-5Do"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sqb-HX-oeP">
-                                <rect key="frame" x="20" y="220" width="280" height="230"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="京都郊區的踏青地點「高雄神護寺」一帶，與梅畑槙尾町的「西明寺」、梅畑栂尾町的「高山寺」並稱「三 尾」，是自古以來便為人所知的紅葉名所。特別是人氣紅葉名所「高雄神護寺」內的五大堂被紅葉所包圍的景 觀更是必看重點，夜晚點燈後更顯絕美!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sqb-HX-oeP">
+                                <rect key="frame" x="20" y="220" width="280" height="180"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="230" id="CJM-je-kNX"/>
+                                    <constraint firstAttribute="height" constant="180" id="CJM-je-kNX"/>
                                     <constraint firstAttribute="width" constant="280" id="QNK-m6-Grd"/>
                                 </constraints>
-                                <string key="text">
-京都郊區的踏青地點「高雄神護寺」一帶，與梅畑槙尾町的「西明寺」、梅畑栂尾町的「高山寺」並稱「三 尾」，是自古以來便為人所知的紅葉名所。特別是人氣紅葉名所「高雄神護寺」內的五大堂被紅葉所包圍的景 觀更是必看重點，夜晚點燈後更顯絕美!</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xqK-qL-Sxl">
+                                <rect key="frame" x="91" y="397" width="138" height="33"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="www.iew-pro.com"/>
+                                <connections>
+                                    <action selector="openWebSite:" destination="l5n-Q0-SRF" eventType="touchUpInside" id="6qm-2w-jod"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -2033,7 +2039,9 @@
                             <constraint firstItem="sqb-HX-oeP" firstAttribute="centerX" secondItem="fvP-Md-Yif" secondAttribute="centerX" id="8FL-zC-TL5"/>
                             <constraint firstItem="F4F-PN-u2w" firstAttribute="centerY" secondItem="fvP-Md-Yif" secondAttribute="centerY" id="94M-gN-1aw"/>
                             <constraint firstItem="Y8l-TN-TaQ" firstAttribute="centerX" secondItem="fvP-Md-Yif" secondAttribute="centerX" id="BQt-os-GvS"/>
+                            <constraint firstItem="xqK-qL-Sxl" firstAttribute="centerX" secondItem="fvP-Md-Yif" secondAttribute="centerX" id="GUa-Ds-nfJ"/>
                             <constraint firstItem="sqb-HX-oeP" firstAttribute="top" secondItem="Y8l-TN-TaQ" secondAttribute="bottom" constant="15" id="h4h-pB-6bz"/>
+                            <constraint firstItem="w7n-0q-uaC" firstAttribute="top" secondItem="xqK-qL-Sxl" secondAttribute="bottom" constant="10" id="hSA-uv-t7y"/>
                             <constraint firstItem="F4F-PN-u2w" firstAttribute="centerX" secondItem="fvP-Md-Yif" secondAttribute="centerX" id="wJL-ds-zgt"/>
                         </constraints>
                         <edgeInsets key="layoutMargins" top="0.0" left="20" bottom="0.0" right="20"/>
@@ -2043,6 +2051,7 @@
                     <connections>
                         <outlet property="backView" destination="F4F-PN-u2w" id="ApC-cj-Uxt"/>
                         <outlet property="bannerImage" destination="Y8l-TN-TaQ" id="tor-ry-oI6"/>
+                        <outlet property="buttonURL" destination="xqK-qL-Sxl" id="aA1-pp-6p9"/>
                         <outlet property="txtDescription" destination="sqb-HX-oeP" id="3dz-M4-trf"/>
                     </connections>
                 </viewController>
