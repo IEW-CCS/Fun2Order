@@ -46,6 +46,7 @@ class EditPaymentCell: UITableViewCell {
         let controller = UIAlertController(title: "請輸入收取金額", message: nil, preferredStyle: .alert)
         controller.addTextField { (textField) in
             textField.placeholder = "輸入金額"
+            textField.keyboardType = .numberPad
         }
         
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
@@ -86,8 +87,10 @@ class EditPaymentCell: UITableViewCell {
         alertWindow = presentAlert(controller)
     }
     
-    func receiveMemberImage(member_image: UIImage) {
-        self.imageMember.image = member_image
+    func receiveMemberImage(member_image: UIImage?) {
+        if member_image != nil {
+            self.imageMember.image = member_image!
+        }
     }
     
     func receiveUpdateComplete() {

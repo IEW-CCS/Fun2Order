@@ -17,22 +17,22 @@ class ImageZoomView: UIScrollView, UIScrollViewDelegate {
         self.init(frame: frame)
         backgroundColor = UIColor.black
 
-        let imageView = UIImageView(frame: frame)
+        setupScrollView()
+
+        self.imageView = UIImageView(frame: frame)
         //imageView = UIImageView(image: image)
         //imageView.frame = frame
-        imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight, .flexibleBottomMargin, .flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin]
-        imageView.contentMode = .scaleAspectFit
-        imageView.isUserInteractionEnabled = true
-        imageView.image = image
-        addSubview(imageView)
+        self.imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight, .flexibleBottomMargin, .flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin]
+        //imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.imageView.contentMode = .scaleAspectFit
+        self.imageView.isUserInteractionEnabled = true
+        self.imageView.image = image
+        addSubview(self.imageView)
         
-        //imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        //imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        self.imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
 
-        setupScrollView()
-        setupGestureRecognizer()
+        //setupGestureRecognizer()
     }
     
     func setupScrollView() {
@@ -42,7 +42,7 @@ class ImageZoomView: UIScrollView, UIScrollViewDelegate {
     }
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return imageView
+        return self.imageView
     }
     
     // Sets up the gesture recognizer that receives double taps to auto-zoom
@@ -64,9 +64,9 @@ class ImageZoomView: UIScrollView, UIScrollViewDelegate {
     // Calculates the zoom rectangle for the scale
     func zoomRectForScale(_ scale: CGFloat, center: CGPoint) -> CGRect {
         var zoomRect = CGRect.zero
-        zoomRect.size.height = imageView.frame.size.height / scale
-        zoomRect.size.width = imageView.frame.size.width / scale
-        let newCenter = convert(center, from: imageView)
+        zoomRect.size.height = self.imageView.frame.size.height / scale
+        zoomRect.size.width = self.imageView.frame.size.width / scale
+        let newCenter = convert(center, from: self.imageView)
         zoomRect.origin.x = newCenter.x - (zoomRect.size.width / 2.0)
         zoomRect.origin.y = newCenter.y - (zoomRect.size.height / 2.0)
         return zoomRect

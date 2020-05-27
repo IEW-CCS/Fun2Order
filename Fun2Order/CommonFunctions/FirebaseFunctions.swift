@@ -110,7 +110,7 @@ func downloadFBMultiMenuImages(images_url: [String], completion: @escaping([UIIm
     }
 }
 
-func downloadFBMenuImage(menu_url: String, completion: @escaping(UIImage) -> Void) {
+func downloadFBMenuImage(menu_url: String, completion: @escaping(UIImage?) -> Void) {
     var alertWindow: UIWindow!
     if menu_url != "" {
         let storageRef = Storage.storage().reference()
@@ -125,6 +125,7 @@ func downloadFBMenuImage(menu_url: String, completion: @escaping(UIImage) -> Voi
                 
                 controller.addAction(okAction)
                 alertWindow = presentAlert(controller)
+                completion(nil)
             }
             
             completion(UIImage(data: data!)!)
@@ -132,7 +133,7 @@ func downloadFBMenuImage(menu_url: String, completion: @escaping(UIImage) -> Voi
     }
 }
 
-func downloadFBMemberImage(member_id: String, completion: @escaping (UIImage) -> Void) {
+func downloadFBMemberImage(member_id: String, completion: @escaping (UIImage?) -> Void) {
     var alertWindow: UIWindow!
     
     let databaseRef = Database.database().reference()
@@ -153,17 +154,18 @@ func downloadFBMemberImage(member_id: String, completion: @escaping (UIImage) ->
                     
                     controller.addAction(okAction)
                     alertWindow = presentAlert(controller)
+                    completion(nil)
                 }
                 
                 completion(UIImage(data: data!)!)
             })
         } else {
             print("downloadMemberImage photoURL snapshot doesn't exist!")
-            return
+            completion(nil)
         }
     })  { (error) in
         print(error.localizedDescription)
-        return
+        completion(nil)
     }
 
 }

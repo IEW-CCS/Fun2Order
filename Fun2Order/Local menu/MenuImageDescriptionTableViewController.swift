@@ -68,10 +68,18 @@ class MenuImageDescriptionTableViewController: UITableViewController, UITextFiel
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
 
+        //let doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap))
+        //doubleTap.numberOfTapsRequired = 2
+        //self.view.addGestureRecognizer(doubleTap)
+
         setupPageView()
         refreshInformation()
     }
     
+    //@objc func handleDoubleTap() {
+    //    presentSimpleAlertMessage(title: "Test Message", message: "Double Tap captured by MenuImageDescriptionTableViewController")
+    //}
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         let index = self.typeIndex
@@ -110,7 +118,7 @@ class MenuImageDescriptionTableViewController: UITableViewController, UITextFiel
             self.buttonConfirm.isHidden = true
             self.textViewDescription.isEditable = false
             self.textViewDescription.isSelectable = false
-            self.textViewDescription.isUserInteractionEnabled = false
+            self.textViewDescription.isUserInteractionEnabled = true
             self.textViewDescription.isMultipleTouchEnabled = false
         } else {
             self.buttonAddImage.isEnabled = true
@@ -193,19 +201,27 @@ class MenuImageDescriptionTableViewController: UITableViewController, UITextFiel
     @objc func menuImageClicked(_ sender: UITapGestureRecognizer) {
         //print("Menu Image tapped")
 
-        //let zoomView = ImageZoomView(frame: UIScreen.main.bounds, image: self.imageArray[self.currentIndex])
-        let zoomView = ImageZoomView(frame: self.view.frame, image: self.imageArray[self.currentIndex])
+        let zoomView = ImageZoomView(frame: UIScreen.main.bounds, image: self.imageArray[self.currentIndex])
+        //let zoomView = ImageZoomView(frame: self.view.frame, image: self.imageArray[self.currentIndex])
         zoomView.bounces = false
-        //let zoomView = ImageZoomView(frame: self.view.bounds, image: imageView.image!)
+
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
         tap.cancelsTouchesInView = false
         zoomView.addGestureRecognizer(tap)
+        
         self.view.addSubview(zoomView)
+        
         self.navigationController?.isNavigationBarHidden = true
         self.tabBarController?.tabBar.isHidden = true
 
     }
     
+    @objc func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
+        self.navigationController?.isNavigationBarHidden = false
+        self.tabBarController?.tabBar.isHidden = false
+        sender.view?.removeFromSuperview()
+    }
+
     @objc func menuImageLongPressed(_ sender: UILongPressGestureRecognizer) {
         if(sender.state == .began) {
             //presentSimpleAlertMessage(title: "測試訊息", message: "Image[\(self.currentIndex)] is long-pressed!")
@@ -243,12 +259,6 @@ class MenuImageDescriptionTableViewController: UITableViewController, UITextFiel
         }
     }
     
-    @objc func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
-        self.navigationController?.isNavigationBarHidden = false
-        self.tabBarController?.tabBar.isHidden = false
-        sender.view?.removeFromSuperview()
-    }
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         cell.selectionStyle = UITableViewCell.SelectionStyle.none

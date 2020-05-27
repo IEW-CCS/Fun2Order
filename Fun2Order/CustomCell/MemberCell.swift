@@ -31,8 +31,10 @@ class MemberCell: UITableViewCell {
 
     }
     
-    func receiveMemberImage(member_image: UIImage) {
-        self.memberImage.image = member_image
+    func receiveMemberImage(member_image: UIImage?) {
+        if member_image != nil {
+            self.memberImage.image = member_image!
+        }
     }
     
     func receiveUserProfile(user_profile: UserProfile?) {

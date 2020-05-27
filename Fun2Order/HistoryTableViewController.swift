@@ -16,7 +16,6 @@ class HistoryTableViewController: UITableViewController {
     
     var menuOrderList: [MenuOrder] = [MenuOrder]()
     var invitationList: [NotificationData] = [NotificationData]()
-    //var interstitialAd: GADInterstitial!
     
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
@@ -50,20 +49,6 @@ class HistoryTableViewController: UITableViewController {
         self.tabBarController?.title = "歷史紀錄"
         navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
     }
-
-/*
-    func setupInterstitialAd() {
-        // Test Interstitla Video Ad
-        self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/5135589807")
-
-        // My real Interstitial Ad
-        //self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-9511677579097261/6069385370")
-
-        let adRequest = GADRequest()
-        self.interstitialAd.load(adRequest)
-        self.interstitialAd.delegate = self
-    }
-*/
     
     @IBAction func changeHistoryType(_ sender: UISegmentedControl) {
         if self.segmentType.selectedSegmentIndex == 0 {
@@ -111,28 +96,6 @@ class HistoryTableViewController: UITableViewController {
                     
                     self.tableView.reloadData()
                 }
-/*
-                let rawData = snapshot.value
-                let jsonData = try? JSONSerialization.data(withJSONObject: rawData as Any, options: [])
-                //let jsonString = String(data: jsonData!, encoding: .utf8)!
-                //print("jsonString = \(jsonString)")
-
-                let decoder: JSONDecoder = JSONDecoder()
-                do {
-                    let listData = try decoder.decode([String:MenuOrder].self, from: jsonData!)
-                    print("queryMenuOrder jason decoded successful")
-                    for keyValuePair in listData {
-                        self.menuOrderList.append(keyValuePair.value)
-                    }
-                    self.menuOrderList.sort(by: {$0.createTime > $1.createTime })
-                    
-                    self.tableView.reloadData()
-                } catch {
-                    self.tableView.reloadData()
-                    print("jsonData decode failed: \(error.localizedDescription)")
-                    return
-                }
-*/
             } else {
                 self.tableView.reloadData()
                 print("queryMenuOrder snapshot doesn't exist!")
@@ -364,8 +327,6 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
             return
         }
 
-        //self.setupInterstitialAd()
-        
         let databaseRef = Database.database().reference()
         
         let pathString = "USER_MENU_INFORMATION/\(self.invitationList[data_index].orderOwnerID)/\(self.invitationList[data_index].menuNumber)"
@@ -473,18 +434,19 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
                 let decoder: JSONDecoder = JSONDecoder()
                 do {
                     var itemArray = try decoder.decode([MenuOrderMemberContent].self, from: jsonData!)
-
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = DATETIME_FORMATTER
+                    let dateString = formatter.string(from: Date())
+                    
                     if let user_id = Auth.auth().currentUser?.uid {
                         if let itemIndex = itemArray.firstIndex(where: { $0.memberID == user_id }) {
                             let uploadPathString = pathString + "/\(itemIndex)"
 
+                            itemArray[itemIndex].orderContent.createTime = dateString
                             itemArray[itemIndex].orderContent.replyStatus = MENU_ORDER_REPLY_STATUS_REJECT
                             databaseRef.child(uploadPathString).setValue(itemArray[itemIndex].toAnyObject())
                         }
-                        
-                        let formatter = DateFormatter()
-                        formatter.dateFormat = DATETIME_FORMATTER
-                        let dateString = formatter.string(from: Date())
+
                         updateNotificationReplyStatus(order_number: self.invitationList[data_index].orderNumber, reply_status: MENU_ORDER_REPLY_STATUS_REJECT, reply_time: dateString)
                         self.refreshNotificationDelegate?.refreshNotificationList()
                         self.refreshInvitationList()
@@ -507,43 +469,3 @@ extension HistoryTableViewController: JoinGroupOrderDelegate {
         refreshInvitationList()
     }
 }
-
-/*
-extension HistoryTableViewController: GADInterstitialDelegate {
-    /// Tells the delegate an ad request succeeded.
-    func interstitialDidReceiveAd(_ ad: GADInterstitial) {
-        print("interstitialDidReceiveAd")
-        if self.interstitialAd.isReady {
-            self.interstitialAd.present(fromRootViewController: self)
-        } else {
-            print("Interstitial Ad is not ready !!")
-        }
-    }
-
-    /// Tells the delegate an ad request failed.
-    func interstitial(_ ad: GADInterstitial, didFailToReceiveAdWithError error: GADRequestError) {
-        print("interstitial:didFailToReceiveAdWithError: \(error.localizedDescription)")
-    }
-
-    /// Tells the delegate that an interstitial will be presented.
-    func interstitialWillPresentScreen(_ ad: GADInterstitial) {
-        print("interstitialWillPresentScreen")
-    }
-
-    /// Tells the delegate the interstitial is to be animated off the screen.
-    func interstitialWillDismissScreen(_ ad: GADInterstitial) {
-        print("interstitialWillDismissScreen")
-    }
-
-    /// Tells the delegate the interstitial had been animated off the screen.
-    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
-        print("interstitialDidDismissScreen")
-    }
-
-    /// Tells the delegate that a user click will open another app
-    /// (such as the App Store), backgrounding the current app.
-    func interstitialWillLeaveApplication(_ ad: GADInterstitial) {
-        print("interstitialWillLeaveApplication")
-    }
-}
-*/

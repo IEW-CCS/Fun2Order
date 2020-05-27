@@ -17,8 +17,8 @@ class MenuOrderNotebookViewController: UIViewController {
     @IBOutlet weak var labelStoreName: UILabel!
     @IBOutlet weak var labelPhoneNumber: UILabel!
     @IBOutlet weak var backView: UIView!
-    
-    
+
+
     var menuOrder: MenuOrder = MenuOrder()
     var contentString: String = ""
     var filterItems: [MenuOrderMemberContent] = [MenuOrderMemberContent]()
@@ -496,8 +496,6 @@ class MenuOrderNotebookViewController: UIViewController {
             tmpReportData.rawCellData.append(dataArray)
         }
         self.reportData.append(tmpReportData)
-        
-        print("Notbook function break point")
     }
     
     func convertMergedReportData() {
@@ -544,8 +542,6 @@ class MenuOrderNotebookViewController: UIViewController {
                 self.reportData.append(tmpReportData)
             }
         }
-        
-        print("Notbook function break point")
     }
 
 }

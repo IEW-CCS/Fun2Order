@@ -12,9 +12,10 @@ class MenuOrderMemberCell: UITableViewCell {
     @IBOutlet weak var imageMember: UIImageView!
     @IBOutlet weak var labelMemberName: UILabel!
     @IBOutlet weak var textViewDetail: UITextView!
-    @IBOutlet weak var backView: ShadowGradientView!
-    @IBOutlet weak var labelQuantity: UILabel!
+    @IBOutlet weak var labelReplyTime: UILabel!
     @IBOutlet weak var labelLocation: UILabel!
+    @IBOutlet weak var labelQuantity: UILabel!
+    @IBOutlet weak var backView: ShadowGradientView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,8 +34,10 @@ class MenuOrderMemberCell: UITableViewCell {
         self.backView.AdjustAutoLayout()
     }
     
-    func receiveMemberImage(member_image: UIImage) {
-        self.imageMember.image = member_image
+    func receiveMemberImage(member_image: UIImage?) {
+        if member_image != nil {
+            self.imageMember.image = member_image!
+        }
     }
 
     func setData(image: UIImage, name: String, location: String) {
@@ -63,6 +66,13 @@ class MenuOrderMemberCell: UITableViewCell {
         self.labelMemberName.text = item_content.orderContent.itemOwnerName
         self.labelLocation.text = item_content.orderContent.location
         self.labelQuantity.text = String(item_content.orderContent.itemQuantity)
+        let formatter = DateFormatter()
+        formatter.dateFormat = DATETIME_FORMATTER
+        let receiveDate = formatter.date(from: item_content.orderContent.createTime)
+        formatter.dateFormat = TAIWAN_DATETIME_FORMATTER
+        let receiveTimeString = formatter.string(from: receiveDate!)
+        self.labelReplyTime.text = "回覆時間: " + receiveTimeString
+        
         setContentString(item: item_content)
     }
     
@@ -95,16 +105,6 @@ class MenuOrderMemberCell: UITableViewCell {
                 
                 contentString = contentString + "  (" + item.orderContent.menuProductItems![k].itemComments + ")"
 
-/*
-                contentString = contentString + "\n"
-                if item.orderContent.menuProductItems![k].itemComments == "" {
-                    continue
-                }
-                let productLength = item.orderContent.menuProductItems![k].itemName.lengthOfBytes(using: .utf8)
-                print("Bytes length of product: \(productLength)")
-                let prefixSpaces = String(repeating: " ", count: productLength)
-                contentString = contentString + prefixSpaces + item.orderContent.menuProductItems![k].itemComments + "\n"
-*/
             }
 
         }

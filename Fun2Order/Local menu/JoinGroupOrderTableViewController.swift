@@ -94,6 +94,11 @@ class JoinGroupOrderTableViewController: UITableViewController {
             }
             self.memberContent.orderContent.itemQuantity = totalQuantity
         }
+        
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = DATETIME_FORMATTER
+        let timeString = timeFormatter.string(from: Date())
+        self.memberContent.orderContent.createTime = timeString
 
         self.memberContent.orderContent.replyStatus = MENU_ORDER_REPLY_STATUS_ACCEPT
         self.memberContent.orderContent.itemOwnerName = getMyUserName()
@@ -359,6 +364,7 @@ extension JoinGroupOrderTableViewController: JoinOrderSelectProductDelegate {
         }
         if !self.memberContent.orderContent.menuProductItems!.isEmpty {
             if self.memberContent.orderContent.menuProductItems!.count == MAX_NEW_PRODUCT_COUNT {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "產品項目超過限制(最多五種)，請重新輸入產品資訊")
                 return
             }
         }
@@ -385,7 +391,7 @@ extension JoinGroupOrderTableViewController: MenuOrderBoardDelegate {
             if self.memberContent.orderContent.menuProductItems != nil {
                 if (self.memberContent.orderContent.menuProductItems!.count + items.count) > MAX_NEW_PRODUCT_COUNT {
                     print("Over the max number limitation of new product")
-                    presentSimpleAlertMessage(title: "錯誤訊息", message: "產品種類超過限制(最多五種)，請重新輸入產品資訊")
+                    presentSimpleAlertMessage(title: "錯誤訊息", message: "產品項目超過限制(最多五種)，請重新輸入產品資訊")
                 } else {
                     for i in 0...items.count - 1 {
                         self.memberContent.orderContent.menuProductItems!.append(items[i])

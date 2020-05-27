@@ -421,7 +421,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Menu Description" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="26A-Bx-LRq">
+                                                <textView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Menu Description" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="26A-Bx-LRq">
                                                     <rect key="frame" x="20" y="6" width="374" height="55"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -431,6 +431,9 @@
                                                 </textView>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="9tF-iG-TeK" kind="show" identifier="ShowMenuImage" id="rmD-pw-EdA"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="145" id="kh6-5Z-BS0">
                                         <rect key="frame" x="0.0" y="142" width="414" height="145"/>
@@ -439,6 +442,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="145"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="9tF-iG-TeK" kind="show" identifier="ShowMenuImage" id="PfO-lf-6FO"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="K6u-5n-xN8">
                                         <rect key="frame" x="0.0" y="287" width="414" height="43.5"/>
@@ -1349,7 +1355,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Menu Description" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dme-mL-FYI">
+                                                <textView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Menu Description" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dme-mL-FYI">
                                                     <rect key="frame" x="20" y="6" width="374" height="55"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -1359,6 +1365,9 @@
                                                 </textView>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="9tF-iG-TeK" kind="show" identifier="ShowMenuImage" id="4lA-jy-jwa"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="145" id="0Z6-FW-AuI">
                                         <rect key="frame" x="0.0" y="186" width="414" height="145"/>
@@ -1367,6 +1376,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="145"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="9tF-iG-TeK" kind="show" identifier="ShowMenuImage" id="8tg-zw-hRv"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="48" id="4g3-MT-Bpz">
                                         <rect key="frame" x="0.0" y="331" width="414" height="48"/>
@@ -1683,7 +1695,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="211"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Me5-gm-vCB">
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" delaysContentTouches="NO" canCancelContentTouches="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Me5-gm-vCB">
                                                     <rect key="frame" x="20" y="11" width="374" height="200"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -4461,7 +4473,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Fof-3o-hkm"/>
-        <segue reference="a1s-NK-zX5"/>
+        <segue reference="4lA-jy-jwa"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="8.png" width="573" height="365"/>

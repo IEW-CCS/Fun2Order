@@ -23,7 +23,6 @@ class NotificationActionViewController: UIViewController {
     
     var notificationData: NotificationData = NotificationData()
     var indexPath: IndexPath = IndexPath()
-    //var interstitialAd: GADInterstitial!
 
     let app = UIApplication.shared.delegate as! AppDelegate
     weak var refreshNotificationDelegate: ApplicationRefreshNotificationDelegate?
@@ -37,21 +36,6 @@ class NotificationActionViewController: UIViewController {
         setData(notification: self.notificationData)
     }
 
-/*
-    func setupInterstitialAd() {
-        // Test Interstitla Video Ad
-        self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/5135589807")
-
-        // My real Interstitial Ad
-        //self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-9511677579097261/6069385370")
-
-        let adRequest = GADRequest()
-        self.interstitialAd.load(adRequest)
-        self.interstitialAd.delegate = self
-
-    }
-*/
-    
     @IBAction func attendGroupOrder(_ sender: UIButton) {
         let dispatchGroup = DispatchGroup()
         var menuData: MenuInformation = MenuInformation()
@@ -67,8 +51,6 @@ class NotificationActionViewController: UIViewController {
             print("Get Ahthorization uid failed")
             return
         }
-
-        //self.setupInterstitialAd()
 
         let databaseRef = Database.database().reference()
         
@@ -178,19 +160,20 @@ class NotificationActionViewController: UIViewController {
                 let decoder: JSONDecoder = JSONDecoder()
                 do {
                     var itemArray = try decoder.decode([MenuOrderMemberContent].self, from: jsonData!)
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = DATETIME_FORMATTER
+                    let dateString = formatter.string(from: Date())
 
                     if let user_id = Auth.auth().currentUser?.uid {
                         if let itemIndex = itemArray.firstIndex(where: { $0.memberID == user_id }) {
                             let uploadPathString = pathString + "/\(itemIndex)"
 
+                            itemArray[itemIndex].orderContent.createTime = dateString
                             itemArray[itemIndex].orderContent.replyStatus = MENU_ORDER_REPLY_STATUS_REJECT
                             databaseRef.child(uploadPathString).setValue(itemArray[itemIndex].toAnyObject())
                         }
                     }
                     
-                    let formatter = DateFormatter()
-                    formatter.dateFormat = DATETIME_FORMATTER
-                    let dateString = formatter.string(from: Date())
                     updateNotificationReplyStatus(order_number: self.notificationData.orderNumber, reply_status: MENU_ORDER_REPLY_STATUS_REJECT, reply_time: dateString)
                     self.refreshNotificationDelegate?.refreshNotificationList()
 
@@ -304,42 +287,3 @@ class NotificationActionViewController: UIViewController {
     }
 }
 
-/*
-extension NotificationActionViewController: GADInterstitialDelegate {
-    /// Tells the delegate an ad request succeeded.
-    func interstitialDidReceiveAd(_ ad: GADInterstitial) {
-        print("interstitialDidReceiveAd")
-        if self.interstitialAd.isReady {
-            self.interstitialAd.present(fromRootViewController: self)
-        } else {
-            print("Interstitial Ad is not ready !!")
-        }
-    }
-
-    /// Tells the delegate an ad request failed.
-    func interstitial(_ ad: GADInterstitial, didFailToReceiveAdWithError error: GADRequestError) {
-        print("interstitial:didFailToReceiveAdWithError: \(error.localizedDescription)")
-    }
-
-    /// Tells the delegate that an interstitial will be presented.
-    func interstitialWillPresentScreen(_ ad: GADInterstitial) {
-        print("interstitialWillPresentScreen")
-    }
-
-    /// Tells the delegate the interstitial is to be animated off the screen.
-    func interstitialWillDismissScreen(_ ad: GADInterstitial) {
-        print("interstitialWillDismissScreen")
-    }
-
-    /// Tells the delegate the interstitial had been animated off the screen.
-    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
-        print("interstitialDidDismissScreen")
-    }
-
-    /// Tells the delegate that a user click will open another app
-    /// (such as the App Store), backgrounding the current app.
-    func interstitialWillLeaveApplication(_ ad: GADInterstitial) {
-        print("interstitialWillLeaveApplication")
-    }
-}
-*/

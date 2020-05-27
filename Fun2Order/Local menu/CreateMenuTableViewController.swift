@@ -215,6 +215,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                         if error == nil {
                             dispatchGroup.leave()
                         }
+                        dispatchGroup.leave()
                     })
                 }
                 
@@ -435,6 +436,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
 
         controller.addTextField { (textField) in
             textField.placeholder = "價格"
+            textField.keyboardType = .numberPad
         }
 
         let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
@@ -521,7 +523,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                 print("rectArray = \(rectArray)")
                 for i in 0...self.imageArray.count - 1 {
                     let imageView = UIImageView(frame: rectArray[i])
-                    imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight, .flexibleBottomMargin, .flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin]
+                    //imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight, .flexibleBottomMargin, .flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin]
                     imageView.contentMode = .scaleAspectFit
                     imageView.layer.borderWidth = 1.0
                     imageView.layer.borderColor = UIColor.darkGray.cgColor

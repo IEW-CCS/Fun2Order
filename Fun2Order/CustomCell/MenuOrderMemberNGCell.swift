@@ -28,8 +28,10 @@ class MenuOrderMemberNGCell: UITableViewCell {
         self.backView.AdjustAutoLayout()
     }
 
-    func receiveMemberImage(member_image: UIImage) {
-        self.imageMember.image = member_image
+    func receiveMemberImage(member_image: UIImage?) {
+        if member_image != nil {
+            self.imageMember.image = member_image!
+        }
     }
 
     func setData(image: UIImage, name: String, status: String) {

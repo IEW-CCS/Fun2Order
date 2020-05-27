@@ -49,6 +49,8 @@ class OrderItemSummaryTableViewController: UITableViewController {
                         self.filterItems.append(self.menuOrder.contentItems[i])
                     }
                 }
+                let tmpData = self.filterItems.sorted(by: { $0.orderContent.createTime < $1.orderContent.createTime})
+                self.filterItems = tmpData
             } else {
                 for i in 0...self.menuOrder.contentItems.count - 1 {
                     if self.menuOrder.contentItems[i].orderContent.replyStatus != MENU_ORDER_REPLY_STATUS_ACCEPT {

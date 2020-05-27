@@ -55,6 +55,11 @@ func getLaunchNotification(user_infos: [String: Any]) {
         return
     }
 
+    if !verifyNotificationType(type: tmpNotificationType) {
+        presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知類別錯誤，無法處理")
+        return
+    }
+
     if tmpNotificationType == NOTIFICATION_TYPE_NEW_FRIEND {
         addNewFriendRequestNotification(message: tmpMessageBody, friend_id: tmpOrderOwnerID, friend_name: tmpOrderOwnerName)
         return
@@ -114,6 +119,11 @@ func setupNotification(notity: UNNotification) {
         let tmpIsRead = notity.request.content.userInfo["isRead"] as? String
     else {
         presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知資料格式錯誤")
+        return
+    }
+    
+    if !verifyNotificationType(type: tmpNotificationType) {
+        presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知類別錯誤，無法處理")
         return
     }
     
@@ -240,4 +250,23 @@ func receiveMyProfileToUpdateFriendList(user_profile: UserProfile?) {
         profile.friendList!.append(updatedFriendID)
     }
     uploadFBUserProfile(user_profile: profile)
+}
+
+func verifyNotificationType(type: String) -> Bool {
+    switch type {
+        case NOTIFICATION_TYPE_MESSAGE_DUETIME:
+            return true
+            
+        case NOTIFICATION_TYPE_MESSAGE_INFORMATION:
+            return true
+            
+        case NOTIFICATION_TYPE_ACTION_JOIN_ORDER:
+            return true
+            
+        case NOTIFICATION_TYPE_NEW_FRIEND:
+            return true
+            
+        default:
+            return false
+    }
 }
