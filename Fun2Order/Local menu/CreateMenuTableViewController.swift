@@ -214,8 +214,10 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                     newRef.child(newPath).delete(completion: {(error) in
                         if error == nil {
                             dispatchGroup.leave()
+                            return
                         }
                         dispatchGroup.leave()
+                        return
                     })
                 }
                 
