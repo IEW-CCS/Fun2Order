@@ -36,6 +36,10 @@ class BrandCategoryTableViewController: UITableViewController {
         for i in 0...self.menuList.count - 1 {
             if self.menuList[i].brandCategory == category {
                 self.menuList[i].brandCategory = ""
+                if self.menuList[i].userID == "" {
+                    print("deleteBrandCategory elf.menuList[i].userID is empty")
+                    continue
+                }
                 let pathString = "USER_MENU_INFORMATION/\(self.menuList[i].userID)/\(self.menuList[i].menuNumber)"
                 dispatchGroup.enter()
                 databaseRef.child(pathString).setValue(self.menuList[i].toAnyObject()) { (_, _) in

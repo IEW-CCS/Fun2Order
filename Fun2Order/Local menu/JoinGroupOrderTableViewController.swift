@@ -53,7 +53,7 @@ class JoinGroupOrderTableViewController: UITableViewController {
         self.tableView.register(productCellViewNib, forCellReuseIdentifier: "NewProductCell")
         
         let backImage = self.navigationItem.leftBarButtonItem?.image
-        let newBackButton = UIBarButtonItem(title: "歷史紀錄", style: UIBarButtonItem.Style.plain, target: self, action: #selector(self.back(sender:)))
+        let newBackButton = UIBarButtonItem(title: "返回", style: UIBarButtonItem.Style.plain, target: self, action: #selector(self.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
         navigationController?.navigationBar.backIndicatorImage = backImage
  
@@ -137,6 +137,11 @@ class JoinGroupOrderTableViewController: UITableViewController {
         self.memberContent.orderContent.itemOwnerName = getMyUserName()
         
         let databaseRef = Database.database().reference()
+        if self.memberContent.orderOwnerID == "" {
+            print("confirmToJoinOrder self.memberContent.orderOwnerID is empty")
+            return
+        }
+        
         let pathString = "USER_MENU_ORDER/\(self.memberContent.orderOwnerID)/\(self.memberContent.orderContent.orderNumber)/contentItems/\(self.memberIndex)"
         databaseRef.child(pathString).setValue(self.memberContent.toAnyObject()) { (error, reference) in
             if let error = error {

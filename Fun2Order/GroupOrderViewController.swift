@@ -296,10 +296,17 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
     
     func uploadMenuOrder() {
         let databaseRef = Database.database().reference()
-        let pathString = "USER_MENU_ORDER/\(self.menuInformation.userID)/\(self.menuOrder.orderNumber)"
-        print("pathString = \(pathString)")
-        print("menuOrder transformed object = \(self.menuOrder.toAnyObject())")
+        
+        if Auth.auth().currentUser?.uid == nil {
+            print("uploadMenuOrder Auth.auth().currentUser?.uid == nil")
+            return
+        }
+        
+        //let pathString = "USER_MENU_ORDER/\(self.menuInformation.userID)/\(self.menuOrder.orderNumber)"
+        //print("pathString = \(pathString)")
+        //print("menuOrder transformed object = \(self.menuOrder.toAnyObject())")
 
+        let pathString = "USER_MENU_ORDER/\(Auth.auth().currentUser!.uid)/\(self.menuOrder.orderNumber)"
         databaseRef.child(pathString).setValue(self.menuOrder.toAnyObject()) { (error, reference) in
             if let error = error {
                 print("uploadMenuOrder error = \(error.localizedDescription)")

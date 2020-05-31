@@ -126,6 +126,11 @@ class HistoryTableViewController: UITableViewController {
                 if (returnOrder.contentItems[i].orderContent.replyStatus == MENU_ORDER_REPLY_STATUS_WAIT) && (nowString > returnOrder.dueTime) {
                     print("User[\(returnOrder.contentItems[i].orderContent.itemOwnerName)] is expired")
                     returnOrder.contentItems[i].orderContent.replyStatus = MENU_ORDER_REPLY_STATUS_EXPIRE
+                    if returnOrder.orderOwnerID == "" {
+                        print("checkOrderExpire returnOrder.orderOwnerID is empty")
+                        continue
+                    }
+                    
                     let pathString = "USER_MENU_ORDER/\(returnOrder.orderOwnerID)/\(returnOrder.orderNumber)/contentItems/\(i)"
                     databaseRef.child(pathString).setValue(returnOrder.contentItems[i].toAnyObject())
                 }
@@ -324,7 +329,13 @@ class HistoryTableViewController: UITableViewController {
                     print("Confirm to delete this order information")
                     alertWindow.isHidden = true
                     let databaseRef = Database.database().reference()
-                    let pathString = "USER_MENU_ORDER/\(self.menuOrderList[indexPath.row].orderOwnerID)/\(self.menuOrderList[indexPath.row].orderNumber)"
+                    if Auth.auth().currentUser?.uid == nil {
+                        print("Auth currentUser.uid is nil")
+                        return
+                    }
+                    
+                    //let pathString = "USER_MENU_ORDER/\(self.menuOrderList[indexPath.row].orderOwnerID)/\(self.menuOrderList[indexPath.row].orderNumber)"
+                    let pathString = "USER_MENU_ORDER/\(Auth.auth().currentUser!.uid)/\(self.menuOrderList[indexPath.row].orderNumber)"
                     databaseRef.child(pathString).removeValue() { (error, reference) in
                         if let error = error {
                             print("Delete Menu Order error = \(error.localizedDescription)")
@@ -500,6 +511,12 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
     
     func rejectOrderInvitation(data_index: Int) {
         let databaseRef = Database.database().reference()
+        
+        if self.invitationList[data_index].orderOwnerID == "" {
+            print("rejectOrderInvitation self.invitationList[data_index].orderOwnerID is empty")
+            return
+        }
+        
         let pathString = "USER_MENU_ORDER/\(self.invitationList[data_index].orderOwnerID)/\(self.invitationList[data_index].orderNumber)/contentItems"
         databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {

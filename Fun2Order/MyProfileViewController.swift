@@ -308,6 +308,10 @@ class MyProfileViewController: UIViewController {
     }
     
     func saveUserInfo(user_image: UIImage) {
+        if Auth.auth().currentUser?.uid == nil {
+            print("saveUserInfo Auth.auth().currentUser?.uid == nil")
+            return
+        }
         let path = NSHomeDirectory() + "/Documents/MyProfile.plist"
         if let plist = NSMutableDictionary(contentsOfFile: path) {
             plist["UserImage"] = user_image.pngData()!
@@ -341,9 +345,10 @@ class MyProfileViewController: UIViewController {
             })
             
             let databaseRef = Database.database().reference()
-            let profilePath = getProfileDatabasePath(u_id: self.labelUserID.text!, key_value: "userName")
+            
+            let profilePath = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "userName")
             databaseRef.child(profilePath).setValue(self.labelUserName.text)
-            let photoUrlPath = getProfileDatabasePath(u_id: self.labelUserID.text!, key_value: "photoURL")
+            let photoUrlPath = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "photoURL")
             databaseRef.child(photoUrlPath).setValue(pathString)
         }
     }

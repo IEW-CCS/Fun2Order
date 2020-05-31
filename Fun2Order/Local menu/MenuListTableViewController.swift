@@ -39,7 +39,6 @@ class MenuListTableViewController: UITableViewController {
         self.tableView.register(categoryCellViewNib, forCellReuseIdentifier: "MenuListCategoryCell")
 
         setupAdLoader()
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -95,10 +94,12 @@ class MenuListTableViewController: UITableViewController {
                 self.showMyProfileTabBarToolTip()
 
             } else {
-                self.tableView.reloadData()
+                //self.tableView.reloadData()
                 print("downloadFBMenuInformation snapshot doesn't exist!")
                 let app = UIApplication.shared.delegate as! AppDelegate
                 app.toolTipDelegate?.triggerCreateMenuTooltip(parent: self.view)
+                self.filterMenuInfosByCategory()
+                self.tableView.reloadData()
 
                 return
             }
@@ -172,7 +173,6 @@ class MenuListTableViewController: UITableViewController {
                 }
             }
         }
-        
     }
     
     func getMenuCountForCategory() -> Int {
@@ -213,9 +213,9 @@ class MenuListTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if self.menuInfos.isEmpty {
-            return 1
-        }
+        //if self.menuInfos.isEmpty {
+        //    return 1
+        //}
         
         return 2
     }
@@ -224,10 +224,11 @@ class MenuListTableViewController: UITableViewController {
         if section == 0 {
             return 1
         } else {
-            if self.menuInfos.isEmpty {
-                return 0
-            }
+            //if self.menuInfos.isEmpty {
+            //    return 0
+            //}
             
+            //print("numberOfRowsInSection is : [\(self.menuInfosByCategory.count)]")
             if self.menuInfosByCategory.isEmpty {
                 return 0
             } else {
@@ -390,6 +391,7 @@ extension MenuListTableViewController: ScrollUISegmentControllerDelegate {
         print("select Item At [\(index)] in scrollUISegmentController with tag  \(scrollUISegmentController.tag) ")
         self.selectedIndex = index
         filterMenuInfosByCategory()
+        setupAdLoader()
         self.tableView.reloadData()
     }
 }
@@ -486,27 +488,6 @@ extension MenuListTableViewController: MenuListCategoryCellDelegate {
             
             self.present(controller, animated: true, completion: nil)
 
-/*
-            let alertController = UIAlertController(title: "刪除好友資訊", message: "確定要刪除此好友資訊嗎？", preferredStyle: .alert)
-
-            let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
-                print("Confirm to delete this friend")
-                deleteFriend(member_id: self.friendList[sender.view!.tag].memberID)
-                if Auth.auth().currentUser?.uid != nil {
-                    self.updatedFriend.memberID = self.friendList[sender.view!.tag].memberID
-                    self.updatedFriend.memberName = self.friendList[sender.view!.tag].memberName
-                    self.updatedFriend.memberNickname = self.friendList[sender.view!.tag].memberNickname
-                    self.updatedFlag = "D"
-                    downloadFBUserProfile(user_id: Auth.auth().currentUser!.uid, completion: self.receiveMyProfile)
-                }
-                self.refreshFriendList()
-            }
-            
-            alertController.addAction(okAction)
-            let cancelDeleteAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
-            alertController.addAction(cancelDeleteAction)
-            self.present(alertController, animated: true, completion: nil)
- */
         }
         
         deleteAction.setValue(UIColor.red, forKey: "titleTextColor")

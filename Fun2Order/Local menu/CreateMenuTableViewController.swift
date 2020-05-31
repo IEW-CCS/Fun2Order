@@ -206,15 +206,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         } else {
             uploadMenuData(menu_info: menu_info)
         }
-/*
-        let databaseRef = Database.database().reference()
-        let pathString = "USER_MENU_INFORMATION/\(menu_info.userID)/\(menu_info.menuNumber)"
-        databaseRef.child(pathString).setValue(menu_info.toAnyObject()) { (_, _) in
-            print("CreateMenuTableViewController uploadMenuInformation -> Firebase setValue of Menu Information successful")
-            self.delegate?.refreshMenuList(sender: self)
-            self.navigationController?.popViewController(animated: true)
-        }
- */
+
     }
     
     func uploadMultiMenuImages(menu_info: MenuInformation) {
@@ -247,7 +239,13 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     
     func uploadMenuData(menu_info: MenuInformation) {
         let databaseRef = Database.database().reference()
-        let pathString = "USER_MENU_INFORMATION/\(menu_info.userID)/\(menu_info.menuNumber)"
+        if Auth.auth().currentUser?.uid == nil {
+            print("uploadMenuData Auth.auth().currentUser?.uid == nil")
+            return
+        }
+
+        //let pathString = "USER_MENU_INFORMATION/\(menu_info.userID)/\(menu_info.menuNumber)"
+        let pathString = "USER_MENU_INFORMATION/\(Auth.auth().currentUser!.uid)/\(menu_info.menuNumber)"
         databaseRef.child(pathString).setValue(menu_info.toAnyObject()) { (_, _) in
             print("CreateMenuTableViewController uploadMenuInformation -> Firebase setValue of Menu Information successful")
             self.activityIndicator.stopAnimating()

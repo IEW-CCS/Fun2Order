@@ -11,13 +11,22 @@ import Firebase
 
 func uploadUserProfileTokenID(user_id: String, token_id: String) {
     let databaseRef = Database.database().reference()
-    let pathString = "USER_PROFILE/\(user_id)/tokenID"
+    if Auth.auth().currentUser?.uid == nil {
+        print("uploadUserProfileTokenID Auth.auth().currentUser?.uid == nil ")
+        return
+    }
+    
+    let pathString = "USER_PROFILE/\(Auth.auth().currentUser!.uid)/tokenID"
     databaseRef.child(pathString).setValue(token_id)
 }
 
 func deleteFBMenuInformation(menu_info: MenuInformation) {
     let databaseRef = Database.database().reference()
-    let pathString = "USER_MENU_INFORMATION/\(menu_info.userID)/\(menu_info.menuNumber)"
+    if Auth.auth().currentUser?.uid == nil {
+        return
+    }
+    
+    let pathString = "USER_MENU_INFORMATION/\( Auth.auth().currentUser!.uid)/\(menu_info.menuNumber)"
     databaseRef.child(pathString).removeValue()
     
     if menu_info.menuImageURL != "" {
@@ -51,7 +60,10 @@ func deleteFBMenuInformation(menu_info: MenuInformation) {
 
 func deleteFBMenuOrderInformation(user_id: String, order_number: String) {
     let databaseRef = Database.database().reference()
-    let pathString = "USER_MENU_ORDER/\(user_id)/\(order_number)"
+    if Auth.auth().currentUser?.uid == nil {
+        return
+    }
+    let pathString = "USER_MENU_ORDER/\(Auth.auth().currentUser!.uid)/\(order_number)"
     databaseRef.child(pathString).removeValue()
 }
 
@@ -204,13 +216,24 @@ func downloadFBUserProfile(user_id: String, completion: @escaping (UserProfile?)
 
 func uploadFBUserProfile(user_profile: UserProfile) {
     let databaseRef = Database.database().reference()
-    let pathString = "USER_PROFILE/\(user_profile.userID)"
+    if Auth.auth().currentUser?.uid == nil {
+        print("uploadFBUserProfile Auth.auth().currentUser?.uid == nil ")
+        return
+    }
+
+    let pathString = "USER_PROFILE/\(Auth.auth().currentUser!.uid)"
     
     databaseRef.child(pathString).setValue(user_profile.toAnyObject())
 }
 
 func uploadFBMenuOrderContentItem(item: MenuOrderMemberContent, completion: @escaping () -> Void) {
     let databaseRef = Database.database().reference()
+
+    if item.orderOwnerID == "" {
+        print("uploadFBMenuOrderContentItem item.orderOwnerID is empty")
+        return
+    }
+    
     let pathString = "USER_MENU_ORDER/\(item.orderOwnerID)/\(item.orderContent.orderNumber)/contentItems"
     //print("uploadFBMenuOrderContentItem pathString = \(pathString)")
     databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in

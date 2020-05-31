@@ -54,7 +54,11 @@ class VerifyMailController: UIViewController {
 
     func setupFBUserProfile() {
         let databaseRef = Database.database().reference()
-        
+        if Auth.auth().currentUser?.uid == nil {
+            print("setupFBUserProfile Auth.auth().currentUser?.uid == nil")
+            return
+        }
+
         let uidPathString = getProfileDatabasePath(u_id: Auth.auth().currentUser!.uid, key_value: "userID")
         databaseRef.child(uidPathString).setValue(Auth.auth().currentUser!.uid)
 

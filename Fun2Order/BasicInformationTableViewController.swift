@@ -349,6 +349,11 @@ class BasicInformationTableViewController: UITableViewController {
 
                 let databaseRef = Database.database().reference()
                 //let profilePathString = "USER_PROFILE/\(self.myUserID)"
+                if Auth.auth().currentUser?.uid == nil {
+                    print("Auth currentUser.uid is nil")
+                    return
+                }
+                
                 let profilePathString = "USER_PROFILE/\(Auth.auth().currentUser!.uid)"
                 databaseRef.child(profilePathString).removeValue()
                 

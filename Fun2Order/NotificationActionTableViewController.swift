@@ -96,18 +96,6 @@ class NotificationActionTableViewController: UITableViewController {
     @IBAction func attendGroupOrder(_ sender: UIButton) {
         let dispatchGroup = DispatchGroup()
         var menuData: MenuInformation = MenuInformation()
-        //var user_id: String = ""
-        //var memberContent: MenuOrderMemberContent = MenuOrderMemberContent()
-        //var memberIndex: Int = -1
-        //var downloadMenuInformation: Bool = false
-        //var downloadMenuOrder: Bool = false
-
-        //if Auth.auth().currentUser?.uid != nil {
-        //    user_id = Auth.auth().currentUser!.uid
-        //} else {
-        //    print("Get Ahthorization uid failed")
-        //    return
-        //}
 
         let databaseRef = Database.database().reference()
         
@@ -148,49 +136,6 @@ class NotificationActionTableViewController: UITableViewController {
             return
         }
 
-/*
-        let orderString = "USER_MENU_ORDER/\(self.notificationData.orderOwnerID)/\(self.notificationData.orderNumber)/contentItems"
-        print("orderStirng = \(orderString)")
-        dispatchGroup.enter()
-        databaseRef.child(orderString).observeSingleEvent(of: .value, with: { (snapshot) in
-            if snapshot.exists() {
-                let itemRawData = snapshot.value
-                let jsonData = try? JSONSerialization.data(withJSONObject: itemRawData as Any, options: [])
-
-                let decoder: JSONDecoder = JSONDecoder()
-                do {
-                    let itemArray = try decoder.decode([MenuOrderMemberContent].self, from: jsonData!)
-
-                    if let itemIndex = itemArray.firstIndex(where: { $0.memberID == user_id }) {
-                        //let uploadPathString = pathString + "/\(itemIndex)"
-                        //databaseRef.child(uploadPathString).setValue(item.toAnyObject())
-                        self.memberContent = itemArray[itemIndex]
-                        self.memberIndex = itemIndex
-                        self.downloadMenuOrderFlag = true
-                        dispatchGroup.leave()
-                    } else {
-                        dispatchGroup.leave()
-                    }
-                } catch {
-                    print("attendGroupOrder MenuOrderMemberContent jsonData decode failed: \(error.localizedDescription)")
-                    presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料讀取錯誤，請團購發起人重發。")
-                    dispatchGroup.leave()
-                    return
-                }
-            } else {
-                print("attendGroupOrder MenuOrderMemberContent snapshot doesn't exist!")
-                presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料不存在，請詢問團購發起人相關訊息。")
-                dispatchGroup.leave()
-                return
-            }
-        }) { (error) in
-            print(error.localizedDescription)
-            dispatchGroup.leave()
-            presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
-            return
-        }
-*/
-        
         dispatchGroup.notify(queue: .main) {
             if self.downloadMenuInformationFlag && self.downloadMenuOrderFlag && self.memberIndex >= 0 {
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
@@ -198,7 +143,6 @@ class NotificationActionTableViewController: UITableViewController {
                     assertionFailure("[AssertionFailure] StoryBoard: JOIN_ORDER_VC can't find!! (NotificationActionViewController)")
                     return
                 }
-                
                 joinController.menuInformation = menuData
                 joinController.memberContent = self.memberContent
                 joinController.memberIndex = self.memberIndex
@@ -210,6 +154,11 @@ class NotificationActionTableViewController: UITableViewController {
     
     @IBAction func notAttendGroupOrder(_ sender: UIButton) {
         let databaseRef = Database.database().reference()
+        if self.notificationData.orderOwnerID == "" {
+            print("notAttendGroupOrder self.notificationData.orderOwnerID is empty")
+            return
+        }
+        
         let pathString = "USER_MENU_ORDER/\(self.notificationData.orderOwnerID)/\(self.notificationData.orderNumber)/contentItems"
         databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
@@ -395,49 +344,5 @@ class NotificationActionTableViewController: UITableViewController {
         
         return 50
     }
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

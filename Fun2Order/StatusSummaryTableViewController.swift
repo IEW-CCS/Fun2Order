@@ -102,6 +102,11 @@ class StatusSummaryTableViewController: UITableViewController {
                 if (returnOrder.contentItems[i].orderContent.replyStatus == MENU_ORDER_REPLY_STATUS_WAIT) && (nowString > returnOrder.dueTime) {
                     print("User[\(returnOrder.contentItems[i].orderContent.itemOwnerName)] is expired")
                     returnOrder.contentItems[i].orderContent.replyStatus = MENU_ORDER_REPLY_STATUS_EXPIRE
+                    
+                    if returnOrder.orderOwnerID == "" {
+                        print("checkOrderExpire returnOrder.orderOwnerID is empty")
+                        continue
+                    }
                     let pathString = "USER_MENU_ORDER/\(returnOrder.orderOwnerID)/\(returnOrder.orderNumber)/contentItems/\(i)"
                     databaseRef.child(pathString).setValue(returnOrder.contentItems[i].toAnyObject())
                 }
