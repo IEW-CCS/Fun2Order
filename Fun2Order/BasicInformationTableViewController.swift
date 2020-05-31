@@ -95,7 +95,7 @@ class BasicInformationTableViewController: UITableViewController {
     }
 
     func saveSetupConfig() {
-        if self.labelUserName.text == nil || self.labelUserName.text == "" {
+        if self.labelUserName.text == nil || self.labelUserName.text!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             presentSimpleAlertMessage(title: "錯誤訊息", message: "姓名欄位不可為空白，請重新輸入")
             return
         }
@@ -196,7 +196,7 @@ class BasicInformationTableViewController: UITableViewController {
         
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             let username_string = controller.textFields?[0].text
-            if username_string == nil || username_string == "" {
+            if username_string == nil || username_string!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
                 presentSimpleAlertMessage(title: "錯誤訊息", message: "姓名欄位不可為空白，請重新輸入")
                 return
             }

@@ -33,7 +33,7 @@ class NotificationMessageViewController: UIViewController {
     
     @IBAction func doConfirm(_ sender: UIButton) {
         let message_content = self.textViewMessage.text
-        if message_content == nil || message_content! == "" {
+        if message_content == nil || message_content!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的訊息內容不能為空白，請重新輸入")
             return
         }

@@ -1,8 +1,8 @@
 //
-//  NotificationActionViewController.swift
+//  NotificationActionTableViewController.swift
 //  Fun2Order
 //
-//  Created by Lo Fang Chou on 2020/2/2.
+//  Created by Lo Fang Chou on 2020/5/30.
 //  Copyright © 2020 JStudio. All rights reserved.
 //
 
@@ -10,47 +10,104 @@ import UIKit
 import Firebase
 import GoogleMobileAds
 
-class NotificationActionViewController: UIViewController {
+class NotificationActionTableViewController: UITableViewController {
+
+    @IBOutlet weak var labelNotificationType: UILabel!
+    @IBOutlet weak var labelBrandName: UILabel!
     @IBOutlet weak var labelOrderOwner: UILabel!
     @IBOutlet weak var labelReceiveTime: UILabel!
     @IBOutlet weak var labelDueTime: UILabel!
-    @IBOutlet weak var labelBrandName: UILabel!
     @IBOutlet weak var labelMemberCount: UILabel!
-    @IBOutlet weak var labelNotificationType: UILabel!
     @IBOutlet weak var labelReplyStatus: UILabel!
     @IBOutlet weak var buttonAttend: UIButton!
     @IBOutlet weak var buttonReject: UIButton!
     
     var notificationData: NotificationData = NotificationData()
     var indexPath: IndexPath = IndexPath()
+    var downloadMenuOrderFlag: Bool = false
+    var downloadMenuInformationFlag: Bool = false
+    var memberIndex: Int = -1
+    var memberContent: MenuOrderMemberContent = MenuOrderMemberContent()
 
     let app = UIApplication.shared.delegate as! AppDelegate
     weak var refreshNotificationDelegate: ApplicationRefreshNotificationDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if Auth.auth().currentUser?.uid != nil {
+            let user_id = Auth.auth().currentUser!.uid
+            downloadMenuOrderContent(owner_id: self.notificationData.orderOwnerID, order_number: self.notificationData.orderNumber, member_id: user_id)
+        }
+        
+        let productCellViewNib: UINib = UINib(nibName: "NewProductCell", bundle: nil)
+        self.tableView.register(productCellViewNib, forCellReuseIdentifier: "NewProductCell")
+
         refreshNotificationDelegate = app.notificationDelegate
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         setData(notification: self.notificationData)
     }
 
+    func downloadMenuOrderContent(owner_id: String, order_number: String, member_id: String) {
+        let databaseRef = Database.database().reference()
+
+        let orderString = "USER_MENU_ORDER/\(owner_id)/\(order_number)/contentItems"
+        print("orderStirng = \(orderString)")
+        databaseRef.child(orderString).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                let itemRawData = snapshot.value
+                let jsonData = try? JSONSerialization.data(withJSONObject: itemRawData as Any, options: [])
+
+                let decoder: JSONDecoder = JSONDecoder()
+                do {
+                    let itemArray = try decoder.decode([MenuOrderMemberContent].self, from: jsonData!)
+
+                    if let itemIndex = itemArray.firstIndex(where: { $0.memberID == member_id }) {
+                        self.memberContent = itemArray[itemIndex]
+                        self.memberIndex = itemIndex
+                        self.downloadMenuOrderFlag = true
+                        self.refreshProductList()
+                    } else {
+                        return
+                    }
+                } catch {
+                    print("downloadMenuOrderContent MenuOrderMemberContent jsonData decode failed: \(error.localizedDescription)")
+                    //presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料讀取錯誤，請團購發起人重發。")
+                    return
+                }
+            } else {
+                print("downloadMenuOrderContent MenuOrderMemberContent snapshot doesn't exist!")
+                //presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料不存在，請詢問團購發起人相關訊息。")
+                return
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+            presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
+            return
+        }
+    }
+    
+    func refreshProductList() {
+        self.tableView.reloadData()
+    }
+    
     @IBAction func attendGroupOrder(_ sender: UIButton) {
         let dispatchGroup = DispatchGroup()
         var menuData: MenuInformation = MenuInformation()
-        var memberContent: MenuOrderMemberContent = MenuOrderMemberContent()
-        var memberIndex: Int = -1
-        var user_id: String = ""
-        var downloadMenuInformation: Bool = false
-        var downloadMenuOrder: Bool = false
+        //var user_id: String = ""
+        //var memberContent: MenuOrderMemberContent = MenuOrderMemberContent()
+        //var memberIndex: Int = -1
+        //var downloadMenuInformation: Bool = false
+        //var downloadMenuOrder: Bool = false
 
-        if Auth.auth().currentUser?.uid != nil {
-            user_id = Auth.auth().currentUser!.uid
-        } else {
-            print("Get Ahthorization uid failed")
-            return
-        }
+        //if Auth.auth().currentUser?.uid != nil {
+        //    user_id = Auth.auth().currentUser!.uid
+        //} else {
+        //    print("Get Ahthorization uid failed")
+        //    return
+        //}
 
         let databaseRef = Database.database().reference()
         
@@ -67,7 +124,7 @@ class NotificationActionViewController: UIViewController {
                 let decoder: JSONDecoder = JSONDecoder()
                 do {
                     menuData = try decoder.decode(MenuInformation.self, from: jsonData!)
-                    downloadMenuInformation = true
+                    self.downloadMenuInformationFlag = true
                     print("menuData decoded successful !!")
                     print("menuData = \(menuData)")
                     dispatchGroup.leave()
@@ -91,6 +148,7 @@ class NotificationActionViewController: UIViewController {
             return
         }
 
+/*
         let orderString = "USER_MENU_ORDER/\(self.notificationData.orderOwnerID)/\(self.notificationData.orderNumber)/contentItems"
         print("orderStirng = \(orderString)")
         dispatchGroup.enter()
@@ -106,9 +164,9 @@ class NotificationActionViewController: UIViewController {
                     if let itemIndex = itemArray.firstIndex(where: { $0.memberID == user_id }) {
                         //let uploadPathString = pathString + "/\(itemIndex)"
                         //databaseRef.child(uploadPathString).setValue(item.toAnyObject())
-                        memberContent = itemArray[itemIndex]
-                        memberIndex = itemIndex
-                        downloadMenuOrder = true
+                        self.memberContent = itemArray[itemIndex]
+                        self.memberIndex = itemIndex
+                        self.downloadMenuOrderFlag = true
                         dispatchGroup.leave()
                     } else {
                         dispatchGroup.leave()
@@ -131,9 +189,10 @@ class NotificationActionViewController: UIViewController {
             presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
             return
         }
+*/
         
         dispatchGroup.notify(queue: .main) {
-            if downloadMenuInformation == true && downloadMenuOrder == true && memberIndex >= 0 {
+            if self.downloadMenuInformationFlag && self.downloadMenuOrderFlag && self.memberIndex >= 0 {
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 guard let joinController = storyBoard.instantiateViewController(withIdentifier: "JOIN_ORDER_VC") as? JoinGroupOrderTableViewController else{
                     assertionFailure("[AssertionFailure] StoryBoard: JOIN_ORDER_VC can't find!! (NotificationActionViewController)")
@@ -141,8 +200,8 @@ class NotificationActionViewController: UIViewController {
                 }
                 
                 joinController.menuInformation = menuData
-                joinController.memberContent = memberContent
-                joinController.memberIndex = memberIndex
+                joinController.memberContent = self.memberContent
+                joinController.memberIndex = self.memberIndex
                 //joinController.delegate = self
                 self.navigationController?.show(joinController, sender: self)
             }
@@ -285,5 +344,100 @@ class NotificationActionViewController: UIViewController {
             self.buttonReject.isEnabled = true
         }
     }
-}
 
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 1 {
+            if self.memberContent.orderContent.menuProductItems == nil {
+                return 0
+            } else {
+                return self.memberContent.orderContent.menuProductItems!.count
+            }
+        }
+        
+        return super.tableView(tableView, numberOfRowsInSection: section)
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "NewProductCell", for: indexPath) as! NewProductCell
+            if self.memberContent.orderContent.menuProductItems != nil {
+                cell.setData(item: self.memberContent.orderContent.menuProductItems![indexPath.row])
+                cell.AdjustAutoLayout()
+            }
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            cell.tag = indexPath.row
+            
+            return cell
+        }
+        
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 1 {
+            return 80
+        }
+        
+        return super.tableView(tableView, heightForRowAt: indexPath)
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 1 {
+            if self.memberContent.orderContent.menuProductItems == nil {
+                return 0
+            } else {
+                return 50
+            }
+        }
+        
+        return 50
+    }
+    /*
+    // Override to support conditional editing of the table view.
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        return true
+    }
+    */
+
+    /*
+    // Override to support editing the table view.
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Delete the row from the data source
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        }    
+    }
+    */
+
+    /*
+    // Override to support rearranging the table view.
+    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+
+    }
+    */
+
+    /*
+    // Override to support conditional rearranging of the table view.
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the item to be re-orderable.
+        return true
+    }
+    */
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}

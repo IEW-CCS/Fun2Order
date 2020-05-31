@@ -76,7 +76,7 @@ class NotificationTableViewController: UITableViewController {
         switch self.notificationList[indexPath.row].notificationType {
             case NOTIFICATION_TYPE_MESSAGE_DUETIME, NOTIFICATION_TYPE_ACTION_JOIN_ORDER:
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                guard let notifyActionController = storyBoard.instantiateViewController(withIdentifier: "NOTIFY_ACTION_VC") as? NotificationActionViewController else{
+                guard let notifyActionController = storyBoard.instantiateViewController(withIdentifier: "NOTIFY_ACTION_VC") as? NotificationActionTableViewController else{
                     assertionFailure("[AssertionFailure] StoryBoard: NOTIFY_ACTION_VC can't find!! (QRCodeViewController)")
                     return
                 }

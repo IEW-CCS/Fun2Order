@@ -96,29 +96,6 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
             }
         }
 
-/*
-        if self.menuInformation.menuImageURL != "" {
-            let storageRef = Storage.storage().reference()
-            storageRef.child(self.menuInformation.menuImageURL).getData(maxSize: 3 * 2048 * 2048, completion: { (data, error) in
-                if let error = error {
-                    print(error.localizedDescription)
-                    DispatchQueue.main.async {
-                        let httpAlert = alert(message: error.localizedDescription, title: "存取菜單影像錯誤")
-                        self.present(httpAlert, animated : false, completion : nil)
-                        return
-                    }
-                }
-                
-                //self.imageMenuPhoto.image = UIImage(data: data!)!
-                if !self.imageArray.isEmpty {
-                    if self.menuIcon == nil {
-                        self.menuIcon = UIImage()
-                    }
-                    self.menuIcon = resizeImage(image: self.imageArray[0], width: CGFloat(MENU_ICON_WIDTH))
-                }
-            })
-        }
-*/
         if self.menuInformation.locations != nil {
             locationCount = self.menuInformation.locations!.count
         }
@@ -226,6 +203,8 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                 }
             }
             
+        } else {
+            uploadMenuData(menu_info: menu_info)
         }
 /*
         let databaseRef = Database.database().reference()
@@ -262,16 +241,20 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         }
         
         dispatchGroup.notify(queue: .main) {
-            let databaseRef = Database.database().reference()
-            let pathString = "USER_MENU_INFORMATION/\(menu_info.userID)/\(menu_info.menuNumber)"
-            databaseRef.child(pathString).setValue(menu_info.toAnyObject()) { (_, _) in
-                print("CreateMenuTableViewController uploadMenuInformation -> Firebase setValue of Menu Information successful")
-                self.activityIndicator.stopAnimating()
-                self.activityIndicator.removeFromSuperview()
-                presentSimpleAlertMessage(title: "訊息", message: "菜單資料已成功儲存")
-                self.delegate?.refreshMenuList(sender: self)
-                self.navigationController?.popViewController(animated: true)
-            }
+            self.uploadMenuData(menu_info: menu_info)
+        }
+    }
+    
+    func uploadMenuData(menu_info: MenuInformation) {
+        let databaseRef = Database.database().reference()
+        let pathString = "USER_MENU_INFORMATION/\(menu_info.userID)/\(menu_info.menuNumber)"
+        databaseRef.child(pathString).setValue(menu_info.toAnyObject()) { (_, _) in
+            print("CreateMenuTableViewController uploadMenuInformation -> Firebase setValue of Menu Information successful")
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.removeFromSuperview()
+            presentSimpleAlertMessage(title: "訊息", message: "菜單資料已成功儲存")
+            self.delegate?.refreshMenuList(sender: self)
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -309,13 +292,21 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
             let addAction = UIAlertAction(title: "加入菜單分類", style: .default) { (_) in
                 print("Add to brand category!")
                 let category_string = controller.textFields?[0].text
-                if category_string == nil || category_string! == "" {
+                if category_string == nil {
                     presentSimpleAlertMessage(title: "錯誤訊息", message: "新增的品牌類別不能為空白，請重新輸入")
                     alertWindow.isHidden = true
                     return
                 }
+                
+                if category_string!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+                    presentSimpleAlertMessage(title: "錯誤訊息", message: "新增的品牌類別不能為空白，請重新輸入")
+                    alertWindow.isHidden = true
+                    return
+                }
+                
                 print("New added brand category = \(category_string!)")
                 insertMenuBrandCategory(category: category_string!)
+                self.updatedBrandCategory = category_string!
                 self.updateBrandCatogory()
                 self.labelCategory.text = category_string!
                 self.menuInformation.brandCategory = category_string!
@@ -409,7 +400,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             let location_string = controller.textFields?[0].text
-            if location_string == nil || location_string! == "" {
+            if location_string == nil || location_string!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
                 presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的地點不能為空白，請重新輸入")
                 return
             }
@@ -451,7 +442,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             var tmpProductItem = MenuItem()
             let product_string = controller.textFields?[0].text
-            if product_string == nil || product_string! == "" {
+            if product_string == nil || product_string!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
                 presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的產品名稱不能為空白，請重新輸入")
                 return
             }
@@ -687,7 +678,7 @@ extension CreateMenuTableViewController: BasicButtonDelegate {
         
         //Create Menu and save to CoreData tables
         self.menuInformation.brandName = self.textBrandName.text!
-        if self.textBrandName.text == nil || self.textBrandName.text! == "" {
+        if self.textBrandName.text == nil || self.textBrandName.text!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的品牌名稱不能為空白，請重新輸入")
             return
         }

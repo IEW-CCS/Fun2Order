@@ -369,6 +369,12 @@ class MenuListTableViewController: UITableViewController {
 
 extension MenuListTableViewController: DisplayGroupOrderDelegate {
     func didGroupButtonPressed(at index: IndexPath) {
+        let groupList = retrieveGroupList()
+        if groupList.isEmpty{
+            presentSimpleAlertMessage(title: "提示訊息", message: "您尚未建立任何群組，請至\n『我的設定』--> 『群組資訊』中\n先建立群組並加入好友\n之後即可開始使用揪團功能")
+            return
+        }
+
         guard let groupOrderController = self.storyboard?.instantiateViewController(withIdentifier: "GroupOrder_VC") as? GroupOrderViewController else{
             assertionFailure("[AssertionFailure] StoryBoard: QRCode_VC can't find!! (MenuListTableViewController)")
             return
@@ -447,5 +453,77 @@ extension MenuListTableViewController: MenuListCategoryCellDelegate {
         
         menuCreateController.delegate = self
         navigationController?.show(menuCreateController, sender: self)
+    }
+    
+    func deleteBrandCategory(sender: MenuListCategoryCell) {
+        //presentSimpleAlertMessage(title: "Test", message: "Long Press to delete brand category")
+        let controller = UIAlertController(title: "編輯分類", message: nil, preferredStyle: .actionSheet)
+        
+        let deleteAction = UIAlertAction(title: "刪除分類", style: .default) { (_) in
+            //presentSimpleAlertMessage(title: "Test", message: "Confirm to delete, pop-up another view controller")
+            let controller = UIAlertController(title: "刪除分類", message: nil, preferredStyle: .alert)
+
+            let brandCategoryList = retrieveMenuBrandCategory()
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+            guard let brandCategoryController = storyBoard.instantiateViewController(withIdentifier: "BRANDCATEGORY_VC") as? BrandCategoryTableViewController else {
+                assertionFailure("[AssertionFailure] StoryBoard: BRANDCATEGORY_VC can't find!! (QRCodeViewController)")
+                return
+            }
+            brandCategoryController.brandCategoryList = brandCategoryList
+            brandCategoryController.menuList = self.menuInfos
+            brandCategoryController.delegate = self
+            //menuCreateController.delegate = self
+            controller.setValue(brandCategoryController, forKey: "contentViewController")
+            brandCategoryController.preferredContentSize.height = 350
+            controller.preferredContentSize.height = 350
+            controller.addChild(brandCategoryController)
+            let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
+                print("Cancel to delete brand category!")
+            }
+
+            cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+            controller.addAction(cancelAction)
+            
+            self.present(controller, animated: true, completion: nil)
+
+/*
+            let alertController = UIAlertController(title: "刪除好友資訊", message: "確定要刪除此好友資訊嗎？", preferredStyle: .alert)
+
+            let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                print("Confirm to delete this friend")
+                deleteFriend(member_id: self.friendList[sender.view!.tag].memberID)
+                if Auth.auth().currentUser?.uid != nil {
+                    self.updatedFriend.memberID = self.friendList[sender.view!.tag].memberID
+                    self.updatedFriend.memberName = self.friendList[sender.view!.tag].memberName
+                    self.updatedFriend.memberNickname = self.friendList[sender.view!.tag].memberNickname
+                    self.updatedFlag = "D"
+                    downloadFBUserProfile(user_id: Auth.auth().currentUser!.uid, completion: self.receiveMyProfile)
+                }
+                self.refreshFriendList()
+            }
+            
+            alertController.addAction(okAction)
+            let cancelDeleteAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+            alertController.addAction(cancelDeleteAction)
+            self.present(alertController, animated: true, completion: nil)
+ */
+        }
+        
+        deleteAction.setValue(UIColor.red, forKey: "titleTextColor")
+        controller.addAction(deleteAction)
+        
+        let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
+           print("Cancel update")
+        }
+        cancelAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+        controller.addAction(cancelAction)
+        
+        present(controller, animated: true, completion: nil)
+    }
+}
+
+extension MenuListTableViewController: BrandCategoryDelegate {
+    func deleteBrandCategoryComplete(sender: BrandCategoryTableViewController) {
+        downloadFBMenuInformation(select_index: self.selectedIndex)
     }
 }

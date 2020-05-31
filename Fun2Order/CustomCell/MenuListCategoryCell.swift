@@ -12,6 +12,7 @@ protocol MenuListCategoryCellDelegate: class {
     func categoryIndexChanged(sender: MenuListCategoryCell, index: Int)
     func displayAbout(sender: MenuListCategoryCell)
     func displayCreateMenu(sender: MenuListCategoryCell)
+    func deleteBrandCategory(sender: MenuListCategoryCell)
 }
 
 class MenuListCategoryCell: UITableViewCell {
@@ -43,6 +44,15 @@ class MenuListCategoryCell: UITableViewCell {
         let app = UIApplication.shared.delegate as! AppDelegate
         app.toolTipDelegate = self
 
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPressDeleteBrandCategory(_:)))
+        longPressGesture.delegate = self
+        self.addGestureRecognizer(longPressGesture)
+
+    }
+    @objc func handleLongPressDeleteBrandCategory(_ sender: UILongPressGestureRecognizer) {
+        if(sender.state == .began) {
+            delegate?.deleteBrandCategory(sender: self)
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

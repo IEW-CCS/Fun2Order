@@ -190,7 +190,7 @@ class MenuRecipeCell: UITableViewCell {
         
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             let itemName = controller.textFields?[0].text
-            if itemName == nil || itemName! == "" {
+            if itemName == nil || itemName!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
                 presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的配方項目名稱不能為空白，請重新輸入")
                 alertWindow.isHidden = true
                 return

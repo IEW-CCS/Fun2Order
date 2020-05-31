@@ -38,6 +38,7 @@ class JoinGroupOrderTableViewController: UITableViewController {
     weak var delegate: JoinGroupOrderDelegate?
     var imageArray: [UIImage] = [UIImage]()
     var menuDescription: String = ""
+    var isNeedToConfirmFlag: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,10 +52,41 @@ class JoinGroupOrderTableViewController: UITableViewController {
         let productCellViewNib: UINib = UINib(nibName: "NewProductCell", bundle: nil)
         self.tableView.register(productCellViewNib, forCellReuseIdentifier: "NewProductCell")
         
+        let backImage = self.navigationItem.leftBarButtonItem?.image
+        let newBackButton = UIBarButtonItem(title: "歷史紀錄", style: UIBarButtonItem.Style.plain, target: self, action: #selector(self.back(sender:)))
+        self.navigationItem.leftBarButtonItem = newBackButton
+        navigationController?.navigationBar.backIndicatorImage = backImage
+ 
         setupInterstitialAd()
         //refreshJoinGroupOrder()
     }
+    
+    @objc func back(sender: UIBarButtonItem) {
+        var alertWindow: UIWindow!
+        if self.isNeedToConfirmFlag {
+            let controller = UIAlertController(title: "提示訊息", message: "訂購單已更動，您確定要離開嗎？", preferredStyle: .alert)
 
+            let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                print("Confirm to ignore JoinOrder change")
+                self.navigationController?.popToRootViewController(animated: true)
+                self.dismiss(animated: false, completion: nil)
+
+                alertWindow.isHidden = true
+            }
+            
+            controller.addAction(okAction)
+            let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+                print("Cancel to ignore JoinOrder change")
+                alertWindow.isHidden = true
+            }
+            controller.addAction(cancelAction)
+            alertWindow = presentAlert(controller)
+        } else {
+            self.navigationController?.popToRootViewController(animated: true)
+            self.dismiss(animated: false, completion: nil)
+        }
+    }
+    
     func setupInterstitialAd() {
         // Test Interstitla Video Ad
         self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/5135589807")
@@ -70,6 +102,7 @@ class JoinGroupOrderTableViewController: UITableViewController {
     @IBAction func confirmToJoinOrder(_ sender: UIButton) {
         if self.memberIndex < 0 {
             print("memberIndex wrong in JoinGroupOrderTableViewController !!")
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "內部錯誤：memberIndex值為錯誤")
             return
         }
 
@@ -108,18 +141,20 @@ class JoinGroupOrderTableViewController: UITableViewController {
         databaseRef.child(pathString).setValue(self.memberContent.toAnyObject()) { (error, reference) in
             if let error = error {
                 print("upload memberContent error in JoinGroupOrderTableViewController")
-                print(error.localizedDescription)
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "上傳團購單資訊時發生錯誤：\(error.localizedDescription)")
+                return
             }
+            let formatter = DateFormatter()
+            formatter.dateFormat = DATETIME_FORMATTER
+            let dateString = formatter.string(from: Date())
+            updateNotificationReplyStatus(order_number: self.memberContent.orderContent.orderNumber, reply_status: MENU_ORDER_REPLY_STATUS_ACCEPT, reply_time: dateString)
+            self.refreshNotificationDelegate?.refreshNotificationList()
+            self.delegate?.refreshHistoryInvitationList(sender: self)
+            self.isNeedToConfirmFlag = false
+            self.navigationController?.popToRootViewController(animated: true)
+            self.dismiss(animated: false, completion: nil)
         }
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = DATETIME_FORMATTER
-        let dateString = formatter.string(from: Date())
-        updateNotificationReplyStatus(order_number: self.memberContent.orderContent.orderNumber, reply_status: MENU_ORDER_REPLY_STATUS_ACCEPT, reply_time: dateString)
-        self.refreshNotificationDelegate?.refreshNotificationList()
-        self.delegate?.refreshHistoryInvitationList(sender: self)
-        navigationController?.popToRootViewController(animated: true)
-        self.dismiss(animated: false, completion: nil)
     }
     
     func refreshJoinGroupOrder() {
@@ -158,6 +193,7 @@ class JoinGroupOrderTableViewController: UITableViewController {
     
     @IBAction func changeLocationIndex(_ sender: UISegmentedControl) {
         self.selectedLocationIndex = self.segmentLocation.selectedSegmentIndex
+        self.isNeedToConfirmFlag = true
     }
     
     func setupLocationSegment() {
@@ -227,12 +263,15 @@ class JoinGroupOrderTableViewController: UITableViewController {
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             cell.setData(item: self.memberContent.orderContent.menuProductItems![indexPath.row])
             cell.AdjustAutoLayout()
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             cell.tag = indexPath.row
             
             return cell
         }
         
-        return super.tableView(tableView, cellForRowAt: indexPath)
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        return cell
     }
 
     func calculateImagePosition(frame: CGRect) -> [CGRect] {
@@ -318,6 +357,7 @@ class JoinGroupOrderTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
             if editingStyle == .delete {
+                self.isNeedToConfirmFlag = true
                 self.memberContent.orderContent.menuProductItems!.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 if !self.memberContent.orderContent.menuProductItems!.isEmpty {
@@ -379,6 +419,7 @@ extension JoinGroupOrderTableViewController: JoinOrderSelectProductDelegate {
             self.memberContent.orderContent.itemQuantity = totalQuantity
         }
         
+        self.isNeedToConfirmFlag = true
         let sectionIndex = IndexSet(integer: 1)
         self.tableView.reloadSections(sectionIndex, with: .automatic)
         //self.tableView.reloadData()
@@ -392,6 +433,7 @@ extension JoinGroupOrderTableViewController: MenuOrderBoardDelegate {
                 if (self.memberContent.orderContent.menuProductItems!.count + items.count) > MAX_NEW_PRODUCT_COUNT {
                     print("Over the max number limitation of new product")
                     presentSimpleAlertMessage(title: "錯誤訊息", message: "產品項目超過限制(最多五種)，請重新輸入產品資訊")
+                    return
                 } else {
                     for i in 0...items.count - 1 {
                         self.memberContent.orderContent.menuProductItems!.append(items[i])
@@ -400,6 +442,8 @@ extension JoinGroupOrderTableViewController: MenuOrderBoardDelegate {
             } else {
                 if items.count > MAX_NEW_PRODUCT_COUNT {
                     print("Over the max number limitation of new product")
+                    presentSimpleAlertMessage(title: "錯誤訊息", message: "產品項目超過限制(最多五種)，請重新輸入產品資訊")
+                    return
                 } else {
                     self.memberContent.orderContent.menuProductItems = items
                 }
@@ -412,7 +456,8 @@ extension JoinGroupOrderTableViewController: MenuOrderBoardDelegate {
                 }
                 self.memberContent.orderContent.itemQuantity = totalQuantity
             }
-
+            
+            self.isNeedToConfirmFlag = true
             let sectionIndex = IndexSet(integer: 1)
             self.tableView.reloadSections(sectionIndex, with: .automatic)
         }

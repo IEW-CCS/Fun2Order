@@ -142,6 +142,11 @@
 		366E126A23502B9100BFFF45 /* FSPagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E126223502B9100BFFF45 /* FSPagerView.swift */; };
 		366E126B23502B9100BFFF45 /* FSPageViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E126323502B9100BFFF45 /* FSPageViewLayout.swift */; };
 		366E126C23502B9100BFFF45 /* FSPageViewTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E126423502B9100BFFF45 /* FSPageViewTransformer.swift */; };
+		36757C482482169800F5C08A /* BrandCategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36757C472482169800F5C08A /* BrandCategoryTableViewController.swift */; };
+		36757C4D2482181800F5C08A /* BasicTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36757C4B2482181800F5C08A /* BasicTitleCell.swift */; };
+		36757C4E2482181800F5C08A /* BasicTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36757C4C2482181800F5C08A /* BasicTitleCell.xib */; };
+		36757C5024828DD700F5C08A /* NotificationActionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36757C4F24828DD700F5C08A /* NotificationActionTableViewController.swift */; };
+		36757C542483466100F5C08A /* OrderProductListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36757C532483466000F5C08A /* OrderProductListTableViewController.swift */; };
 		3675ED1B23837834003A94B7 /* CoreDataFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675ED1A23837834003A94B7 /* CoreDataFunctions.swift */; };
 		3675ED352388D15F003A94B7 /* PRODUCT_RECIPE_PRICE+CoreDataClass copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675ED252388D15C003A94B7 /* PRODUCT_RECIPE_PRICE+CoreDataClass copy.swift */; };
 		3675ED372388D15F003A94B7 /* STORE_BUSINESS_HOURS+CoreDataProperties copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3675ED272388D15D003A94B7 /* STORE_BUSINESS_HOURS+CoreDataProperties copy.swift */; };
@@ -175,7 +180,6 @@
 		36857C8D23E3A7AC00B410B8 /* NotificationFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36857C8C23E3A7AC00B410B8 /* NotificationFunctions.swift */; };
 		36857C9023E66BC100B410B8 /* NotificationActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36857C8E23E66BC100B410B8 /* NotificationActionCell.swift */; };
 		36857C9123E66BC100B410B8 /* NotificationActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36857C8F23E66BC100B410B8 /* NotificationActionCell.xib */; };
-		36857C9523E6F61D00B410B8 /* NotificationActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36857C9423E6F61D00B410B8 /* NotificationActionViewController.swift */; };
 		36857C9B23E8F16800B410B8 /* JoinOrderSelectProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36857C9A23E8F16800B410B8 /* JoinOrderSelectProductViewController.swift */; };
 		36857CA223E9428F00B410B8 /* MENU_INFORMATION+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36857C9F23E9428F00B410B8 /* MENU_INFORMATION+CoreDataClass.swift */; };
 		36857CA323E9428F00B410B8 /* MENU_ICON+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36857CA023E9428F00B410B8 /* MENU_ICON+CoreDataProperties.swift */; };
@@ -543,6 +547,11 @@
 		366E126323502B9100BFFF45 /* FSPageViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSPageViewLayout.swift; sourceTree = "<group>"; };
 		366E126423502B9100BFFF45 /* FSPageViewTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSPageViewTransformer.swift; sourceTree = "<group>"; };
 		366E126D23502BD100BFFF45 /* Fun2Order-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fun2Order-Bridging-Header.h"; sourceTree = "<group>"; };
+		36757C472482169800F5C08A /* BrandCategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandCategoryTableViewController.swift; sourceTree = "<group>"; };
+		36757C4B2482181800F5C08A /* BasicTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicTitleCell.swift; sourceTree = "<group>"; };
+		36757C4C2482181800F5C08A /* BasicTitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BasicTitleCell.xib; sourceTree = "<group>"; };
+		36757C4F24828DD700F5C08A /* NotificationActionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActionTableViewController.swift; sourceTree = "<group>"; };
+		36757C532483466000F5C08A /* OrderProductListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderProductListTableViewController.swift; sourceTree = "<group>"; };
 		3675ED1A23837834003A94B7 /* CoreDataFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFunctions.swift; sourceTree = "<group>"; };
 		3675ED252388D15C003A94B7 /* PRODUCT_RECIPE_PRICE+CoreDataClass copy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PRODUCT_RECIPE_PRICE+CoreDataClass copy.swift"; sourceTree = "<group>"; };
 		3675ED272388D15D003A94B7 /* STORE_BUSINESS_HOURS+CoreDataProperties copy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "STORE_BUSINESS_HOURS+CoreDataProperties copy.swift"; sourceTree = "<group>"; };
@@ -577,7 +586,6 @@
 		36857C8C23E3A7AC00B410B8 /* NotificationFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFunctions.swift; sourceTree = "<group>"; };
 		36857C8E23E66BC100B410B8 /* NotificationActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActionCell.swift; sourceTree = "<group>"; };
 		36857C8F23E66BC100B410B8 /* NotificationActionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationActionCell.xib; sourceTree = "<group>"; };
-		36857C9423E6F61D00B410B8 /* NotificationActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActionViewController.swift; sourceTree = "<group>"; };
 		36857C9A23E8F16800B410B8 /* JoinOrderSelectProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinOrderSelectProductViewController.swift; sourceTree = "<group>"; };
 		36857C9E23E9428F00B410B8 /* MENU_INFORMATION+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MENU_INFORMATION+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		36857C9F23E9428F00B410B8 /* MENU_INFORMATION+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MENU_INFORMATION+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -813,6 +821,8 @@
 				3617CDD023F426D7006E4DBC /* MenuOrderBoardViewController.swift */,
 				3618AA72244BEFE400190F62 /* StoreContactInformationViewController.swift */,
 				36AA3C982476B3210037EF1C /* MenuImageDescriptionTableViewController.swift */,
+				36757C472482169800F5C08A /* BrandCategoryTableViewController.swift */,
+				36757C532483466000F5C08A /* OrderProductListTableViewController.swift */,
 			);
 			path = "Local menu";
 			sourceTree = "<group>";
@@ -946,7 +956,7 @@
 				36B6D97F2409373F00041C2C /* AddFriendViewController.swift */,
 				367CE57E23C1B96600C0840D /* DateTimeViewController.swift */,
 				3625ACA623C61C120037B865 /* NotificationTableViewController.swift */,
-				36857C9423E6F61D00B410B8 /* NotificationActionViewController.swift */,
+				36757C4F24828DD700F5C08A /* NotificationActionTableViewController.swift */,
 				36206D9F2443E668002A4416 /* NotificationMessageTableViewController.swift */,
 				36206DA32443FE12002A4416 /* NotificationMessageViewController.swift */,
 				363DE7AB23CC9B1C00C60935 /* TemplateViewController.swift */,
@@ -1206,6 +1216,8 @@
 				368B712824209854007BFEB4 /* MenuListCategoryCell.xib */,
 				365DF516244D57C9004C47C4 /* ReportCell.swift */,
 				365DF517244D57C9004C47C4 /* ReportCell.xib */,
+				36757C4B2482181800F5C08A /* BasicTitleCell.swift */,
+				36757C4C2482181800F5C08A /* BasicTitleCell.xib */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -1470,6 +1482,7 @@
 				3649CFC7235D5E6E00C0F2EA /* Pay_Cash.png in Resources */,
 				362C482E235C8CDC0010C845 /* Icon_Favorite3.png in Resources */,
 				36D583D62354151500AEB84F /* Teas原味.jpg in Resources */,
+				36757C4E2482181800F5C08A /* BasicTitleCell.xib in Resources */,
 				36DC7A5F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png in Resources */,
 				3659705323B07F11008CDD57 /* Icon_Gender.png in Resources */,
 				36DC7A492356CB94009D48F5 /* 奶茶@2x.png in Resources */,
@@ -1733,10 +1746,10 @@
 				3675ED402388D15F003A94B7 /* BRAND_PROFILE+CoreDataProperties copy.swift in Sources */,
 				363DE7AF23CD3A1000C60935 /* MenuRecipeCell.swift in Sources */,
 				36AA199123D51DC70039A758 /* EditPaymentStatusTableViewController.swift in Sources */,
-				36857C9523E6F61D00B410B8 /* NotificationActionViewController.swift in Sources */,
 				36B80C9023B5E41E004359E4 /* GROUP_MEMBER+CoreDataClass.swift in Sources */,
 				36973ABB23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift in Sources */,
 				368B712924209854007BFEB4 /* MenuListCategoryCell.swift in Sources */,
+				36757C5024828DD700F5C08A /* NotificationActionTableViewController.swift in Sources */,
 				36B6D97E2405625000041C2C /* ImageZoomView.swift in Sources */,
 				36857CA223E9428F00B410B8 /* MENU_INFORMATION+CoreDataClass.swift in Sources */,
 				3625BB2824581DAE00330816 /* PopTip+Draw.swift in Sources */,
@@ -1747,6 +1760,7 @@
 				364F1212235839AF00988937 /* ProductBriefCell.swift in Sources */,
 				3625ACE323CAFE0C0037B865 /* MENU_BRAND_CATEGORY+CoreDataProperties.swift in Sources */,
 				3675ED352388D15F003A94B7 /* PRODUCT_RECIPE_PRICE+CoreDataClass copy.swift in Sources */,
+				36757C542483466100F5C08A /* OrderProductListTableViewController.swift in Sources */,
 				36B6D97924023FBF00041C2C /* FRIEND_TABLE+CoreDataProperties.swift in Sources */,
 				3625ACCB23C706CB0037B865 /* MENU_LOCATION+CoreDataProperties.swift in Sources */,
 				36B80C7323B2074F004359E4 /* ConfigFavoriteProductTableViewController.swift in Sources */,
@@ -1792,6 +1806,7 @@
 				364BEA1223F43621003A418C /* FollowCell.swift in Sources */,
 				F505DDE623692AC900E3F681 /* SignUpMailController.swift in Sources */,
 				36C0B374236A8E4100B56C75 /* UtilityFunctions.swift in Sources */,
+				36757C4D2482181800F5C08A /* BasicTitleCell.swift in Sources */,
 				362C4824235B596A0010C845 /* RecipeTableViewController.swift in Sources */,
 				3659704C23B06A49008CDD57 /* ConfigFavoriteProductCell.swift in Sources */,
 				36857C9023E66BC100B410B8 /* NotificationActionCell.swift in Sources */,
@@ -1810,6 +1825,7 @@
 				3659705823B0A0BA008CDD57 /* ConfigFavoriteAddressCell.swift in Sources */,
 				365948E423CC11D600993062 /* SelectMenuRecipeTemplateCell.swift in Sources */,
 				36857C8D23E3A7AC00B410B8 /* NotificationFunctions.swift in Sources */,
+				36757C482482169800F5C08A /* BrandCategoryTableViewController.swift in Sources */,
 				36B6D97A24023FBF00041C2C /* FRIEND_TABLE+CoreDataClass.swift in Sources */,
 				3625ACE223CAFE0C0037B865 /* MENU_BRAND_CATEGORY+CoreDataClass.swift in Sources */,
 				36E8D3CE235DA7CC00AB35CB /* PayCell.swift in Sources */,
@@ -2016,7 +2032,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -2044,7 +2060,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;

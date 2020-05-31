@@ -67,12 +67,8 @@ class CreateRecipeTableViewController: UITableViewController {
             return
         }
         
-        templateController.preferredContentSize.height = 280
-        //templateController.preferredContentSize.width = self.tableView.frame.width - 20
-        //templateController.preferredContentSize.width = 380
-        controller.preferredContentSize.height = 280
-        //controller.preferredContentSize.width = self.tableView.frame.width - 20
-        //controller.preferredContentSize.width = 380
+        templateController.preferredContentSize.height = 360
+        controller.preferredContentSize.height = 360
 
         controller.setValue(templateController, forKey: "contentViewController")
 
@@ -160,10 +156,6 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
         dispatchGroup.enter()
         databaseRef.child(templateDatabasePath).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
-                //let templateDictionary = snapshot.value
-                //let jsonData = try? JSONSerialization.data(withJSONObject: templateDictionary as Any, options: [])
-                //let jsonString = String(data: jsonData!, encoding: .utf8)!
-                //print("jsonString = \(jsonString)")
                 self.menuRecipeTemplates.removeAll()
                 
                 let childEnumerator = snapshot.children
@@ -188,32 +180,6 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
                     }
                 }
                 dispatchGroup.leave()
-
-/*
-                let decoder: JSONDecoder = JSONDecoder()
-                do {
-                    let templateArray = try decoder.decode([String:MenuRecipeTemplate].self, from: jsonData!)
-                    self.menuRecipeTemplates.removeAll()
-                    
-                    for keyValuePair in templateArray {
-                        //self.brandCategory.append(keyValuePair.key)
-                        self.menuRecipeTemplates.append(keyValuePair.value)
-                    }
-                    
-                    if !self.menuRecipeTemplates.isEmpty {
-                        self.menuRecipeTemplates.sort(by: {$0.sequenceNumber < $1.sequenceNumber})
-                        self.brandCategory.removeAll()
-                        for i in 0...self.menuRecipeTemplates.count - 1 {
-                            self.brandCategory.append(self.menuRecipeTemplates[i].templateName)
-                        }
-                        dispatchGroup.leave()
-                        //self.displayTemplate()
-                    }
-                } catch {
-                    print("jsonData decode failed: \(error.localizedDescription)")
-                    dispatchGroup.leave()
-                }
-*/
             } else {
                 print("queryMenuRecipeTemplateData snapshot doesn't exist!")
                 dispatchGroup.leave()
@@ -228,11 +194,6 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
         dispatchGroup.enter()
         databaseRef.child(customTemplateDatabasePath).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
-                //let templateDictionary = snapshot.value
-                //let jsonData = try? JSONSerialization.data(withJSONObject: templateDictionary as Any, options: [])
-                //let jsonString = String(data: jsonData!, encoding: .utf8)!
-                //print("jsonString = \(jsonString)")
-                
                 self.customRecipeTemplate.removeAll()
                 
                 let childEnumerator = snapshot.children
@@ -259,32 +220,6 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
                     }
                 }
                 dispatchGroup.leave()
-
-/*
-                let decoder: JSONDecoder = JSONDecoder()
-                do {
-                    let templateArray = try decoder.decode([String:MenuRecipeTemplate].self, from: jsonData!)
-                    self.customRecipeTemplate.removeAll()
-                    
-                    for keyValuePair in templateArray {
-                        //self.brandCategory.append(keyValuePair.key)
-                        self.customRecipeTemplate.append(keyValuePair.value)
-                    }
-                    
-                    if !self.customRecipeTemplate.isEmpty {
-                        self.customRecipeTemplate.sort(by: {$0.sequenceNumber < $1.sequenceNumber})
-                        self.customBrandCategory.removeAll()
-                        for i in 0...self.customRecipeTemplate.count - 1 {
-                            self.customBrandCategory.append(self.customRecipeTemplate[i].templateName)
-                        }
-                        dispatchGroup.leave()
-                        //self.displayTemplate()
-                    }
-                } catch {
-                    print("jsonData decode failed: \(error.localizedDescription)")
-                    dispatchGroup.leave()
-                }
-*/
             } else {
                 print("queryMenuRecipeTemplateData snapshot doesn't exist!")
                 dispatchGroup.leave()
@@ -325,7 +260,7 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             let category_controller = controller.children[0] as! RecipeCategoryViewController
             let recipeCategory = category_controller.getRecipeCategory()
-            if recipeCategory == nil || recipeCategory! == "" {
+            if recipeCategory == nil || recipeCategory!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
                 presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的配方類別名稱不能為空白，請重新輸入")
                 return
             }
@@ -378,7 +313,7 @@ extension CreateRecipeTableViewController: SelectMenuRecipeTemplateCellDelegate 
             
             let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
                 let templateName = controller.textFields?[0].text
-                if templateName == nil || templateName == "" {
+                if templateName == nil || templateName!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
                     presentSimpleAlertMessage(title: "錯誤訊息", message: "範本名稱不可為空白，請重新輸入")
                     return
                 }
@@ -521,5 +456,11 @@ extension CreateRecipeTableViewController: MenuTemplateDelegate {
             self.menuRecipes = self.menuRecipeTemplates[self.selectedTemoplateIndex].menuRecipes
             self.tableView.reloadData()
         }
+    }
+    
+    func deleteCustomTemplate(sender: TemplateViewController, index: Int) {
+        print("Delete index[\(index)] of custom template name[\(self.customRecipeTemplate[index].templateName)]")
+        
+        self.customRecipeTemplate.remove(at: index)
     }
 }

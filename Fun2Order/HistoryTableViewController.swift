@@ -139,6 +139,78 @@ class HistoryTableViewController: UITableViewController {
         queryMenuOrder()
     }
     
+    func downloadMenuOrderContent(owner_id: String, order_number: String, member_id: String) {
+        var memberContent: MenuOrderMemberContent = MenuOrderMemberContent()
+        //var memberIndex: Int = -1
+
+        let databaseRef = Database.database().reference()
+
+        let orderString = "USER_MENU_ORDER/\(owner_id)/\(order_number)/contentItems"
+        print("orderStirng = \(orderString)")
+        databaseRef.child(orderString).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                let itemRawData = snapshot.value
+                let jsonData = try? JSONSerialization.data(withJSONObject: itemRawData as Any, options: [])
+
+                let decoder: JSONDecoder = JSONDecoder()
+                do {
+                    let itemArray = try decoder.decode([MenuOrderMemberContent].self, from: jsonData!)
+
+                    if let itemIndex = itemArray.firstIndex(where: { $0.memberID == member_id }) {
+                        memberContent = itemArray[itemIndex]
+                        //memberIndex = itemIndex
+                        self.displayProductList(content: memberContent)
+                    } else {
+                        return
+                    }
+                } catch {
+                    print("downloadMenuOrderContent MenuOrderMemberContent jsonData decode failed: \(error.localizedDescription)")
+                    presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料讀取錯誤，請團購發起人重發。")
+                    return
+                }
+            } else {
+                print("downloadMenuOrderContent MenuOrderMemberContent snapshot doesn't exist!")
+                presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料不存在，請詢問團購發起人相關訊息。")
+                return
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+            presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
+            return
+        }
+    }
+    
+    func displayProductList(content: MenuOrderMemberContent) {
+        //presentSimpleAlertMessage(title: "Test", message: "Need to Display Product List of \(content.orderContent.orderNumber) for index \(index)")
+        if content.orderContent.menuProductItems == nil {
+            presentSimpleAlertMessage(title: "提示訊息", message: "這張邀請單未選購任何產品")
+            return
+        }
+        
+        let controller = UIAlertController(title: "已回覆 產品列表", message: nil, preferredStyle: .alert)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let orderProductList = storyboard.instantiateViewController(withIdentifier: "ORDER_PRODUCTLIST_VC") as? OrderProductListTableViewController else {
+            assertionFailure("[AssertionFailure] StoryBoard: ORDER_PRODUCTLIST_VC can't find!! (ViewController)")
+            return
+        }
+
+        orderProductList.memberContent = content
+
+        controller.setValue(orderProductList, forKey: "contentViewController")
+        orderProductList.preferredContentSize.height = 320
+        controller.preferredContentSize.height = 320
+        controller.addChild(orderProductList)
+        let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+            print("Confirm to dismiss product list")
+        }
+
+        okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+        controller.addAction(okAction)
+        
+        self.present(controller, animated: true, completion: nil)
+
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -223,7 +295,10 @@ class HistoryTableViewController: UITableViewController {
                 print(error.localizedDescription)
             }
         } else {
-            
+            if Auth.auth().currentUser?.uid != nil {
+                let user_id = Auth.auth().currentUser!.uid
+                self.downloadMenuOrderContent(owner_id: self.invitationList[indexPath.row].orderOwnerID, order_number: self.invitationList[indexPath.row].orderNumber, member_id: user_id)
+            }
         }
     }
 
@@ -407,7 +482,7 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
         }
         
         dispatchGroup.notify(queue: .main) {
-            if downloadMenuInformation == true && downloadMenuOrder == true && memberIndex >= 0 {
+            if downloadMenuInformation && downloadMenuOrder && memberIndex >= 0 {
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 guard let joinController = storyBoard.instantiateViewController(withIdentifier: "JOIN_ORDER_VC") as? JoinGroupOrderTableViewController else{
                     assertionFailure("[AssertionFailure] StoryBoard: JOIN_ORDER_VC can't find!! (HistoryTableViewController)")

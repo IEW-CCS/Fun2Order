@@ -84,7 +84,7 @@ class MenuOrderNotebookViewController: UIViewController {
             return
         }
         
-        var msg: String = "Message from Fun2Order\n"
+        var msg: String = "來自揪Fun的訊息\n"
         msg = msg + self.contentString
         
         let vc = UIActivityViewController(activityItems: [msg], applicationActivities: [])

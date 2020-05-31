@@ -46,7 +46,14 @@ class JoinInvitationCell: UITableViewCell {
         delegate?.rejectOrderInvitation(data_index: self.tag)
     }
     
+    func setupInitialize() {
+        self.buttonAttend.isEnabled = true
+        self.buttonReject.isEnabled = true
+        self.labelBrandName.textColor = UIColor.black
+    }
+    
     func setData(notify_data: NotificationData) {
+        setupInitialize()
         self.notificationData = notify_data
         self.labelBrandName.text = notify_data.brandName
         self.labelOwnerName.text = notify_data.orderOwnerName

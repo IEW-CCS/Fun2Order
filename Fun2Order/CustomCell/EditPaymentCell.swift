@@ -51,7 +51,7 @@ class EditPaymentCell: UITableViewCell {
         
         let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
             let priceString = controller.textFields?[0].text
-            if priceString == nil || priceString! == "" {
+            if priceString == nil || priceString!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
                 presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入金額不能為空白，請重新輸入")
                 alertWindow.isHidden = true
                 return
