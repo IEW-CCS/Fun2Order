@@ -75,10 +75,27 @@ class NotificationActionCell: UITableViewCell {
             self.backView.gradientColor = 11
         }
         
-        if notification.replyStatus == MENU_ORDER_REPLY_STATUS_REJECT || notification.replyStatus == MENU_ORDER_REPLY_STATUS_ACCEPT {
-            self.labelReplyStatus.text = "已回覆"
-        } else {
-            self.labelReplyStatus.text = "尚未回覆"
+        switch notification.replyStatus {
+            case MENU_ORDER_REPLY_STATUS_ACCEPT:
+                self.labelReplyStatus.text = "已回覆\n參加"
+                self.labelReplyStatus.textColor = UIColor.systemBlue
+                break
+            
+            case MENU_ORDER_REPLY_STATUS_REJECT:
+                self.labelReplyStatus.text = "已回覆\n不參加"
+                self.labelReplyStatus.textColor = COLOR_PEPPER_RED
+                break
+                
+            default:
+                self.labelReplyStatus.text = "尚未回覆"
+                self.labelReplyStatus.textColor = UIColor.black
+                break
         }
+
+        //if notification.replyStatus == MENU_ORDER_REPLY_STATUS_REJECT || notification.replyStatus == MENU_ORDER_REPLY_STATUS_ACCEPT {
+        //    self.labelReplyStatus.text = "已回覆"
+        //} else {
+        //    self.labelReplyStatus.text = "尚未回覆"
+        //}
     }
 }

@@ -103,7 +103,7 @@ import Foundation
         self.label.textAlignment = .center
         self.label.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        print("ori.width: \(ori.width), self.layer.frame.width: \(self.layer.frame.width)")
+        //print("ori.width: \(ori.width), self.layer.frame.width: \(self.layer.frame.width)")
         //updateShadow()
     }
     

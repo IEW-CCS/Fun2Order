@@ -86,14 +86,17 @@ class JoinInvitationCell: UITableViewCell {
         switch self.notificationData.replyStatus {
             case MENU_ORDER_REPLY_STATUS_ACCEPT:
                 self.labelReplyStatus.text = "已於 \(replyString)\n回覆 參加"
+                self.labelReplyStatus.textColor = UIColor.systemBlue
                 break
             
             case MENU_ORDER_REPLY_STATUS_REJECT:
                 self.labelReplyStatus.text = "已於 \(replyString)\n回覆 不參加"
+                self.labelReplyStatus.textColor = COLOR_PEPPER_RED
                 break
                 
             default:
                 self.labelReplyStatus.text = "尚未回覆"
+                self.labelReplyStatus.textColor = UIColor.darkGray
                 break
         }
 
