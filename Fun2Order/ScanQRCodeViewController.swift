@@ -70,11 +70,25 @@ class ScanQRCodeViewController: UIViewController {
         present(controller, animated: true, completion: nil)
 
     }
+    func validatePathString(path_string: String) -> Bool {
+        let invalidChars: [String] = [".","#","$","[","]"]
+        for char in invalidChars {
+            if path_string.contains(char) {
+                return false
+            }
+        }
+        
+        return true
+    }
     
     func checkUserProfile() {
-        let databaseRef = Database.database().reference()
         let profileDatabasePath = "USER_PROFILE/\(self.memberID)"
-        
+        if !validatePathString(path_string: profileDatabasePath) {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "會員條碼格式不正確，請再重新掃描一次")
+            return
+        }
+
+        let databaseRef = Database.database().reference()
         databaseRef.child(profileDatabasePath).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
                 let value = snapshot.value as? NSDictionary

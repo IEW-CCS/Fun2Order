@@ -329,8 +329,8 @@ class HistoryTableViewController: UITableViewController {
                     print("Confirm to delete this order information")
                     alertWindow.isHidden = true
                     let databaseRef = Database.database().reference()
-                    if Auth.auth().currentUser?.uid == nil {
-                        print("Auth currentUser.uid is nil")
+                    if Auth.auth().currentUser?.uid == nil || self.menuOrderList[indexPath.row].orderNumber == "" {
+                        print("Auth currentUser.uid is nil || self.menuOrderList[indexPath.row].orderNumber is empty")
                         return
                     }
                     
@@ -545,13 +545,16 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
                     }
                 } catch {
                     print("rejectOrderInvitation jsonData decode failed: \(error.localizedDescription)")
+                    presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料讀取錯誤，請團購發起人重發。")
                 }
             } else {
                 print("rejectOrderInvitation snapshot doesn't exist!")
+                presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料不存在，請詢問團購發起人相關訊息。")
                 return
             }
         }) { (error) in
             print(error.localizedDescription)
+            presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
         }
     }
 }

@@ -381,6 +381,11 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
             return
         }
         
+        if labelDueDate.text == nil {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "訂單截止時間為必填資訊，請重新指定截止時間。")
+            return
+        }
+
         self.buttonCreateOrder.isEnabled = false
         createMenuOrder()
     }

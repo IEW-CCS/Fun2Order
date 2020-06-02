@@ -17,7 +17,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dqd-az-cKf" customClass="ShadowGradientView" customModule="揪Fun" customModuleProvider="target">
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nQp-E3-O9d" customClass="ShadowGradientView" customModule="揪Fun" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -34,7 +34,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c4Q-X9-2y4">
-                        <rect key="frame" x="120" y="64" width="36" height="17"/>
+                        <rect key="frame" x="15" y="65" width="36" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -52,14 +52,14 @@
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brand Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="svs-Ut-rNX">
-                        <rect key="frame" x="15" y="62" width="95" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brand" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="svs-Ut-rNX">
+                        <rect key="frame" x="135.5" y="37" width="49" height="21"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                        <color key="textColor" red="0.14901960780000001" green="0.65098039220000004" blue="0.60392156860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SUG-bc-V72">
-                        <rect key="frame" x="15" y="37" width="157" height="23"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SUG-bc-V72">
+                        <rect key="frame" x="15" y="37" width="45.5" height="23"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -75,25 +75,24 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="c4Q-X9-2y4" firstAttribute="leading" secondItem="svs-Ut-rNX" secondAttribute="trailing" constant="10" id="0Yb-Ii-Ajl"/>
                     <constraint firstItem="JbE-wp-uwu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="4QL-K8-bxq"/>
-                    <constraint firstItem="svs-Ut-rNX" firstAttribute="top" secondItem="SUG-bc-V72" secondAttribute="bottom" constant="2" id="8QS-3w-EjW"/>
-                    <constraint firstItem="0Ab-qm-oGU" firstAttribute="top" secondItem="svs-Ut-rNX" secondAttribute="bottom" constant="4" id="BoA-mt-GvP"/>
-                    <constraint firstItem="c4Q-X9-2y4" firstAttribute="centerY" secondItem="svs-Ut-rNX" secondAttribute="centerY" id="HWp-1i-osD"/>
+                    <constraint firstItem="svs-Ut-rNX" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="9vp-aY-WkN"/>
+                    <constraint firstItem="c4Q-X9-2y4" firstAttribute="leading" secondItem="SUG-bc-V72" secondAttribute="leading" id="APj-CR-PCa"/>
+                    <constraint firstItem="c4Q-X9-2y4" firstAttribute="top" secondItem="SUG-bc-V72" secondAttribute="bottom" constant="5" id="DNZ-9e-ukU"/>
+                    <constraint firstItem="0Ab-qm-oGU" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="IDs-IS-aBr"/>
                     <constraint firstItem="SUG-bc-V72" firstAttribute="top" secondItem="JbE-wp-uwu" secondAttribute="bottom" constant="6" id="Jgq-5R-SXB"/>
                     <constraint firstItem="JbE-wp-uwu" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="Z6M-iX-YXR"/>
                     <constraint firstAttribute="trailing" secondItem="sXB-3c-RIJ" secondAttribute="trailing" constant="14" id="cfh-wn-iEP"/>
+                    <constraint firstItem="0Ab-qm-oGU" firstAttribute="top" secondItem="c4Q-X9-2y4" secondAttribute="bottom" constant="5" id="ckv-u0-Z5R"/>
                     <constraint firstItem="sXB-3c-RIJ" firstAttribute="top" secondItem="SUG-bc-V72" secondAttribute="top" id="fHX-Ij-sUW"/>
-                    <constraint firstItem="0Ab-qm-oGU" firstAttribute="leading" secondItem="svs-Ut-rNX" secondAttribute="leading" id="hvQ-Xy-UH1"/>
+                    <constraint firstItem="0Ab-qm-oGU" firstAttribute="leading" secondItem="c4Q-X9-2y4" secondAttribute="leading" id="h5g-V4-IBx"/>
                     <constraint firstItem="SUG-bc-V72" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="lGA-lT-Uch"/>
-                    <constraint firstItem="svs-Ut-rNX" firstAttribute="leading" secondItem="SUG-bc-V72" secondAttribute="leading" id="ps0-D2-ZJB"/>
-                    <constraint firstItem="0Ab-qm-oGU" firstAttribute="centerX" secondItem="JbE-wp-uwu" secondAttribute="centerX" id="viQ-L8-9mj"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="0Ab-qm-oGU" secondAttribute="bottom" constant="4" id="yYR-q5-X2a"/>
+                    <constraint firstItem="svs-Ut-rNX" firstAttribute="top" secondItem="SUG-bc-V72" secondAttribute="top" id="ygt-ib-j8D"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="backView" destination="dqd-az-cKf" id="hx9-DC-gar"/>
+                <outlet property="backView" destination="nQp-E3-O9d" id="z4D-cq-l7R"/>
                 <outlet property="labelBrandName" destination="svs-Ut-rNX" id="VLl-md-cc2"/>
                 <outlet property="labelNotificationType" destination="SUG-bc-V72" id="5jE-IQ-Z5c"/>
                 <outlet property="labelReceiveTime" destination="c4Q-X9-2y4" id="uDC-R1-KqJ"/>

@@ -20,9 +20,13 @@ class MenuListTableViewController: UITableViewController {
     var adLoader: GADAdLoader!
     var nativeAd: GADUnifiedNativeAd!
     // Test NativeAd Unit ID
-    let adUnitID = "ca-app-pub-3940256099942544/3986624511"
-    //Real NativeAd Unit ID
+    //let adUnitID = "ca-app-pub-3940256099942544/3986624511"
+    // James Real NativeAd Unit ID
     //let adUnitID = "ca-app-pub-9511677579097261/2673063242"
+
+    // IEW Real NativeAd Unit ID
+    let adUnitID = "ca-app-pub-6672968234138119/7456638522"
+
     var adIndex: Int = 0
     var heightConstraint : NSLayoutConstraint?
 
@@ -54,7 +58,7 @@ class MenuListTableViewController: UITableViewController {
         //showMyProfileTabBarToolTip()
     }
 
-    func downloadFBMenuInformation(select_index: Int) {
+    func downloadFBMenuInformationList(select_index: Int) {
         guard let user_id = Auth.auth().currentUser?.uid else {
             print("Not authorized user, cannot get Menu Information List")
             return
@@ -78,7 +82,7 @@ class MenuListTableViewController: UITableViewController {
                         self.menuInfos.append(realData)
                         print("Success: \(realData.brandName)")
                     } catch {
-                        print("downloadFBMenuInformation jsonData decode failed: \(error.localizedDescription)")
+                        print("downloadFBMenuInformationList jsonData decode failed: \(error.localizedDescription)")
                         continue
                     }
                 }
@@ -95,7 +99,7 @@ class MenuListTableViewController: UITableViewController {
 
             } else {
                 //self.tableView.reloadData()
-                print("downloadFBMenuInformation snapshot doesn't exist!")
+                print("downloadFBMenuInformationList snapshot doesn't exist!")
                 let app = UIApplication.shared.delegate as! AppDelegate
                 app.toolTipDelegate?.triggerCreateMenuTooltip(parent: self.view)
                 self.filterMenuInfosByCategory()
@@ -104,7 +108,7 @@ class MenuListTableViewController: UITableViewController {
                 return
             }
         }) { (error) in
-            print("downloadFBMenuInformation: \(error.localizedDescription)")
+            print("downloadFBMenuInformationList: \(error.localizedDescription)")
         }
     }
     
@@ -202,12 +206,16 @@ class MenuListTableViewController: UITableViewController {
         //deleteFBMenuInformation(user_id: self.menuInfosByCategory[index.row].userID, menu_number: self.menuInfosByCategory[index.row].menuNumber, image_url: self.menuInfosByCategory[index.row].menuImageURL)
         deleteFBMenuInformation(menu_info: self.menuInfosByCategory[index.row])
 
-        print("MenuListTableViewController deleteMenuInfo downloadFBMenuInformation")
-        downloadFBMenuInformation(select_index: self.selectedIndex)
+        print("MenuListTableViewController deleteMenuInfo downloadFBMenuInformationList")
+        downloadFBMenuInformationList(select_index: self.selectedIndex)
     }
     
     func setupAdLoader() {
+        //let multipleAdsOptions = GADMultipleAdsAdLoaderOptions()
+        //multipleAdsOptions.numberOfAds = 3
+
         self.adLoader = GADAdLoader(adUnitID: self.adUnitID, rootViewController: self, adTypes: [.unifiedNative], options: nil)
+        //self.adLoader = GADAdLoader(adUnitID: self.adUnitID, rootViewController: self, adTypes: [.unifiedNative], options: [multipleAdsOptions])
         self.adLoader.load(GADRequest())
         self.adLoader.delegate = self
     }
@@ -391,7 +399,7 @@ extension MenuListTableViewController: ScrollUISegmentControllerDelegate {
         print("select Item At [\(index)] in scrollUISegmentController with tag  \(scrollUISegmentController.tag) ")
         self.selectedIndex = index
         filterMenuInfosByCategory()
-        setupAdLoader()
+        //setupAdLoader()
         self.tableView.reloadData()
     }
 }
@@ -399,20 +407,20 @@ extension MenuListTableViewController: ScrollUISegmentControllerDelegate {
 extension MenuListTableViewController: CreateMenuDelegate {
     func refreshMenuList(sender: CreateMenuTableViewController) {
         print("MenuListTableViewController receive CreateMenuDelegate refreshMenuList")
-        downloadFBMenuInformation(select_index: self.selectedIndex)
+        downloadFBMenuInformationList(select_index: self.selectedIndex)
     }
 }
 
 extension MenuListTableViewController: GADUnifiedNativeAdLoaderDelegate {
     func adLoader(_ adLoader: GADAdLoader, didFailToReceiveAdWithError error: GADRequestError) {
         print("\(adLoader) failed with error: \(error.localizedDescription)")
-        downloadFBMenuInformation(select_index: 0)
+        downloadFBMenuInformationList(select_index: 0)
     }
     
     func adLoader(_ adLoader: GADAdLoader, didReceive nativeAd: GADUnifiedNativeAd) {
         print("Received native ad: \(nativeAd)")
         self.nativeAd = nativeAd
-        downloadFBMenuInformation(select_index: 0)
+        downloadFBMenuInformationList(select_index: 0)
     }
     
     func adLoaderDidFinishLoading(_ adLoader: GADAdLoader) {
@@ -460,7 +468,7 @@ extension MenuListTableViewController: MenuListCategoryCellDelegate {
     func deleteBrandCategory(sender: MenuListCategoryCell) {
         //presentSimpleAlertMessage(title: "Test", message: "Long Press to delete brand category")
         let controller = UIAlertController(title: "編輯分類", message: nil, preferredStyle: .actionSheet)
-        
+
         let deleteAction = UIAlertAction(title: "刪除分類", style: .default) { (_) in
             //presentSimpleAlertMessage(title: "Test", message: "Confirm to delete, pop-up another view controller")
             let controller = UIAlertController(title: "刪除分類", message: nil, preferredStyle: .alert)
@@ -471,6 +479,7 @@ extension MenuListTableViewController: MenuListCategoryCellDelegate {
                 assertionFailure("[AssertionFailure] StoryBoard: BRANDCATEGORY_VC can't find!! (QRCodeViewController)")
                 return
             }
+
             brandCategoryController.brandCategoryList = brandCategoryList
             brandCategoryController.menuList = self.menuInfos
             brandCategoryController.delegate = self
@@ -505,6 +514,6 @@ extension MenuListTableViewController: MenuListCategoryCellDelegate {
 
 extension MenuListTableViewController: BrandCategoryDelegate {
     func deleteBrandCategoryComplete(sender: BrandCategoryTableViewController) {
-        downloadFBMenuInformation(select_index: self.selectedIndex)
+        downloadFBMenuInformationList(select_index: self.selectedIndex)
     }
 }

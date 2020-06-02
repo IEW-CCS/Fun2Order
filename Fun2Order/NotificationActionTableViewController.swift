@@ -74,17 +74,23 @@ class NotificationActionTableViewController: UITableViewController {
                     }
                 } catch {
                     print("downloadMenuOrderContent MenuOrderMemberContent jsonData decode failed: \(error.localizedDescription)")
-                    //presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料讀取錯誤，請團購發起人重發。")
+                    presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料讀取錯誤，請團購發起人重發。")
+                    self.buttonAttend.isEnabled = false
+                    self.buttonReject.isEnabled = false
                     return
                 }
             } else {
                 print("downloadMenuOrderContent MenuOrderMemberContent snapshot doesn't exist!")
-                //presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料不存在，請詢問團購發起人相關訊息。")
+                presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料不存在，請詢問團購發起人相關訊息。")
+                self.buttonAttend.isEnabled = false
+                self.buttonReject.isEnabled = false
                 return
             }
         }) { (error) in
             print(error.localizedDescription)
             presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
+            self.buttonAttend.isEnabled = false
+            self.buttonReject.isEnabled = false
             return
         }
     }

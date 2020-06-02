@@ -54,7 +54,7 @@ class BrandCategoryTableViewController: UITableViewController {
                 self.brandCategoryList.remove(at: self.deleteFlag)
                 self.updateBrandCatogory()
             }
-            presentSimpleAlertMessage(title: "訊息", message: "菜單資料已成功儲存")
+            presentSimpleAlertMessage(title: "訊息", message: "菜單分類資料已成功刪除")
             self.delegate?.deleteBrandCategoryComplete(sender: self)
             self.navigationController?.popViewController(animated: true)
             self.dismiss(animated: true, completion: nil)

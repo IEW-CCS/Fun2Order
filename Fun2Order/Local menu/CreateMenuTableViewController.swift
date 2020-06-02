@@ -186,6 +186,10 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                 for i in 0...self.originalMennuImagePathList!.count - 1 {
                     let newPath = self.originalMennuImagePathList![i]
                     let newRef = Storage.storage().reference()
+                    if newPath == "" {
+                        print("uploadMenuInformation newPath is empty")
+                        continue
+                    }
                     
                     dispatchGroup.enter()
                     newRef.child(newPath).delete(completion: {(error) in
@@ -225,6 +229,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                 newRef.child(imagePath).putData(uploadData!, metadata: nil, completion: { (data, error) in
                     if error != nil {
                         print(error!.localizedDescription)
+                        dispatchGroup.leave()
                         return
                     }
                     dispatchGroup.leave()
@@ -278,15 +283,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
             controller.addTextField { (textField) in
                 textField.placeholder = "新增分類"
             }
-            
-            let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
-                print("Cancel to select brand category!")
-                alertWindow.isHidden = true
-            }
-            
-            cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
-            controller.addAction(cancelAction)
-            
+                        
             let addAction = UIAlertAction(title: "加入菜單分類", style: .default) { (_) in
                 print("Add to brand category!")
                 let category_string = controller.textFields?[0].text
@@ -308,11 +305,20 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                 self.updateBrandCatogory()
                 self.labelCategory.text = category_string!
                 self.menuInformation.brandCategory = category_string!
+                self.delegate?.refreshMenuList(sender: self)
                 alertWindow.isHidden = true
             }
             addAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
             controller.addAction(addAction)
+
+            let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
+                print("Cancel to select brand category!")
+                alertWindow.isHidden = true
+            }
             
+            cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+            controller.addAction(cancelAction)
+
             alertWindow = presentAlert(controller)
             return
         }
@@ -331,10 +337,20 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
             self.updateBrandCatogory()
             self.labelCategory.text = category_string!
             self.menuInformation.brandCategory = category_string!
+            self.delegate?.refreshMenuList(sender: self)
             alertTextWindow.isHidden = true
         }
         
         textController.addAction(addAction)
+
+        let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
+            print("Cancel to select brand category!")
+            alertTextWindow.isHidden = true
+        }
+        
+        cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+        textController.addAction(cancelAction)
+        
         alertTextWindow = presentAlert(textController)
     }
     

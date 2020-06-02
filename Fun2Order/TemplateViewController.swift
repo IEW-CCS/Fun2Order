@@ -123,6 +123,11 @@ extension TemplateViewController: UITableViewDelegate, UITableViewDataSource {
                 //presentSimpleAlertMessage(title: "Test", message: "Delete this template [\(self.customTemplateArray[indexPath.row])]")
                 if Auth.auth().currentUser?.uid != nil {
                     let databaseRef = Database.database().reference()
+                    if self.customTemplateArray[indexPath.row] == "" {
+                        print("self.customTemplateArray[indexPath.row] is empty")
+                        return
+                    }
+                    
                     let pathString = "USER_CUSTOM_RECIPE_TEMPLATE/\(Auth.auth().currentUser!.uid)/\(self.customTemplateArray[indexPath.row])"
                     databaseRef.child(pathString).removeValue(completionBlock: {(error, ref) in
                         if let error = error {

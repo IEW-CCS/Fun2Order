@@ -60,9 +60,17 @@ func getLaunchNotification(user_infos: [String: Any]) {
         return
     }
 
-    if tmpNotificationType == NOTIFICATION_TYPE_NEW_FRIEND {
-        addNewFriendRequestNotification(message: tmpMessageBody, friend_id: tmpOrderOwnerID, friend_name: tmpOrderOwnerName)
-        return
+    switch tmpNotificationType {
+        case NOTIFICATION_TYPE_NEW_FRIEND:
+            addNewFriendRequestNotification(message: tmpMessageBody, friend_id: tmpOrderOwnerID, friend_name: tmpOrderOwnerName)
+            return
+                    
+        case NOTIFICATION_TYPE_SHARE_MENU:
+            shareMenuInformationNotification(message: tmpMessageBody, user_id: tmpOrderOwnerID, menu_number: tmpMenuNumber)
+            return
+        
+        default:
+            break
     }
 
     notificationData.messageTitle = tmpMessageTtile
@@ -126,10 +134,18 @@ func setupNotification(notity: UNNotification) {
         presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知類別錯誤，無法處理")
         return
     }
-    
-    if tmpNotificationType == NOTIFICATION_TYPE_NEW_FRIEND {
-        addNewFriendRequestNotification(message: notity.request.content.body, friend_id: tmpOrderOwnerID, friend_name: tmpOrderOwnerName)
-        return
+
+    switch tmpNotificationType {
+        case NOTIFICATION_TYPE_NEW_FRIEND:
+            addNewFriendRequestNotification(message: notity.request.content.body, friend_id: tmpOrderOwnerID, friend_name: tmpOrderOwnerName)
+            return
+                    
+        case NOTIFICATION_TYPE_SHARE_MENU:
+            shareMenuInformationNotification(message: notity.request.content.body, user_id: tmpOrderOwnerID, menu_number: tmpMenuNumber)
+            return
+        
+        default:
+            break
     }
 
     notificationData.messageTitle = notity.request.content.title
@@ -181,7 +197,6 @@ func setTabBarBadgeNumber(badge: Int) {
 
 func addNewFriendRequestNotification(message: String, friend_id: String, friend_name: String) {
     print("Handle addNewFriendRequestNotification!!")
-    //presentSimpleAlertMessage(title: "好友邀請", message: message)
     var alertWindow: UIWindow!
 
     let controller = UIAlertController(title: "好友邀請", message: message, preferredStyle: .alert)
@@ -233,6 +248,33 @@ func addNewFriendRequestNotification(message: String, friend_id: String, friend_
     alertWindow = presentAlert(controller)
 }
 
+func shareMenuInformationNotification(message: String, user_id: String, menu_number: String) {
+    print("Handle shareMenuInformationNotification!!")
+    var alertWindow: UIWindow!
+
+    let controller = UIAlertController(title: "菜單分享", message: message, preferredStyle: .alert)
+    controller.view.tintColor = CUSTOM_COLOR_EMERALD_GREEN
+
+    let addAction = UIAlertAction(title: "接受", style: .default) { (_) in
+        print("Click to accept shared menu information [\(menu_number)] from [\(user_id)]")
+        alertWindow.isHidden = true
+    }
+    
+    addAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+    controller.addAction(addAction)
+
+    let cancelAction = UIAlertAction(title: "不接受", style: .default) { (_) in
+        print("Click to reject shared menu information [\(menu_number)] from [\(user_id)]")
+        alertWindow.isHidden = true
+    }
+    
+    cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+    controller.addAction(cancelAction)
+        
+    alertWindow = presentAlert(controller)
+
+}
+
 func receiveMyProfileToUpdateFriendList(user_profile: UserProfile?) {
     if user_profile == nil {
         presentSimpleAlertMessage(title: "錯誤訊息", message: "存取好友資訊錯誤")
@@ -266,6 +308,12 @@ func verifyNotificationType(type: String) -> Bool {
         case NOTIFICATION_TYPE_NEW_FRIEND:
             return true
             
+        case NOTIFICATION_TYPE_SHARE_MENU:
+            return true
+        
+        case NOTIFICATION_TYPE_SHARE_GROUP_FRIEND:
+            return true
+        
         default:
             return false
     }

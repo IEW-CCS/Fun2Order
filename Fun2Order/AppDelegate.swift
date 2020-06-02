@@ -51,8 +51,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //let cancelNewFriendAction = UNNotificationAction(identifier: "cancelNewFriendAction", title: "暫不加入", options: [])
         //let category = UNNotificationCategory(identifier: "newFriendCategory", actions: [addNewFriendAction, cancelNewFriendAction], intentIdentifiers: [], options: [])
         
-        //GADMobileAds.sharedInstance().start(completionHandler: nil)
-        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["2077ef9a63d2b398840261c8221a0c9b"]
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
+        //GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["2077ef9a63d2b398840261c8221a0c9b"]
 
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self

@@ -89,10 +89,13 @@ class JoinGroupOrderTableViewController: UITableViewController {
     
     func setupInterstitialAd() {
         // Test Interstitla Video Ad
-        self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/5135589807")
+        //self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/5135589807")
 
-        // My real Interstitial Ad
+        // James real Interstitial Ad
         //self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-9511677579097261/6069385370")
+
+        // IEW real Interstitial Ad
+        self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-6672968234138119/3517393514")
 
         let adRequest = GADRequest()
         self.interstitialAd.load(adRequest)
