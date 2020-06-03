@@ -84,7 +84,9 @@ class MenuOrderNotebookViewController: UIViewController {
             return
         }
         
-        var msg: String = "來自揪Fun的訊息\n"
+        let userName = getMyUserName()
+        
+        var msg: String = "來自[ \(userName) ] -- 揪Fun 的訂單內容\n"
         msg = msg + self.contentString
         
         let vc = UIActivityViewController(activityItems: [msg], applicationActivities: [])
