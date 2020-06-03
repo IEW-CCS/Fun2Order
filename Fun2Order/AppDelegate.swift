@@ -46,19 +46,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         writeSetupConfig()
         writeToolTipConfig()
         FirebaseApp.configure()
-
-        //let addNewFriendAction = UNNotificationAction(identifier: "addNewFriendAction", title: "加入好友", options: [.foreground])
-        //let cancelNewFriendAction = UNNotificationAction(identifier: "cancelNewFriendAction", title: "暫不加入", options: [])
-        //let category = UNNotificationCategory(identifier: "newFriendCategory", actions: [addNewFriendAction, cancelNewFriendAction], intentIdentifiers: [], options: [])
         
+        // Production Google AdMob Instance initialize
         GADMobileAds.sharedInstance().start(completionHandler: nil)
+        
+        // Test Google AdMob Instance initialize
         //GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["2077ef9a63d2b398840261c8221a0c9b"]
 
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
             let authOptions: UNAuthorizationOptions = [.alert, .badge]
             UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: {_, _ in })
-            //UNUserNotificationCenter.current().setNotificationCategories([category])
             application.registerForRemoteNotifications()
         } else {
             let settings: UIUserNotificationSettings =
@@ -108,22 +106,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         print("-------- userNotificationCenter  didReceive response")
-/*
-        switch response.actionIdentifier {
-        case "addNewFriendAction":
-            print("Click addNewFriendAction button!!")
-            completionHandler()
-            return
-        
-        case "cancelNewFriendAction":
-            print("Click addNewFriendAction button!!")
-            completionHandler()
-            return
-            
-        default:
-            break
-        }
-*/
         
         getTappedNotification(notification: response.notification)
         getNotifications(func_id: "userNotificationCenter didReceive", completion: refreshNotifyList)

@@ -44,7 +44,7 @@ class BannerDetailViewController: UIViewController {
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
         let buildString = "Version: \(appVersion ?? "").\(build ?? "")"
         
-        let aboutDescription = "歡迎使用Fun2Order\n\n\(buildString)\n\nTeamPlus@JStudio\n@2019-2020 Copyrignt Reserved"
+        let aboutDescription = "歡迎使用 揪Fun\n\n\(buildString)\n\nTeamPlus@JStudio\n@2019-2020 Copyrignt Reserved"
         
         self.bannerImage.image = img
         self.txtDescription.text = aboutDescription

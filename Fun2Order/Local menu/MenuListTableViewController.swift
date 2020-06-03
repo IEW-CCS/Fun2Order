@@ -18,7 +18,8 @@ class MenuListTableViewController: UITableViewController {
     var segmentItemData: [String] = [String]()
 
     var adLoader: GADAdLoader!
-    var nativeAd: GADUnifiedNativeAd!
+    //var nativeAd: GADUnifiedNativeAd!
+    var nativeAd: GADUnifiedNativeAd = GADUnifiedNativeAd()
     // Test NativeAd Unit ID
     //let adUnitID = "ca-app-pub-3940256099942544/3986624511"
     // James Real NativeAd Unit ID
@@ -262,6 +263,7 @@ class MenuListTableViewController: UITableViewController {
         }
         
         if indexPath.row == self.adIndex {
+           
             self.nativeAd.rootViewController = self
             heightConstraint?.isActive = false
 
