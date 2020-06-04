@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import Firebase
+import GoogleMobileAds
 
 class NotificationTableViewController: UITableViewController {
     var notificationList: [NotificationData] = [NotificationData]()
-    
+    var adBannerView: GADBannerView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let app = UIApplication.shared.delegate as! AppDelegate
@@ -19,6 +22,9 @@ class NotificationTableViewController: UITableViewController {
         let notificationCellViewNib: UINib = UINib(nibName: "NotificationActionCell", bundle: nil)
         self.tableView.register(notificationCellViewNib, forCellReuseIdentifier: "NotificationActionCell")
         
+        let adCellViewNib: UINib = UINib(nibName: "BannerAdCell", bundle: nil)
+        self.tableView.register(adCellViewNib, forCellReuseIdentifier: "BannerAdCell")
+
         refreshControl = UIRefreshControl()
         refreshControl?.attributedTitle = NSAttributedString(string: "正在更新通知列表")
         self.tableView.refreshControl = refreshControl
@@ -33,7 +39,17 @@ class NotificationTableViewController: UITableViewController {
         self.navigationController?.title = "通知列表"
         self.tabBarController?.title = "通知列表"
         navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
+        setupBannerAdView()
+    }
+
+    func setupBannerAdView() {
+        self.adBannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
         
+        // iOS-NotificationList-BannerAd adUnitID
+        self.adBannerView.adUnitID = "ca-app-pub-6672968234138119/9417830726"
+        self.adBannerView.delegate = self
+        self.adBannerView.rootViewController = self
+        self.adBannerView.load(GADRequest())
     }
 
     @objc func refreshList() {
@@ -44,32 +60,55 @@ class NotificationTableViewController: UITableViewController {
             self.tableView.reloadData()
             self.refreshControl?.endRefreshing()
         }
+        setupBannerAdView()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.notificationList.isEmpty {
-            return 0
+        if section == 0 {
+            return 1
+        } else {
+            if self.notificationList.isEmpty {
+                return 0
+            }
+            
+            return self.notificationList.count
         }
-        
-        return self.notificationList.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NotificationActionCell", for: indexPath) as! NotificationActionCell
-        
-        cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        cell.AdjustAutoLayout()
-        cell.setData(notification: self.notificationList[indexPath.row])
-        
-        return cell
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BannerAdCell", for: indexPath) as! BannerAdCell
+            
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            
+            let adSize = GADAdSizeFromCGSize(CGSize(width: CGFloat(self.tableView.contentSize.width - 20), height: CGFloat(NOTIFICATION_LIST_BANNER_AD_HEIGHT - 20)))
+            self.adBannerView.adSize = adSize
+            cell.contentView.addSubview(self.adBannerView)
+            self.adBannerView.center = cell.contentView.center
+
+            cell.AdjustAutoLayout()
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "NotificationActionCell", for: indexPath) as! NotificationActionCell
+            
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            cell.AdjustAutoLayout()
+            cell.setData(notification: self.notificationList[indexPath.row])
+            
+            return cell
+        }
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 150
+        if indexPath.section == 0 {
+            return CGFloat(NOTIFICATION_LIST_BANNER_AD_HEIGHT)
+        } else {
+            return 150
+        }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -131,11 +170,14 @@ class NotificationTableViewController: UITableViewController {
     }
 */
 
-/*
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        print("NotificationTableViewController -> trailingSwipeActionsConfigurationForRowAt")
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.section == 0 {
+            return false
+        } else {
+            return true
+        }
     }
-*/
+
     override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return "刪除"
     }
@@ -176,5 +218,17 @@ extension NotificationTableViewController: ApplicationRefreshNotificationDelegat
             setNotificationBadgeNumber()
             self.tableView.reloadData()
         }
+    }
+}
+
+extension NotificationTableViewController: GADBannerViewDelegate {
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        print("Banner loaded successfully")
+        self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+    }
+     
+    func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
+        print("Fail to receive ads")
+        print(error)
     }
 }

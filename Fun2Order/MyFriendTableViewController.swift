@@ -37,8 +37,8 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
     func refreshFriendList() {
         self.friendList.removeAll()
         self.friendList = retrieveFriendList()
-        self.refreshControl?.endRefreshing()
         self.tableView.reloadData()
+        self.refreshControl?.endRefreshing()
     }
 
     @objc func handleLongPressMemberCell(_ sender: UILongPressGestureRecognizer) {

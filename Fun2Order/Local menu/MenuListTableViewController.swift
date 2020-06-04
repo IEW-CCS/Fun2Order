@@ -20,15 +20,20 @@ class MenuListTableViewController: UITableViewController {
     var adLoader: GADAdLoader!
     //var nativeAd: GADUnifiedNativeAd!
     var nativeAd: GADUnifiedNativeAd = GADUnifiedNativeAd()
+
     // Test NativeAd Unit ID
     //let adUnitID = "ca-app-pub-3940256099942544/3986624511"
+
     // James Real NativeAd Unit ID
     //let adUnitID = "ca-app-pub-9511677579097261/2673063242"
 
-    // IEW Real NativeAd Unit ID
-    let adUnitID = "ca-app-pub-6672968234138119/7456638522"
+    // IEW Real NativeAd Unit ID 1
+    //let adUnitID = "ca-app-pub-6672968234138119/7456638522"
+    
+    // IEW Real NativeAd Unit ID 2
+    let adUnitID = "ca-app-pub-6672968234138119/4619965469"
 
-    var adIndex: Int = 0
+    //var adIndex: Int = 0
     var heightConstraint : NSLayoutConstraint?
 
     override func viewDidLoad() {
@@ -43,7 +48,18 @@ class MenuListTableViewController: UITableViewController {
         let categoryCellViewNib: UINib = UINib(nibName: "MenuListCategoryCell", bundle: nil)
         self.tableView.register(categoryCellViewNib, forCellReuseIdentifier: "MenuListCategoryCell")
 
+        refreshControl = UIRefreshControl()
+        refreshControl?.attributedTitle = NSAttributedString(string: "正在更新菜單列表")
+        self.tableView.refreshControl = refreshControl
+        refreshControl?.addTarget(self, action: #selector(pullToRefreshMenuList), for: .valueChanged)
+
+        //setupAdLoader()
+        downloadFBMenuInformationList(select_index: self.selectedIndex)
+    }
+
+    @objc func pullToRefreshMenuList() {
         setupAdLoader()
+        downloadFBMenuInformationList(select_index: self.selectedIndex)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -52,10 +68,12 @@ class MenuListTableViewController: UITableViewController {
         self.navigationController?.title = "菜單首頁"
         self.tabBarController?.title = "菜單首頁"
         navigationController?.setNavigationBarHidden(false, animated: false)
+        setupAdLoader()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: false)
+        //setupAdLoader()
         //showMyProfileTabBarToolTip()
     }
 
@@ -97,7 +115,6 @@ class MenuListTableViewController: UITableViewController {
                 let app = UIApplication.shared.delegate as! AppDelegate
                 app.toolTipDelegate?.triggerCreateMenuTooltip(parent: self.view)
                 self.showMyProfileTabBarToolTip()
-
             } else {
                 //self.tableView.reloadData()
                 print("downloadFBMenuInformationList snapshot doesn't exist!")
@@ -105,11 +122,13 @@ class MenuListTableViewController: UITableViewController {
                 app.toolTipDelegate?.triggerCreateMenuTooltip(parent: self.view)
                 self.filterMenuInfosByCategory()
                 self.tableView.reloadData()
-
+                self.refreshControl?.endRefreshing()
                 return
             }
+            self.refreshControl?.endRefreshing()
         }) { (error) in
             print("downloadFBMenuInformationList: \(error.localizedDescription)")
+            self.refreshControl?.endRefreshing()
         }
     }
     
@@ -160,10 +179,11 @@ class MenuListTableViewController: UITableViewController {
 
     func filterMenuInfosByCategory() {
         self.menuInfosByCategory.removeAll()
+        
         // Add empty MenuInformation for NativeAd
-        let tmpMenuInfo: MenuInformation = MenuInformation()
-        self.menuInfosByCategory.append(tmpMenuInfo)  //Add an empty menu information for Ad cell
-        self.adIndex = 0
+        //let tmpMenuInfo: MenuInformation = MenuInformation()
+        //self.menuInfosByCategory.append(tmpMenuInfo)  //Add an empty menu information for Ad cell
+        //self.adIndex = 0
         
         
         if !self.menuInfos.isEmpty {
@@ -231,7 +251,7 @@ class MenuListTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return 1
+            return 2
         } else {
             //if self.menuInfos.isEmpty {
             //    return 0
@@ -247,7 +267,7 @@ class MenuListTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+        if indexPath.section == 0 && indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MenuListCategoryCell", for: indexPath) as! MenuListCategoryCell
             
             if self.menuInfos.isEmpty {
@@ -262,8 +282,8 @@ class MenuListTableViewController: UITableViewController {
             return cell
         }
         
-        if indexPath.row == self.adIndex {
-           
+        //if indexPath.row == self.adIndex {
+        if indexPath.section == 0 && indexPath.row == 1 {
             self.nativeAd.rootViewController = self
             heightConstraint?.isActive = false
 
@@ -289,6 +309,8 @@ class MenuListTableViewController: UITableViewController {
                 (adView.callToActionView as? UIButton)?.setTitle(nativeAd.callToAction, for: .normal)
             }
             adView.callToActionView?.isHidden = nativeAd.callToAction == nil
+            
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
         }
         
@@ -308,34 +330,34 @@ class MenuListTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 44
-        } else {
-            if indexPath.row == self.adIndex {
-                return 190
+            if indexPath.row == 0 {
+                return 44
             }
             
+            return 190
+        } else {
             return 100
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
-            if indexPath.row != self.adIndex {
-                let cell = self.tableView.cellForRow(at: indexPath) as! FavoriteStoreCell
+            //if indexPath.row != self.adIndex {
+            let cell = self.tableView.cellForRow(at: indexPath) as! FavoriteStoreCell
 
-                let dataIndex = cell.indexPath
-                
-                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                guard let menuCreateController = storyBoard.instantiateViewController(withIdentifier: "CREATEMENU_VC") as? CreateMenuTableViewController else{
-                    assertionFailure("[AssertionFailure] StoryBoard: CREATEMENU_VC can't find!! (QRCodeViewController)")
-                    return
-                }
-                menuCreateController.isEditedMode = true
-                menuCreateController.menuInformation = menuInfosByCategory[dataIndex!.row]
-                menuCreateController.delegate = self
-                
-                navigationController?.show(menuCreateController, sender: self)
+            let dataIndex = cell.indexPath
+            
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+            guard let menuCreateController = storyBoard.instantiateViewController(withIdentifier: "CREATEMENU_VC") as? CreateMenuTableViewController else{
+                assertionFailure("[AssertionFailure] StoryBoard: CREATEMENU_VC can't find!! (QRCodeViewController)")
+                return
             }
+            menuCreateController.isEditedMode = true
+            menuCreateController.menuInformation = menuInfosByCategory[dataIndex!.row]
+            menuCreateController.delegate = self
+            
+            navigationController?.show(menuCreateController, sender: self)
+            //}
         }
     }
 
@@ -343,10 +365,6 @@ class MenuListTableViewController: UITableViewController {
         if indexPath.section == 0 {
             return false
         } else {
-            if indexPath.row == self.adIndex {
-                return false
-            }
-            
             return true
         }
     }
@@ -416,13 +434,14 @@ extension MenuListTableViewController: CreateMenuDelegate {
 extension MenuListTableViewController: GADUnifiedNativeAdLoaderDelegate {
     func adLoader(_ adLoader: GADAdLoader, didFailToReceiveAdWithError error: GADRequestError) {
         print("\(adLoader) failed with error: \(error.localizedDescription)")
-        downloadFBMenuInformationList(select_index: 0)
+        //downloadFBMenuInformationList(select_index: 0)
     }
     
     func adLoader(_ adLoader: GADAdLoader, didReceive nativeAd: GADUnifiedNativeAd) {
         print("Received native ad: \(nativeAd)")
         self.nativeAd = nativeAd
-        downloadFBMenuInformationList(select_index: 0)
+        self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        //downloadFBMenuInformationList(select_index: 0)
     }
     
     func adLoaderDidFinishLoading(_ adLoader: GADAdLoader) {

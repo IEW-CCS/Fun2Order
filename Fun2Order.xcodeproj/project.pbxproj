@@ -205,6 +205,8 @@
 		36973AD823ADA91A008804C5 /* Icon_QRCode.png in Resources */ = {isa = PBXBuildFile; fileRef = 36973AD723ADA91A008804C5 /* Icon_QRCode.png */; };
 		36973ADA23AE5F19008804C5 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973AD923AE5F19008804C5 /* ChangePasswordViewController.swift */; };
 		36973ADC23AF2792008804C5 /* GenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973ADB23AF2792008804C5 /* GenderViewController.swift */; };
+		36A2283724888BAE00AB98BC /* BannerAdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A2283524888BAE00AB98BC /* BannerAdCell.swift */; };
+		36A2283824888BAE00AB98BC /* BannerAdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36A2283624888BAE00AB98BC /* BannerAdCell.xib */; };
 		36AA198B23D51CFC0039A758 /* HistoryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AA198A23D51CFC0039A758 /* HistoryPageViewController.swift */; };
 		36AA198D23D51D330039A758 /* StatusSummaryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AA198C23D51D330039A758 /* StatusSummaryTableViewController.swift */; };
 		36AA198F23D51DA80039A758 /* OrderItemSummaryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AA198E23D51DA80039A758 /* OrderItemSummaryTableViewController.swift */; };
@@ -611,6 +613,8 @@
 		36973AD723ADA91A008804C5 /* Icon_QRCode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_QRCode.png; sourceTree = "<group>"; };
 		36973AD923AE5F19008804C5 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		36973ADB23AF2792008804C5 /* GenderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderViewController.swift; sourceTree = "<group>"; };
+		36A2283524888BAE00AB98BC /* BannerAdCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdCell.swift; sourceTree = "<group>"; };
+		36A2283624888BAE00AB98BC /* BannerAdCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BannerAdCell.xib; sourceTree = "<group>"; };
 		36AA198A23D51CFC0039A758 /* HistoryPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryPageViewController.swift; sourceTree = "<group>"; };
 		36AA198C23D51D330039A758 /* StatusSummaryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusSummaryTableViewController.swift; sourceTree = "<group>"; };
 		36AA198E23D51DA80039A758 /* OrderItemSummaryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItemSummaryTableViewController.swift; sourceTree = "<group>"; };
@@ -1218,6 +1222,8 @@
 				365DF517244D57C9004C47C4 /* ReportCell.xib */,
 				36757C4B2482181800F5C08A /* BasicTitleCell.swift */,
 				36757C4C2482181800F5C08A /* BasicTitleCell.xib */,
+				36A2283524888BAE00AB98BC /* BannerAdCell.swift */,
+				36A2283624888BAE00AB98BC /* BannerAdCell.xib */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -1618,6 +1624,7 @@
 				36DC7A462356CB94009D48F5 /* 金桔檸檬@2x.png in Resources */,
 				36C1F44A23D7FCC80004B0CD /* MenuOrderMemberCell.xib in Resources */,
 				36973AD823ADA91A008804C5 /* Icon_QRCode.png in Resources */,
+				36A2283824888BAE00AB98BC /* BannerAdCell.xib in Resources */,
 				362C481E235B48950010C845 /* Add_Icon.png in Resources */,
 				36DC7A522356CB94009D48F5 /* 仙草凍奶茶@2x.png in Resources */,
 				36D583D22354151500AEB84F /* 丸作@2x.jpg in Resources */,
@@ -1810,6 +1817,7 @@
 				362C4824235B596A0010C845 /* RecipeTableViewController.swift in Sources */,
 				3659704C23B06A49008CDD57 /* ConfigFavoriteProductCell.swift in Sources */,
 				36857C9023E66BC100B410B8 /* NotificationActionCell.swift in Sources */,
+				36A2283724888BAE00AB98BC /* BannerAdCell.swift in Sources */,
 				36C6CAF723FAA5DE00C27DFB /* MenuHomeNativeAdCell.swift in Sources */,
 				3675ED48238ABE93003A94B7 /* FAVORITE_STORE+CoreDataProperties.swift in Sources */,
 				362DA93F23D2932000FA90DB /* ORDER_INFORMATION+CoreDataProperties.swift in Sources */,
@@ -2032,7 +2040,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -2060,7 +2068,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
