@@ -2095,6 +2095,52 @@
             </objects>
             <point key="canvasLocation" x="-478" y="-1215"/>
         </scene>
+        <!--好友列表-->
+        <scene sceneID="VfP-hU-dxt">
+            <objects>
+                <tableViewController storyboardIdentifier="SHAREFRIENDLIST_VC" title="好友列表" id="OfH-HV-50H" customClass="ShareMenuFriendListTableViewController" customModule="揪Fun" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="keu-lK-2G6">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="212-21-1zO">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <items>
+                                <barButtonItem title="取消" id="3G1-92-PTN">
+                                    <connections>
+                                        <action selector="cancelShareMenu:" destination="OfH-HV-50H" id="ddj-S7-hIK"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="p4D-o5-O7i"/>
+                                <barButtonItem title="確定" id="HDr-Ic-Mpi">
+                                    <connections>
+                                        <action selector="confirmShareMenu:" destination="OfH-HV-50H" id="58Q-d6-Yoi"/>
+                                    </connections>
+                                </barButtonItem>
+                            </items>
+                        </toolbar>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="CCu-Nc-80y">
+                                <rect key="frame" x="0.0" y="72" width="414" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CCu-Nc-80y" id="big-3F-Pge">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="OfH-HV-50H" id="r19-IA-sJG"/>
+                            <outlet property="delegate" destination="OfH-HV-50H" id="iFo-wY-yiF"/>
+                        </connections>
+                    </tableView>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HvU-Sg-W7U" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="285" y="-1211"/>
+        </scene>
         <!--首頁-->
         <scene sceneID="SWo-1a-eq6">
             <objects>
@@ -2230,7 +2276,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qCW-hl-vR7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="764" y="-1050"/>
+            <point key="canvasLocation" x="1700" y="-1080"/>
         </scene>
         <!--Home Tab Bar-->
         <scene sceneID="ape-v2-BcT">
@@ -4037,7 +4083,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="tEh-jb-Yam">
-                            <rect key="frame" x="0.0" y="-311" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
                                 <barButtonItem title="取消" id="1aH-bF-icT">

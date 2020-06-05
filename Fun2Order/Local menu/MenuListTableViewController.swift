@@ -9,13 +9,14 @@
 import UIKit
 import Firebase
 
-class MenuListTableViewController: UITableViewController {
+class MenuListTableViewController: UITableViewController, UIGestureRecognizerDelegate {
     var menuBrandCategory:[String] = [String]()
     var menuInfos:[MenuInformation] = [MenuInformation]()
     var menuInfosByCategory:[MenuInformation] = [MenuInformation]()
     var createMenuController: CreateMenuTableViewController!
     var selectedIndex: Int = 0
     var segmentItemData: [String] = [String]()
+    var selectedMenuIndex: Int = -1
 
     var adLoader: GADAdLoader!
     //var nativeAd: GADUnifiedNativeAd!
@@ -35,6 +36,7 @@ class MenuListTableViewController: UITableViewController {
 
     //var adIndex: Int = 0
     var heightConstraint : NSLayoutConstraint?
+    var isAdLoadedSuccess: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -241,6 +243,92 @@ class MenuListTableViewController: UITableViewController {
         self.adLoader.delegate = self
     }
     
+    @objc func handleLongPressMenuCell(_ sender: UILongPressGestureRecognizer) {
+        if(sender.state == .began) {
+            if Auth.auth().currentUser?.uid == nil {
+                print("MenuListTableViewController handleLongPressMenuCell Auth.auth().currentUser?.uid == nil")
+                return
+            }
+            
+            //let menuIndex = sender.view!.tag
+            self.selectedMenuIndex = sender.view!.tag
+            let controller = UIAlertController(title: "分享菜單", message: nil, preferredStyle: .actionSheet)
+            
+            let shareAction = UIAlertAction(title: "分享給好友", style: .default) { (_) in
+                //var message: String = ""
+                //message = message + "Share Menu Information[\(menuIndex)]" + "\n"
+                //message = message + "Brand Name [\(self.menuInfosByCategory[menuIndex].brandName)]" + "\n"
+                //message = message + "Brand Category [\(self.menuInfosByCategory[menuIndex].brandCategory)]"
+                //presentSimpleAlertMessage(title: "Test", message: message)
+                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                guard let vc = storyboard.instantiateViewController(withIdentifier: "SHAREFRIENDLIST_VC") as? ShareMenuFriendListTableViewController else {
+                    assertionFailure("[AssertionFailure] StoryBoard: SHAREFRIENDLIST_VC can't find!! (ViewController)")
+                    return
+                }
+                
+                vc.delegate = self
+                self.navigationController?.show(vc, sender: self)
+            }
+            
+            shareAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+            controller.addAction(shareAction)
+            
+            let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
+               print("Cancel update")
+            }
+            cancelAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+            controller.addAction(cancelAction)
+            
+            present(controller, animated: true, completion: nil)
+        }
+    }
+
+    func shareMenuInformation(menu_index: Int, friends: [String]) {
+        if menu_index < 0 {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "菜單索引值錯誤！")
+            return
+        }
+        
+        if friends.isEmpty {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "選擇的好友列表為空白！")
+            return
+        }
+        
+        //let user_id: String = "IuVgttLJ19ULXzojeaGgd3Rwh2D2"
+        for i in 0...friends.count - 1 {
+            downloadFBUserProfile(user_id: friends[i], completion: {(user_profile) in
+                if user_profile == nil {
+                    return
+                }
+                
+                var notifyData: NotificationData = NotificationData()
+                let sender = PushNotificationSender()
+                let myName: String = getMyUserName()
+
+                let title: String = "菜單分享"
+                let body: String = "有來自『\(myName)』分享的菜單資訊，請問您願意接受嗎？"
+
+                notifyData.messageTitle = title
+                notifyData.messageBody = body
+                notifyData.notificationType = NOTIFICATION_TYPE_SHARE_MENU
+                //notifyData.receiveTime = dateTimeString
+                notifyData.orderOwnerID = Auth.auth().currentUser!.uid
+                notifyData.orderOwnerName = myName
+                notifyData.menuNumber = self.menuInfosByCategory[menu_index].menuNumber
+                //notifyData.orderNumber = self.menuOrder.orderNumber
+                //notifyData.dueTime = self.menuOrder.dueTime
+                //notifyData.brandName = self.menuOrder.brandName
+                //notifyData.attendedMemberCount = self.menuOrder.contentItems.count
+                notifyData.messageDetail = Auth.auth().currentUser!.uid
+                notifyData.isRead = "N"
+
+                sender.sendPushNotification(to: user_profile!.tokenID, title: title, body: body, data: notifyData)
+            })
+        }
+
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         //if self.menuInfos.isEmpty {
         //    return 1
@@ -284,6 +372,10 @@ class MenuListTableViewController: UITableViewController {
         
         //if indexPath.row == self.adIndex {
         if indexPath.section == 0 && indexPath.row == 1 {
+            if !self.isAdLoadedSuccess {
+                return UITableViewCell()
+            }
+            
             self.nativeAd.rootViewController = self
             heightConstraint?.isActive = false
 
@@ -303,7 +395,7 @@ class MenuListTableViewController: UITableViewController {
             (adView.advertiserView as! UILabel).text = nativeAd.advertiser
             (adView.iconView as? UIImageView)?.image = nativeAd.icon?.image
             //(adView.callToActionView as? UIButton)?.setTitle(nativeAd.callToAction, for: .normal)
-            if nativeAd.callToAction == "INSTALL" {
+            if nativeAd.callToAction == "INSTALL" || nativeAd.callToAction == "Install" {
                 (adView.callToActionView as? UIButton)?.setTitle("安裝", for: .normal)
             } else {
                 (adView.callToActionView as? UIButton)?.setTitle(nativeAd.callToAction, for: .normal)
@@ -324,6 +416,11 @@ class MenuListTableViewController: UITableViewController {
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         cell.delegate = self
         cell.indexPath = indexPath
+        cell.tag = indexPath.row
+
+        //let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPressMenuCell(_:)))
+        //longPressGesture.delegate = self
+        //cell.addGestureRecognizer(longPressGesture)
 
         return cell
     }
@@ -332,9 +429,13 @@ class MenuListTableViewController: UITableViewController {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 return 44
+            } else {
+                if self.isAdLoadedSuccess {
+                    return 190
+                } else {
+                    return 0
+                }
             }
-            
-            return 190
         } else {
             return 100
         }
@@ -434,12 +535,14 @@ extension MenuListTableViewController: CreateMenuDelegate {
 extension MenuListTableViewController: GADUnifiedNativeAdLoaderDelegate {
     func adLoader(_ adLoader: GADAdLoader, didFailToReceiveAdWithError error: GADRequestError) {
         print("\(adLoader) failed with error: \(error.localizedDescription)")
+        self.isAdLoadedSuccess = false
         //downloadFBMenuInformationList(select_index: 0)
     }
     
     func adLoader(_ adLoader: GADAdLoader, didReceive nativeAd: GADUnifiedNativeAd) {
         print("Received native ad: \(nativeAd)")
         self.nativeAd = nativeAd
+        self.isAdLoadedSuccess = true
         self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         //downloadFBMenuInformationList(select_index: 0)
     }
@@ -536,5 +639,11 @@ extension MenuListTableViewController: MenuListCategoryCellDelegate {
 extension MenuListTableViewController: BrandCategoryDelegate {
     func deleteBrandCategoryComplete(sender: BrandCategoryTableViewController) {
         downloadFBMenuInformationList(select_index: self.selectedIndex)
+    }
+}
+
+extension MenuListTableViewController: ShareMenuFriendListDelegate {
+    func getShareFriendList(sender: ShareMenuFriendListTableViewController, friend_list: [String]) {
+        shareMenuInformation(menu_index: self.selectedMenuIndex, friends: friend_list)
     }
 }

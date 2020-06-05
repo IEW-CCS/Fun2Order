@@ -47,6 +47,11 @@ class SelectMemberCell: UITableViewCell {
     
     func receiveUserProfile(user_profile: UserProfile?) {
         if user_profile == nil {
+            self.selectCheckBox.isChecked = false
+            self.selectCheckBox.isCheckEnabled = false
+            self.checkStatus = false
+            self.memberLabel.text = "好友資料錯誤"
+            self.delegate?.setMemberSelectedStatus(cell: self, status: self.checkStatus, data_index: self.tag)
             return
         }
         
@@ -71,8 +76,9 @@ class SelectMemberCell: UITableViewCell {
         self.memberLabel.text = name
     }
 
-    func setData(member_id: String, member_name: String) {
+    func setData(member_id: String, member_name: String, ini_status: Bool) {
         //self.memberLabel.text = member_name
+        self.selectCheckBox.isChecked = ini_status
         downloadFBMemberImage(member_id: member_id, completion: receiveMemberImage)
         downloadFBUserProfile(user_id: member_id, completion: receiveUserProfile)
     }

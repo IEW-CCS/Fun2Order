@@ -45,7 +45,7 @@ class VerifyMailController: UIViewController {
                 let alert = UIAlertController(title: "Sign In Error", message: "Please Enter Correct Email or Password.", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self!.present(alert, animated: true, completion: nil)
-                
+                return
             } else {
                 self!.inputUserName()
             }

@@ -72,14 +72,43 @@ func deleteFBMenuOrderInformation(user_id: String, order_number: String) {
     databaseRef.child(pathString).removeValue()
 }
 
-/*
-func downloadFBMenuInformation(user_id: String, menu_number: String, completion: @escaping(MenuInformation?, [UIImage]?) -> Void) {
+func downloadFBMenuInformation(user_id: String, menu_number: String, completion: @escaping(MenuInformation?) -> Void) {
+    var menuData: MenuInformation = MenuInformation()
+
+    let databaseRef = Database.database().reference()
     
-    downloadFBMultiMenuImages(images_url: <#T##[String]#>, completion: { (images) in
-        
-    })
+    let pathString = "USER_MENU_INFORMATION/\(user_id)/\(menu_number)"
+    
+    databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+        if snapshot.exists() {
+            let menuInfo = snapshot.value
+            let jsonData = try? JSONSerialization.data(withJSONObject: menuInfo as Any, options: [])
+            //let jsonString = String(data: jsonData!, encoding: .utf8)!
+            //print("jsonString = \(jsonString)")
+
+            let decoder: JSONDecoder = JSONDecoder()
+            do {
+                menuData = try decoder.decode(MenuInformation.self, from: jsonData!)
+                //print("menuData decoded successful !!")
+                //print("menuData = \(menuData)")
+                completion(menuData)
+            } catch {
+                print("attendGroupOrder menuData jsonData decode failed: \(error.localizedDescription)")
+                presentSimpleAlertMessage(title: "資料錯誤", message: "菜單資料讀取錯誤，請團購發起人重發。")
+                completion(nil)
+            }
+        } else {
+            print("attendGroupOrder USER_MENU_INFORMATION snapshot doesn't exist!")
+            presentSimpleAlertMessage(title: "資料錯誤", message: "菜單資料不存在，請詢問團購發起人相關訊息。")
+            completion(nil)
+        }
+    }) { (error) in
+        print(error.localizedDescription)
+        presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
+        completion(nil)
+    }
 }
-*/
+
 
 func downloadFBMultiMenuImages(images_url: [String], completion: @escaping([UIImage]?) -> Void) {
     var returnImages: [UIImage]?

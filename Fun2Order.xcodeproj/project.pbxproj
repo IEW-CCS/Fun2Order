@@ -207,6 +207,7 @@
 		36973ADC23AF2792008804C5 /* GenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36973ADB23AF2792008804C5 /* GenderViewController.swift */; };
 		36A2283724888BAE00AB98BC /* BannerAdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A2283524888BAE00AB98BC /* BannerAdCell.swift */; };
 		36A2283824888BAE00AB98BC /* BannerAdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36A2283624888BAE00AB98BC /* BannerAdCell.xib */; };
+		36A2283A24892F8D00AB98BC /* ShareMenuFriendListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A2283924892F8D00AB98BC /* ShareMenuFriendListTableViewController.swift */; };
 		36AA198B23D51CFC0039A758 /* HistoryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AA198A23D51CFC0039A758 /* HistoryPageViewController.swift */; };
 		36AA198D23D51D330039A758 /* StatusSummaryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AA198C23D51D330039A758 /* StatusSummaryTableViewController.swift */; };
 		36AA198F23D51DA80039A758 /* OrderItemSummaryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AA198E23D51DA80039A758 /* OrderItemSummaryTableViewController.swift */; };
@@ -615,6 +616,7 @@
 		36973ADB23AF2792008804C5 /* GenderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderViewController.swift; sourceTree = "<group>"; };
 		36A2283524888BAE00AB98BC /* BannerAdCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdCell.swift; sourceTree = "<group>"; };
 		36A2283624888BAE00AB98BC /* BannerAdCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BannerAdCell.xib; sourceTree = "<group>"; };
+		36A2283924892F8D00AB98BC /* ShareMenuFriendListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMenuFriendListTableViewController.swift; sourceTree = "<group>"; };
 		36AA198A23D51CFC0039A758 /* HistoryPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryPageViewController.swift; sourceTree = "<group>"; };
 		36AA198C23D51D330039A758 /* StatusSummaryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusSummaryTableViewController.swift; sourceTree = "<group>"; };
 		36AA198E23D51DA80039A758 /* OrderItemSummaryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItemSummaryTableViewController.swift; sourceTree = "<group>"; };
@@ -827,6 +829,7 @@
 				36AA3C982476B3210037EF1C /* MenuImageDescriptionTableViewController.swift */,
 				36757C472482169800F5C08A /* BrandCategoryTableViewController.swift */,
 				36757C532483466000F5C08A /* OrderProductListTableViewController.swift */,
+				36A2283924892F8D00AB98BC /* ShareMenuFriendListTableViewController.swift */,
 			);
 			path = "Local menu";
 			sourceTree = "<group>";
@@ -1871,6 +1874,7 @@
 				36BBA58B23F83AB900C9261A /* RecipeCategoryViewController.swift in Sources */,
 				F505DDEA23692AC900E3F681 /* VerifyMailController.swift in Sources */,
 				363DE7AC23CC9B1C00C60935 /* TemplateViewController.swift in Sources */,
+				36A2283A24892F8D00AB98BC /* ShareMenuFriendListTableViewController.swift in Sources */,
 				36B6D97C240412F400041C2C /* GroupFriendListTableViewController.swift in Sources */,
 				3625ACCD23C707930037B865 /* MenuItemTableViewController.swift in Sources */,
 				36857CA323E9428F00B410B8 /* MENU_ICON+CoreDataProperties.swift in Sources */,
@@ -2040,7 +2044,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -2068,7 +2072,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;

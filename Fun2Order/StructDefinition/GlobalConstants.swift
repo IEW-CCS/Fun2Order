@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+let DEMO_ACCOUNTS: [String] = ["+886912345678", "+886934123456", "+8613123456789", "+8614123456789","+8615123456789"]
+let DEMO_EMAILS: [String] = ["robohood83@gmail.com", "iewccs2019@gmail.com", "fun2order111@gmail.com", "func2order222@gmail.com","fun2order333@gmail.com"]
+let DEMO_PASSWD: [String] = ["1234567", "1234567", "1234567", "1234567", "1234567"]
+
 let DATETIME_FORMATTER: String = "yyyyMMddHHmmssSSS"
 let DATETIME_FORMATTER2: String = "yyyyMMddHHmmss"
 let TAIWAN_DATETIME_FORMATTER: String = "yyyy年MM月dd日 HH:mm:ss"

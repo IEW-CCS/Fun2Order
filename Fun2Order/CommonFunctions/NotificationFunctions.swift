@@ -257,6 +257,11 @@ func shareMenuInformationNotification(message: String, user_id: String, menu_num
 
     let addAction = UIAlertAction(title: "接受", style: .default) { (_) in
         print("Click to accept shared menu information [\(menu_number)] from [\(user_id)]")
+        downloadFBMenuInformation(user_id: user_id, menu_number: menu_number, completion: { (menu_info) in
+            if let menu_info = menu_info {
+                presentSimpleAlertMessage(title: "菜單分享", message: "Menu Brand = [\(menu_info.brandName)]\nMenu Category = [\(menu_info.brandCategory)]")
+            }
+        })
         alertWindow.isHidden = true
     }
     
@@ -311,8 +316,8 @@ func verifyNotificationType(type: String) -> Bool {
         case NOTIFICATION_TYPE_SHARE_MENU:
             return true
         
-        case NOTIFICATION_TYPE_SHARE_GROUP_FRIEND:
-            return true
+        //case NOTIFICATION_TYPE_SHARE_GROUP_FRIEND:
+        //    return true
         
         default:
             return false

@@ -13,6 +13,7 @@ import GoogleMobileAds
 class NotificationTableViewController: UITableViewController {
     var notificationList: [NotificationData] = [NotificationData]()
     var adBannerView: GADBannerView!
+    var isAdLoadedSuccess: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,6 +82,10 @@ class NotificationTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
+            if !self.isAdLoadedSuccess {
+                return UITableViewCell()
+            }
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: "BannerAdCell", for: indexPath) as! BannerAdCell
             
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
@@ -105,7 +110,13 @@ class NotificationTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return CGFloat(NOTIFICATION_LIST_BANNER_AD_HEIGHT)
+            if self.isAdLoadedSuccess {
+                print("section 0 height return\(NOTIFICATION_LIST_BANNER_AD_HEIGHT)")
+                return CGFloat(NOTIFICATION_LIST_BANNER_AD_HEIGHT)
+            } else {
+                print("section 0 height return 0")
+                return 0
+            }
         } else {
             return 150
         }
@@ -224,11 +235,15 @@ extension NotificationTableViewController: ApplicationRefreshNotificationDelegat
 extension NotificationTableViewController: GADBannerViewDelegate {
     func adViewDidReceiveAd(_ bannerView: GADBannerView) {
         print("Banner loaded successfully")
+        self.isAdLoadedSuccess = true
         self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
     }
      
     func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
         print("Fail to receive ads")
         print(error)
+        self.isAdLoadedSuccess = false
+        self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        //self.tableView.reloadData()
     }
 }

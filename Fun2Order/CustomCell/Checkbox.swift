@@ -68,7 +68,7 @@ public class Checkbox: UIView {
 
     private func setupDefaults() {
         backgroundColor = UIColor.init(white: 1, alpha: 0)
-        uncheckedBorderColor = tintColor
+        uncheckedBorderColor = UIColor.lightGray
         checkedBorderColor = tintColor
         checkmarkColor = tintColor
         //uncheckedBorderColor = UIColor.lightGray
