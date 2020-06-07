@@ -239,6 +239,7 @@ class MenuListTableViewController: UITableViewController, UIGestureRecognizerDel
 
         self.adLoader = GADAdLoader(adUnitID: self.adUnitID, rootViewController: self, adTypes: [.unifiedNative], options: nil)
         //self.adLoader = GADAdLoader(adUnitID: self.adUnitID, rootViewController: self, adTypes: [.unifiedNative], options: [multipleAdsOptions])
+
         self.adLoader.load(GADRequest())
         self.adLoader.delegate = self
     }
@@ -418,9 +419,9 @@ class MenuListTableViewController: UITableViewController, UIGestureRecognizerDel
         cell.indexPath = indexPath
         cell.tag = indexPath.row
 
-        //let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPressMenuCell(_:)))
-        //longPressGesture.delegate = self
-        //cell.addGestureRecognizer(longPressGesture)
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPressMenuCell(_:)))
+        longPressGesture.delegate = self
+        cell.addGestureRecognizer(longPressGesture)
 
         return cell
     }

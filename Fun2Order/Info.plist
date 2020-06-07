@@ -42,11 +42,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>APP將取用相機</string>
+	<string>以用於製作菜單，指定會員頭像及掃描好友QR Code，請問是否願意讓揪Fun存取？</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>App將寫入相機</string>
+	<string>以用於製作菜單，指定會員頭像及掃描好友QR Code，請問是否願意讓揪Fun存取？</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>APP將存取相簿</string>
+	<string>以用於製作菜單，指定會員頭像及掃描好友QR Code，請問是否願意讓揪Fun存取？</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

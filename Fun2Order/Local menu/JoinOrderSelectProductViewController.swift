@@ -22,6 +22,7 @@ class JoinOrderSelectProductViewController: UIViewController, UITextFieldDelegat
     @IBOutlet weak var buttonRecipe: UIButton!
     @IBOutlet weak var tableViewProduct: UITableView!
     @IBOutlet weak var textComments: UITextField!
+    @IBOutlet weak var labelRecipe: UILabel!
     
     weak var delegate: JoinOrderSelectProductDelegate?
     var menuInformation: MenuInformation = MenuInformation()
@@ -32,6 +33,7 @@ class JoinOrderSelectProductViewController: UIViewController, UITextFieldDelegat
         super.viewDidLoad()
         labelProductName.text = ""
         labelQuantity.text = "1"
+        self.labelRecipe.text = ""
         
         if self.menuInformation.menuItems == nil {
             self.labelProductName.isEnabled = true
@@ -134,6 +136,8 @@ extension JoinOrderSelectProductViewController: JoinOrderSelectRecipeDelegate {
                 }
             }
         }
+
+        self.labelRecipe.text = recipeString
         
         if isAnyRecipeItemFound {
             var tmpMenuRecipes: [MenuRecipe] = [MenuRecipe]()
