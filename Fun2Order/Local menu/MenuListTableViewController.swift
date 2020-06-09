@@ -22,6 +22,8 @@ class MenuListTableViewController: UITableViewController, UIGestureRecognizerDel
     //var nativeAd: GADUnifiedNativeAd!
     var nativeAd: GADUnifiedNativeAd = GADUnifiedNativeAd()
 
+    let adUnitID = MENULIST_NATIVE_AD
+    
     // Test NativeAd Unit ID
     //let adUnitID = "ca-app-pub-3940256099942544/3986624511"
 
@@ -32,7 +34,7 @@ class MenuListTableViewController: UITableViewController, UIGestureRecognizerDel
     //let adUnitID = "ca-app-pub-6672968234138119/7456638522"
     
     // IEW Real NativeAd Unit ID 2
-    let adUnitID = "ca-app-pub-6672968234138119/4619965469"
+    //let adUnitID = "ca-app-pub-6672968234138119/4619965469"
 
     //var adIndex: Int = 0
     var heightConstraint : NSLayoutConstraint?
@@ -40,7 +42,9 @@ class MenuListTableViewController: UITableViewController, UIGestureRecognizerDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let app = UIApplication.shared.delegate as! AppDelegate
+        app.menuListDelegate = self
+
         let favoriteCellViewNib: UINib = UINib(nibName: "FavoriteStoreCell", bundle: nil)
         self.tableView.register(favoriteCellViewNib, forCellReuseIdentifier: "FavoriteStoreCell")
 
@@ -226,7 +230,6 @@ class MenuListTableViewController: UITableViewController, UIGestureRecognizerDel
 
     func deleteMenuInfo(index: IndexPath) {
         deleteMenuIcon(menu_number: self.menuInfosByCategory[index.row].menuNumber)
-        //deleteFBMenuInformation(user_id: self.menuInfosByCategory[index.row].userID, menu_number: self.menuInfosByCategory[index.row].menuNumber, image_url: self.menuInfosByCategory[index.row].menuImageURL)
         deleteFBMenuInformation(menu_info: self.menuInfosByCategory[index.row])
 
         print("MenuListTableViewController deleteMenuInfo downloadFBMenuInformationList")
@@ -234,11 +237,7 @@ class MenuListTableViewController: UITableViewController, UIGestureRecognizerDel
     }
     
     func setupAdLoader() {
-        //let multipleAdsOptions = GADMultipleAdsAdLoaderOptions()
-        //multipleAdsOptions.numberOfAds = 3
-
         self.adLoader = GADAdLoader(adUnitID: self.adUnitID, rootViewController: self, adTypes: [.unifiedNative], options: nil)
-        //self.adLoader = GADAdLoader(adUnitID: self.adUnitID, rootViewController: self, adTypes: [.unifiedNative], options: [multipleAdsOptions])
 
         self.adLoader.load(GADRequest())
         self.adLoader.delegate = self
@@ -256,12 +255,6 @@ class MenuListTableViewController: UITableViewController, UIGestureRecognizerDel
             let controller = UIAlertController(title: "分享菜單", message: nil, preferredStyle: .actionSheet)
             
             let shareAction = UIAlertAction(title: "分享給好友", style: .default) { (_) in
-                //var message: String = ""
-                //message = message + "Share Menu Information[\(menuIndex)]" + "\n"
-                //message = message + "Brand Name [\(self.menuInfosByCategory[menuIndex].brandName)]" + "\n"
-                //message = message + "Brand Category [\(self.menuInfosByCategory[menuIndex].brandCategory)]"
-                //presentSimpleAlertMessage(title: "Test", message: message)
-                
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 guard let vc = storyboard.instantiateViewController(withIdentifier: "SHAREFRIENDLIST_VC") as? ShareMenuFriendListTableViewController else {
                     assertionFailure("[AssertionFailure] StoryBoard: SHAREFRIENDLIST_VC can't find!! (ViewController)")
@@ -322,7 +315,7 @@ class MenuListTableViewController: UITableViewController, UIGestureRecognizerDel
                 //notifyData.brandName = self.menuOrder.brandName
                 //notifyData.attendedMemberCount = self.menuOrder.contentItems.count
                 notifyData.messageDetail = Auth.auth().currentUser!.uid
-                notifyData.isRead = "N"
+                notifyData.isRead = "Y"
 
                 sender.sendPushNotification(to: user_profile!.tokenID, title: title, body: body, data: notifyData)
             })
@@ -342,11 +335,6 @@ class MenuListTableViewController: UITableViewController, UIGestureRecognizerDel
         if section == 0 {
             return 2
         } else {
-            //if self.menuInfos.isEmpty {
-            //    return 0
-            //}
-            
-            //print("numberOfRowsInSection is : [\(self.menuInfosByCategory.count)]")
             if self.menuInfosByCategory.isEmpty {
                 return 0
             } else {
@@ -507,7 +495,7 @@ extension MenuListTableViewController: DisplayGroupOrderDelegate {
         }
 
         guard let groupOrderController = self.storyboard?.instantiateViewController(withIdentifier: "GroupOrder_VC") as? GroupOrderViewController else{
-            assertionFailure("[AssertionFailure] StoryBoard: QRCode_VC can't find!! (MenuListTableViewController)")
+            assertionFailure("[AssertionFailure] StoryBoard: GroupOrder_VC can't find!! (MenuListTableViewController)")
             return
         }
         groupOrderController.orderType = ORDER_TYPE_MENU
@@ -646,5 +634,12 @@ extension MenuListTableViewController: BrandCategoryDelegate {
 extension MenuListTableViewController: ShareMenuFriendListDelegate {
     func getShareFriendList(sender: ShareMenuFriendListTableViewController, friend_list: [String]) {
         shareMenuInformation(menu_index: self.selectedMenuIndex, friends: friend_list)
+    }
+}
+
+extension MenuListTableViewController: ApplicationRefreshMenuListDelegate {
+    func refreshMenuListFunction() {
+        print("MenuListTableViewController refreshMenuListFunction()")
+        downloadFBMenuInformationList(select_index: self.selectedIndex)
     }
 }

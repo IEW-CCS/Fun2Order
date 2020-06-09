@@ -95,8 +95,10 @@ class JoinGroupOrderTableViewController: UITableViewController {
         //self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-9511677579097261/6069385370")
 
         // IEW real Interstitial Ad
-        self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-6672968234138119/3517393514")
+        //self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-6672968234138119/3517393514")
 
+        let adUnitID = JOINORDER_INTERSTITIAL_AD
+        self.interstitialAd = GADInterstitial(adUnitID: adUnitID)
         let adRequest = GADRequest()
         self.interstitialAd.load(adRequest)
         self.interstitialAd.delegate = self

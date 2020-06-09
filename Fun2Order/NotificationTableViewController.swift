@@ -47,7 +47,8 @@ class NotificationTableViewController: UITableViewController {
         self.adBannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
         
         // iOS-NotificationList-BannerAd adUnitID
-        self.adBannerView.adUnitID = "ca-app-pub-6672968234138119/9417830726"
+        //self.adBannerView.adUnitID = "ca-app-pub-6672968234138119/9417830726"
+        self.adBannerView.adUnitID = NOTIFICATIONLIST_BANNER_AD
         self.adBannerView.delegate = self
         self.adBannerView.rootViewController = self
         self.adBannerView.load(GADRequest())

@@ -15,12 +15,17 @@ protocol ApplicationRefreshNotificationDelegate: class {
     func refreshNotificationList()
 }
 
+protocol ApplicationRefreshMenuListDelegate: class {
+    func refreshMenuListFunction()
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
 
     var window: UIWindow?
     var myTabBar: UITabBar?
     weak var notificationDelegate: ApplicationRefreshNotificationDelegate?
+    weak var menuListDelegate: ApplicationRefreshMenuListDelegate?
     weak var toolTipDelegate: GuideToolTipDelegate?
     var newFriendID: String = ""
 
@@ -94,15 +99,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print("application didRegisterForRemoteNotificationsWithDeviceToken")
         Messaging.messaging().apnsToken = deviceToken as Data
     }
-
-    /*
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
-                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print("application didReceiveRemoteNotification")
-        getNotifications(func_id: "application didRegisterForRemoteNotificationsWithDeviceToken", completion: refreshNotifyList)
-        completionHandler(UIBackgroundFetchResult.newData)
-    }
-    */
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         print("-------- userNotificationCenter  didReceive response")

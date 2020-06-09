@@ -244,7 +244,7 @@ func addNewFriendRequestNotification(message: String, friend_id: String, friend_
     
     cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
     controller.addAction(cancelAction)
-        
+
     alertWindow = presentAlert(controller)
 }
 
@@ -257,10 +257,56 @@ func shareMenuInformationNotification(message: String, user_id: String, menu_num
 
     let addAction = UIAlertAction(title: "接受", style: .default) { (_) in
         print("Click to accept shared menu information [\(menu_number)] from [\(user_id)]")
+        var inputAlert: UIWindow!
         downloadFBMenuInformation(user_id: user_id, menu_number: menu_number, completion: { (menu_info) in
-            if let menu_info = menu_info {
-                presentSimpleAlertMessage(title: "菜單分享", message: "Menu Brand = [\(menu_info.brandName)]\nMenu Category = [\(menu_info.brandCategory)]")
+            
+            var menu = menu_info
+            if menu == nil {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "存取菜單資訊錯誤")
+                return
             }
+            //presentSimpleAlertMessage(title: "菜單分享", message: "Menu Brand = [\(menu_info.brandName)]\nMenu Category = [\(menu_info.brandCategory)]")
+            let controller2 = UIAlertController(title: "請修改菜單品牌名稱及分類", message: nil, preferredStyle: .alert)
+            controller2.addTextField { (textField) in
+                textField.placeholder = "品牌名稱"
+                textField.text = menu!.brandName
+            }
+
+            controller2.addTextField { (textField) in
+                textField.placeholder = "菜單分類"
+                textField.text = menu!.brandCategory
+            }
+
+            let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
+                print("Cancel to update brand name & brand category!")
+                inputAlert.isHidden = true
+            }
+            
+            cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+            controller2.addAction(cancelAction)
+            
+            let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                let name_string = controller2.textFields?[0].text
+                if name_string == nil || name_string!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+                    presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的品牌名稱不能為空白，請重新輸入")
+                    return
+                }
+
+                let category_string = controller2.textFields?[1].text!.trimmingCharacters(in: .whitespacesAndNewlines)
+                
+                menu!.brandName = name_string!
+                menu!.brandCategory = category_string!
+                if menu!.multiMenuImageURL != nil {
+                    downloadFBMultiMenuImages(images_url: menu!.multiMenuImageURL!, completion: { (images) in
+                        uploadFBShareMenuInformation(menu_info: menu!, menu_images: images)
+                    })
+                }
+                inputAlert.isHidden = true
+            }
+            okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+            controller2.addAction(okAction)
+            
+            inputAlert = presentAlert(controller2)
         })
         alertWindow.isHidden = true
     }

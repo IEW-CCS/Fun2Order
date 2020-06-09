@@ -138,7 +138,8 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
             self.tableView.reloadData()
         }
     }
-    
+
+    /*
     func generateMenuNumber(date: Date) -> String {
         let timeZone = TimeZone.init(identifier: "UTC+8")
         let formatter = DateFormatter()
@@ -161,7 +162,8 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         
         return pathString
     }
-    
+    */
+
     func uploadMenuInformation(menu_info: MenuInformation) {
         if !self.imageArray.isEmpty {
             self.activityIndicator.startAnimating()
@@ -376,7 +378,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         }
         uploadFBUserProfile(user_profile: profile)
     }
-        
+
     @IBAction func editStoreInformation(_ sender: UIButton) {
         let controller = UIAlertController(title: "請輸入店家聯絡資訊", message: nil, preferredStyle: .alert)
 
@@ -422,6 +424,14 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
             if location_string != "" {
                 if self.menuInformation.locations == nil {
                     self.menuInformation.locations = [String]()
+                }
+                if !self.menuInformation.locations!.isEmpty {
+                    for i in 0...self.menuInformation.locations!.count - 1 {
+                        if self.menuInformation.locations![i] == location_string {
+                            presentSimpleAlertMessage(title: "錯誤訊息", message: "地點不能重覆，請重新輸入新地點")
+                            return
+                        }
+                    }
                 }
                 self.menuInformation.locations?.append(location_string!)
                 self.labelLocationCount.text = "\(self.menuInformation.locations!.count) 項"
@@ -472,6 +482,15 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                 tmpProductItem.sequenceNumber = 1
             } else {
                 tmpProductItem.sequenceNumber = self.menuInformation.menuItems![self.menuInformation.menuItems!.count - 1].sequenceNumber + 1
+            }
+            
+            if !self.menuInformation.menuItems!.isEmpty {
+                for i in 0...self.menuInformation.menuItems!.count - 1 {
+                    if self.menuInformation.menuItems![i].itemName == tmpProductItem.itemName {
+                        presentSimpleAlertMessage(title: "錯誤訊息", message: "產品名稱不能重覆，請重新輸入新產品名稱")
+                        return
+                    }
+                }
             }
 
             self.menuInformation.menuItems?.append(tmpProductItem)

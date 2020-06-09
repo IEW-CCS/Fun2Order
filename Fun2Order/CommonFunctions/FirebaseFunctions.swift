@@ -309,11 +309,157 @@ func uploadFBMenuOrderContentItem(item: MenuOrderMemberContent, completion: @esc
 }
 
 func uploadFBMenuRecipeTemplate(user_id: String, template: MenuRecipeTemplate) {
+    if user_id == "" || template.templateName == "" {
+        print("uploadFBMenuRecipeTemplate user_id is empty || template.templateName is empty")
+        return
+    }
+    
     let databaseRef = Database.database().reference()
     let pathString = "USER_CUSTOM_RECIPE_TEMPLATE/\(user_id)/\(template.templateName)"
     
     databaseRef.child(pathString).setValue(template.toAnyObject())
 }
 
+func uploadFBShareMenuInformation(menu_info: MenuInformation, menu_images: [UIImage]?) {
+    // Fill the new Menu Information
+    if Auth.auth().currentUser?.uid == nil {
+        print("uploadFBShareMenuInformation Auth.auth().currentUser?.uid == nil")
+        return
+    }
+    
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var upload_menu = menu_info
+    var menuIcon: UIImage?
+    let nowDate = Date()
 
+    let formatter = DateFormatter()
+    formatter.dateFormat = DATETIME_FORMATTER
+    let timeString = formatter.string(from: nowDate)
 
+    upload_menu.userID = Auth.auth().currentUser!.uid
+    upload_menu.userName = getMyUserName()
+    upload_menu.menuNumber = generateMenuNumber(date: nowDate)
+    if upload_menu.menuNumber == "" {
+        presentSimpleAlertMessage(title: "錯誤訊息", message: "菜單號碼為空白")
+        return
+    }
+    
+    upload_menu.createTime = timeString
+
+    if menu_images == nil {
+        upload_menu.menuImageURL = ""
+        upload_menu.multiMenuImageURL = nil
+    } else {
+        if !menu_images!.isEmpty {
+            upload_menu.menuImageURL = generateMenuImageURL(user_id: Auth.auth().currentUser!.uid, menu_number: upload_menu.menuNumber)
+            menuIcon = resizeImage(image: menu_images![0], width: CGFloat(MENU_ICON_WIDTH))
+            if upload_menu.multiMenuImageURL == nil {
+                upload_menu.multiMenuImageURL = [String]()
+            } else {
+                upload_menu.multiMenuImageURL!.removeAll()
+            }
+            
+            for i in 0...menu_images!.count - 1 {
+                let newPath = "Menu_Image/\(upload_menu.userID)/\(upload_menu.menuNumber)/\(i).jpeg"
+                upload_menu.multiMenuImageURL!.append(newPath)
+            }
+        }
+    }
+    
+    if menuIcon != nil {
+        insertMenuIcon(menu_number: upload_menu.menuNumber, menu_icon: menuIcon!)
+    }
+    
+    // Update USER_PROFILE brand category list and CoreData for BrandCategory table
+    var isNewCategory: Bool = false
+    var categoryList = retrieveMenuBrandCategory()
+    if upload_menu.brandCategory != "" {
+        var isFound: Bool = false
+        if !categoryList.isEmpty {
+            for i in 0...categoryList.count - 1 {
+                if categoryList[i] == upload_menu.brandCategory {
+                    isFound = true
+                    break
+                }
+            }
+            if !isFound {
+                categoryList.append(upload_menu.brandCategory)
+                insertMenuBrandCategory(category: upload_menu.brandCategory)
+                isNewCategory = true
+            }
+        } else {
+            categoryList.append(upload_menu.brandCategory)
+            insertMenuBrandCategory(category: upload_menu.brandCategory)
+            isNewCategory = true
+        }
+    }
+    
+    if isNewCategory {
+        downloadFBUserProfile(user_id: Auth.auth().currentUser!.uid, completion: {(profile) in
+            if profile == nil {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "使用者資料存取失敗")
+                return
+            }
+            var new_profile = profile!
+            new_profile.brandCategoryList = categoryList
+            uploadFBUserProfile(user_profile: new_profile)
+        })
+    }
+
+    let databaseRef = Database.database().reference()
+    let pathString = "USER_MENU_INFORMATION/\(Auth.auth().currentUser!.uid)/\(upload_menu.menuNumber)"
+    databaseRef.child(pathString).setValue(upload_menu.toAnyObject()) { (error, _) in
+        if error == nil {
+            if menu_images != nil {
+                if menu_images!.isEmpty {
+                    presentSimpleAlertMessage(title: "訊息", message: "分享菜單加入成功。")
+                    return
+                }
+                
+                let dispatchGroup = DispatchGroup()
+
+                let newRef = Storage.storage().reference()
+
+                for i in 0...menu_images!.count - 1 {
+                    dispatchGroup.enter()
+                    let newImage = resizeImage(image: menu_images![i], width: 1440)
+                    let uploadData = newImage.jpegData(compressionQuality: 0.5)
+                    let imagePath = upload_menu.multiMenuImageURL![i]
+                    if uploadData != nil {
+                        newRef.child(imagePath).putData(uploadData!, metadata: nil, completion: { (data, error) in
+                            if error != nil {
+                                print(error!.localizedDescription)
+                                dispatchGroup.leave()
+                                return
+                            }
+                            dispatchGroup.leave()
+                        })
+                    }
+                }
+                
+                if upload_menu.menuImageURL != "" {
+                    dispatchGroup.enter()
+                    let newImage = resizeImage(image: menu_images![0], width: 1440)
+                    let uploadData = newImage.jpegData(compressionQuality: 0.5)
+                    let imagePath = upload_menu.menuImageURL
+                    if uploadData != nil {
+                        newRef.child(imagePath).putData(uploadData!, metadata: nil, completion: { (data, error) in
+                            if error != nil {
+                                print(error!.localizedDescription)
+                                dispatchGroup.leave()
+                                return
+                            }
+                            dispatchGroup.leave()
+                        })
+                    }
+                }
+                
+                dispatchGroup.notify(queue: .main) {
+                    presentSimpleAlertMessage(title: "訊息", message: "分享菜單加入成功。")
+                    app.menuListDelegate?.refreshMenuListFunction()
+                    return
+                }
+            }
+        }
+    }
+}

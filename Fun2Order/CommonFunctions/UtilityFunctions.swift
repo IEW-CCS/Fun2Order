@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Firebase
 
 
 func getFirebaseUrlForRequest(uri: String) -> String {
@@ -59,6 +60,29 @@ func updateSelectedBrandID(brand_id: Int) {
             print("Write SelectedBrandID to AppConfig.plist failed.")
         }
     }
+}
+
+func generateMenuNumber(date: Date) -> String {
+    let timeZone = TimeZone.init(identifier: "UTC+8")
+    let formatter = DateFormatter()
+    formatter.timeZone = timeZone
+    formatter.locale = Locale.init(identifier: "zh_TW")
+    formatter.dateFormat = DATETIME_FORMATTER
+    
+    var tmpMenuNumber = formatter.string(from: date)
+    if(Auth.auth().currentUser?.uid != nil) {
+        tmpMenuNumber = "\(Auth.auth().currentUser!.uid)-MENU-\(tmpMenuNumber)"
+    } else {
+        tmpMenuNumber = "Guest-MENU-\(tmpMenuNumber)"
+    }
+
+    return tmpMenuNumber
+}
+
+func generateMenuImageURL(user_id: String, menu_number: String) -> String {
+    let pathString = "Menu_Image/\(user_id)/\(menu_number).jpeg"
+    
+    return pathString
 }
 
 func generateOrderNumber(type: String, day_code: String, brand_id: Int, store_id: Int, serial: Int) -> String{

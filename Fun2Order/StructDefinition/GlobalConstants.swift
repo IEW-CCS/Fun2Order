@@ -9,6 +9,20 @@
 import Foundation
 import UIKit
 
+// AdMob Ad Unit ID declaration
+let MENULIST_NATIVE_AD = "ca-app-pub-3940256099942544/3986624511" /// Test Native Unit ID
+//let MENULIST_NATIVE_AD = "ca-app-pub-9511677579097261/2673063242" /// James Production Native Unit ID
+//let MENULIST_NATIVE_AD = "ca-app-pub-6672968234138119/7456638522" /// IEW Production Native Unit ID 1
+//let MENULIST_NATIVE_AD = "ca-app-pub-6672968234138119/4619965469" /// IEW Production Native Unit ID 2
+
+let NOTIFICATIONLIST_BANNER_AD = "ca-app-pub-3940256099942544/2934735716" /// Test Banner Unit ID
+//let NOTIFICATIONLIST_BANNER_AD = "ca-app-pub-6672968234138119/9417830726" /// IEW Production Banner Unit ID
+
+let JOINORDER_INTERSTITIAL_AD = "ca-app-pub-3940256099942544/5135589807" /// Test Interstitial Unit ID
+//let JOINORDER_INTERSTITIAL_AD = "ca-app-pub-9511677579097261/6069385370" /// James Production Interstitial Unit ID
+//let JOINORDER_INTERSTITIAL_AD = "ca-app-pub-6672968234138119/3517393514" /// IEW Production Interstitial Unit ID
+
+
 let DEMO_ACCOUNTS: [String] = ["+886912345678", "+886934123456", "+8613123456789", "+8614123456789","+8615123456789"]
 let DEMO_EMAILS: [String] = ["robohood83@gmail.com", "iewccs2019@gmail.com", "fun2order111@gmail.com", "func2order222@gmail.com","fun2order333@gmail.com"]
 let DEMO_PASSWD: [String] = ["1234567", "1234567", "1234567", "1234567", "1234567"]
