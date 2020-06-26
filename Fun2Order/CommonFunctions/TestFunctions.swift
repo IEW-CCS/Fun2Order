@@ -334,3 +334,35 @@ func testFunction2() {
     databaseRef.child(pathString).setValue(template.toAnyObject())
 
 }
+
+func testObserveEventFunction() {
+    let databaseRef = Database.database().reference()
+    let pathString = "BRAND_PROFILE/BRAND_PROFILE/0/brandID"
+
+    databaseRef.child(pathString).observe(.value, with: { (snapshot) in
+        if snapshot.exists() {
+            let itemRawData = snapshot.value
+            print("itemRawData = \(itemRawData)")
+            //let jsonData = try? JSONSerialization.data(withJSONObject: itemRawData as Any, options: [])
+
+            //let decoder: JSONDecoder = JSONDecoder()
+            //do {
+            //    let brandID = try decoder.decode(Int.self, from: jsonData!)
+            //    print("brandID = \(brandID)")
+            //} catch {
+            //    print("testObserveEventFunction jsonData decode failed: \(error.localizedDescription)")
+            //}
+        } else {
+            print("testObserveEventFunction snapshot doesn't exist!")
+            return
+        }
+    }) { (error) in
+        print(error.localizedDescription)
+    }
+}
+
+func testRemoveObserveEventFunction() {
+    let databaseRef = Database.database().reference()
+    let pathString = "BRAND_PROFILE/BRAND_PROFILE/0/brandID"
+    databaseRef.child(pathString).removeAllObservers()
+}

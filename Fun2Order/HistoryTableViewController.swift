@@ -12,14 +12,19 @@ import Firebase
 import GoogleMobileAds
 
 class HistoryTableViewController: UITableViewController {
-    @IBOutlet weak var segmentType: UISegmentedControl!
+    //@IBOutlet weak var segmentType: UISegmentedControl!
     
+    @IBOutlet weak var segmentType: UISegmentedControl!
     var menuOrderList: [MenuOrder] = [MenuOrder]()
+    var filteredMenuOrderList: [MenuOrder] = [MenuOrder]()
     var invitationList: [NotificationData] = [NotificationData]()
     
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
     weak var refreshNotificationDelegate: ApplicationRefreshNotificationDelegate?
+    var selectedType: Int = 0
+    var isAdLoadedSuccess: Bool = false
+    var adBannerView: GADBannerView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,8 +34,8 @@ class HistoryTableViewController: UITableViewController {
         let historyCellViewNib: UINib = UINib(nibName: "OrderHistoryCell", bundle: nil)
         self.tableView.register(historyCellViewNib, forCellReuseIdentifier: "OrderHistoryCell")
 
-        let joinCellViewNib: UINib = UINib(nibName: "JoinInvitationCell", bundle: nil)
-        self.tableView.register(joinCellViewNib, forCellReuseIdentifier: "JoinInvitationCell")
+        let adCellViewNib: UINib = UINib(nibName: "BannerAdCell", bundle: nil)
+        self.tableView.register(adCellViewNib, forCellReuseIdentifier: "BannerAdCell")
 
         NotificationCenter.default.addObserver(
             self,
@@ -48,19 +53,51 @@ class HistoryTableViewController: UITableViewController {
         self.navigationController?.title = "歷史紀錄"
         self.tabBarController?.title = "歷史紀錄"
         navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
+        setupBannerAdView()
     }
-    
+
+    func setupBannerAdView() {
+        self.adBannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
+        
+        // iOS-NotificationList-BannerAd adUnitID
+        //self.adBannerView.adUnitID = "ca-app-pub-6672968234138119/9417830726"
+        self.adBannerView.adUnitID = NOTIFICATIONLIST_BANNER_AD
+        self.adBannerView.delegate = self
+        self.adBannerView.rootViewController = self
+        self.adBannerView.load(GADRequest())
+    }
+
     @IBAction func changeHistoryType(_ sender: UISegmentedControl) {
-        if self.segmentType.selectedSegmentIndex == 0 {
-            queryMenuOrder()
-        } else {
-            self.invitationList = retrieveInvitationNotificationList()
-            self.tableView.reloadData()
+        self.selectedType = self.segmentType.selectedSegmentIndex
+        filterHistoryDueTime()
+        self.tableView.reloadData()
+    }
+
+    func filterHistoryDueTime() {
+        if self.menuOrderList.isEmpty {
+            return
+        }
+        
+        self.filteredMenuOrderList.removeAll()
+        let formatter = DateFormatter()
+        formatter.dateFormat = DATETIME_FORMATTER
+        let nowString = formatter.string(from: Date())
+        
+        for i in 0...self.menuOrderList.count - 1 {
+            if self.selectedType == 0 {
+                if menuOrderList[i].dueTime > nowString {
+                    self.filteredMenuOrderList.append(self.menuOrderList[i])
+                }
+            } else {
+                if menuOrderList[i].dueTime < nowString {
+                    self.filteredMenuOrderList.append(self.menuOrderList[i])
+                }            }
         }
     }
     
     func refreshInvitationList() {
-        self.segmentType.selectedSegmentIndex = 1
+        //self.segmentType.selectedSegmentIndex = 1
+        self.selectedType = 1
         self.invitationList = retrieveInvitationNotificationList()
         self.tableView.reloadData()
     }
@@ -93,7 +130,7 @@ class HistoryTableViewController: UITableViewController {
                         continue
                     }
                     self.menuOrderList.sort(by: {$0.createTime > $1.createTime })
-                    
+                    self.filterHistoryDueTime()
                     self.tableView.reloadData()
                 }
             } else {
@@ -217,101 +254,113 @@ class HistoryTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if segmentType.selectedSegmentIndex == 0 {
-            if self.menuOrderList.isEmpty {
-                return 0
-            }
-            
-            return self.menuOrderList.count
+        //if segmentType.selectedSegmentIndex == 0 {
+        if section == 0 {
+            return 1
         } else {
-            if self.invitationList.isEmpty {
+            if self.filteredMenuOrderList.isEmpty {
                 return 0
+            } else {
+                return self.filteredMenuOrderList.count
             }
-            
-            return self.invitationList.count
         }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if segmentType.selectedSegmentIndex == 0 {
-            if self.menuOrderList.isEmpty {
+        if indexPath.section == 0 {
+            if !self.isAdLoadedSuccess {
+                return UITableViewCell()
+            }
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BannerAdCell", for: indexPath) as! BannerAdCell
+            
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            
+            let adSize = GADAdSizeFromCGSize(CGSize(width: CGFloat(self.tableView.contentSize.width - 20), height: CGFloat(NOTIFICATION_LIST_BANNER_AD_HEIGHT - 20)))
+            self.adBannerView.adSize = adSize
+            cell.contentView.addSubview(self.adBannerView)
+            self.adBannerView.center = cell.contentView.center
+
+            cell.AdjustAutoLayout()
+            return cell
+        } else {
+            if self.filteredMenuOrderList.isEmpty {
                 return super.tableView(tableView, cellForRowAt: indexPath)
             }
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "OrderHistoryCell", for: indexPath) as! OrderHistoryCell
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            cell.setMenuData(menu_order: self.menuOrderList[indexPath.row])
+            cell.setMenuData(menu_order: self.filteredMenuOrderList[indexPath.row])
 
             cell.delegate = self
             cell.indexPath = indexPath
-            return cell
-
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "JoinInvitationCell", for: indexPath) as! JoinInvitationCell
-            cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            cell.setData(notify_data: self.invitationList[indexPath.row])
-            cell.AdjustAutoLayout()
-            cell.delegate = self
-            cell.tag = indexPath.row
             return cell
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if segmentType.selectedSegmentIndex == 0 {
-            let databaseRef = Database.database().reference()
-            let pathString = "USER_MENU_ORDER/\(self.menuOrderList[indexPath.row].orderOwnerID)/\(self.menuOrderList[indexPath.row].orderNumber)"
+        let databaseRef = Database.database().reference()
+        let pathString = "USER_MENU_ORDER/\(self.filteredMenuOrderList[indexPath.row].orderOwnerID)/\(self.filteredMenuOrderList[indexPath.row].orderNumber)"
 
-            databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
-                if snapshot.exists() {
-                    let rawData = snapshot.value
-                    let jsonData = try? JSONSerialization.data(withJSONObject: rawData as Any, options: [])
-                    let jsonString = String(data: jsonData!, encoding: .utf8)!
-                    print("jsonString = \(jsonString)")
+        databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                let rawData = snapshot.value
+                let jsonData = try? JSONSerialization.data(withJSONObject: rawData as Any, options: [])
+                let jsonString = String(data: jsonData!, encoding: .utf8)!
+                print("jsonString = \(jsonString)")
 
-                    let decoder: JSONDecoder = JSONDecoder()
-                    do {
-                        var orderData = try decoder.decode(MenuOrder.self, from: jsonData!)
-                        print("queryMenuOrder jason decoded successful")
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        guard let history_vc = storyboard.instantiateViewController(withIdentifier: "HISTORY_DETAIL_VC") as? HistoryDetailViewController else {
-                            assertionFailure("[AssertionFailure] StoryBoard: HISTORY_DETAIL_VC can't find!! (ViewController)")
-                            return
-                        }
-
-                        orderData = self.checkOrderExpire(order_data: orderData)
-                        history_vc.menuOrder = orderData
-
-                        self.show(history_vc, sender: self)
-
-                    } catch {
-                        print("jsonData decode failed: \(error.localizedDescription)")
+                let decoder: JSONDecoder = JSONDecoder()
+                do {
+                    var orderData = try decoder.decode(MenuOrder.self, from: jsonData!)
+                    print("queryMenuOrder jason decoded successful")
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    guard let history_vc = storyboard.instantiateViewController(withIdentifier: "HISTORY_DETAIL_VC") as? HistoryDetailViewController else {
+                        assertionFailure("[AssertionFailure] StoryBoard: HISTORY_DETAIL_VC can't find!! (ViewController)")
                         return
                     }
-                } else {
-                    print("HistoryTableViewController didSelectRowAt snapshot doesn't exist!")
+
+                    orderData = self.checkOrderExpire(order_data: orderData)
+                    history_vc.menuOrder = orderData
+
+                    self.show(history_vc, sender: self)
+
+                } catch {
+                    print("jsonData decode failed: \(error.localizedDescription)")
                     return
                 }
-            }) { (error) in
-                print(error.localizedDescription)
+            } else {
+                print("HistoryTableViewController didSelectRowAt snapshot doesn't exist!")
+                return
             }
-        } else {
-            if Auth.auth().currentUser?.uid != nil {
-                let user_id = Auth.auth().currentUser!.uid
-                self.downloadMenuOrderContent(owner_id: self.invitationList[indexPath.row].orderOwnerID, order_number: self.invitationList[indexPath.row].orderNumber, member_id: user_id)
-            }
+        }) { (error) in
+            print(error.localizedDescription)
         }
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if self.segmentType.selectedSegmentIndex == 0 {
-            return 180
+        //if self.segmentType.selectedSegmentIndex == 0 {
+        if indexPath.section == 0 {
+            if self.isAdLoadedSuccess {
+                //print("section 0 height return\(NOTIFICATION_LIST_BANNER_AD_HEIGHT)")
+                return CGFloat(NOTIFICATION_LIST_BANNER_AD_HEIGHT)
+            } else {
+                //print("section 0 height return 0")
+                return 0
+            }
         } else {
-            return 135
+            return 180
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.section == 0 {
+            return false
+        } else {
+            return true
         }
     }
 
@@ -321,64 +370,38 @@ class HistoryTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         var alertWindow: UIWindow!
-        if self.segmentType.selectedSegmentIndex == 0 {
-            if editingStyle == .delete {
-                let controller = UIAlertController(title: "刪除訂單資料", message: "確定要刪除此訂單資料嗎？", preferredStyle: .alert)
+        if editingStyle == .delete {
+            let controller = UIAlertController(title: "刪除訂單資料", message: "確定要刪除此訂單資料嗎？", preferredStyle: .alert)
 
-                let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
-                    print("Confirm to delete this order information")
-                    alertWindow.isHidden = true
-                    let databaseRef = Database.database().reference()
-                    if Auth.auth().currentUser?.uid == nil || self.menuOrderList[indexPath.row].orderNumber == "" {
-                        print("Auth currentUser.uid is nil || self.menuOrderList[indexPath.row].orderNumber is empty")
+            let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                print("Confirm to delete this order information")
+                alertWindow.isHidden = true
+                let databaseRef = Database.database().reference()
+                if Auth.auth().currentUser?.uid == nil || self.filteredMenuOrderList[indexPath.row].orderNumber == "" {
+                    print("Auth currentUser.uid is nil || self.menuOrderList[indexPath.row].orderNumber is empty")
+                    return
+                }
+                
+                //let pathString = "USER_MENU_ORDER/\(self.menuOrderList[indexPath.row].orderOwnerID)/\(self.menuOrderList[indexPath.row].orderNumber)"
+                let pathString = "USER_MENU_ORDER/\(Auth.auth().currentUser!.uid)/\(self.filteredMenuOrderList[indexPath.row].orderNumber)"
+                databaseRef.child(pathString).removeValue() { (error, reference) in
+                    if let error = error {
+                        print("Delete Menu Order error = \(error.localizedDescription)")
                         return
                     }
-                    
-                    //let pathString = "USER_MENU_ORDER/\(self.menuOrderList[indexPath.row].orderOwnerID)/\(self.menuOrderList[indexPath.row].orderNumber)"
-                    let pathString = "USER_MENU_ORDER/\(Auth.auth().currentUser!.uid)/\(self.menuOrderList[indexPath.row].orderNumber)"
-                    databaseRef.child(pathString).removeValue() { (error, reference) in
-                        if let error = error {
-                            print("Delete Menu Order error = \(error.localizedDescription)")
-                            return
-                        }
-                        self.queryMenuOrder()
-                    }
+                    self.queryMenuOrder()
                 }
-                
-                controller.addAction(okAction)
-                let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
-                    print("Cancel to delete the order information")
-                    alertWindow.isHidden = true
-                }
-                controller.addAction(cancelAction)
-                //app.window?.rootViewController!.present(controller, animated: true, completion: nil)
-                alertWindow = presentAlert(controller)
             }
-        } else {
-            if editingStyle == .delete {
-                let controller = UIAlertController(title: "刪除通知", message: "確定要刪除此通知嗎？", preferredStyle: .alert)
-
-                let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
-                    print("Confirm to delete this notification")
-                    deleteNotificationByID(message_id: self.invitationList[indexPath.row].messageID)
-                    alertWindow.isHidden = true
-                    self.invitationList = retrieveInvitationNotificationList()
-                    setNotificationBadgeNumber()
-                    self.tableView.reloadData()
-                    self.refreshNotificationDelegate?.refreshNotificationList()
-                }
-                
-                controller.addAction(okAction)
-                let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
-                    print("Cancel to delete the notification")
-                    alertWindow.isHidden = true
-                }
-                controller.addAction(cancelAction)
-                //app.window?.rootViewController!.present(controller, animated: true, completion: nil)
-                alertWindow = presentAlert(controller)
+            
+            controller.addAction(okAction)
+            let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+                print("Cancel to delete the order information")
+                alertWindow.isHidden = true
             }
+            controller.addAction(cancelAction)
+            //app.window?.rootViewController!.present(controller, animated: true, completion: nil)
+            alertWindow = presentAlert(controller)
         }
-        
     }
 }
 
@@ -389,7 +412,7 @@ extension HistoryTableViewController: DisplayQRCodeDelegate {
             return
         }
         
-        qrCodeController.setQRCodeText(code: self.menuOrderList[index.row].orderNumber)
+        qrCodeController.setQRCodeText(code: self.filteredMenuOrderList[index.row].orderNumber)
         qrCodeController.modalTransitionStyle = .crossDissolve
         qrCodeController.modalPresentationStyle = .overFullScreen
         navigationController?.present(qrCodeController, animated: true, completion: nil)
@@ -562,5 +585,21 @@ extension HistoryTableViewController: JoinInvitationCellDelegate {
 extension HistoryTableViewController: JoinGroupOrderDelegate {
     func refreshHistoryInvitationList(sender: JoinGroupOrderTableViewController) {
         refreshInvitationList()
+    }
+}
+
+extension HistoryTableViewController: GADBannerViewDelegate {
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        print("Banner loaded successfully")
+        self.isAdLoadedSuccess = true
+        self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+    }
+     
+    func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
+        print("Fail to receive ads")
+        print(error)
+        self.isAdLoadedSuccess = false
+        self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        //self.tableView.reloadData()
     }
 }

@@ -129,6 +129,13 @@ extension MyFriendTableViewController: ScanQRCodeDelegate {
         newFriend.memberID = member_id
         newFriend.memberName = member_name
         
+        if Auth.auth().currentUser?.uid != nil {
+            if Auth.auth().currentUser!.uid == member_id {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "不能將自己加入好友中，請重新掃描")
+                return
+            }
+        }
+        
         if !self.friendList.isEmpty {
             for i in 0...self.friendList.count - 1 {
                 if self.friendList[i].memberID == member_id {

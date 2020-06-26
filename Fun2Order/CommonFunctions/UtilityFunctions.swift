@@ -230,6 +230,22 @@ func getMyUserName() -> String {
     return userName
 }
 
+func getMyContactInfo() -> UserContactInformation {
+    var userContact: UserContactInformation = UserContactInformation()
+    
+    let path = NSHomeDirectory() + "/Documents/MyProfile.plist"
+    let plist = NSMutableDictionary(contentsOfFile: path)
+    let userName = plist!["UserName"] as! String
+    let userPhoneNumber = plist!["PhoneNumber"] as! String
+    let userAddress = plist!["Address"] as? String
+    
+    userContact.userName = userName
+    userContact.userPhoneNumber = userPhoneNumber
+    userContact.userAddress = userAddress
+
+    return userContact
+}
+
 func showGuideToolTip(text: String, dir: PopTipDirection, parent: UIView, target: CGRect, duration: TimeInterval) {
     let popTip = PopTip()
     popTip.font = UIFont(name: "Avenir-Medium", size: 15)!

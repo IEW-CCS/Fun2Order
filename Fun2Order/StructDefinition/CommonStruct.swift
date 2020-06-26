@@ -239,6 +239,7 @@ struct MenuInformation: Codable {
     var menuItems :[MenuItem]?
     var menuRecipes: [MenuRecipe]?
     var storeInfo: StoreContactInformation?
+    var needContactInfoFlag: Bool?
 
     func toAnyObject() -> Any {
         var menuItemsArray: [Any] = [Any]()
@@ -269,7 +270,8 @@ struct MenuInformation: Codable {
             "locations": locations as Any,
             "menuItems": menuItemsArray,
             "menuRecipes": menuRecipesArray,
-            "storeInfo": storeInfo?.toAnyObject() as Any
+            "storeInfo": storeInfo?.toAnyObject() as Any,
+            "needContactInfoFlag": needContactInfoFlag as Any
         ]
     }
 }
@@ -278,12 +280,16 @@ struct MenuItem: Codable {
     var sequenceNumber: Int = 0
     var itemName: String = ""
     var itemPrice: Int = 0
+    var quantityLimitation: Int?
+    var quantityRemained: Int?
     
     func toAnyObject() -> Any {
         return [
             "sequenceNumber": sequenceNumber,
             "itemName": itemName,
-            "itemPrice": itemPrice
+            "itemPrice": itemPrice,
+            "quantityLimitation": quantityLimitation as Any,
+            "quantityRemained": quantityRemained as Any
         ]
     }
 }
@@ -318,12 +324,34 @@ struct StoreContactInformation: Codable {
     var storeName: String?
     var storeAddress: String?
     var storePhoneNumber: String?
-    
+    var instagramURL: String?
+    var facebookURL: String?
+
     func toAnyObject() -> Any? {
         return [
             "storeName": storeName as Any,
             "storeAddress": storeAddress as Any,
-            "storePhoneNumber":storePhoneNumber as Any
+            "storePhoneNumber": storePhoneNumber as Any,
+            "instagramURL": instagramURL as Any,
+            "facebookURL": facebookURL as Any
+        ]
+    }
+}
+
+struct UserContactInformation: Codable {
+    var userName: String?
+    var userAddress: String?
+    var userPhoneNumber: String?
+    var instagramURL: String?
+    var facebookURL: String?
+    
+    func toAnyObject() -> Any? {
+        return [
+            "userName": userName as Any,
+            "userAddress": userAddress as Any,
+            "userPhoneNumber":userPhoneNumber as Any,
+            "instagramURL": instagramURL as Any,
+            "facebookURL": facebookURL as Any
         ]
     }
 }
@@ -382,34 +410,19 @@ struct MenuOrderContentItem: Codable  {
     var itemOwnerID: String = ""
     var itemOwnerName: String = ""
     var replyStatus: String = ""
-    //var itemProductName: String = ""
     var itemQuantity: Int = 0
     var itemSinglePrice: Int = 0
     var itemFinalPrice: Int = 0
-    //var itemComments: String = ""
     var location: String = ""
-    //var isPayChecked: Bool = false
     var payCheckedFlag: Bool = false
     var payNumber: Int = 0
     var payTime: String = ""
     var createTime: String = ""
-    //var menuItem :MenuItem = MenuItem()
-    //var menuRecipes: [MenuRecipe]? = [MenuRecipe]()
     var menuProductItems: [MenuProductItem]?
-    //var menuRecipes: [MenuRecipe]?
+    var userContactInfo: UserContactInformation?
     
     func toAnyObject() -> Any {
-        //var menuRecipesArray: [Any] = [Any]()
         var menuProductsArray: [Any] = [Any]()
-        
-        //if !menuRecipes.isEmpty {
-        //if menuRecipes != nil {
-            //for i in 0...menuRecipes!.count - 1 {
-        //    for recipeData in (menuRecipes as [MenuRecipe]?)! {
-                //menuRecipesArray.append(menuRecipes![i].toAnyObject())
-        //        menuRecipesArray.append(recipeData.toAnyObject())
-        //    }
-        //}
         
         if menuProductItems != nil {
             for productData in (menuProductItems as [MenuProductItem]?)! {
@@ -422,20 +435,16 @@ struct MenuOrderContentItem: Codable  {
             "itemOwnerID": itemOwnerID,
             "itemOwnerName": itemOwnerName,
             "replyStatus": replyStatus,
-            //"itemProductName": itemProductName,
             "itemQuantity": itemQuantity,
             "itemSinglePrice": itemSinglePrice,
             "itemFinalPrice": itemFinalPrice,
-            //"itemComments": itemComments,
             "location": location,
-            //"isPayChecked": isPayChecked,
             "payCheckedFlag": payCheckedFlag,
             "payNumber": payNumber,
             "payTime": payTime,
             "createTime": createTime,
-            "menuProductItems": menuProductsArray
-            //"menuItem": menuItem.toAnyObject(),
-            //"menuRecipes": menuRecipesArray
+            "menuProductItems": menuProductsArray,
+            "userContactInfo": userContactInfo?.toAnyObject() as Any
         ]
     }
 }
@@ -469,15 +478,23 @@ struct MenuOrder: Codable  {
     var brandName: String = ""
     var createTime: String = ""
     var dueTime: String = ""
-    //var dueTime: String?
     var storeInfo: StoreContactInformation?
     var contentItems: [MenuOrderMemberContent] = [MenuOrderMemberContent]()
+    var limitedMenuItems: [MenuItem]?
     
     func toAnyObject() -> Any {
         var itemsArray: [Any] = [Any]()
         if !contentItems.isEmpty {
             for i in 0...contentItems.count - 1 {
                 itemsArray.append(contentItems[i].toAnyObject())
+            }
+        }
+
+        var menuItemsArray: [Any] = [Any]()
+        
+        if limitedMenuItems != nil {
+            for itemData in (limitedMenuItems as [MenuItem]?)! {
+                menuItemsArray.append(itemData.toAnyObject())
             }
         }
 
@@ -495,7 +512,8 @@ struct MenuOrder: Codable  {
             "createTime": createTime,
             "dueTime": dueTime,
             "storeInfo": storeInfo?.toAnyObject() as Any,
-            "contentItems": itemsArray
+            "contentItems": itemsArray,
+            "limitedMenuItems": menuItemsArray
         ]
     }
 }
@@ -517,7 +535,9 @@ struct NotificationData: Codable {
     var isRead: String = ""
     var replyStatus: String = ""
     var replyTime: String = ""
-    
+    var shippingDate: String?
+    var shippingLocation: String?
+
     func toAnyObject() -> Any {
         return [
             "messageID": messageID,
@@ -535,7 +555,9 @@ struct NotificationData: Codable {
             "messageDetail": messageDetail,
             "isRead": isRead,
             "replyStatus": replyStatus,
-            "replyTime": replyTime
+            "replyTime": replyTime,
+            "shippingDate": shippingDate as Any,
+            "shippingLocation": shippingLocation as Any
         ]
     }
 }
@@ -575,6 +597,7 @@ struct MergedContent {
     var mergedRecipe: String = ""
     var comments: String = ""
     var quantity: Int = 0
+    var userContactInfo: UserContactInformation?
 }
 
 struct ReportDataStruct {

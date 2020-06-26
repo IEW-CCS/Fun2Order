@@ -11,9 +11,13 @@ import Firebase
 import GoogleMobileAds
 
 class NotificationTableViewController: UITableViewController {
+    @IBOutlet weak var segmentType: UISegmentedControl!
+    
     var notificationList: [NotificationData] = [NotificationData]()
+    var typeNotificationList: [NotificationData] = [NotificationData]()
     var adBannerView: GADBannerView!
     var isAdLoadedSuccess: Bool = false
+    var selectedIndex: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,8 +35,9 @@ class NotificationTableViewController: UITableViewController {
         self.tableView.refreshControl = refreshControl
         refreshControl?.addTarget(self, action: #selector(refreshList), for: .valueChanged)
 
+        self.segmentType.selectedSegmentIndex = 0
         self.notificationList = retrieveNotificationList()
-        
+        filterNotificationTypeList(index: self.selectedIndex)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,15 +59,50 @@ class NotificationTableViewController: UITableViewController {
         self.adBannerView.load(GADRequest())
     }
 
+    func filterNotificationTypeList(index: Int) {
+        self.typeNotificationList.removeAll()
+        
+        if self.notificationList.isEmpty {
+            return
+        }
+        
+        for i in 0...self.notificationList.count - 1 {
+            switch index {
+                case 0:
+                    if self.notificationList[i].notificationType == NOTIFICATION_TYPE_ACTION_JOIN_ORDER {
+                        self.typeNotificationList.append(self.notificationList[i])
+                    }
+                    break
+                case 1:
+                    if self.notificationList[i].notificationType == NOTIFICATION_TYPE_SHIPPING_NOTICE {
+                        self.typeNotificationList.append(self.notificationList[i])
+                    }
+                    break
+                default:
+                    if self.notificationList[i].notificationType != NOTIFICATION_TYPE_ACTION_JOIN_ORDER && self.notificationList[i].notificationType != NOTIFICATION_TYPE_SHIPPING_NOTICE {
+                        self.typeNotificationList.append(self.notificationList[i])
+                    }
+                    break
+            }
+        }
+    }
+    
     @objc func refreshList() {
         self.notificationList.removeAll()
         self.notificationList = retrieveNotificationList()
+        self.filterNotificationTypeList(index: self.selectedIndex)
         DispatchQueue.main.async {
             setNotificationBadgeNumber()
             self.tableView.reloadData()
             self.refreshControl?.endRefreshing()
         }
         setupBannerAdView()
+    }
+    
+    @IBAction func changeNotificationListType(_ sender: UISegmentedControl) {
+        self.selectedIndex = sender.selectedSegmentIndex
+        self.filterNotificationTypeList(index: self.selectedIndex)
+        self.tableView.reloadData()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -73,11 +113,16 @@ class NotificationTableViewController: UITableViewController {
         if section == 0 {
             return 1
         } else {
-            if self.notificationList.isEmpty {
+            //if self.notificationList.isEmpty {
+            //    return 0
+            //}
+            
+            //return self.notificationList.count
+            if self.typeNotificationList.isEmpty {
                 return 0
             }
             
-            return self.notificationList.count
+            return self.typeNotificationList.count
         }
     }
 
@@ -103,7 +148,8 @@ class NotificationTableViewController: UITableViewController {
             
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             cell.AdjustAutoLayout()
-            cell.setData(notification: self.notificationList[indexPath.row])
+            //cell.setData(notification: self.notificationList[indexPath.row])
+            cell.setData(notification: self.typeNotificationList[indexPath.row])
             
             return cell
         }
@@ -112,10 +158,10 @@ class NotificationTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
             if self.isAdLoadedSuccess {
-                print("section 0 height return\(NOTIFICATION_LIST_BANNER_AD_HEIGHT)")
+                //print("section 0 height return\(NOTIFICATION_LIST_BANNER_AD_HEIGHT)")
                 return CGFloat(NOTIFICATION_LIST_BANNER_AD_HEIGHT)
             } else {
-                print("section 0 height return 0")
+                //print("section 0 height return 0")
                 return 0
             }
         } else {
@@ -124,11 +170,77 @@ class NotificationTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch self.typeNotificationList[indexPath.row].notificationType {
+            case NOTIFICATION_TYPE_MESSAGE_DUETIME, NOTIFICATION_TYPE_ACTION_JOIN_ORDER:
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                guard let notifyActionController = storyBoard.instantiateViewController(withIdentifier: "NOTIFY_ACTION_VC") as? NotificationActionTableViewController else{
+                    assertionFailure("[AssertionFailure] StoryBoard: NOTIFY_ACTION_VC can't find!! (NotificationTableViewController)")
+                    return
+                }
+                notifyActionController.notificationData = self.typeNotificationList[indexPath.row]
+                notifyActionController.indexPath = indexPath
+                self.typeNotificationList[indexPath.row].isRead = "Y"
+                updateNotificationReadStatus(message_id: self.typeNotificationList[indexPath.row].messageID, status: true)
+                setNotificationBadgeNumber()
+
+                guard let cell = self.tableView.cellForRow(at: indexPath) as? NotificationActionCell else {
+                    return
+                }
+                cell.setData(notification: self.typeNotificationList[indexPath.row])
+                
+                navigationController?.show(notifyActionController, sender: self)
+
+                break
+                
+            case NOTIFICATION_TYPE_MESSAGE_INFORMATION:
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                guard let notifyInfoController = storyBoard.instantiateViewController(withIdentifier: "NOTIFY_MESSAGE_VC") as? NotificationMessageTableViewController else{
+                    assertionFailure("[AssertionFailure] StoryBoard: NOTIFY_INFO_VC can't find!! (NotificationTableViewController)")
+                    return
+                }
+                notifyInfoController.notificationData = self.typeNotificationList[indexPath.row]
+                //notifyInfoController.indexPath = indexPath
+                self.typeNotificationList[indexPath.row].isRead = "Y"
+                updateNotificationReadStatus(message_id: self.typeNotificationList[indexPath.row].messageID, status: true)
+                setNotificationBadgeNumber()
+                guard let cell = self.tableView.cellForRow(at: indexPath) as? NotificationActionCell else {
+                    return
+                }
+                cell.setData(notification: self.typeNotificationList[indexPath.row])
+
+                navigationController?.show(notifyInfoController, sender: self)
+
+                break
+            case NOTIFICATION_TYPE_SHIPPING_NOTICE:
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                guard let notifyInfoController = storyBoard.instantiateViewController(withIdentifier: "SHIPPING_NOTICE_DETAIL_VC") as? ShippingNoticeDetailTableViewController else{
+                    assertionFailure("[AssertionFailure] StoryBoard: SHIPPING_NOTICE_DETAIL_VC can't find!! (NotificationTableViewController)")
+                    return
+                }
+                notifyInfoController.notificationData = self.typeNotificationList[indexPath.row]
+                self.typeNotificationList[indexPath.row].isRead = "Y"
+                updateNotificationReadStatus(message_id: self.typeNotificationList[indexPath.row].messageID, status: true)
+                setNotificationBadgeNumber()
+                guard let cell = self.tableView.cellForRow(at: indexPath) as? NotificationActionCell else {
+                    return
+                }
+                cell.setData(notification: self.typeNotificationList[indexPath.row])
+
+                navigationController?.show(notifyInfoController, sender: self)
+                break
+
+            default:
+                break
+        }
+
+
+
+/*
         switch self.notificationList[indexPath.row].notificationType {
             case NOTIFICATION_TYPE_MESSAGE_DUETIME, NOTIFICATION_TYPE_ACTION_JOIN_ORDER:
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 guard let notifyActionController = storyBoard.instantiateViewController(withIdentifier: "NOTIFY_ACTION_VC") as? NotificationActionTableViewController else{
-                    assertionFailure("[AssertionFailure] StoryBoard: NOTIFY_ACTION_VC can't find!! (QRCodeViewController)")
+                    assertionFailure("[AssertionFailure] StoryBoard: NOTIFY_ACTION_VC can't find!! (NotificationTableViewController)")
                     return
                 }
                 notifyActionController.notificationData = self.notificationList[indexPath.row]
@@ -149,7 +261,7 @@ class NotificationTableViewController: UITableViewController {
             case NOTIFICATION_TYPE_MESSAGE_INFORMATION:
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 guard let notifyInfoController = storyBoard.instantiateViewController(withIdentifier: "NOTIFY_MESSAGE_VC") as? NotificationMessageTableViewController else{
-                    assertionFailure("[AssertionFailure] StoryBoard: NOTIFY_INFO_VC can't find!! (QRCodeViewController)")
+                    assertionFailure("[AssertionFailure] StoryBoard: NOTIFY_INFO_VC can't find!! (NotificationTableViewController)")
                     return
                 }
                 notifyInfoController.notificationData = self.notificationList[indexPath.row]
@@ -162,14 +274,31 @@ class NotificationTableViewController: UITableViewController {
                 }
                 cell.setData(notification: self.notificationList[indexPath.row])
 
-                notifyInfoController.notificationData = self.notificationList[indexPath.row]
                 navigationController?.show(notifyInfoController, sender: self)
 
                 break
-                
+            case NOTIFICATION_TYPE_SHIPPING_NOTICE:
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                guard let notifyInfoController = storyBoard.instantiateViewController(withIdentifier: "SHIPPING_NOTICE_DETAIL_VC") as? ShippingNoticeDetailTableViewController else{
+                    assertionFailure("[AssertionFailure] StoryBoard: SHIPPING_NOTICE_DETAIL_VC can't find!! (NotificationTableViewController)")
+                    return
+                }
+                notifyInfoController.notificationData = self.notificationList[indexPath.row]
+                self.notificationList[indexPath.row].isRead = "Y"
+                updateNotificationReadStatus(message_id: self.notificationList[indexPath.row].messageID, status: true)
+                setNotificationBadgeNumber()
+                guard let cell = self.tableView.cellForRow(at: indexPath) as? NotificationActionCell else {
+                    return
+                }
+                cell.setData(notification: self.notificationList[indexPath.row])
+
+                navigationController?.show(notifyInfoController, sender: self)
+                break
+
             default:
                 break
         }
+*/
     }
 
 /*
@@ -204,6 +333,7 @@ class NotificationTableViewController: UITableViewController {
                 deleteNotificationByID(message_id: self.notificationList[indexPath.row].messageID)
                 alertWindow.isHidden = true
                 self.notificationList = retrieveNotificationList()
+                self.filterNotificationTypeList(index: self.selectedIndex)
                 setNotificationBadgeNumber()
                 self.tableView.reloadData()
             }

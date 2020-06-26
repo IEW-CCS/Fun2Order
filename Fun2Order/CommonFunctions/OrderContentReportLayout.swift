@@ -17,6 +17,8 @@ class OrderContentReportLayout: UICollectionViewLayout {
     private var cache: [UICollectionViewLayoutAttributes] = []
     private var contentHeight: CGFloat = 0
     private var contentWidth: CGFloat = 0
+    private var columnsWidth: [CGFloat] = [CGFloat]()
+    private var calculatedXOffset: [CGFloat] = [CGFloat]()
     
     override var collectionViewContentSize: CGSize {
         return CGSize(width: self.contentWidth, height: self.contentHeight)
@@ -36,7 +38,7 @@ class OrderContentReportLayout: UICollectionViewLayout {
         //print("Total number of items for UICollectionView is [\(totalItems)]")
 
         var xOffset: CGFloat = 0
-        var firstColumnWidth: CGFloat = 0
+        //var firstColumnWidth: CGFloat = 0
         for i in 0...self.layoutItemsArray.count - 1 {
             var yOffset: CGFloat = 0
             var width: CGFloat = 0
@@ -50,14 +52,24 @@ class OrderContentReportLayout: UICollectionViewLayout {
                 height = CGFloat(self.layoutItemsArray[i].rowCount) * self.cellHeight
                 self.contentWidth = max(self.contentWidth, self.layoutItemsArray[i].width)
             } else {
+                if self.columnsWidth.isEmpty {
+                    continue
+                }
+                xOffset = self.calculatedXOffset[self.layoutItemsArray[i].columnIndex]
+/*
                 if self.layoutItemsArray[i].columnIndex == 0 {
                     xOffset = 0
-                    firstColumnWidth = self.layoutItemsArray[i].width
+                    //firstColumnWidth = self.layoutItemsArray[i].width
                 } else if self.layoutItemsArray[i].columnIndex == 1 {
-                    xOffset = firstColumnWidth
+                    //xOffset = firstColumnWidth
+                    xOffset = self.columnsWidth[0]
                 } else {
-                    xOffset = xOffset + self.layoutItemsArray[i - 1].width
+                    //xOffset = xOffset + self.layoutItemsArray[i - 1].width
+                    for j in 2...self.layoutItemsArray[i].columnIndex - 1 {
+                        xOffset = xOffset + self.columnsWidth[j]
+                    }
                 }
+*/
                 yOffset = CGFloat(self.layoutItemsArray[i].rowIndex) * self.cellHeight
                 width = self.layoutItemsArray[i].width
                 height = CGFloat(self.layoutItemsArray[i].rowCount) * self.cellHeight
@@ -115,6 +127,20 @@ class OrderContentReportLayout: UICollectionViewLayout {
         self.layoutItemsArray.removeAll()
         self.layoutItemsArray = items
         self.cache.removeAll()
+    }
+    
+    func setColumnsWidth(widths: [CGFloat]) {
+        self.columnsWidth = widths
+        self.calculatedXOffset.removeAll()
+        if !self.columnsWidth.isEmpty {
+            self.calculatedXOffset.append(0.0)
+            self.calculatedXOffset.append(self.columnsWidth[0])
+            for i in 2...self.columnsWidth.count - 1 {
+                self.calculatedXOffset.append(self.calculatedXOffset[i - 1] + self.columnsWidth[i - 1])
+            }
+            print("self.columnsWidth = \(self.columnsWidth)")
+            print("self.calculatedXOffset = \(self.calculatedXOffset)")
+        }
     }
     
     func setContentWidth(width: CGFloat) {

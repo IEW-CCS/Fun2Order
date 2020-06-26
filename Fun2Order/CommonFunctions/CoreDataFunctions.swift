@@ -1817,3 +1817,47 @@ func updateNotificationReplyStatus(order_number: String, reply_status: String, r
     app.saveContext()
     
 }
+
+func updateNotificationNewDueTime(order_number: String, due_time: String) {
+    let app = UIApplication.shared.delegate as! AppDelegate
+    var vc: NSManagedObjectContext!
+    vc = app.persistentContainer.viewContext
+    
+    let fetchRequest: NSFetchRequest<NOTIFICATION_TABLE> = NOTIFICATION_TABLE.fetchRequest()
+
+    do {
+        let notificationList = try vc.fetch(fetchRequest)
+        for notificationData in notificationList {
+            let decoder: JSONDecoder = JSONDecoder()
+            do {
+                let jsonData = notificationData.notificationData!.data(using: .utf8)
+                var tmpData = try decoder.decode(NotificationData.self, from: jsonData!)
+                if tmpData.orderNumber != order_number {
+                    continue
+                }
+                tmpData.dueTime = due_time
+                
+                do {
+                    let updatedJSONData = try JSONSerialization.data(withJSONObject: tmpData.toAnyObject(), options: [.prettyPrinted])
+                    let jsonString = String(data: updatedJSONData, encoding: .utf8)!
+                    //print("jsonString = \(jsonString)")
+                    notificationData.setValue(jsonString, forKey: "notificationData")
+                } catch {
+                    print(error.localizedDescription)
+                    return
+                }
+            } catch {
+                print("updateNotificationNewDueTime: jsonData decode failed: \(error.localizedDescription)")
+                return
+            }
+
+            notificationData.setValue(true, forKey: "isRead")
+        }
+    } catch {
+        print(error.localizedDescription)
+        return
+    }
+    
+    app.saveContext()
+    
+}

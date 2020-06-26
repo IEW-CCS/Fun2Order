@@ -54,6 +54,9 @@ func getLaunchNotification(user_infos: [String: Any]) {
         presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知資料格式錯誤")
         return
     }
+    
+    let tmpShippingDate = user_infos["shippingDate"] as? String
+    let tmpShippingLocation = user_infos["shippingLocation"] as? String
 
     if !verifyNotificationType(type: tmpNotificationType) {
         presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知類別錯誤，無法處理")
@@ -68,7 +71,11 @@ func getLaunchNotification(user_infos: [String: Any]) {
         case NOTIFICATION_TYPE_SHARE_MENU:
             shareMenuInformationNotification(message: tmpMessageBody, user_id: tmpOrderOwnerID, menu_number: tmpMenuNumber)
             return
-        
+
+        case NOTIFICATION_TYPE_CHANGE_DUETIME:
+            changeNewDueTimeNotification(message: tmpMessageDetail, owner_id: tmpOrderOwnerID, order_number: tmpOrderNumber, new_due_time: tmpDueTime)
+            return
+
         default:
             break
     }
@@ -87,6 +94,9 @@ func getLaunchNotification(user_infos: [String: Any]) {
     notificationData.attendedMemberCount = Int(tmpAttendedMemberCount) ?? 0
     notificationData.messageDetail = tmpMessageDetail
     notificationData.isRead = tmpIsRead
+    notificationData.shippingDate = tmpShippingDate
+    notificationData.shippingLocation = tmpShippingLocation
+
 
     print("&&&&&&&&&&&&&  getLaunchNotification insertNotification")
     insertNotification(notification: notificationData)
@@ -129,7 +139,10 @@ func setupNotification(notity: UNNotification) {
         presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知資料格式錯誤")
         return
     }
-    
+
+    let tmpShippingDate = notity.request.content.userInfo["shippingDate"] as? String
+    let tmpShippingLocation = notity.request.content.userInfo["shippingLocation"] as? String
+
     if !verifyNotificationType(type: tmpNotificationType) {
         presentSimpleAlertMessage(title: "資料錯誤", message: "收到的通知類別錯誤，無法處理")
         return
@@ -143,7 +156,11 @@ func setupNotification(notity: UNNotification) {
         case NOTIFICATION_TYPE_SHARE_MENU:
             shareMenuInformationNotification(message: notity.request.content.body, user_id: tmpOrderOwnerID, menu_number: tmpMenuNumber)
             return
-        
+
+        case NOTIFICATION_TYPE_CHANGE_DUETIME:
+            changeNewDueTimeNotification(message: tmpMessageDetail, owner_id: tmpOrderOwnerID, order_number: tmpOrderNumber, new_due_time: tmpDueTime)
+            return
+
         default:
             break
     }
@@ -162,6 +179,8 @@ func setupNotification(notity: UNNotification) {
     notificationData.attendedMemberCount = Int(tmpAttendedMemberCount) ?? 0
     notificationData.messageDetail = tmpMessageDetail
     notificationData.isRead = tmpIsRead
+    notificationData.shippingDate = tmpShippingDate
+    notificationData.shippingLocation = tmpShippingLocation
 
     //notificationData.isRead = notity.request.content.userInfo["isRead"] as! Bool
     let result = semaphore.wait(timeout: DispatchTime.distantFuture)
@@ -326,6 +345,35 @@ func shareMenuInformationNotification(message: String, user_id: String, menu_num
 
 }
 
+func changeNewDueTimeNotification(message: String, owner_id: String, order_number: String, new_due_time: String) {
+    //presentSimpleAlertMessage(title: "Temp", message: "Receive Change Due Time Notification")
+    if Auth.auth().currentUser?.uid == nil {
+        print("changeNewDueTimeNotification currentUser?.uid is nil")
+        return
+    }
+    
+    if owner_id == Auth.auth().currentUser!.uid {
+        updateNotificationNewDueTime(order_number: order_number, due_time: new_due_time)
+        return
+    }
+    
+    var alertWindow: UIWindow!
+
+    let controller = UIAlertController(title: "更新訂單截止時間", message: message, preferredStyle: .alert)
+    controller.view.tintColor = CUSTOM_COLOR_EMERALD_GREEN
+
+    let addAction = UIAlertAction(title: "確定", style: .default) { (_) in
+        updateNotificationNewDueTime(order_number: order_number, due_time: new_due_time)
+        alertWindow.isHidden = true
+    }
+    
+    addAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+    controller.addAction(addAction)
+
+    alertWindow = presentAlert(controller)
+
+}
+
 func receiveMyProfileToUpdateFriendList(user_profile: UserProfile?) {
     if user_profile == nil {
         presentSimpleAlertMessage(title: "錯誤訊息", message: "存取好友資訊錯誤")
@@ -360,6 +408,12 @@ func verifyNotificationType(type: String) -> Bool {
             return true
             
         case NOTIFICATION_TYPE_SHARE_MENU:
+            return true
+        
+        case NOTIFICATION_TYPE_CHANGE_DUETIME:
+            return true
+        
+        case NOTIFICATION_TYPE_SHIPPING_NOTICE:
             return true
         
         //case NOTIFICATION_TYPE_SHARE_GROUP_FRIEND:

@@ -91,6 +91,11 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
         self.groupList = retrieveGroupList()
         if self.groupList.count > 0 {
             self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
+            if !self.memberList.isEmpty {
+                for i in 0...self.memberList.count - 1 {
+                    self.memberList[i].isSelected = true
+                }
+            }
             self.memberTableView.reloadData()
         }
 
@@ -215,6 +220,18 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
         }
         
         self.menuOrder.storeInfo = self.menuInformation.storeInfo
+        if self.menuInformation.menuItems != nil {
+            for i in 0...self.menuInformation.menuItems!.count - 1 {
+                if self.menuInformation.menuItems![i].quantityLimitation != nil {
+                    if self.menuOrder.limitedMenuItems == nil {
+                        self.menuOrder.limitedMenuItems = [MenuItem]()
+                        self.menuOrder.limitedMenuItems!.append(self.menuInformation.menuItems![i])
+                    } else {
+                        self.menuOrder.limitedMenuItems!.append(self.menuInformation.menuItems![i])
+                    }
+                }
+            }
+        }
         
         if self.isAttended {
             var myContent: MenuOrderMemberContent = MenuOrderMemberContent()
@@ -235,7 +252,7 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
         }
         
         let contentGroup = DispatchGroup()
-        
+                
         for i in 0...self.memberList.count - 1 {
             if self.memberList[i].isSelected {
                 var memberContent: MenuOrderMemberContent = MenuOrderMemberContent()
@@ -375,7 +392,7 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
         let friendList = retrieveFriendList()
         print("\(friendList)")
         
-        if self.memberList.isEmpty {
+        if self.memberList.isEmpty && !self.isAttended {
             print("Selected Group's member list is empty")
             presentSimpleAlertMessage(title: "錯誤訊息", message: "此團購訂單尚未指定任何參與者，請重新選取參與者")
             return
@@ -415,6 +432,11 @@ extension GroupOrderViewController: UICollectionViewDelegate, UICollectionViewDa
         //List the members information in the group
         self.memberList.removeAll()
         self.memberList = retrieveMemberList(group_id: self.groupList[indexPath.row].groupID)
+        if !self.memberList.isEmpty {
+            for i in 0...self.memberList.count - 1 {
+                self.memberList[i].isSelected = true
+            }
+        }
         self.memberTableView.reloadData()
     }
 }
@@ -443,7 +465,7 @@ extension GroupOrderViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SelectMemberCell", for: indexPath) as! SelectMemberCell
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
 
-        cell.setData(member_id: self.memberList[indexPath.row].memberID, member_name: self.memberList[indexPath.row].memberName, ini_status: true)
+        cell.setData(member_id: self.memberList[indexPath.row].memberID, member_name: self.memberList[indexPath.row].memberName, ini_status: self.memberList[indexPath.row].isSelected)
         cell.delegate = self
         cell.tag = indexPath.row
         

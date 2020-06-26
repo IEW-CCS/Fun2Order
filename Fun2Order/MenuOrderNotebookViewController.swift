@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class MenuOrderNotebookViewController: UIViewController {
     @IBOutlet weak var buttonCopy: UIButton!
     @IBOutlet weak var segmentOption: UISegmentedControl!
@@ -27,6 +26,8 @@ class MenuOrderNotebookViewController: UIViewController {
     var reportData: [ReportDataStruct] = [ReportDataStruct]()
     var layoutItemsArray: [ReportLayoutStruct] = [ReportLayoutStruct]()
     var contentWidth: CGFloat = 0
+    var reportColumns: Int = 1
+    var columnsWidth: [CGFloat] = [CGFloat]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -120,6 +121,9 @@ class MenuOrderNotebookViewController: UIViewController {
         //let reportLayout: OrderContentReportLayout = OrderContentReportLayout()
         let reportLayout = self.collectionReport.collectionViewLayout as! OrderContentReportLayout
         reportLayout.setLayoutItems(items: self.layoutItemsArray)
+        if !self.columnsWidth.isEmpty {
+            reportLayout.setColumnsWidth(widths: self.columnsWidth)
+        }
         reportLayout.setContentWidth(width: self.contentWidth)
 
         //self.collectionReport.collectionViewLayout.invalidateLayout()
@@ -152,6 +156,7 @@ class MenuOrderNotebookViewController: UIViewController {
                 returnItem.quantity = self.menuOrder.contentItems[index].orderContent.menuProductItems![m].itemQuantity
                 returnItem.comments = self.menuOrder.contentItems[index].orderContent.menuProductItems![m].itemComments
                 returnItem.location = self.menuOrder.contentItems[index].orderContent.location
+                returnItem.userContactInfo = self.menuOrder.contentItems[index].orderContent.userContactInfo
                 returnItems.append(returnItem)
             }
         }
@@ -161,12 +166,16 @@ class MenuOrderNotebookViewController: UIViewController {
     
     func getItemString(index: Int) -> String {
         var itemString: String = ""
+        var rowNumber: Int = 1
+        
         if self.menuOrder.contentItems[index].orderContent.menuProductItems != nil {
             for m in 0...self.menuOrder.contentItems[index].orderContent.menuProductItems!.count - 1 {
                 if m != 0 {
                     itemString = itemString + "\n"
                 }
-                
+                itemString = itemString + String(rowNumber) + ". "
+                rowNumber = rowNumber + 1
+
                 itemString = itemString + self.menuOrder.contentItems[index].orderContent.itemOwnerName + " " + self.menuOrder.contentItems[index].orderContent.menuProductItems![m].itemName + " "
 
                 if self.menuOrder.contentItems[index].orderContent.menuProductItems![m].menuRecipes != nil {
@@ -208,6 +217,69 @@ class MenuOrderNotebookViewController: UIViewController {
         return recipeString
     }
     
+    func generateNormalContentString() -> String {
+        var content: String = ""
+        var ownerArray: [String] = [String]()
+        var newOwner: String = ""
+        var ownerString: String = ""
+        var productString: [String] = [String]()
+        var contactString: String = ""
+        
+        if self.orderMergedContent.isEmpty {
+            print("self.orderMergedContent is empty, return empty content")
+            return content
+        }
+        
+        for i in 0...self.orderMergedContent.count - 1 {
+            if self.orderMergedContent[i].owner != newOwner {
+                ownerArray.append(self.orderMergedContent[i].owner)
+                newOwner = self.orderMergedContent[i].owner
+            }
+        }
+        
+        if ownerArray.isEmpty {
+            return content
+        }
+        
+        for i in 0...ownerArray.count - 1 {
+            ownerString = ""
+            productString.removeAll()
+            contactString = ""
+            for j in 0...self.orderMergedContent.count - 1 {
+                if self.orderMergedContent[j].owner == ownerArray[i] {
+                    ownerString = "\(i + 1). 『\(ownerArray[i])』的訂單內容:"
+                    let pString = "    " + "\(self.orderMergedContent[j].productName) " + "* \(self.orderMergedContent[j].quantity) " + "\(self.orderMergedContent[j].mergedRecipe) " + "\(self.orderMergedContent[j].comments)"
+                    productString.append(pString)
+                    if self.orderMergedContent[j].userContactInfo != nil {
+                        contactString = generateUserContactInfoString(index: j)
+                    }
+                }
+            }
+            
+            content = content + ownerString + "\n"
+            
+            var productListString: String = ""
+            if !productString.isEmpty {
+                for k in 0...productString.count - 1 {
+                    productListString = productListString + productString[k] + "\n"
+                }
+            }
+            if productListString != "" {
+                content = content + "[產品內容]:\n"
+                content = content + productListString
+            }
+            
+            if contactString != "" {
+                content = content + "[聯絡資訊]:\n"
+                content = content + contactString + "\n"
+            }
+
+        }
+        
+        
+        return content
+    }
+    
     func generateContentString() {
         var content: String = ""
         var tmpContent: [MergedContent] = [MergedContent]()
@@ -222,6 +294,7 @@ class MenuOrderNotebookViewController: UIViewController {
                 if self.menuOrder.contentItems[i].orderContent.replyStatus != MENU_ORDER_REPLY_STATUS_ACCEPT {
                     continue
                 }
+                
                 content = content + getItemString(index: i)
                 content = content + "\n"
                 tmpContent = getItemsContent(index: i)
@@ -239,6 +312,7 @@ class MenuOrderNotebookViewController: UIViewController {
                 }
                 
                 content = content + getItemString(index: i)
+                content = content + "\n"
                 tmpContent = getItemsContent(index: i)
                 if !tmpContent.isEmpty {
                     self.orderMergedContent.append(contentsOf: tmpContent)
@@ -246,10 +320,12 @@ class MenuOrderNotebookViewController: UIViewController {
 
             }
         }
-        self.contentString = content
-        
+        //self.contentString = content
+
+        self.contentString = generateNormalContentString()
         convertNormalReportData()
-        prepareLayoutItems()
+        //prepareLayoutItems()
+        prepareNewLayoutItems(merged_columns: [5])
         refreshCollectionReport()
     }
 
@@ -257,6 +333,7 @@ class MenuOrderNotebookViewController: UIViewController {
         var mergedContent: [MergedContent] = [MergedContent]()
         
         var tmp: MergedContent = MergedContent()
+        var rowNumber: Int = 1
 
         self.orderMergedContent.removeAll()
 
@@ -311,6 +388,9 @@ class MenuOrderNotebookViewController: UIViewController {
                         content = content + "\n"
                     }
                     
+                    content = content + String(rowNumber) + ". "
+                    rowNumber = rowNumber + 1
+                    
                     content = content + mergedContent[i].productName + "  "
                     content = content + mergedContent[i].mergedRecipe + " * " + String(mergedContent[i].quantity)
                     if mergedContent[i].comments != "" {
@@ -326,6 +406,8 @@ class MenuOrderNotebookViewController: UIViewController {
                 print("mergedContent = \(mergedContent)")
                 for i in 0...self.menuOrder.locations!.count - 1 {
                     print("content = \(content)")
+                    rowNumber = 1
+                    content = content + "\n"
                     content = content + "--" + self.menuOrder.locations![i] + "\n"
                     var count: Int = 0
                     for j in 0...mergedContent.count - 1 {
@@ -337,6 +419,9 @@ class MenuOrderNotebookViewController: UIViewController {
                             content = content + "\n"
                         }
                         count = count + 1
+
+                        content = content + String(rowNumber) + ". "
+                        rowNumber = rowNumber + 1
 
                         content = content + mergedContent[j].productName + "  "
                         content = content + prefixString + mergedContent[j].mergedRecipe + " * " + String(mergedContent[j].quantity)
@@ -351,8 +436,142 @@ class MenuOrderNotebookViewController: UIViewController {
         }
         
         convertMergedReportData()
-        prepareLayoutItems()
+        //prepareLayoutItems()
+        prepareNewLayoutItems(merged_columns: [])
         refreshCollectionReport()
+    }
+
+    func prepareNewLayoutItems(merged_columns: [Int]) {
+        self.layoutItemsArray.removeAll()
+
+        if self.reportData.isEmpty {
+            print("Report Data is empty, just return")
+            return
+        }
+        
+        // Verify raw data
+        for i in 0...self.reportData.count - 1 {
+            if self.reportData[i].numberOfColumns != self.reportData[i].columnHeaders.count {
+                print("columnHeaders count NOT sync with numberOfColumns")
+                return
+            }
+            
+            if !self.reportData[i].rawCellData.isEmpty {
+                for j in 0...self.reportData[i].rawCellData.count - 1 {
+                    if self.reportData[i].rawCellData[j].count != self.reportData[i].numberOfColumns {
+                        print("rawCellData count NOT sync with numberOfColumns")
+                        return
+                    }
+                }
+            }
+        }
+        
+        var itemIndex: Int = 0
+        var rowIndex: Int = 0
+        for i in 0...self.reportData.count - 1 {
+            var tmpData: [[String]] = [[String]]()
+            tmpData = self.reportData[i].rawCellData.sorted(by: {$0[0] < $1[0]})
+            print("self.report.rawCellData = \(self.reportData[i].rawCellData)")
+            print("sroted self.report.rawCellData = \(tmpData)")
+            self.reportData[i].rawCellData = tmpData
+            
+            //var tmpLayoutItemArray: [ReportLayoutStruct] = [ReportLayoutStruct]()
+            var tmpLayoutItem: ReportLayoutStruct = ReportLayoutStruct()
+            if self.reportData.count != 1 {
+                tmpLayoutItem.type = REPORT_LAYOUT_TYPE_SECTION_HEADER
+                tmpLayoutItem.data = self.reportData[i].sectionTitle
+                tmpLayoutItem.itemIndex = itemIndex
+                tmpLayoutItem.sectionIndex = i
+                tmpLayoutItem.columnIndex = 0
+                tmpLayoutItem.rowIndex = rowIndex
+                tmpLayoutItem.rowCount = 1
+                var totalWidth: CGFloat = 0
+                for x in 0...self.reportData[i].columnWidth.count - 1 {
+                    totalWidth = totalWidth + self.reportData[i].columnWidth[x]
+                }
+                tmpLayoutItem.width = totalWidth
+                
+                itemIndex = itemIndex + 1
+                rowIndex = rowIndex + 1
+                self.layoutItemsArray.append(tmpLayoutItem)
+            }
+            
+            for j in 0...self.reportData[i].numberOfColumns - 1 {
+                tmpLayoutItem.type = REPORT_LAYOUT_TYPE_COLUMN_HEADER
+                tmpLayoutItem.data = self.reportData[i].columnHeaders[j]
+                tmpLayoutItem.itemIndex = itemIndex
+                tmpLayoutItem.sectionIndex = i
+                tmpLayoutItem.columnIndex = j
+                tmpLayoutItem.rowIndex = rowIndex
+                tmpLayoutItem.rowCount = 1
+                tmpLayoutItem.width = self.reportData[i].columnWidth[j]
+                itemIndex = itemIndex + 1
+                layoutItemsArray.append(tmpLayoutItem)
+            }
+            rowIndex = rowIndex + 1
+            
+            //var currentFirstHeader: String = self.reportData[i].rawCellData[0][0]
+            if self.reportData[i].rawCellData.isEmpty {
+                continue
+            }
+            
+            var currentFirstHeader: String = ""
+            for k in 0...self.reportData[i].rawCellData.count - 1 {
+                for m in 0...self.reportData[i].numberOfColumns - 1 {
+                    if m == 0 {
+                        if self.reportData[i].rawCellData[k][m] != currentFirstHeader {
+                            currentFirstHeader = self.reportData[i].rawCellData[k][m]
+                            tmpLayoutItem.type = REPORT_LAYOUT_TYPE_CELL
+                            tmpLayoutItem.data = self.reportData[i].rawCellData[k][m]
+                            tmpLayoutItem.itemIndex = itemIndex
+                            tmpLayoutItem.sectionIndex = i
+                            tmpLayoutItem.columnIndex = m
+                            tmpLayoutItem.rowIndex = rowIndex
+                            tmpLayoutItem.width = self.reportData[i].columnWidth[(m % self.reportData[i].numberOfColumns)]
+                            var totalRowCount: Int = 0
+                            for n in 0...self.reportData[i].rawCellData.count - 1 {
+                                if self.reportData[i].rawCellData[n][0] == currentFirstHeader {
+                                    totalRowCount = totalRowCount + 1
+                                }
+                            }
+                            tmpLayoutItem.rowCount = totalRowCount
+                            itemIndex = itemIndex + 1
+                            layoutItemsArray.append(tmpLayoutItem)
+                            
+                            // Add another merged column cell base on column 0 data
+                            if !merged_columns.isEmpty {
+                                for p in 0...merged_columns.count - 1 {
+                                    var mergedItem: ReportLayoutStruct = ReportLayoutStruct()
+                                    mergedItem = tmpLayoutItem
+                                    mergedItem.itemIndex = itemIndex
+                                    mergedItem.columnIndex = merged_columns[p]
+                                    mergedItem.data = self.reportData[i].rawCellData[k][merged_columns[p]]
+                                    mergedItem.width = self.reportData[i].columnWidth[(merged_columns[p] % self.reportData[i].numberOfColumns)]
+                                    itemIndex = itemIndex + 1
+                                    layoutItemsArray.append(mergedItem)
+                                }
+                            }
+                        } else {
+                            continue
+                        }
+                    } else if !merged_columns.contains(m) {
+                        tmpLayoutItem.type = REPORT_LAYOUT_TYPE_CELL
+                        tmpLayoutItem.data = self.reportData[i].rawCellData[k][m]
+                        tmpLayoutItem.itemIndex = itemIndex
+                        tmpLayoutItem.sectionIndex = i
+                        tmpLayoutItem.columnIndex = m
+                        tmpLayoutItem.rowIndex = rowIndex
+                        tmpLayoutItem.rowCount = 1
+                        tmpLayoutItem.width = self.reportData[i].columnWidth[(m % self.reportData[i].numberOfColumns)]
+                        itemIndex = itemIndex + 1
+                        layoutItemsArray.append(tmpLayoutItem)
+                    }
+                }
+                rowIndex = rowIndex + 1
+            }
+            //self.layoutItemsArray.append(tmpLayoutItemArray)
+        }
+        print("prepareLayoutItems break point")
     }
 
     func prepareLayoutItems() {
@@ -474,6 +693,19 @@ class MenuOrderNotebookViewController: UIViewController {
         print("prepareLayoutItems break point")
     }
 
+    func generateUserContactInfoString(index: Int) -> String {
+        var userString: String = ""
+        if self.orderMergedContent[index].userContactInfo == nil {
+            return userString
+        }
+        
+        userString = userString + "姓名：" + self.orderMergedContent[index].userContactInfo!.userName! + "\n"
+        userString = userString + "地址：" + self.orderMergedContent[index].userContactInfo!.userAddress! + "\n"
+        userString = userString + "電話：" + self.orderMergedContent[index].userContactInfo!.userPhoneNumber! + "\n"
+
+        return userString
+    }
+
     func convertNormalReportData() {
         self.reportData.removeAll()
         if self.orderMergedContent.isEmpty {
@@ -482,9 +714,11 @@ class MenuOrderNotebookViewController: UIViewController {
         }
 
         var tmpReportData: ReportDataStruct = ReportDataStruct()
-        tmpReportData.numberOfColumns = 5
-        tmpReportData.columnHeaders = ["參與者", "產品", "配方內容", "數量", "備註"]
-        tmpReportData.columnWidth = [100.0, 80.0, 160.0, 40.0, 160.0]
+        self.reportColumns = 6
+        tmpReportData.numberOfColumns = 6
+        tmpReportData.columnHeaders = ["參與者", "產品", "配方內容", "數量", "備註", "聯絡資訊"]
+        tmpReportData.columnWidth = [100.0, 80.0, 160.0, 40.0, 120.0, 240.0]
+        self.columnsWidth = tmpReportData.columnWidth
         self.contentWidth = tmpReportData.columnWidth.reduce(0, { $0 + $1 })
         print("self.contentWidth = \(self.contentWidth)")
 
@@ -495,6 +729,13 @@ class MenuOrderNotebookViewController: UIViewController {
             dataArray.append(self.orderMergedContent[i].mergedRecipe)
             dataArray.append(String(self.orderMergedContent[i].quantity))
             dataArray.append(self.orderMergedContent[i].comments)
+            if self.orderMergedContent[i].userContactInfo != nil {
+                let userContactString = self.generateUserContactInfoString(index: i)
+                dataArray.append(userContactString)
+            } else {
+                dataArray.append("")
+            }
+
             tmpReportData.rawCellData.append(dataArray)
         }
         self.reportData.append(tmpReportData)
@@ -509,9 +750,11 @@ class MenuOrderNotebookViewController: UIViewController {
         self.reportData.removeAll()
         if self.menuOrder.locations == nil {
             var tmpReportData: ReportDataStruct = ReportDataStruct()
+            self.reportColumns = 4
             tmpReportData.numberOfColumns = 4
             tmpReportData.columnHeaders = ["產品", "配方內容", "數量", "備註"]
             tmpReportData.columnWidth = [80.0, 160.0, 40.0, 160.0]
+            self.columnsWidth = tmpReportData.columnWidth
             self.contentWidth = tmpReportData.columnWidth.reduce(0, { $0 + $1 })
             print("self.contentWidth = \(self.contentWidth)")
 
@@ -530,6 +773,7 @@ class MenuOrderNotebookViewController: UIViewController {
                 tmpReportData.numberOfColumns = 4
                 tmpReportData.columnHeaders = ["產品", "配方內容", "數量", "備註"]
                 tmpReportData.columnWidth = [80.0, 160.0, 40.0, 160.0]
+                self.columnsWidth = tmpReportData.columnWidth
                 tmpReportData.sectionTitle = self.menuOrder.locations![i]
                 for j in 0...self.orderMergedContent.count - 1 {
                     if self.orderMergedContent[j].location == self.menuOrder.locations![i] {
@@ -591,14 +835,22 @@ extension MenuOrderNotebookViewController: UICollectionViewDataSource, UICollect
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if self.layoutItemsArray[indexPath.row].data == "" {
+            return
+        }
+        
         let cell = collectionView.cellForItem(at: indexPath) as! ReportCell
-        let direction = PopTipDirection.up
-
+        var quotient: Int = 0
+        if !self.layoutItemsArray.isEmpty {
+            quotient = indexPath.row / self.reportColumns
+        }
+        
         let popTip = PopTip()
         popTip.font = UIFont(name: "Avenir-Medium", size: 15)!
         popTip.shouldDismissOnTap = true
         popTip.shouldDismissOnTapOutside = true
         popTip.shouldDismissOnSwipeOutside = true
+        popTip.textAlignment = .left
         popTip.edgeMargin = 5
         popTip.offset = 2
         popTip.bubbleOffset = 0
@@ -607,6 +859,10 @@ extension MenuOrderNotebookViewController: UICollectionViewDataSource, UICollect
         popTip.bubbleColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
 
         //popTip.bubbleColor = UIColor(red: 0.31, green: 0.57, blue: 0.87, alpha: 1)
-        popTip.show(text: self.layoutItemsArray[indexPath.row].data, direction: direction, maxWidth: 200, in: self.collectionReport, from: cell.frame)
+        if quotient <= 4 {
+            popTip.show(text: self.layoutItemsArray[indexPath.row].data, direction: PopTipDirection.down, maxWidth: 300, in: self.collectionReport, from: cell.frame)
+        } else {
+            popTip.show(text: self.layoutItemsArray[indexPath.row].data, direction: PopTipDirection.up, maxWidth: 300, in: self.collectionReport, from: cell.frame)
+        }
     }
 }

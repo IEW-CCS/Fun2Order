@@ -16,6 +16,9 @@ class MenuHomeNativeAdCell: UITableViewCell {
         self.nativeAdView.layer.borderWidth = CGFloat(1.0)
         self.nativeAdView.layer.borderColor = BASIC_FRAME_BORDER_COLOR_GREEN.cgColor
         self.nativeAdView.layer.cornerRadius = 6
+        self.nativeAdView.iconView?.layer.borderWidth = 1.0
+        self.nativeAdView.iconView?.layer.borderColor = UIColor.clear.cgColor
+        self.nativeAdView.iconView?.layer.cornerRadius = 6
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

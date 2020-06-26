@@ -52,8 +52,8 @@ class MenuRecipeCell: UITableViewCell {
         self.numberForRow = number_for_row
         self.titleLabel.text = recipe_data.recipeCategory
         
-        let ITEM_HEIGHT = 36
-        let LABEL_WIDTH = 90
+        let ITEM_HEIGHT = 44
+        let LABEL_WIDTH = 95
         let BUTTON_WIDTH = 36
         let ITEM_WIDTH_SPACE = 5
         let ITEM_HEIGHT_SPACE = 5
@@ -73,7 +73,7 @@ class MenuRecipeCell: UITableViewCell {
         
         var rowCountIndex: Int = 0
         var totalRowCount: Int = 0
-        let initMargin: Int = 15
+        let initMargin: Int = 5
         var itemY2: CGFloat = 0
         
         //if recipe_data.recipeItems!.isEmpty {

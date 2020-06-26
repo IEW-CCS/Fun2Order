@@ -73,7 +73,7 @@ class GroupFriendListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SelectMemberCell", for: indexPath) as! SelectMemberCell
         
-        cell.setData(member_id: self.friendList[indexPath.row].memberID, member_name: self.friendList[indexPath.row].memberName, ini_status: false)
+        cell.setData(member_id: self.friendList[indexPath.row].memberID, member_name: self.friendList[indexPath.row].memberName, ini_status: self.selectFlag[indexPath.row])
         
         cell.tag = indexPath.row
         cell.setCheckStatus(status: false)

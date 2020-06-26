@@ -21,12 +21,13 @@ class OrderHistoryCell: UITableViewCell {
     @IBOutlet weak var orderTimeLabel: UILabel!
     @IBOutlet weak var orderNumberLabel: UILabel!
     @IBOutlet weak var memberImage: UIImageView!
-    @IBOutlet weak var orderQuantityLabel: UILabel!
-    @IBOutlet weak var orderPriceLabel: UILabel!
+    @IBOutlet weak var dueTimeLabel: UILabel!
+    //@IBOutlet weak var orderQuantityLabel: UILabel!
+    //@IBOutlet weak var orderPriceLabel: UILabel!
     @IBOutlet weak var memberLabel: UILabel!
     @IBOutlet weak var memberCountLabel: UILabel!
-    @IBOutlet weak var quantityLabel: UILabel!
-    @IBOutlet weak var priceLabel: UILabel!
+    //@IBOutlet weak var quantityLabel: UILabel!
+    //@IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var buttonQRCode: UIButton!
     
     var delegate: DisplayQRCodeDelegate??
@@ -44,6 +45,7 @@ class OrderHistoryCell: UITableViewCell {
         self.backView.layer.borderWidth = CGFloat(1.5)
         self.backView.layer.borderColor = BASIC_FRAME_BORDER_COLOR_BLUE.cgColor
         self.backView.layer.cornerRadius = 6
+        
         self.backView2.layer.cornerRadius = 2.5
         self.titleLabel.layer.cornerRadius = 6
         self.buttonQRCode.imageView?.image = UIImage(named: "Image_QR_Code.png")?.withRenderingMode(.alwaysTemplate)
@@ -87,18 +89,18 @@ class OrderHistoryCell: UITableViewCell {
         self.orderTimeLabel.text = dateString
         self.orderNumberLabel.text = order_info.orderNumber
 
-        self.orderQuantityLabel.text = String(order_info.orderTotalQuantity)
-        self.orderPriceLabel.text = String(order_info.orderTotalPrice)
+        //self.orderQuantityLabel.text = String(order_info.orderTotalQuantity)
+        //self.orderPriceLabel.text = String(order_info.orderTotalPrice)
         //self.statusLabel.text = getOrderStatusDescription(status_code: order_info.orderStatus)
 
         //self.orderContentTextView.text = makeContentString(order_info: order_info)
     }
     
     func setMenuData(menu_order: MenuOrder) {
-        self.quantityLabel.isHidden = true
-        self.orderQuantityLabel.isHidden = true
-        self.priceLabel.isHidden = true
-        self.orderPriceLabel.isHidden = true
+        //self.quantityLabel.isHidden = true
+        //self.orderQuantityLabel.isHidden = true
+        //self.priceLabel.isHidden = true
+        //self.orderPriceLabel.isHidden = true
         self.memberLabel.isHidden = false
         self.memberCountLabel.isHidden = false
         self.memberCountLabel.text = String(menu_order.contentItems.count)
@@ -111,15 +113,18 @@ class OrderHistoryCell: UITableViewCell {
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = DATETIME_FORMATTER
         let dateData = timeFormatter.date(from: menu_order.createTime)
+        let dueDateData = timeFormatter.date(from: menu_order.dueTime)
         
         let formatter = DateFormatter()
         formatter.dateFormat = TAIWAN_DATETIME_FORMATTER
         let dateString = formatter.string(from: dateData!)
+        let dueDateString = formatter.string(from: dueDateData!)
         self.orderTimeLabel.text = dateString
         self.orderNumberLabel.text = menu_order.orderNumber
+        self.dueTimeLabel.text = dueDateString
 
-        self.orderQuantityLabel.text = String(menu_order.orderTotalQuantity)
-        self.orderPriceLabel.text = String(menu_order.orderTotalPrice)
+        //self.orderQuantityLabel.text = String(menu_order.orderTotalQuantity)
+        //self.orderPriceLabel.text = String(menu_order.orderTotalPrice)
         //self.statusLabel.text = getOrderStatusDescription(status_code: menu_order.orderStatus)
         //self.orderContentTextView.text = makeContentString(order_info: order_info)
         

@@ -13,11 +13,16 @@ import GoogleMobileAds
 
 protocol JoinGroupOrderDelegate: class {
     func refreshHistoryInvitationList(sender: JoinGroupOrderTableViewController)
+    func refreshLimitedMenuItems(sender: JoinGroupOrderTableViewController, items: [MenuItem]?)
+}
+
+extension JoinGroupOrderDelegate {
+    func refreshHistoryInvitationList(sender: JoinGroupOrderTableViewController) {}
+    func refreshLimitedMenuItems(sender: JoinGroupOrderTableViewController, items: [MenuItem]?) {}
 }
 
 class JoinGroupOrderTableViewController: UITableViewController {
     @IBOutlet weak var labelBrandName: UILabel!
-    //@IBOutlet weak var imageMenu: UIImageView!
     @IBOutlet weak var segmentLocation: UISegmentedControl!
     @IBOutlet weak var buttonConfirm: UIButton!
     @IBOutlet weak var textViewDescription: UITextView!
@@ -27,11 +32,6 @@ class JoinGroupOrderTableViewController: UITableViewController {
     var menuOrder: MenuOrder?
     var memberIndex: Int = -1
     var interstitialAd: GADInterstitial!
-    //var menuProductItems: [MenuProductItem]?
-    //var menuItem: MenuItem = MenuItem()
-    //var menuRecipes: [MenuRecipe] = [MenuRecipe]()
-    //var productQuantity: Int = 0
-    //var productComments: String = ""
     var selectedLocationIndex: Int = -1
     let app = UIApplication.shared.delegate as! AppDelegate
     weak var refreshNotificationDelegate: ApplicationRefreshNotificationDelegate?
@@ -39,7 +39,11 @@ class JoinGroupOrderTableViewController: UITableViewController {
     var imageArray: [UIImage] = [UIImage]()
     var menuDescription: String = ""
     var isNeedToConfirmFlag: Bool = false
-
+    var limitedMenuItems: [MenuItem]?
+    var orderGlobalQuantity: [MenuItem]?
+    var originalMenuProductItems: [MenuProductItem]?
+    var selectProductVC: JoinOrderSelectProductViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         refreshNotificationDelegate = app.notificationDelegate
@@ -51,20 +55,207 @@ class JoinGroupOrderTableViewController: UITableViewController {
 
         let productCellViewNib: UINib = UINib(nibName: "NewProductCell", bundle: nil)
         self.tableView.register(productCellViewNib, forCellReuseIdentifier: "NewProductCell")
-        
+
         let backImage = self.navigationItem.leftBarButtonItem?.image
         let newBackButton = UIBarButtonItem(title: "返回", style: UIBarButtonItem.Style.plain, target: self, action: #selector(self.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
         navigationController?.navigationBar.backIndicatorImage = backImage
- 
+
+        self.limitedMenuItems = self.menuInformation.menuItems
+        self.originalMenuProductItems = self.memberContent.orderContent.menuProductItems
+        monitorFBProductQuantityLimit(owner_id: self.memberContent.orderOwnerID, order_number: self.memberContent.orderContent.orderNumber, completion: getLimitedMenuItems)
+        
         setupInterstitialAd()
+        
         //refreshJoinGroupOrder()
     }
-    
+
+    func getLimitedMenuItems(items: [MenuItem]?) {
+        print("JoinGroupOrderTableViewController getLimitedMenuItems: Menu Items = \(String(describing: items))")
+        
+        self.orderGlobalQuantity = items
+        if items == nil || self.limitedMenuItems == nil {
+            print("getLimitedMenuItems: Limited menu items == nil, no need to process")
+            return
+        }
+        
+        for i in 0...self.limitedMenuItems!.count - 1 {
+            for j in 0...items!.count - 1 {
+                if self.limitedMenuItems![i].itemName == items![j].itemName {
+                    self.limitedMenuItems![i] = items![j]
+                    continue
+                }
+            }
+        }
+        
+        self.selectProductVC?.setMenuItems(items: self.limitedMenuItems)
+        
+        //self.delegate?.refreshLimitedMenuItems(sender: self, items: self.limitedMenuItems)
+        //print("self.limitedMenuItems = \(String(describing: self.limitedMenuItems))")
+        //self.tableViewProduct.reloadData()
+    }
+
     @objc func back(sender: UIBarButtonItem) {
         var alertWindow: UIWindow!
         if self.isNeedToConfirmFlag {
             let controller = UIAlertController(title: "提示訊息", message: "訂購單已更動，您確定要離開嗎？", preferredStyle: .alert)
+
+            let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                print("Confirm to ignore JoinOrder change")
+                self.releaseFBObserver()
+                self.navigationController?.popToRootViewController(animated: true)
+                self.dismiss(animated: false, completion: nil)
+
+                alertWindow.isHidden = true
+            }
+            
+            controller.addAction(okAction)
+            let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+                print("Cancel to ignore JoinOrder change")
+                alertWindow.isHidden = true
+            }
+            controller.addAction(cancelAction)
+            alertWindow = presentAlert(controller)
+        } else {
+            self.releaseFBObserver()
+            self.navigationController?.popToRootViewController(animated: true)
+            self.dismiss(animated: false, completion: nil)
+        }
+    }
+
+    func releaseFBObserver() {
+        let databaseRef = Database.database().reference()
+        let pathString = "USER_MENU_ORDER/\(self.memberContent.orderOwnerID)/\(self.memberContent.orderContent.orderNumber)/limitedMenuItems"
+
+        //databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+        databaseRef.child(pathString).removeAllObservers()
+    }
+    
+    func verifyLimitedQuantity() -> Bool {
+        var summaryOldMenuProductItems: [MenuProductItem]?
+        var summaryNewMenuProductItems: [MenuProductItem]?
+        var summaryFinalMenuProductItems: [MenuProductItem]?
+        
+        if self.originalMenuProductItems != nil {
+            for i in 0...self.originalMenuProductItems!.count - 1 {
+                if i == 0 {
+                    summaryOldMenuProductItems = [MenuProductItem]()
+                    summaryOldMenuProductItems!.append(self.originalMenuProductItems![i])
+                } else {
+                    var isFound: Bool = false
+                    for j in 0...summaryOldMenuProductItems!.count - 1 {
+                        if summaryOldMenuProductItems![j].itemName == self.originalMenuProductItems![i].itemName {
+                            summaryOldMenuProductItems![j].itemQuantity = summaryOldMenuProductItems![j].itemQuantity + self.originalMenuProductItems![i].itemQuantity
+                            isFound = true
+                            break
+                        }
+                    }
+                    if !isFound {
+                        summaryOldMenuProductItems!.append(self.originalMenuProductItems![i])
+                    }
+                }
+            }
+        }
+
+        if self.memberContent.orderContent.menuProductItems != nil {
+            for i in 0...self.memberContent.orderContent.menuProductItems!.count - 1 {
+                if i == 0 {
+                    summaryNewMenuProductItems = [MenuProductItem]()
+                    summaryNewMenuProductItems!.append(self.memberContent.orderContent.menuProductItems![i])
+                } else {
+                    var isFound: Bool = false
+                    for j in 0...summaryNewMenuProductItems!.count - 1 {
+                        if summaryNewMenuProductItems![j].itemName == self.memberContent.orderContent.menuProductItems![i].itemName {
+                            summaryNewMenuProductItems![j].itemQuantity = summaryNewMenuProductItems![j].itemQuantity + self.memberContent.orderContent.menuProductItems![i].itemQuantity
+                            isFound = true
+                            break
+                        }
+                    }
+                    if !isFound {
+                        summaryNewMenuProductItems!.append(self.memberContent.orderContent.menuProductItems![i])
+                    }
+                }
+            }
+        }
+        
+        summaryFinalMenuProductItems = summaryNewMenuProductItems
+        if summaryOldMenuProductItems != nil {
+            for i in 0...summaryOldMenuProductItems!.count - 1 {
+                var isFound: Bool = false
+                let index: Int = i
+                for j in 0...summaryFinalMenuProductItems!.count - 1 {
+                    if summaryFinalMenuProductItems![j].itemName == summaryOldMenuProductItems![i].itemName {
+                        summaryFinalMenuProductItems![j].itemQuantity = summaryFinalMenuProductItems![j].itemQuantity - summaryOldMenuProductItems![i].itemQuantity
+                        isFound = true
+                        break
+                    }
+                }
+                if !isFound {
+                    var tmpData: MenuProductItem = MenuProductItem()
+                    tmpData = summaryOldMenuProductItems![index]
+                    tmpData.itemQuantity = 0 - tmpData.itemQuantity
+                    summaryFinalMenuProductItems!.append(tmpData)
+                }
+            }
+        }
+
+        if self.orderGlobalQuantity != nil && summaryFinalMenuProductItems != nil {
+            var remainedQuantity: Int = 0
+            for i in 0...summaryFinalMenuProductItems!.count - 1 {
+                for j in 0...self.orderGlobalQuantity!.count - 1 {
+                    if summaryFinalMenuProductItems![i].itemName == self.orderGlobalQuantity![j].itemName {
+                        if self.orderGlobalQuantity![j].quantityLimitation == nil {
+                            continue
+                        }
+
+                        if self.orderGlobalQuantity![j].quantityRemained != nil {
+                            remainedQuantity = Int(self.orderGlobalQuantity![j].quantityRemained!)
+                        }
+                        
+                        //if summaryFinalMenuProductItems![i].itemQuantity > remainedQuantity {
+                        if (remainedQuantity - summaryFinalMenuProductItems![i].itemQuantity) < 0 {
+                            presentSimpleAlertMessage(title: "錯誤訊息", message: "[\(summaryFinalMenuProductItems![i].itemName)] 為限量商品，目前訂購的數量已超過剩餘的數量，請修改數量或選擇其他產品後再重新送出")
+                            return false
+                        } else {
+                            self.orderGlobalQuantity![j].quantityRemained = remainedQuantity - summaryFinalMenuProductItems![i].itemQuantity
+                        }
+                    }
+                }
+            }
+        }
+        return true
+/*
+        if self.orderGlobalQuantity != nil && self.memberContent.orderContent.menuProductItems != nil {
+            var remainedQuantity: Int = 0
+            for i in 0...self.memberContent.orderContent.menuProductItems!.count - 1 {
+                for j in 0...self.orderGlobalQuantity!.count - 1 {
+                    if self.memberContent.orderContent.menuProductItems![i].itemName == self.orderGlobalQuantity![j].itemName {
+                        if self.orderGlobalQuantity![j].quantityLimitation == nil {
+                            continue
+                        }
+
+                        if self.orderGlobalQuantity![j].quantityRemained != nil {
+                            remainedQuantity = Int(self.orderGlobalQuantity![j].quantityRemained!)
+                        }
+
+                        if self.memberContent.orderContent.menuProductItems![i].itemQuantity > remainedQuantity {
+                            presentSimpleAlertMessage(title: "錯誤訊息", message: "[\(self.memberContent.orderContent.menuProductItems![i].itemName)] 為限量商品，目前訂購的數量已超過剩餘的數量，請修改數量或選擇其他產品後再重新送出")
+                            return false
+                        } else {
+                            self.orderGlobalQuantity![j].quantityRemained = remainedQuantity - self.memberContent.orderContent.menuProductItems![i].itemQuantity
+                        }
+                    }
+                }
+            }
+        }
+*/
+    }
+
+/*
+    func currentViewControllerShouldPop() -> Bool {
+        var alertWindow: UIWindow!
+        if self.isNeedToConfirmFlag {
+            let controller = UIAlertController(title: "提示訊息", message: "訂購單資料已更動，您確定要離開嗎？", preferredStyle: .alert)
 
             let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
                 print("Confirm to ignore JoinOrder change")
@@ -81,12 +272,14 @@ class JoinGroupOrderTableViewController: UITableViewController {
             }
             controller.addAction(cancelAction)
             alertWindow = presentAlert(controller)
+            return false
         } else {
-            self.navigationController?.popToRootViewController(animated: true)
-            self.dismiss(animated: false, completion: nil)
+            //self.navigationController?.popToRootViewController(animated: true)
+            //self.dismiss(animated: false, completion: nil)
+            return true
         }
     }
-    
+*/
     func setupInterstitialAd() {
         // Test Interstitla Video Ad
         //self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/5135589807")
@@ -117,22 +310,57 @@ class JoinGroupOrderTableViewController: UITableViewController {
                 print("Doesn't select location, just return")
                 presentSimpleAlertMessage(title: "錯誤訊息", message: "尚未選擇地點，請重新選取地點資訊")
                 return
-            } else {
-                self.memberContent.orderContent.location = self.menuInformation.locations![self.segmentLocation.selectedSegmentIndex]
             }
         }
          
         if self.memberContent.orderContent.menuProductItems == nil {
             presentSimpleAlertMessage(title: "錯誤訊息", message: "尚未輸入任何產品資訊，請重新輸入")
             return
-        } else {
-            var totalQuantity: Int = 0
-            for i in 0...self.memberContent.orderContent.menuProductItems!.count - 1 {
-                totalQuantity = totalQuantity + self.memberContent.orderContent.menuProductItems![i].itemQuantity
-            }
-            self.memberContent.orderContent.itemQuantity = totalQuantity
         }
         
+        if self.menuInformation.needContactInfoFlag != nil {
+            if self.menuInformation.needContactInfoFlag! {
+                let controller = UIAlertController(title: "訂單需要您輸入郵寄或聯絡資訊", message: nil, preferredStyle: .alert)
+
+                guard let personalController = self.storyboard?.instantiateViewController(withIdentifier: "PERSONAL_CONTACT_VC") as? PersonalContactViewController else{
+                    assertionFailure("[AssertionFailure] StoryBoard: PERSONAL_CONTACT_VC can't find!! (PersonalContactViewController)")
+                    return
+                }
+
+                personalController.preferredContentSize.height = 200
+                controller.preferredContentSize.height = 200
+                personalController.preferredContentSize.width = 320
+                controller.preferredContentSize.width = 320
+                controller.setValue(personalController, forKey: "contentViewController")
+                controller.addChild(personalController)
+                
+                let userInfo = getMyContactInfo()
+                
+                personalController.setData(user_info: userInfo)
+                personalController.delegate = self
+                
+                present(controller, animated: true, completion: nil)
+            } else {
+                updateOrderContent()
+            }
+        } else {
+            updateOrderContent()
+        }
+    }
+    
+    func updateOrderContent() {
+        self.memberContent.orderContent.location = self.menuInformation.locations![self.segmentLocation.selectedSegmentIndex]
+
+        var totalQuantity: Int = 0
+        for i in 0...self.memberContent.orderContent.menuProductItems!.count - 1 {
+            totalQuantity = totalQuantity + self.memberContent.orderContent.menuProductItems![i].itemQuantity
+        }
+        self.memberContent.orderContent.itemQuantity = totalQuantity
+
+        if !verifyLimitedQuantity() {
+            return
+        }
+
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = DATETIME_FORMATTER
         let timeString = timeFormatter.string(from: Date())
@@ -141,10 +369,26 @@ class JoinGroupOrderTableViewController: UITableViewController {
         self.memberContent.orderContent.replyStatus = MENU_ORDER_REPLY_STATUS_ACCEPT
         self.memberContent.orderContent.itemOwnerName = getMyUserName()
         
-        let databaseRef = Database.database().reference()
-        if self.memberContent.orderOwnerID == "" {
+        if self.memberContent.orderOwnerID == "" || self.memberContent.orderContent.orderNumber == "" {
             print("confirmToJoinOrder self.memberContent.orderOwnerID is empty")
             return
+        }
+        
+        let databaseRef = Database.database().reference()
+        let limitedPath = "USER_MENU_ORDER/\(self.memberContent.orderOwnerID)/\(self.memberContent.orderContent.orderNumber)/limitedMenuItems"
+        var globalQuantityArray: [Any] = [Any]()
+        if self.orderGlobalQuantity != nil {
+            for itemData in (self.orderGlobalQuantity as [MenuItem]?)! {
+                globalQuantityArray.append(itemData.toAnyObject())
+            }
+        }
+
+        databaseRef.child(limitedPath).setValue(globalQuantityArray) { (error, reference) in
+            if let error = error {
+                print("upload orderGlobalQuantity error in JoinGroupOrderTableViewController")
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "上傳團購單產品限量資訊時發生錯誤：\(error.localizedDescription)")
+                return
+            }
         }
         
         let pathString = "USER_MENU_ORDER/\(self.memberContent.orderOwnerID)/\(self.memberContent.orderContent.orderNumber)/contentItems/\(self.memberIndex)"
@@ -161,10 +405,10 @@ class JoinGroupOrderTableViewController: UITableViewController {
             self.refreshNotificationDelegate?.refreshNotificationList()
             self.delegate?.refreshHistoryInvitationList(sender: self)
             self.isNeedToConfirmFlag = false
+            self.releaseFBObserver()
             self.navigationController?.popToRootViewController(animated: true)
             self.dismiss(animated: false, completion: nil)
         }
-        
     }
     
     func refreshJoinGroupOrder() {
@@ -200,7 +444,7 @@ class JoinGroupOrderTableViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
-    
+        
     @IBAction func changeLocationIndex(_ sender: UISegmentedControl) {
         self.selectedLocationIndex = self.segmentLocation.selectedSegmentIndex
         self.isNeedToConfirmFlag = true
@@ -326,12 +570,15 @@ class JoinGroupOrderTableViewController: UITableViewController {
                         }
                     } catch {
                         print("attendGroupOrder jsonData decode failed: \(error.localizedDescription)")
+                        presentSimpleAlertMessage(title: "錯誤訊息", message: "存取訂單資料時發生錯誤")
                     }
                 } else {
                     print("attendGroupOrder snapshot doesn't exist!")
+                    presentSimpleAlertMessage(title: "錯誤訊息", message: "訂單資料不存在，請聯絡團購發起人")
                 }
             }) { (error) in
                 print(error.localizedDescription)
+                presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
             }
         }
     }
@@ -389,7 +636,13 @@ class JoinGroupOrderTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowInputProduct" {
             if let controllerProduct = segue.destination as? JoinOrderSelectProductViewController {
+                self.selectProductVC = controllerProduct
                 controllerProduct.menuInformation = self.menuInformation
+                //controllerProduct.ownerID = self.memberContent.orderOwnerID
+                //controllerProduct.orderNumber = self.memberContent.orderContent.orderNumber
+                controllerProduct.limitedMenuItems = self.limitedMenuItems
+                //controllerProduct.setParentDelegate(joinorder_delegate: self.delegate)
+                //controllerProduct.parentVC = self
                 controllerProduct.delegate = self
             }
         }
@@ -406,6 +659,36 @@ class JoinGroupOrderTableViewController: UITableViewController {
     }
 }
 
+/*
+extension JoinGroupOrderTableViewController: UINavigationBarDelegate {
+    public func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
+        //print("CreateMenuTableViewController navigationBar shouldPop event processed!!!")
+        var shouldPop = true
+        //let currentVC = self.topViewController
+        
+        //if (currentVC?.responds(to: #selector(currentViewControllerShouldPop)))! {
+        shouldPop = self.currentViewControllerShouldPop()
+        //}
+        
+        if shouldPop {
+            DispatchQueue.main.async {
+                self.navigationController?.popViewController(animated: true)
+            }
+            return true
+        } else {
+            for subView in navigationBar.subviews {
+                if 0.0 < subView.alpha && subView.alpha < 1.0 {
+                    UIView.animate(withDuration: 0.25, animations: {
+                        subView.alpha = 1.0
+                    })
+                }
+            }
+            return false
+        }
+    }
+}
+*/
+
 extension JoinGroupOrderTableViewController: JoinOrderSelectProductDelegate {
     func setProduct(menu_item: MenuProductItem) {
         
@@ -414,7 +697,7 @@ extension JoinGroupOrderTableViewController: JoinOrderSelectProductDelegate {
         }
         if !self.memberContent.orderContent.menuProductItems!.isEmpty {
             if self.memberContent.orderContent.menuProductItems!.count == MAX_NEW_PRODUCT_COUNT {
-                presentSimpleAlertMessage(title: "錯誤訊息", message: "產品項目超過限制(最多五種)，請重新輸入產品資訊")
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "產品項目超過限制(最多10種)，請重新輸入產品資訊")
                 return
             }
         }
@@ -442,7 +725,7 @@ extension JoinGroupOrderTableViewController: MenuOrderBoardDelegate {
             if self.memberContent.orderContent.menuProductItems != nil {
                 if (self.memberContent.orderContent.menuProductItems!.count + items.count) > MAX_NEW_PRODUCT_COUNT {
                     print("Over the max number limitation of new product")
-                    presentSimpleAlertMessage(title: "錯誤訊息", message: "產品項目超過限制(最多五種)，請重新輸入產品資訊")
+                    presentSimpleAlertMessage(title: "錯誤訊息", message: "產品項目超過限制(最多10種)，請重新輸入產品資訊")
                     return
                 } else {
                     for i in 0...items.count - 1 {
@@ -452,7 +735,7 @@ extension JoinGroupOrderTableViewController: MenuOrderBoardDelegate {
             } else {
                 if items.count > MAX_NEW_PRODUCT_COUNT {
                     print("Over the max number limitation of new product")
-                    presentSimpleAlertMessage(title: "錯誤訊息", message: "產品項目超過限制(最多五種)，請重新輸入產品資訊")
+                    presentSimpleAlertMessage(title: "錯誤訊息", message: "產品項目超過限制(最多10種)，請重新輸入產品資訊")
                     return
                 } else {
                     self.memberContent.orderContent.menuProductItems = items
@@ -471,6 +754,13 @@ extension JoinGroupOrderTableViewController: MenuOrderBoardDelegate {
             let sectionIndex = IndexSet(integer: 1)
             self.tableView.reloadSections(sectionIndex, with: .automatic)
         }
+    }
+}
+
+extension JoinGroupOrderTableViewController: PersonalContactInfoDelegate {
+    func getUserContactInfo(sender: PersonalContactViewController, contact: UserContactInformation?) {
+        self.memberContent.orderContent.userContactInfo = contact
+        updateOrderContent()
     }
 }
 

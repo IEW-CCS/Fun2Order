@@ -23,6 +23,7 @@ class BasicInformationTableViewController: UITableViewController {
     @IBOutlet weak var imageGender: UIImageView!
     @IBOutlet weak var imageBirthday: UIImageView!
     @IBOutlet weak var imageAddress: UIImageView!
+    @IBOutlet weak var buttonSignOut: UIButton!
     
     var myUserID: String = ""
     var myProfile: UserProfile = UserProfile()
@@ -33,6 +34,8 @@ class BasicInformationTableViewController: UITableViewController {
         //tmpDeleteProfile()
         setupImageTintColor()
         //loadSetupConfig()
+        self.buttonSignOut.isEnabled = false
+        self.buttonSignOut.isHidden = true
         
         if Auth.auth().currentUser?.uid != nil {
             downloadFBUserProfile(user_id: Auth.auth().currentUser!.uid, completion: setupBasicInformation)

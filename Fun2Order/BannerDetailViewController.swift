@@ -20,6 +20,7 @@ class BannerDetailViewController: UIViewController {
         self.backView.layer.cornerRadius = 6
         
         setupAboutInfo()
+        testObserveEventFunction()
     }
 
     @IBAction func openWebSite(_ sender: UIButton) {
@@ -29,6 +30,7 @@ class BannerDetailViewController: UIViewController {
     }
     
     @IBAction func closeBanner(_ sender: UIButton) {
+        testRemoveObserveEventFunction()
         dismiss(animated: true, completion: nil)
     }
     

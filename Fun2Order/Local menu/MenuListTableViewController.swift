@@ -324,10 +324,6 @@ class MenuListTableViewController: UITableViewController, UIGestureRecognizerDel
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        //if self.menuInfos.isEmpty {
-        //    return 1
-        //}
-        
         return 2
     }
 
@@ -627,6 +623,7 @@ extension MenuListTableViewController: MenuListCategoryCellDelegate {
 
 extension MenuListTableViewController: BrandCategoryDelegate {
     func deleteBrandCategoryComplete(sender: BrandCategoryTableViewController) {
+        self.selectedIndex = 0
         downloadFBMenuInformationList(select_index: self.selectedIndex)
     }
 }

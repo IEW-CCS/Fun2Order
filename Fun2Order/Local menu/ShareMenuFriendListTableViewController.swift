@@ -75,7 +75,7 @@ class ShareMenuFriendListTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SelectMemberCell", for: indexPath) as! SelectMemberCell
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
 
-        cell.setData(member_id: self.allFriendList[indexPath.row].memberID, member_name: self.allFriendList[indexPath.row].memberName, ini_status: false)
+        cell.setData(member_id: self.allFriendList[indexPath.row].memberID, member_name: self.allFriendList[indexPath.row].memberName, ini_status: allFriendSelectedIndex[indexPath.row])
         cell.delegate = self
         cell.tag = indexPath.row
         

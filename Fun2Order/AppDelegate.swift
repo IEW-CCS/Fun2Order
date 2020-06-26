@@ -104,7 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print("-------- userNotificationCenter  didReceive response")
         
         getTappedNotification(notification: response.notification)
-        getNotifications(func_id: "userNotificationCenter didReceive", completion: refreshNotifyList)
+        //getNotifications(func_id: "userNotificationCenter didReceive", completion: refreshNotifyList)
         completionHandler()
 
     }

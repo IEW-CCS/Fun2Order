@@ -19,17 +19,15 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     @IBOutlet weak var labelCategory: UILabel!
     @IBOutlet weak var textViewDescription: UITextView!
     @IBOutlet weak var buttonMenuImage: UIButton!
-    //@IBOutlet weak var imageMenuPhoto: UIImageView!
     @IBOutlet weak var buttonProduct: UIButton!
     @IBOutlet weak var labelLocationCount: UILabel!
     @IBOutlet weak var labelProductCount: UILabel!
-    //@IBOutlet weak var imagePagerView: FSPagerView!
+    @IBOutlet weak var checkboxContactInfo: Checkbox!
     
     var menuInformation: MenuInformation = MenuInformation()
-    //var menuIcon: UIImage = UIImage()
     var menuIcon: UIImage?
     var savedMenuInformation: MenuInformation = MenuInformation()
-    var isNeedSave: Bool = false
+    var isNeedToConfirmFlag: Bool = false
     var isEditedMode: Bool = false
     var testDate: Date = Date()
     weak var delegate: CreateMenuDelegate?
@@ -39,6 +37,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     var originalMennuImagePathList: [String]?
     var brandCategoryIndex: Int = -1
     let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
+    var isNeedContactInfo: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +50,11 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         self.textViewDescription.layer.cornerRadius = 6
         self.textViewDescription.text = ""
         
+        self.checkboxContactInfo.valueChanged = { (isChecked) in
+            print("checkbox is checked: \(isChecked)")
+            self.isNeedContactInfo = isChecked
+        }
+
         self.labelCategory.text = ""
         
         self.textBrandName.delegate = self
@@ -63,8 +67,50 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         
         self.activityIndicator.frame = self.view.bounds
         self.view.addSubview(self.activityIndicator)
-        
+
+        let backImage = self.navigationItem.leftBarButtonItem?.image
+        let newBackButton = UIBarButtonItem(title: "返回", style: UIBarButtonItem.Style.plain, target: self, action: #selector(self.back(sender:)))
+        self.navigationItem.leftBarButtonItem = newBackButton
+        navigationController?.navigationBar.backIndicatorImage = backImage
+
         refreshMenu()
+    }
+
+    @objc func back(sender: UIBarButtonItem) {
+        var alertWindow: UIWindow!
+        
+        if self.savedMenuInformation.brandName != self.menuInformation.brandName {
+            self.isNeedToConfirmFlag = true
+        }
+        
+        if self.savedMenuInformation.brandCategory != self.menuInformation.brandCategory {
+            self.isNeedToConfirmFlag = true
+        }
+
+        if self.isNeedToConfirmFlag {
+            let controller = UIAlertController(title: "提示訊息", message: "菜單資料已更動，您確定要離開嗎？", preferredStyle: .alert)
+
+            let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                print("Confirm to ignore CreateMennu change")
+                self.navigationController?.popToRootViewController(animated: true)
+                self.dismiss(animated: false, completion: nil)
+
+                alertWindow.isHidden = true
+            }
+            
+            controller.addAction(okAction)
+            let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+                print("Cancel to ignore CreateMenu change")
+                alertWindow.isHidden = true
+            }
+            controller.addAction(cancelAction)
+            alertWindow = presentAlert(controller)
+            //return false
+        } else {
+            self.navigationController?.popToRootViewController(animated: true)
+            self.dismiss(animated: false, completion: nil)
+            //return true
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -101,12 +147,23 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         }
         self.labelLocationCount.text = "\(locationCount) 項"
 
-        
         if self.menuInformation.menuItems != nil {
             itemCount = self.menuInformation.menuItems!.count
         }
         self.labelProductCount.text = "\(itemCount) 項"
 
+        if self.menuInformation.needContactInfoFlag == nil {
+            self.checkboxContactInfo.isChecked = false
+            self.isNeedContactInfo = false
+        } else {
+            if self.menuInformation.needContactInfoFlag! {
+                self.checkboxContactInfo.isChecked = true
+                self.isNeedContactInfo = true
+            } else {
+                self.checkboxContactInfo.isChecked = false
+                self.isNeedContactInfo = false
+            }
+        }
     }
 
     func receivedMultiMenuImages(images: [UIImage]?) {
@@ -138,31 +195,6 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
             self.tableView.reloadData()
         }
     }
-
-    /*
-    func generateMenuNumber(date: Date) -> String {
-        let timeZone = TimeZone.init(identifier: "UTC+8")
-        let formatter = DateFormatter()
-        formatter.timeZone = timeZone
-        formatter.locale = Locale.init(identifier: "zh_TW")
-        formatter.dateFormat = DATETIME_FORMATTER
-        
-        var tmpMenuNumber = formatter.string(from: date)
-        if(Auth.auth().currentUser?.uid != nil) {
-            tmpMenuNumber = "\(Auth.auth().currentUser!.uid)-MENU-\(tmpMenuNumber)"
-        } else {
-            tmpMenuNumber = "Guest-MENU-\(tmpMenuNumber)"
-        }
-
-        return tmpMenuNumber
-    }
-    
-    func generateMenuImageURL(user_id: String, menu_number: String) -> String {
-        let pathString = "Menu_Image/\(user_id)/\(menu_number).jpeg"
-        
-        return pathString
-    }
-    */
 
     func uploadMenuInformation(menu_info: MenuInformation) {
         if !self.imageArray.isEmpty {
@@ -300,6 +332,14 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                     alertWindow.isHidden = true
                     return
                 }
+
+                for i in 0...brandCategoryList.count - 1 {
+                    if brandCategoryList[i] == category_string! {
+                        presentSimpleAlertMessage(title: "錯誤訊息", message: "新增的品牌類別已重複，請重新輸入")
+                        alertWindow.isHidden = true
+                        return
+                    }
+                }
                 
                 print("New added brand category = \(category_string!)")
                 insertMenuBrandCategory(category: category_string!)
@@ -307,6 +347,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                 self.updateBrandCatogory()
                 self.labelCategory.text = category_string!
                 self.menuInformation.brandCategory = category_string!
+                self.isNeedToConfirmFlag = true
                 self.delegate?.refreshMenuList(sender: self)
                 alertWindow.isHidden = true
             }
@@ -333,12 +374,35 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         let addAction = UIAlertAction(title: "加入菜單分類", style: .default) { (_) in
             print("Add to brand category!")
             let category_string = textController.textFields?[0].text
+            if category_string == nil {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "新增的品牌類別不能為空白，請重新輸入")
+                alertWindow.isHidden = true
+                return
+            }
+            
+            if category_string!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "新增的品牌類別不能為空白，請重新輸入")
+                alertWindow.isHidden = true
+                return
+            }
+
+            if !brandCategoryList.isEmpty {
+                for i in 0...brandCategoryList.count - 1 {
+                    if brandCategoryList[i] == category_string! {
+                        presentSimpleAlertMessage(title: "錯誤訊息", message: "新增的品牌類別已重複，請重新輸入")
+                        alertWindow.isHidden = true
+                        return
+                    }
+                }
+            }
+            
             print("New added brand category = \(category_string!)")
             insertMenuBrandCategory(category: category_string!)
             self.updatedBrandCategory = category_string!
             self.updateBrandCatogory()
             self.labelCategory.text = category_string!
             self.menuInformation.brandCategory = category_string!
+            self.isNeedToConfirmFlag = true
             self.delegate?.refreshMenuList(sender: self)
             alertTextWindow.isHidden = true
         }
@@ -435,7 +499,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
                 }
                 self.menuInformation.locations?.append(location_string!)
                 self.labelLocationCount.text = "\(self.menuInformation.locations!.count) 項"
-                self.isNeedSave = true
+                self.isNeedToConfirmFlag = true
             }
         }
         okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
@@ -446,59 +510,21 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     }
     
     @IBAction func addProduct(_ sender: UIButton) {
-        let controller = UIAlertController(title: "請輸入產品名稱或價格", message: nil, preferredStyle: .alert)
-        controller.addTextField { (textField) in
-            textField.placeholder = "產品名稱"
+        let controller = UIAlertController(title: "請輸入產品相關資訊", message: nil, preferredStyle: .alert)
+
+        guard let productController = self.storyboard?.instantiateViewController(withIdentifier: "BASIC_PRODUCT_VC") as? BasicProductViewController else{
+            assertionFailure("[AssertionFailure] StoryBoard: BASIC_PRODUCT_VC can't find!! (BasicProductViewController)")
+            return
         }
 
-        controller.addTextField { (textField) in
-            textField.placeholder = "價格"
-            textField.keyboardType = .numberPad
-        }
-
-        let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
-            print("Cancel to update product & price!")
-        }
-        
-        cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
-        controller.addAction(cancelAction)
-        
-        let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
-            var tmpProductItem = MenuItem()
-            let product_string = controller.textFields?[0].text
-            if product_string == nil || product_string!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
-                presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的產品名稱不能為空白，請重新輸入")
-                return
-            }
-
-            let price_string = controller.textFields?[1].text
-            tmpProductItem.itemName = product_string!
-            if price_string != "" {
-                tmpProductItem.itemPrice = Int(price_string!)!
-            }
-            
-            if self.menuInformation.menuItems == nil {
-                self.menuInformation.menuItems = [MenuItem]()
-                tmpProductItem.sequenceNumber = 1
-            } else {
-                tmpProductItem.sequenceNumber = self.menuInformation.menuItems![self.menuInformation.menuItems!.count - 1].sequenceNumber + 1
-            }
-            
-            if !self.menuInformation.menuItems!.isEmpty {
-                for i in 0...self.menuInformation.menuItems!.count - 1 {
-                    if self.menuInformation.menuItems![i].itemName == tmpProductItem.itemName {
-                        presentSimpleAlertMessage(title: "錯誤訊息", message: "產品名稱不能重覆，請重新輸入新產品名稱")
-                        return
-                    }
-                }
-            }
-
-            self.menuInformation.menuItems?.append(tmpProductItem)
-            self.labelProductCount.text = "\(self.menuInformation.menuItems!.count) 項"
-            self.isNeedSave = true
-        }
-        okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
-        controller.addAction(okAction)
+        productController.preferredContentSize.height = 250
+        controller.preferredContentSize.height = 250
+        productController.preferredContentSize.width = 320
+        controller.preferredContentSize.width = 320
+        controller.setValue(productController, forKey: "contentViewController")
+        controller.addChild(productController)
+        productController.operationMode = PRODUCT_OPERATION_MODE_ADD
+        productController.delegate = self
         
         present(controller, animated: true, completion: nil)
     }
@@ -584,23 +610,6 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-/*
-        if indexPath.section == 0 && indexPath.row == 2 {
-            if self.menuInformation.menuDescription == "" {
-                return 0
-            } else {
-                return 70
-            }
-        }
-        
-        if indexPath.section == 0 && indexPath.row == 3 {
-            if self.imageArray.isEmpty {
-                return 0
-            } else {
-                return 145
-            }
-        }
-*/
         if indexPath.section == 3 {
             return 54
         }
@@ -647,6 +656,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
 extension CreateMenuTableViewController: StoreContactInformationDelegate {
     func getStoreContactInfo(sender: StoreContactInformationViewController, contact: StoreContactInformation) {
         self.menuInformation.storeInfo = contact
+        self.isNeedToConfirmFlag = true
     }
 }
 
@@ -661,12 +671,13 @@ extension CreateMenuTableViewController: MenuImageDescriptionDelegate {
             self.menuIcon = resizeImage(image: self.imageArray[0], width: CGFloat(MENU_ICON_WIDTH))
         }
         
+        self.isNeedToConfirmFlag = true
         self.tableView.reloadData()
     }
 }
 
 extension CreateMenuTableViewController: MenuLocationDelegate {
-    func deleteMenuLocation(locations: [String]?) {
+    func updateMenuLocation(locations: [String]?) {
         var locationCount: Int = 0
 
         self.menuInformation.locations = locations
@@ -674,11 +685,12 @@ extension CreateMenuTableViewController: MenuLocationDelegate {
             locationCount = self.menuInformation.locations!.count
         }
         self.labelLocationCount.text = "\(locationCount) 項"
+        self.isNeedToConfirmFlag = true
     }
 }
 
 extension CreateMenuTableViewController: MenuItemDelegate {
-    func deleteMenuItem(menu_items: [MenuItem]?) {
+    func updateMenuItem(menu_items: [MenuItem]?) {
         var itemCount: Int = 0
 
         self.menuInformation.menuItems = menu_items
@@ -686,6 +698,7 @@ extension CreateMenuTableViewController: MenuItemDelegate {
             itemCount = self.menuInformation.menuItems!.count
         }
         self.labelProductCount.text = "\(itemCount) 項"
+        self.isNeedToConfirmFlag = true
     }
 }
 
@@ -693,6 +706,7 @@ extension CreateMenuTableViewController: CreateRecipeDelegate {
     func sendRecipeItems(sender: CreateRecipeTableViewController, menu_recipes: [MenuRecipe]?) {
         print("CreateMenuTableViewController receives CreateRecipeDelegate.sendRecipeItems")
         self.menuInformation.menuRecipes = menu_recipes
+        self.isNeedToConfirmFlag = true
     }
 }
 
@@ -702,9 +716,7 @@ extension CreateMenuTableViewController: BasicButtonDelegate {
         
         let nowDate = Date()
         if self.isEditedMode {
-            //deleteMenuInformation(menu_info: self.savedMenuInformation)
             deleteMenuIcon(menu_number: self.savedMenuInformation.menuNumber)
-            //deleteFBMenuInformation(user_id: self.savedMenuInformation.userID, menu_number: self.savedMenuInformation.menuNumber, image_url: self.savedMenuInformation.menuImageURL)
         } else {
             self.menuInformation.menuNumber = generateMenuNumber(date: nowDate)
         }
@@ -728,8 +740,10 @@ extension CreateMenuTableViewController: BasicButtonDelegate {
             self.menuInformation.userID = Auth.auth().currentUser!.uid
             self.menuInformation.userName = Auth.auth().currentUser!.displayName!
         } else {
-            self.menuInformation.userID = "Guest"
-            self.menuInformation.userName = "Guest"
+            //self.menuInformation.userID = "Guest"
+            //self.menuInformation.userName = "Guest"
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "會員ID不存在！")
+            return
         }
 
         self.originalMennuImagePathList = self.menuInformation.multiMenuImageURL
@@ -752,6 +766,9 @@ extension CreateMenuTableViewController: BasicButtonDelegate {
             }
         }
 
+        self.menuInformation.needContactInfoFlag = self.isNeedContactInfo
+        
+        sender.setDisable()
         //insertMenuInformation(menu_info: self.menuInformation)
         uploadMenuInformation(menu_info: self.menuInformation)
     }
@@ -774,3 +791,98 @@ extension CreateMenuTableViewController: BasicButtonDelegate {
         navigationController?.show(recipeController, sender: self)
     }
 }
+
+extension CreateMenuTableViewController: BasicProductDelegate {
+    func addBasicProductInformation(sender: BasicProductViewController, product_info: MenuItem) {
+        print("CreateMenuTableViewController BasicProductDelegate receive addBasicProductInformation")
+        print("product_info = \(product_info)")
+        var product = product_info
+        if self.menuInformation.menuItems == nil {
+            self.menuInformation.menuItems = [MenuItem]()
+            product.sequenceNumber = 1
+        } else {
+            product.sequenceNumber = self.menuInformation.menuItems![self.menuInformation.menuItems!.count - 1].sequenceNumber + 1
+        }
+        
+        if !self.menuInformation.menuItems!.isEmpty {
+            for i in 0...self.menuInformation.menuItems!.count - 1 {
+                if self.menuInformation.menuItems![i].itemName == product.itemName {
+                    presentSimpleAlertMessage(title: "錯誤訊息", message: "產品名稱不能重覆，請重新輸入新產品名稱")
+                    return
+                }
+            }
+        }
+
+        self.menuInformation.menuItems?.append(product)
+        self.labelProductCount.text = "\(self.menuInformation.menuItems!.count) 項"
+        self.isNeedToConfirmFlag = true
+    }
+}
+
+/*
+extension CreateMenuTableViewController: UINavigationBarDelegate {
+    func navigationShouldPopOnBackButton() -> Bool {
+        var alertWindow: UIWindow!
+        
+        if self.savedMenuInformation.brandName != self.menuInformation.brandName {
+            self.isNeedToConfirmFlag = true
+        }
+        
+        if self.savedMenuInformation.brandCategory != self.menuInformation.brandCategory {
+            self.isNeedToConfirmFlag = true
+        }
+
+        if self.isNeedToConfirmFlag {
+            let controller = UIAlertController(title: "提示訊息", message: "菜單資料已更動，您確定要離開嗎？", preferredStyle: .alert)
+
+            let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                print("Confirm to ignore CreateMennu change")
+                self.navigationController?.popToRootViewController(animated: true)
+                self.dismiss(animated: false, completion: nil)
+
+                alertWindow.isHidden = true
+            }
+            
+            controller.addAction(okAction)
+            let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+                print("Cancel to ignore CreateMenu change")
+                alertWindow.isHidden = true
+            }
+            controller.addAction(cancelAction)
+            alertWindow = presentAlert(controller)
+            return false
+        } else {
+            //self.navigationController?.popToRootViewController(animated: true)
+            //self.dismiss(animated: false, completion: nil)
+            return true
+        }
+    }
+
+    func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
+        print("CreateMenuTableViewController navigationBar shouldPop event processed!!!")
+        var shouldPop = true
+        //let currentVC = self.topViewController
+        
+        //if (currentVC?.responds(to: #selector(currentViewControllerShouldPop)))! {
+        shouldPop = navigationShouldPopOnBackButton()
+        //}
+        
+        if shouldPop {
+            DispatchQueue.main.async {
+                self.navigationController?.popViewController(animated: true)
+            }
+            return true
+        } else {
+            for subView in navigationBar.subviews {
+                if 0.0 < subView.alpha && subView.alpha < 1.0 {
+                    UIView.animate(withDuration: 0.25, animations: {
+                        subView.alpha = 1.0
+                    })
+                }
+            }
+            return false
+        }
+        //return false
+    }
+}
+*/

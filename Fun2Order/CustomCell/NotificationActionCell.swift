@@ -27,8 +27,6 @@ class NotificationActionCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
     public func AdjustAutoLayout()
@@ -47,10 +45,11 @@ class NotificationActionCell: UITableViewCell {
         formatter.dateFormat = TAIWAN_DATETIME_FORMATTER
         let receiveTimeString = formatter.string(from: receiveDate!)
         self.labelReceiveTime.text = receiveTimeString
+        self.labelReplyStatus.text = ""
         
         switch notification.notificationType {
             case NOTIFICATION_TYPE_MESSAGE_DUETIME:
-                self.labelNotificationType.text = "團購催訂"
+                self.labelNotificationType.text = "催訂通知"
                 self.labelNotificationType.textColor = COLOR_PEPPER_RED
                 break
                 
@@ -64,7 +63,13 @@ class NotificationActionCell: UITableViewCell {
                 self.labelNotificationType.textColor = UIColor.systemBlue
                 break
                 
+            case NOTIFICATION_TYPE_SHIPPING_NOTICE:
+                self.labelNotificationType.text = "到貨通知"
+                self.labelNotificationType.textColor = UIColor.systemBlue
+                break
+
             default:
+                self.labelNotificationType.text = ""
                 self.labelNotificationType.textColor = UIColor.black
                 break
         }
@@ -75,27 +80,26 @@ class NotificationActionCell: UITableViewCell {
             self.backView.gradientColor = 11
         }
         
+        if notification.notificationType == NOTIFICATION_TYPE_SHIPPING_NOTICE || notification.notificationType == NOTIFICATION_TYPE_MESSAGE_INFORMATION {
+            return
+        }
+        
         switch notification.replyStatus {
             case MENU_ORDER_REPLY_STATUS_ACCEPT:
                 self.labelReplyStatus.text = "已回覆\n參加"
                 self.labelReplyStatus.textColor = UIColor.systemBlue
                 break
-            
+
             case MENU_ORDER_REPLY_STATUS_REJECT:
                 self.labelReplyStatus.text = "已回覆\n不參加"
                 self.labelReplyStatus.textColor = COLOR_PEPPER_RED
                 break
-                
+
             default:
                 self.labelReplyStatus.text = "尚未回覆"
                 self.labelReplyStatus.textColor = UIColor.black
                 break
         }
 
-        //if notification.replyStatus == MENU_ORDER_REPLY_STATUS_REJECT || notification.replyStatus == MENU_ORDER_REPLY_STATUS_ACCEPT {
-        //    self.labelReplyStatus.text = "已回覆"
-        //} else {
-        //    self.labelReplyStatus.text = "尚未回覆"
-        //}
     }
 }

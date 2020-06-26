@@ -410,7 +410,10 @@ func uploadFBShareMenuInformation(menu_info: MenuInformation, menu_images: [UIIm
     let pathString = "USER_MENU_INFORMATION/\(Auth.auth().currentUser!.uid)/\(upload_menu.menuNumber)"
     databaseRef.child(pathString).setValue(upload_menu.toAnyObject()) { (error, _) in
         if error == nil {
-            if menu_images != nil {
+            if menu_images == nil {
+                presentSimpleAlertMessage(title: "訊息", message: "分享菜單加入成功。")
+                return
+            } else {
                 if menu_images!.isEmpty {
                     presentSimpleAlertMessage(title: "訊息", message: "分享菜單加入成功。")
                     return
@@ -461,5 +464,44 @@ func uploadFBShareMenuInformation(menu_info: MenuInformation, menu_images: [UIIm
                 }
             }
         }
+    }
+}
+
+func monitorFBProductQuantityLimit(owner_id: String, order_number: String, completion: @escaping([MenuItem]?) -> Void) {
+    let databaseRef = Database.database().reference()
+    let pathString = "USER_MENU_ORDER/\(owner_id)/\(order_number)/limitedMenuItems"
+
+    //databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+    databaseRef.child(pathString).observe(.value, with: { (snapshot) in
+        if snapshot.exists() {
+            var menuItems: [MenuItem] = [MenuItem]()
+            let childEnumerator = snapshot.children
+            
+            let childDecoder: JSONDecoder = JSONDecoder()
+            while let childData = childEnumerator.nextObject() as? DataSnapshot {
+                //print("child = \(childData)")
+                do {
+                    let childJsonData = try? JSONSerialization.data(withJSONObject: childData.value as Any, options: [])
+                    let realData = try childDecoder.decode(MenuItem.self, from: childJsonData!)
+                    menuItems.append(realData)
+                    print("Success: \(realData.itemName)")
+                } catch {
+                    print("monitorFBProductQuantityLimit jsonData decode failed: \(error.localizedDescription)")
+                    continue
+                }
+            }
+
+            if menuItems.isEmpty {
+                completion(nil)
+            } else {
+                completion(menuItems)
+            }
+        } else {
+            print("monitorFBProductQuantityLimit [MenuItem] snapshot doesn't exist!")
+            completion(nil)
+        }
+    })  { (error) in
+        print("monitorFBProductQuantityLimit Firebase error = \(error.localizedDescription)")
+        completion(nil)
     }
 }
