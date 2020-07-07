@@ -1559,6 +1559,7 @@ func retrieveNotificationList() -> [NotificationData] {
                 let jsonData = notificationData.notificationData!.data(using: .utf8)
                 tmpData = try decoder.decode(NotificationData.self, from: jsonData!)
                 //print("tmpData in notificationList = \(tmpData)")
+                //print("retrieveNotificationList: dueTime = \(tmpData.dueTime)")
                 returnList.append(tmpData)
             } catch {
                 print("retrieveNotificationList jsonData decode failed: \(error.localizedDescription)")

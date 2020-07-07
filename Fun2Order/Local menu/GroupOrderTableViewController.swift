@@ -382,11 +382,12 @@ class GroupOrderTableViewController: UITableViewController, UIGestureRecognizerD
                 var orderNotify: NotificationData = NotificationData()
                 let title: String = "團購邀請"
                 var body: String = ""
-                if self.textViewMessage.text == nil || self.textViewMessage.text == "" {
-                    body = "來自 \(self.menuOrder.orderOwnerName) 發起的團購邀請，請點擊通知以查看詳細資訊。"
-                } else {
-                    body = "來自 \(self.menuOrder.orderOwnerName) 的團購邀請：\n" + textViewMessage.text!
-                }
+                body = "來自『 \(self.menuOrder.orderOwnerName)』 發起的團購邀請，請點擊通知以查看詳細資訊。"
+                //if self.textViewMessage.text == nil || self.textViewMessage.text == "" {
+                //    body = "來自 \(self.menuOrder.orderOwnerName) 發起的團購邀請，請點擊通知以查看詳細資訊。"
+                //} else {
+                //    body = "來自 \(self.menuOrder.orderOwnerName) 的團購邀請：\n" + textViewMessage.text!
+                //}
 
                 orderNotify.messageTitle = title
                 orderNotify.messageBody = body
@@ -399,7 +400,7 @@ class GroupOrderTableViewController: UITableViewController, UIGestureRecognizerD
                 orderNotify.dueTime = self.menuOrder.dueTime
                 orderNotify.brandName = self.menuOrder.brandName
                 orderNotify.attendedMemberCount = self.menuOrder.contentItems.count
-                orderNotify.messageDetail = " "
+                orderNotify.messageDetail = self.textViewMessage.text
                 orderNotify.isRead = "N"
 
                 let sender = PushNotificationSender()

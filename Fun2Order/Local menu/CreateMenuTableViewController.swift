@@ -76,6 +76,9 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
 
         //self.buttonTest.isHidden = true
         refreshMenu()
+        
+        self.buttonTest.isHidden = true
+        self.buttonTest.isEnabled = false
     }
 
     @objc func back(sender: UIBarButtonItem) {
@@ -618,6 +621,10 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         
         // Hide the cell to edit Locations information
         if indexPath.section == 1 && indexPath.row == 0 {
+            return 0
+        }
+        
+        if indexPath.section == 2 && indexPath.row == 0 {
             return 0
         }
 

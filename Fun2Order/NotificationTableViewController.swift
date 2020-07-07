@@ -165,7 +165,7 @@ class NotificationTableViewController: UITableViewController {
                 return 0
             }
         } else {
-            return 150
+            return 90
         }
     }
 

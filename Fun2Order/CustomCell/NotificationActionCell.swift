@@ -14,7 +14,7 @@ class NotificationActionCell: UITableViewCell {
     @IBOutlet weak var labelReceiveTime: UILabel!
     @IBOutlet weak var labelNotificationType: UILabel!
     @IBOutlet weak var labelReplyStatus: UILabel!
-    @IBOutlet weak var textViewMessageBody: UITextView!
+    @IBOutlet weak var imageDueTime: UIImageView!
     @IBOutlet weak var backView: ShadowGradientView!
     
     var notificationData: NotificationData = NotificationData()
@@ -22,7 +22,7 @@ class NotificationActionCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.labelReplyStatus.text = ""
-        self.textViewMessageBody.canCancelContentTouches = true
+        //self.textViewMessageBody.canCancelContentTouches = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -34,10 +34,36 @@ class NotificationActionCell: UITableViewCell {
         self.backView.AdjustAutoLayout()
     }
 
+    func checkExpire() -> Bool {
+        if self.notificationData.dueTime == "" {
+            print("self.notificationData.dueTime is blank")
+            return false
+        }
+        
+        let nowDate = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = DATETIME_FORMATTER
+        let nowString = formatter.string(from: nowDate)
+        
+        //print("------  checkExpire ------")
+        //print("self.notificationData.dueTime string = \(self.notificationData.dueTime)")
+        //print("now date string = \(nowString)")
+        if nowString > self.notificationData.dueTime {
+            //print("NotificationActionCell checkExpire return true")
+            return true
+        } else {
+            //print("NotificationActionCell checkExpire return false")
+            return false
+        }
+
+    }
+
     func setData(notification: NotificationData) {
+        self.notificationData = notification
         self.labelTitle.text = "來自 \(notification.orderOwnerName) 的團購訊息"
+        self.labelTitle.textColor = UIColor.black
         self.labelBrandName.text = notification.brandName
-        self.textViewMessageBody.text = notification.messageBody
+        //self.textViewMessageBody.text = notification.messageBody
         
         let formatter = DateFormatter()
         formatter.dateFormat = DATETIME_FORMATTER
@@ -46,11 +72,16 @@ class NotificationActionCell: UITableViewCell {
         let receiveTimeString = formatter.string(from: receiveDate!)
         self.labelReceiveTime.text = receiveTimeString
         self.labelReplyStatus.text = ""
+        self.imageDueTime.isHidden = true
         
         switch notification.notificationType {
             case NOTIFICATION_TYPE_MESSAGE_DUETIME:
                 self.labelNotificationType.text = "催訂通知"
                 self.labelNotificationType.textColor = COLOR_PEPPER_RED
+                if self.checkExpire() {
+                    self.imageDueTime.isHidden = false
+                    self.labelTitle.textColor = COLOR_PEPPER_RED
+                }
                 break
                 
             case NOTIFICATION_TYPE_MESSAGE_INFORMATION:
@@ -61,6 +92,10 @@ class NotificationActionCell: UITableViewCell {
             case NOTIFICATION_TYPE_ACTION_JOIN_ORDER:
                 self.labelNotificationType.text = "團購邀請"
                 self.labelNotificationType.textColor = UIColor.systemBlue
+                if self.checkExpire() {
+                    self.imageDueTime.isHidden = false
+                    self.labelTitle.textColor = COLOR_PEPPER_RED
+                }
                 break
                 
             case NOTIFICATION_TYPE_SHIPPING_NOTICE:

@@ -21,6 +21,7 @@ class NotificationActionTableViewController: UITableViewController {
     @IBOutlet weak var labelReplyStatus: UILabel!
     @IBOutlet weak var buttonAttend: UIButton!
     @IBOutlet weak var buttonReject: UIButton!
+    @IBOutlet weak var textViewMessageBody: UITextView!
     
     var notificationData: NotificationData = NotificationData()
     var indexPath: IndexPath = IndexPath()
@@ -35,6 +36,9 @@ class NotificationActionTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.textViewMessageBody.layer.borderWidth = 1.0
+        self.textViewMessageBody.layer.borderColor = UIColor.darkGray.cgColor
+        self.textViewMessageBody.layer.cornerRadius = 6
         
         if Auth.auth().currentUser?.uid != nil {
             let user_id = Auth.auth().currentUser!.uid
@@ -94,48 +98,6 @@ class NotificationActionTableViewController: UITableViewController {
             self.buttonReject.isEnabled = false
             return
         }
-/*
-        let orderString = "USER_MENU_ORDER/\(owner_id)/\(order_number)/contentItems"
-        print("orderStirng = \(orderString)")
-        databaseRef.child(orderString).observeSingleEvent(of: .value, with: { (snapshot) in
-            if snapshot.exists() {
-                let itemRawData = snapshot.value
-                let jsonData = try? JSONSerialization.data(withJSONObject: itemRawData as Any, options: [])
-
-                let decoder: JSONDecoder = JSONDecoder()
-                do {
-                    let itemArray = try decoder.decode([MenuOrderMemberContent].self, from: jsonData!)
-
-                    if let itemIndex = itemArray.firstIndex(where: { $0.memberID == member_id }) {
-                        self.memberContent = itemArray[itemIndex]
-                        self.memberIndex = itemIndex
-                        self.downloadMenuOrderFlag = true
-                        self.refreshProductList()
-                    } else {
-                        return
-                    }
-                } catch {
-                    print("downloadMenuOrderContent MenuOrderMemberContent jsonData decode failed: \(error.localizedDescription)")
-                    presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料讀取錯誤，請團購發起人重發。")
-                    self.buttonAttend.isEnabled = false
-                    self.buttonReject.isEnabled = false
-                    return
-                }
-            } else {
-                print("downloadMenuOrderContent MenuOrderMemberContent snapshot doesn't exist!")
-                presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料不存在，請詢問團購發起人相關訊息。")
-                self.buttonAttend.isEnabled = false
-                self.buttonReject.isEnabled = false
-                return
-            }
-        }) { (error) in
-            print(error.localizedDescription)
-            presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
-            self.buttonAttend.isEnabled = false
-            self.buttonReject.isEnabled = false
-            return
-        }
- */
     }
     
     func refreshProductList() {
@@ -267,6 +229,7 @@ class NotificationActionTableViewController: UITableViewController {
         }
         
         self.labelBrandName.text = notification.brandName
+        self.textViewMessageBody.text = notification.messageDetail
         self.labelMemberCount.text = String(notification.attendedMemberCount)
         switch notification.notificationType {
             case NOTIFICATION_TYPE_MESSAGE_DUETIME:
