@@ -23,6 +23,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     @IBOutlet weak var labelLocationCount: UILabel!
     @IBOutlet weak var labelProductCount: UILabel!
     @IBOutlet weak var checkboxContactInfo: Checkbox!
+    @IBOutlet weak var buttonTest: UIButton!
     
     var menuInformation: MenuInformation = MenuInformation()
     var menuIcon: UIImage?
@@ -73,6 +74,7 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         self.navigationItem.leftBarButtonItem = newBackButton
         navigationController?.navigationBar.backIndicatorImage = backImage
 
+        //self.buttonTest.isHidden = true
         refreshMenu()
     }
 
@@ -612,6 +614,11 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 3 {
             return 54
+        }
+        
+        // Hide the cell to edit Locations information
+        if indexPath.section == 1 && indexPath.row == 0 {
+            return 0
         }
 
         return super.tableView(tableView, heightForRowAt: indexPath)

@@ -8,11 +8,17 @@
 
 import UIKit
 
-class BrandCollectionViewCell: UICollectionViewCell {
+protocol BrandCollectionCellDelegate: class {
+    func getBrandImage(sender: BrandCollectionViewCell, icon: UIImage?, index: Int)
+}
 
+class BrandCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageIcon: UIImageView!
-    
     @IBOutlet weak var txtLabel: UILabel!
+    
+    weak var delegate: BrandCollectionCellDelegate?
+    var brandImage: UIImage?
+    var dataIndex: Int = 0
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,4 +31,18 @@ class BrandCollectionViewCell: UICollectionViewCell {
         self.imageIcon.image = image
     }
 
+    func receiveBrandImage(image: UIImage?) {
+        if image != nil {
+            self.imageIcon.image = image!
+        }
+        self.delegate?.getBrandImage(sender: self, icon: image, index: self.dataIndex)
+    }
+    
+    func setData(brand_name: String, brand_image: String?, index: Int) {
+        self.txtLabel.text = brand_name
+        if brand_image != nil {
+            downloadFBBrandImage(brand_url: brand_image!, completion: receiveBrandImage)
+        }
+        self.dataIndex = index
+    }
 }

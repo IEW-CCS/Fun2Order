@@ -13,13 +13,11 @@ protocol ScrollUISegmentControllerDelegate: class {
     func selectItemAt(index :Int, onScrollUISegmentController scrollUISegmentController:ScrollUISegmentController)
 }
 
-
 @IBDesignable
 class ScrollUISegmentController: UIScrollView  {
    private var segmentedControl: UISegmentedControl = UISegmentedControl()
     
     weak var segmentDelegate: ScrollUISegmentControllerDelegate?
-    
 
     @IBInspectable
     public var segmentTintColor: UIColor = .systemBlue {
@@ -27,7 +25,6 @@ class ScrollUISegmentController: UIScrollView  {
             self.segmentedControl.tintColor = self.segmentTintColor
         }
     }
-    
     
     @IBInspectable
     public var itemWidth: CGFloat = 80 {
@@ -40,10 +37,10 @@ class ScrollUISegmentController: UIScrollView  {
             self.segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: self.segmentFont],for: UIControl.State())
         }
     }
+    
     public var itemsCount: Int = 3
     public var segmentheight : CGFloat = 29.0
 
-    
     public var segmentItems: Array = [""] {
         didSet {
             self.itemsCount = segmentItems.count
@@ -59,7 +56,6 @@ class ScrollUISegmentController: UIScrollView  {
     override init(frame: CGRect) {
         super.init(frame: frame)
         createSegment()
-        
     }
     
     init(frame: CGRect , andItems items:[String]) {
@@ -69,6 +65,11 @@ class ScrollUISegmentController: UIScrollView  {
         self.createSegment()
     }
     
+    func reDrawNewFrame(frame: CGRect) {
+        self.frame = frame
+        self.createSegment()
+    }
+
     func createSegment() {
         self.segmentedControl.removeFromSuperview()
         segmentheight =  self.frame.height
@@ -110,7 +111,7 @@ class ScrollUISegmentController: UIScrollView  {
     
     @objc func segmentChangeSelectedIndex(_ sender: AnyObject) {
         segmentDelegate?.selectItemAt(index: self.segmentedControl.selectedSegmentIndex, onScrollUISegmentController: self)
-        print("\(self.segmentedControl.selectedSegmentIndex)")
+        //print("\(self.segmentedControl.selectedSegmentIndex)")
     }
 }
 

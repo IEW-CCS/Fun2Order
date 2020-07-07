@@ -18,6 +18,9 @@ func uploadUserProfileTokenID(user_id: String, token_id: String) {
     
     let pathString = "USER_PROFILE/\(Auth.auth().currentUser!.uid)/tokenID"
     databaseRef.child(pathString).setValue(token_id)
+
+    let pathOSTypeString = "USER_PROFILE/\(Auth.auth().currentUser!.uid)/ostype"
+    databaseRef.child(pathOSTypeString).setValue("iOS")
 }
 
 func deleteFBMenuInformation(menu_info: MenuInformation) {
@@ -219,6 +222,29 @@ func downloadFBMemberImage(member_id: String, completion: @escaping (UIImage?) -
         completion(nil)
     }
 
+}
+
+func downloadFBBrandImage(brand_url: String, completion: @escaping(UIImage?) -> Void) {
+    var alertWindow: UIWindow!
+    if brand_url != "" {
+        let storageRef = Storage.storage().reference()
+        storageRef.child(brand_url).getData(maxSize: 3 * 2048 * 2048, completion: { (data, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                let controller = UIAlertController(title: "存取品牌影像錯誤", message: error.localizedDescription, preferredStyle: .alert)
+                
+                let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+                    alertWindow.isHidden = true
+                }
+                
+                controller.addAction(okAction)
+                alertWindow = presentAlert(controller)
+                completion(nil)
+            }
+            
+            completion(UIImage(data: data!)!)
+        })
+    }
 }
 
 func downloadFBUserProfile(user_id: String, completion: @escaping (UserProfile?) -> Void) {
@@ -502,6 +528,70 @@ func monitorFBProductQuantityLimit(owner_id: String, order_number: String, compl
         }
     })  { (error) in
         print("monitorFBProductQuantityLimit Firebase error = \(error.localizedDescription)")
+        completion(nil)
+    }
+}
+
+func downloadFBDetailBrandProfile(brand_name: String, completion: @escaping (DetailBrandProfile?) -> Void) {
+    var brandData: DetailBrandProfile = DetailBrandProfile()
+    let databaseRef = Database.database().reference()
+    let pathString = "DETAIL_BRAND_PROFILE/\(brand_name)"
+
+    databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+        if snapshot.exists() {
+            let brandProfile = snapshot.value
+            let jsonData = try? JSONSerialization.data(withJSONObject: brandProfile as Any, options: [])
+            //let jsonString = String(data: jsonData!, encoding: .utf8)!
+            //print("brandProfile jsonString = \(jsonString)")
+
+            let decoder: JSONDecoder = JSONDecoder()
+            do {
+                brandData = try decoder.decode(DetailBrandProfile.self, from: jsonData!)
+                print("brandData decoded successful !!")
+                print("brandData = \(brandData)")
+                completion(brandData)
+            } catch {
+                print("downloadFBDetailBrandProfile brandData jsonData decode failed: \(error.localizedDescription)")
+                completion(nil)
+            }
+        } else {
+            print("downloadFBDetailBrandProfile DETAIL_BRAND_PROFILE snapshot doesn't exist!")
+            completion(nil)
+        }
+    })  { (error) in
+        print("downloadFBDetailBrandProfile Firebase error = \(error.localizedDescription)")
+        completion(nil)
+    }
+}
+
+func downloadFBDetailMenuInformation(menu_number: String, completion: @escaping (DetailMenuInformation?) -> Void) {
+    var menuData: DetailMenuInformation = DetailMenuInformation()
+    let databaseRef = Database.database().reference()
+    let pathString = "DETAIL_MENU_INFORMATION/\(menu_number)"
+
+    databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+        if snapshot.exists() {
+            let menuInfo = snapshot.value
+            let jsonData = try? JSONSerialization.data(withJSONObject: menuInfo as Any, options: [])
+            //let jsonString = String(data: jsonData!, encoding: .utf8)!
+            //print("menuInfo jsonString = \(jsonString)")
+
+            let decoder: JSONDecoder = JSONDecoder()
+            do {
+                menuData = try decoder.decode(DetailMenuInformation.self, from: jsonData!)
+                print("menuData decoded successful !!")
+                print("menuData = \(menuData)")
+                completion(menuData)
+            } catch {
+                print("downloadFBDetailMenuInformation menuData jsonData decode failed: \(error.localizedDescription)")
+                completion(nil)
+            }
+        } else {
+            print("downloadFBDetailMenuInformation DETAIL_MENU_INFORMATION snapshot doesn't exist!")
+            completion(nil)
+        }
+    })  { (error) in
+        print("downloadFBDetailMenuInformation Firebase error = \(error.localizedDescription)")
         completion(nil)
     }
 }

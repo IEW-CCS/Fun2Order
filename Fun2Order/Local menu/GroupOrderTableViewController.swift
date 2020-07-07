@@ -1,25 +1,26 @@
 //
-//  GroupOrderViewController.swift
+//  GroupOrderTableViewController.swift
 //  Fun2Order
 //
-//  Created by Lo Fang Chou on 2019/10/22.
-//  Copyright © 2019 JStudio. All rights reserved.
+//  Created by Lo Fang Chou on 2020/7/6.
+//  Copyright © 2020 JStudio. All rights reserved.
 //
 
 import UIKit
 import CoreData
 import Firebase
 
-class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
+class GroupOrderTableViewController: UITableViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
+    @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var collectionGroup: UICollectionView!
     @IBOutlet weak var memberTableView: UITableView!
+    @IBOutlet weak var textViewMessage: UITextView!
     @IBOutlet weak var buttonDueDate: UIButton!
     @IBOutlet weak var labelDueDate: UILabel!
-    @IBOutlet weak var buttonCreateOrder: UIButton!
     @IBOutlet weak var myCheckStatus: Checkbox!
-    @IBOutlet weak var labelTitle: UILabel!
-    @IBOutlet weak var textViewMessage: UITextView!
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var buttonCreateOrder: UIButton!
+    @IBOutlet weak var labelLocationCount: UILabel!
+    @IBOutlet weak var checkboxContactInfo: Checkbox!
     
     var groupList: [Group] = [Group]()
     var memberList: [GroupMember] = [GroupMember]()
@@ -27,15 +28,18 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
     var isAttended: Bool = true
     var favoriteStoreInfo: FavoriteStoreInfo = FavoriteStoreInfo()
     var menuInformation: MenuInformation = MenuInformation()
+    var detailMenuInformation: DetailMenuInformation = DetailMenuInformation()
+    var brandName: String = ""
     var orderType: String = ""
     var menuOrder: MenuOrder = MenuOrder()
-    
+    var isNeedContactInfo: Bool = false
+
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         vc = app.persistentContainer.viewContext
         
         //let iconImage: UIImage? = UIImage(named: "Icon_Clock.png")
@@ -54,7 +58,7 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
         self.buttonCreateOrder.layer.cornerRadius = 6
 
         self.labelTitle.layer.borderWidth = 1.0
-        self.labelTitle.layer.borderColor = UIColor.clear.cgColor
+        self.labelTitle.layer.borderColor = UIColor.systemTeal.cgColor
         self.labelTitle.layer.cornerRadius = 6
         
         self.collectionGroup.layer.borderWidth = 1.0
@@ -86,6 +90,11 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
             self.isAttended = isChecked
         }
 
+        self.checkboxContactInfo.valueChanged = { (isChecked) in
+            print("checkbox is checked: \(isChecked)")
+            self.isNeedContactInfo = isChecked
+        }
+
         self.labelDueDate.text = nil
 
         self.groupList = retrieveGroupList()
@@ -101,24 +110,17 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
 
         if self.orderType == ORDER_TYPE_MENU {
             self.labelTitle.text = self.menuInformation.brandName
+        } else if self.orderType == ORDER_TYPE_OFFICIAL_MENU {
+            self.labelTitle.text = self.brandName
         } else {
             self.labelTitle.text = "\(self.favoriteStoreInfo.brandName)  \(self.favoriteStoreInfo.storeName)"
         }
 
-        self.scrollView.backgroundColor = UIColor.clear
-        let contentWidth = self.scrollView.bounds.width
-        let contentHeight = self.scrollView.bounds.height * 2.0
-        print("self.scrollView.bounds.height = \(self.scrollView.bounds.height)")
-        self.scrollView.contentSize = CGSize(width: contentWidth, height: contentHeight)
-        self.scrollView.isExclusiveTouch = false
-        self.scrollView.delaysContentTouches = false
-
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
-
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         self.title = "設定揪團訂單"
         self.navigationController?.title = "設定揪團訂單"
@@ -197,13 +199,14 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
         self.menuOrder.orderTotalQuantity = 0
         self.menuOrder.orderTotalPrice = 0
         self.menuOrder.brandName = self.menuInformation.brandName
+        self.menuOrder.needContactInfoFlag = self.isNeedContactInfo
         //if !self.menuInformation.locations!.isEmpty {
-        if self.menuInformation.locations != nil {
-            self.menuOrder.locations = [String]()
-            for i in 0...self.menuInformation.locations!.count - 1 {
-                self.menuOrder.locations!.append(self.menuInformation.locations![i])
-            }
-        }
+        //if self.menuInformation.locations != nil {
+        //    self.menuOrder.locations = [String]()
+        //    for i in 0...self.menuInformation.locations!.count - 1 {
+        //        self.menuOrder.locations!.append(self.menuInformation.locations![i])
+        //    }
+        //}
         
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = DATETIME_FORMATTER
@@ -248,6 +251,7 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
             myItem.replyStatus = MENU_ORDER_REPLY_STATUS_WAIT
             myItem.createTime = self.menuOrder.createTime
             myContent.orderContent = myItem
+            myItem.ostype = "iOS"
 
             self.menuOrder.contentItems.append(myContent)
         }
@@ -260,11 +264,34 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
                 var contentItem: MenuOrderContentItem = MenuOrderContentItem()
                 
                 let databaseRef = Database.database().reference()
-                let pathString = "USER_PROFILE/\(self.memberList[i].memberID)/tokenID"
+                //let pathString = "USER_PROFILE/\(self.memberList[i].memberID)/tokenID"
+                let pathString = "USER_PROFILE/\(self.memberList[i].memberID)"
                 contentGroup.enter()
                 databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
                     if snapshot.exists() {
-                        let token_id = snapshot.value as! String
+                        var userProfile: UserProfile = UserProfile()
+                        let profileData = snapshot.value
+                        let jsonData = try? JSONSerialization.data(withJSONObject: profileData as Any, options: [])
+                        //let jsonString = String(data: jsonData!, encoding: .utf8)!
+                        //print("jsonString = \(jsonString)")
+
+                        let decoder: JSONDecoder = JSONDecoder()
+                        do {
+                            userProfile = try decoder.decode(UserProfile.self, from: jsonData!)
+                            //print("menuData decoded successful !!")
+                            //print("menuData = \(menuData)")
+                        } catch {
+                            print("createMenuOrder userProfile jsonData decode failed: \(error.localizedDescription)")
+                            return
+                            //presentSimpleAlertMessage(title: "資料錯誤", message: "")
+                        }
+                        //let token_id = snapshot.value as! String
+                        let token_id = userProfile.tokenID
+                        var ostype = userProfile.ostype
+                        if ostype == nil || ostype! == "" {
+                            ostype = "iOS"
+                        }
+                        
                         memberContent.memberID = self.memberList[i].memberID
                         memberContent.orderOwnerID = self.menuOrder.orderOwnerID
                         memberContent.memberTokenID = token_id
@@ -273,6 +300,7 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
                         contentItem.itemOwnerName = self.memberList[i].memberName
                         contentItem.replyStatus = MENU_ORDER_REPLY_STATUS_WAIT
                         contentItem.createTime = self.menuOrder.createTime
+                        contentItem.ostype = ostype
                         memberContent.orderContent = contentItem
 
                         self.menuOrder.contentItems.append(memberContent)
@@ -388,7 +416,7 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
             }
         }
     }
-    
+
     @IBAction func sendGroupOrder(_ sender: UIButton) {
         let friendList = retrieveFriendList()
         print("\(friendList)")
@@ -407,9 +435,124 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
         self.buttonCreateOrder.isEnabled = false
         createMenuOrder()
     }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        if tableView == self.memberTableView {
+            return 1
+        }
+        
+        return 1
+    }
+
+    @IBAction func addLocations(_ sender: UIButton) {
+        let controller = UIAlertController(title: "請輸入地點", message: nil, preferredStyle: .alert)
+        controller.addTextField { (textField) in
+            textField.placeholder = "輸入地點"
+        }
+        
+        let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
+            print("Cancel to update location!")
+        }
+        cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+        controller.addAction(cancelAction)
+        
+        let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+            let location_string = controller.textFields?[0].text
+            if location_string == nil || location_string!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的地點不能為空白，請重新輸入")
+                return
+            }
+
+            if location_string != "" {
+                if self.menuOrder.locations == nil {
+                    self.menuOrder.locations = [String]()
+                }
+                if !self.menuOrder.locations!.isEmpty {
+                    for i in 0...self.menuOrder.locations!.count - 1 {
+                        if self.menuOrder.locations![i] == location_string {
+                            presentSimpleAlertMessage(title: "錯誤訊息", message: "地點不能重覆，請重新輸入新地點")
+                            return
+                        }
+                    }
+                }
+                self.menuOrder.locations!.append(location_string!)
+                self.labelLocationCount.text = "\(self.menuOrder.locations!.count) 項"
+            }
+        }
+        okAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+        controller.addAction(okAction)
+        
+        present(controller, animated: true, completion: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowLocation" {
+            if let controllerLocation = segue.destination as? MenuLocationTableViewController {
+                controllerLocation.locationArray = self.menuOrder.locations
+                controllerLocation.delegate = self
+            }
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView == self.memberTableView {
+            if self.memberList.isEmpty {
+                return 0
+            }
+            
+            return self.memberList.count
+        }
+        
+        return super.tableView(tableView, numberOfRowsInSection: section)
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if tableView == self.memberTableView {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SelectMemberCell", for: indexPath) as! SelectMemberCell
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+
+            cell.setData(member_id: self.memberList[indexPath.row].memberID, member_name: self.memberList[indexPath.row].memberName, ini_status: self.memberList[indexPath.row].isSelected)
+            cell.delegate = self
+            cell.tag = indexPath.row
+            
+            return cell
+        }
+        
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if tableView == self.memberTableView {
+            return 50
+        }
+        
+        return super.tableView(tableView, heightForRowAt: indexPath)
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if tableView == self.memberTableView {
+            let header = view as! UITableViewHeaderFooterView
+            header.backgroundView?.layer.backgroundColor = UIColor.clear.cgColor
+            header.textLabel?.textAlignment = .center
+            if !self.groupList.isEmpty {
+                header.textLabel?.text = "\(self.groupList[self.selectedGroupIndex].groupName)  好友列表"
+            }
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if tableView == self.memberTableView {
+            return 44
+        }
+        
+        return super.tableView(tableView, heightForHeaderInSection: section)
+    }
+
 }
 
-extension GroupOrderViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension GroupOrderTableViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -443,57 +586,26 @@ extension GroupOrderViewController: UICollectionViewDelegate, UICollectionViewDa
 }
 
 
-extension GroupOrderViewController: UICollectionViewDelegateFlowLayout {
+extension GroupOrderTableViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 80, height: 80)
     }
 }
 
-extension GroupOrderViewController: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.memberList.isEmpty {
-            return 0
-        }
-        
-        return self.memberList.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SelectMemberCell", for: indexPath) as! SelectMemberCell
-        cell.selectionStyle = UITableViewCell.SelectionStyle.none
-
-        cell.setData(member_id: self.memberList[indexPath.row].memberID, member_name: self.memberList[indexPath.row].memberName, ini_status: self.memberList[indexPath.row].isSelected)
-        cell.delegate = self
-        cell.tag = indexPath.row
-        
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let header = view as! UITableViewHeaderFooterView
-        header.backgroundView?.layer.backgroundColor = UIColor.clear.cgColor
-        header.textLabel?.textAlignment = .center
-        if !self.groupList.isEmpty {
-            header.textLabel?.text = "\(self.groupList[self.selectedGroupIndex].groupName)  好友列表"
-        }
-        
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 44
+extension GroupOrderTableViewController: SetMemberSelectedStatusDelegate {
+    func setMemberSelectedStatus(cell: UITableViewCell, status: Bool, data_index: Int) {
+        self.memberList[data_index].isSelected = status
     }
 }
 
-extension GroupOrderViewController: SetMemberSelectedStatusDelegate {
-    func setMemberSelectedStatus(cell: UITableViewCell, status: Bool, data_index: Int) {
-        self.memberList[data_index].isSelected = status
+extension GroupOrderTableViewController: MenuLocationDelegate {
+    func updateMenuLocation(locations: [String]?) {
+        var locationCount: Int = 0
+
+        self.menuOrder.locations = locations
+        if self.menuOrder.locations != nil {
+            locationCount = self.menuOrder.locations!.count
+        }
+        self.labelLocationCount.text = "\(locationCount) 項"
     }
 }

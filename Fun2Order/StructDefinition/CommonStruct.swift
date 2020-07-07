@@ -296,7 +296,6 @@ struct MenuItem: Codable {
 
 struct MenuRecipe: Codable {
     var recipeCategory: String = ""
-    //var isAllowedMulti: Bool = false
     var allowedMultiFlag: Bool = false
     var sequenceNumber: Int = 0
     var recipeItems: [RecipeItem]?
@@ -312,7 +311,6 @@ struct MenuRecipe: Codable {
         
         return [
             "recipeCategory": recipeCategory,
-            //"isAllowedMulti": isAllowedMulti,
             "allowedMultiFlag": allowedMultiFlag,
             "sequenceNumber": sequenceNumber,
             "recipeItems": recipeItemsArray
@@ -420,6 +418,7 @@ struct MenuOrderContentItem: Codable  {
     var createTime: String = ""
     var menuProductItems: [MenuProductItem]?
     var userContactInfo: UserContactInformation?
+    var ostype: String?
     
     func toAnyObject() -> Any {
         var menuProductsArray: [Any] = [Any]()
@@ -444,7 +443,8 @@ struct MenuOrderContentItem: Codable  {
             "payTime": payTime,
             "createTime": createTime,
             "menuProductItems": menuProductsArray,
-            "userContactInfo": userContactInfo?.toAnyObject() as Any
+            "userContactInfo": userContactInfo?.toAnyObject() as Any,
+            "ostype": ostype as Any
         ]
     }
 }
@@ -474,13 +474,14 @@ struct MenuOrder: Codable  {
     var orderOwnerID: String = ""
     var orderTotalQuantity: Int = 0
     var orderTotalPrice: Int = 0
-    var locations: [String]? = [String]()
+    var locations: [String]?
     var brandName: String = ""
     var createTime: String = ""
     var dueTime: String = ""
     var storeInfo: StoreContactInformation?
     var contentItems: [MenuOrderMemberContent] = [MenuOrderMemberContent]()
     var limitedMenuItems: [MenuItem]?
+    var needContactInfoFlag: Bool?
     
     func toAnyObject() -> Any {
         var itemsArray: [Any] = [Any]()
@@ -513,7 +514,8 @@ struct MenuOrder: Codable  {
             "dueTime": dueTime,
             "storeInfo": storeInfo?.toAnyObject() as Any,
             "contentItems": itemsArray,
-            "limitedMenuItems": menuItemsArray
+            "limitedMenuItems": menuItemsArray,
+            "needContactInfoFlag": needContactInfoFlag as Any
         ]
     }
 }
@@ -573,6 +575,7 @@ struct UserProfile: Codable {
     var address: String?
     var friendList: [String]?
     var brandCategoryList: [String]?
+    var ostype: String?
 
     func toAnyObject() -> Any {
         return [
@@ -585,7 +588,8 @@ struct UserProfile: Codable {
             "birthday": birthday as Any,
             "address": address as Any,
             "friendList": friendList as Any,
-            "brandCategoryList": brandCategoryList as Any
+            "brandCategoryList": brandCategoryList as Any,
+            "ostype": ostype as Any
         ]
     }
 }

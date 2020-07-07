@@ -221,7 +221,7 @@ extension MyFriendTableViewController: ScanQRCodeDelegate {
         notifyData.isRead = "N"
 
         //sender.sendNewFriendActionPushNotification(to: user_profile.tokenID, title: title, body: body, data: notifyData)
-        sender.sendPushNotification(to: user_profile!.tokenID, title: title, body: body, data: notifyData)
+        sender.sendPushNotification(to: user_profile!.tokenID, title: title, body: body, data: notifyData, ostype: user_profile!.ostype)
 
     }
 

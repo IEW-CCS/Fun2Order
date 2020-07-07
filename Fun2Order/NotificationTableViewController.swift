@@ -330,7 +330,8 @@ class NotificationTableViewController: UITableViewController {
 
             let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
                 print("Confirm to delete this notification")
-                deleteNotificationByID(message_id: self.notificationList[indexPath.row].messageID)
+                //deleteNotificationByID(message_id: self.notificationList[indexPath.row].messageID)
+                deleteNotificationByID(message_id: self.typeNotificationList[indexPath.row].messageID)
                 alertWindow.isHidden = true
                 self.notificationList = retrieveNotificationList()
                 self.filterNotificationTypeList(index: self.selectedIndex)
@@ -369,7 +370,7 @@ extension NotificationTableViewController: GADBannerViewDelegate {
         self.isAdLoadedSuccess = true
         self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
     }
-     
+    
     func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
         print("Fail to receive ads")
         print(error)

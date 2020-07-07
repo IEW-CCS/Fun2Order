@@ -49,6 +49,12 @@ class MenuListCategoryCell: UITableViewCell {
         self.addGestureRecognizer(longPressGesture)
 
     }
+    
+    override func draw(_ rect: CGRect) {
+        let segmentFrame = self.scrollCategorySegment.frame
+        self.scrollCategorySegment.reDrawNewFrame(frame: segmentFrame)
+        self.scrollCategorySegment.setSelectedIndex(index: self.selectedIndex)
+    }
     @objc func handleLongPressDeleteBrandCategory(_ sender: UILongPressGestureRecognizer) {
         if(sender.state == .began) {
             delegate?.deleteBrandCategory(sender: self)

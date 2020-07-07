@@ -285,7 +285,7 @@ extension StatusSummaryTableViewController: BasicButtonDelegate {
                     messageNotify.attendedMemberCount = self.menuOrder.contentItems.count
                     messageNotify.messageDetail = body + "\n" + "按下確定後將更新相關資料"
                     messageNotify.isRead = "Y"
-                    sender.sendPushNotification(to: memberContent.memberTokenID, title: title, body: body, data: messageNotify)
+                    sender.sendPushNotification(to: memberContent.memberTokenID, title: title, body: body, data: messageNotify, ostype: memberContent.orderContent.ostype)
                 }
                 presentSimpleAlertMessage(title: "訊息", message: "已對所有參與者發出更改截止日的通知")
                 self.refreshStatusSummary(sender: BasicButtonCell())
@@ -324,7 +324,7 @@ extension StatusSummaryTableViewController: BasicButtonDelegate {
                 messageNotify.isRead = "N"
                 messageNotify.shippingDate = shipping_date
                 messageNotify.shippingLocation = shipping_location
-                sender.sendPushNotification(to: memberContent.memberTokenID, title: title, body: body, data: messageNotify)
+                sender.sendPushNotification(to: memberContent.memberTokenID, title: title, body: body, data: messageNotify, ostype: memberContent.orderContent.ostype)
             }
             presentSimpleAlertMessage(title: "訊息", message: "已對所有參與者發出到貨通知")
         }
@@ -367,7 +367,7 @@ extension StatusSummaryTableViewController: BasicButtonDelegate {
                 dueTimeNotify.messageDetail = " "
                 dueTimeNotify.isRead = "N"
 
-                sender.sendPushNotification(to: memberContent.memberTokenID, title: title, body: body, data: dueTimeNotify)
+                sender.sendPushNotification(to: memberContent.memberTokenID, title: title, body: body, data: dueTimeNotify, ostype: memberContent.orderContent.ostype)
             }
             presentSimpleAlertMessage(title: "訊息", message: "已對尚未回覆者發出催訂通知")
         }
@@ -403,7 +403,7 @@ extension StatusSummaryTableViewController: BasicButtonDelegate {
             print(error.localizedDescription)
         }
     }
-        
+
     func notifyMenuOrderDueTime(sender: BasicButtonCell) {
         print("StatusSummaryTableViewController receives BasicButtonDelegate.notifySendMessage")
         
@@ -528,7 +528,7 @@ extension StatusSummaryTableViewController: NotificationMessageDelegate {
                 messageNotify.messageDetail = message_string
                 messageNotify.isRead = "N"
 
-                sender.sendPushNotification(to: memberContent.memberTokenID, title: title, body: body, data: messageNotify)
+                sender.sendPushNotification(to: memberContent.memberTokenID, title: title, body: body, data: messageNotify, ostype: memberContent.orderContent.ostype)
             }
             presentSimpleAlertMessage(title: "訊息", message: "已對所有參與者發出訊息通知")
         }

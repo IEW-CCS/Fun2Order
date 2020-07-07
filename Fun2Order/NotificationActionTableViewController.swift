@@ -28,6 +28,7 @@ class NotificationActionTableViewController: UITableViewController {
     var downloadMenuInformationFlag: Bool = false
     var memberIndex: Int = -1
     var memberContent: MenuOrderMemberContent = MenuOrderMemberContent()
+    var menuOrder: MenuOrder = MenuOrder()
 
     let app = UIApplication.shared.delegate as! AppDelegate
     weak var refreshNotificationDelegate: ApplicationRefreshNotificationDelegate?
@@ -53,6 +54,47 @@ class NotificationActionTableViewController: UITableViewController {
     func downloadMenuOrderContent(owner_id: String, order_number: String, member_id: String) {
         let databaseRef = Database.database().reference()
 
+        let orderString = "USER_MENU_ORDER/\(owner_id)/\(order_number)"
+        print("orderStirng = \(orderString)")
+        databaseRef.child(orderString).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                let itemRawData = snapshot.value
+                let jsonData = try? JSONSerialization.data(withJSONObject: itemRawData as Any, options: [])
+
+                let decoder: JSONDecoder = JSONDecoder()
+                do {
+                    self.menuOrder = try decoder.decode(MenuOrder.self, from: jsonData!)
+
+                    if let itemIndex = self.menuOrder.contentItems.firstIndex(where: { $0.memberID == member_id }) {
+                        self.memberContent = self.menuOrder.contentItems[itemIndex]
+                        self.memberIndex = itemIndex
+                        self.downloadMenuOrderFlag = true
+                        self.refreshProductList()
+                    } else {
+                        return
+                    }
+                } catch {
+                    print("downloadMenuOrderContent MenuOrderMemberContent jsonData decode failed: \(error.localizedDescription)")
+                    presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料讀取錯誤，請團購發起人重發。")
+                    self.buttonAttend.isEnabled = false
+                    self.buttonReject.isEnabled = false
+                    return
+                }
+            } else {
+                print("downloadMenuOrderContent MenuOrderMemberContent snapshot doesn't exist!")
+                presentSimpleAlertMessage(title: "資料錯誤", message: "訂單資料不存在，請詢問團購發起人相關訊息。")
+                self.buttonAttend.isEnabled = false
+                self.buttonReject.isEnabled = false
+                return
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+            presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
+            self.buttonAttend.isEnabled = false
+            self.buttonReject.isEnabled = false
+            return
+        }
+/*
         let orderString = "USER_MENU_ORDER/\(owner_id)/\(order_number)/contentItems"
         print("orderStirng = \(orderString)")
         databaseRef.child(orderString).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -93,6 +135,7 @@ class NotificationActionTableViewController: UITableViewController {
             self.buttonReject.isEnabled = false
             return
         }
+ */
     }
     
     func refreshProductList() {
@@ -152,6 +195,7 @@ class NotificationActionTableViewController: UITableViewController {
                 joinController.menuInformation = menuData
                 joinController.memberContent = self.memberContent
                 joinController.memberIndex = self.memberIndex
+                joinController.menuOrder = self.menuOrder
                 //joinController.delegate = self
                 self.navigationController?.show(joinController, sender: self)
             }

@@ -224,72 +224,9 @@ class JoinGroupOrderTableViewController: UITableViewController {
             }
         }
         return true
-/*
-        if self.orderGlobalQuantity != nil && self.memberContent.orderContent.menuProductItems != nil {
-            var remainedQuantity: Int = 0
-            for i in 0...self.memberContent.orderContent.menuProductItems!.count - 1 {
-                for j in 0...self.orderGlobalQuantity!.count - 1 {
-                    if self.memberContent.orderContent.menuProductItems![i].itemName == self.orderGlobalQuantity![j].itemName {
-                        if self.orderGlobalQuantity![j].quantityLimitation == nil {
-                            continue
-                        }
-
-                        if self.orderGlobalQuantity![j].quantityRemained != nil {
-                            remainedQuantity = Int(self.orderGlobalQuantity![j].quantityRemained!)
-                        }
-
-                        if self.memberContent.orderContent.menuProductItems![i].itemQuantity > remainedQuantity {
-                            presentSimpleAlertMessage(title: "錯誤訊息", message: "[\(self.memberContent.orderContent.menuProductItems![i].itemName)] 為限量商品，目前訂購的數量已超過剩餘的數量，請修改數量或選擇其他產品後再重新送出")
-                            return false
-                        } else {
-                            self.orderGlobalQuantity![j].quantityRemained = remainedQuantity - self.memberContent.orderContent.menuProductItems![i].itemQuantity
-                        }
-                    }
-                }
-            }
-        }
-*/
     }
 
-/*
-    func currentViewControllerShouldPop() -> Bool {
-        var alertWindow: UIWindow!
-        if self.isNeedToConfirmFlag {
-            let controller = UIAlertController(title: "提示訊息", message: "訂購單資料已更動，您確定要離開嗎？", preferredStyle: .alert)
-
-            let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
-                print("Confirm to ignore JoinOrder change")
-                self.navigationController?.popToRootViewController(animated: true)
-                self.dismiss(animated: false, completion: nil)
-
-                alertWindow.isHidden = true
-            }
-            
-            controller.addAction(okAction)
-            let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
-                print("Cancel to ignore JoinOrder change")
-                alertWindow.isHidden = true
-            }
-            controller.addAction(cancelAction)
-            alertWindow = presentAlert(controller)
-            return false
-        } else {
-            //self.navigationController?.popToRootViewController(animated: true)
-            //self.dismiss(animated: false, completion: nil)
-            return true
-        }
-    }
-*/
     func setupInterstitialAd() {
-        // Test Interstitla Video Ad
-        //self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/5135589807")
-
-        // James real Interstitial Ad
-        //self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-9511677579097261/6069385370")
-
-        // IEW real Interstitial Ad
-        //self.interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-6672968234138119/3517393514")
-
         let adUnitID = JOINORDER_INTERSTITIAL_AD
         self.interstitialAd = GADInterstitial(adUnitID: adUnitID)
         let adRequest = GADRequest()
@@ -304,7 +241,8 @@ class JoinGroupOrderTableViewController: UITableViewController {
             return
         }
 
-        if self.menuInformation.locations != nil {
+        //if self.menuInformation.locations != nil {
+        if self.menuOrder!.locations != nil {
             if self.segmentLocation.selectedSegmentIndex < 0 {
                 // User does not select location, show alert
                 print("Doesn't select location, just return")
@@ -312,14 +250,16 @@ class JoinGroupOrderTableViewController: UITableViewController {
                 return
             }
         }
-         
+        
         if self.memberContent.orderContent.menuProductItems == nil {
             presentSimpleAlertMessage(title: "錯誤訊息", message: "尚未輸入任何產品資訊，請重新輸入")
             return
         }
         
-        if self.menuInformation.needContactInfoFlag != nil {
-            if self.menuInformation.needContactInfoFlag! {
+        //if self.menuInformation.needContactInfoFlag != nil {
+        //    if self.menuInformation.needContactInfoFlag! {
+        if self.menuOrder!.needContactInfoFlag != nil {
+            if self.menuOrder!.needContactInfoFlag! {
                 let controller = UIAlertController(title: "訂單需要您輸入郵寄或聯絡資訊", message: nil, preferredStyle: .alert)
 
                 guard let personalController = self.storyboard?.instantiateViewController(withIdentifier: "PERSONAL_CONTACT_VC") as? PersonalContactViewController else{
@@ -347,9 +287,12 @@ class JoinGroupOrderTableViewController: UITableViewController {
             updateOrderContent()
         }
     }
-    
+
     func updateOrderContent() {
-        self.memberContent.orderContent.location = self.menuInformation.locations![self.segmentLocation.selectedSegmentIndex]
+        //if self.menuInformation.locations != nil {
+        if self.menuOrder!.locations != nil {
+            self.memberContent.orderContent.location = self.menuOrder!.locations![self.segmentLocation.selectedSegmentIndex]
+        }
 
         var totalQuantity: Int = 0
         for i in 0...self.memberContent.orderContent.menuProductItems!.count - 1 {
@@ -373,7 +316,7 @@ class JoinGroupOrderTableViewController: UITableViewController {
             print("confirmToJoinOrder self.memberContent.orderOwnerID is empty")
             return
         }
-        
+
         let databaseRef = Database.database().reference()
         let limitedPath = "USER_MENU_ORDER/\(self.memberContent.orderOwnerID)/\(self.memberContent.orderContent.orderNumber)/limitedMenuItems"
         var globalQuantityArray: [Any] = [Any]()
@@ -424,7 +367,6 @@ class JoinGroupOrderTableViewController: UITableViewController {
                 downloadFBMultiMenuImages(images_url: [self.menuInformation.menuImageURL], completion: receivedOriginalSingleMenuImage)
             }
         }
-
     }
 
     func receivedMultiMenuImages(images: [UIImage]?) {
@@ -452,16 +394,23 @@ class JoinGroupOrderTableViewController: UITableViewController {
     
     func setupLocationSegment() {
         self.segmentLocation.removeAllSegments()
-        if self.menuInformation.locations == nil {
+        //if self.menuInformation.locations == nil {
+        if self.menuOrder!.locations == nil {
             self.segmentLocation.isEnabled = false
             self.segmentLocation.isHidden = true
         } else {
-            if !self.menuInformation.locations!.isEmpty {
+            //if !self.menuInformation.locations!.isEmpty {
+            if !self.menuOrder!.locations!.isEmpty {
                 self.segmentLocation.isEnabled = true
                 self.segmentLocation.isHidden = false
-                for i in 0...(self.menuInformation.locations!.count - 1) {
-                    self.segmentLocation.insertSegment(withTitle: self.menuInformation.locations![i], at: i, animated: true)
-                    if self.memberContent.orderContent.location == self.menuInformation.locations![i] {
+                //for i in 0...(self.menuInformation.locations!.count - 1) {
+                for i in 0...(self.menuOrder!.locations!.count - 1) {
+                    //self.segmentLocation.insertSegment(withTitle: self.menuInformation.locations![i], at: i, animated: true)
+                    //if self.memberContent.orderContent.location == self.menuInformation.locations![i] {
+                    //    self.segmentLocation.selectedSegmentIndex = i
+                    //}
+                    self.segmentLocation.insertSegment(withTitle: self.menuOrder!.locations![i], at: i, animated: true)
+                    if self.memberContent.orderContent.location == self.menuOrder!.locations![i] {
                         self.segmentLocation.selectedSegmentIndex = i
                     }
                 }
@@ -545,7 +494,7 @@ class JoinGroupOrderTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 && indexPath.row == 4 {
-            print("Enter tableView didSelectRowAt function")
+            //print("Enter tableView didSelectRowAt function")
             let databaseRef = Database.database().reference()
             let orderString = "USER_MENU_ORDER/\(self.memberContent.orderOwnerID)/\(self.memberContent.orderContent.orderNumber)"
             databaseRef.child(orderString).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -658,36 +607,6 @@ class JoinGroupOrderTableViewController: UITableViewController {
 
     }
 }
-
-/*
-extension JoinGroupOrderTableViewController: UINavigationBarDelegate {
-    public func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
-        //print("CreateMenuTableViewController navigationBar shouldPop event processed!!!")
-        var shouldPop = true
-        //let currentVC = self.topViewController
-        
-        //if (currentVC?.responds(to: #selector(currentViewControllerShouldPop)))! {
-        shouldPop = self.currentViewControllerShouldPop()
-        //}
-        
-        if shouldPop {
-            DispatchQueue.main.async {
-                self.navigationController?.popViewController(animated: true)
-            }
-            return true
-        } else {
-            for subView in navigationBar.subviews {
-                if 0.0 < subView.alpha && subView.alpha < 1.0 {
-                    UIView.animate(withDuration: 0.25, animations: {
-                        subView.alpha = 1.0
-                    })
-                }
-            }
-            return false
-        }
-    }
-}
-*/
 
 extension JoinGroupOrderTableViewController: JoinOrderSelectProductDelegate {
     func setProduct(menu_item: MenuProductItem) {
