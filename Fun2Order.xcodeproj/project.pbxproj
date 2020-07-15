@@ -54,7 +54,6 @@
 		3625BB33245A5E8500330816 /* GuideToolTip.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3625BB32245A5E8500330816 /* GuideToolTip.plist */; };
 		3625BB35245A9C7500330816 /* TestFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3625BB34245A9C7500330816 /* TestFunctions.swift */; };
 		362B9102234F27110079A108 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362B9101234F27110079A108 /* HomeViewController.swift */; };
-		362C481E235B48950010C845 /* Add_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 362C481D235B48950010C845 /* Add_Icon.png */; };
 		362C4821235B56550010C845 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362C481F235B56550010C845 /* RecipeCell.swift */; };
 		362C4822235B56550010C845 /* RecipeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 362C4820235B56550010C845 /* RecipeCell.xib */; };
 		362C4824235B596A0010C845 /* RecipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362C4823235B596A0010C845 /* RecipeTableViewController.swift */; };
@@ -62,9 +61,10 @@
 		362C482A235C71040010C845 /* QuantityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 362C4828235C71040010C845 /* QuantityCell.xib */; };
 		362C482C235C75810010C845 /* Icon_Cup.png in Resources */ = {isa = PBXBuildFile; fileRef = 362C482B235C75810010C845 /* Icon_Cup.png */; };
 		362C482E235C8CDC0010C845 /* Icon_Favorite3.png in Resources */ = {isa = PBXBuildFile; fileRef = 362C482D235C8CDC0010C845 /* Icon_Favorite3.png */; };
-		362C4830235C8F360010C845 /* Icon_Cart_Red.png in Resources */ = {isa = PBXBuildFile; fileRef = 362C482F235C8F360010C845 /* Icon_Cart_Red.png */; };
 		362C4833235C8F560010C845 /* BasicButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362C4831235C8F560010C845 /* BasicButtonCell.swift */; };
 		362C4834235C8F560010C845 /* BasicButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 362C4832235C8F560010C845 /* BasicButtonCell.xib */; };
+		3639F44624B6B26900B64B2B /* DetailJoinGroupOrderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3639F44524B6B26900B64B2B /* DetailJoinGroupOrderTableViewController.swift */; };
+		3639F44A24B6B32500B64B2B /* DetailGroupOrderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3639F44924B6B32500B64B2B /* DetailGroupOrderTableViewController.swift */; };
 		363D9D272371C2180038E136 /* AppConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 363D9D262371C2180038E136 /* AppConfig.plist */; };
 		363DE7AC23CC9B1C00C60935 /* TemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363DE7AB23CC9B1C00C60935 /* TemplateViewController.swift */; };
 		363DE7AF23CD3A1000C60935 /* MenuRecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363DE7AD23CD3A1000C60935 /* MenuRecipeCell.swift */; };
@@ -235,6 +235,8 @@
 		36AA19AD23D553480039A758 /* DashboardStatusSummaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36AA19AB23D553480039A758 /* DashboardStatusSummaryCell.xib */; };
 		36AA19AE23D553480039A758 /* DashboardStatusSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AA19AC23D553480039A758 /* DashboardStatusSummaryCell.swift */; };
 		36AA3C992476B3210037EF1C /* MenuImageDescriptionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AA3C982476B3210037EF1C /* MenuImageDescriptionTableViewController.swift */; };
+		36AC581124BDF3FA009BBCDD /* MenuItemWithCartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AC580F24BDF3FA009BBCDD /* MenuItemWithCartCell.swift */; };
+		36AC581224BDF3FA009BBCDD /* MenuItemWithCartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36AC581024BDF3FA009BBCDD /* MenuItemWithCartCell.xib */; };
 		36AE5B09244C334F00B4E307 /* Icon_Share.png in Resources */ = {isa = PBXBuildFile; fileRef = 36AE5B08244C334F00B4E307 /* Icon_Share.png */; };
 		36B6D9762401557E00041C2C /* MyFriendTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B6D9752401557E00041C2C /* MyFriendTableViewController.swift */; };
 		36B6D97C240412F400041C2C /* GroupFriendListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B6D97B240412F400041C2C /* GroupFriendListTableViewController.swift */; };
@@ -376,7 +378,19 @@
 		36DC7A5F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36DC7A2F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png */; };
 		36E8D3CE235DA7CC00AB35CB /* PayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8D3CC235DA7CC00AB35CB /* PayCell.swift */; };
 		36E8D3CF235DA7CC00AB35CB /* PayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36E8D3CD235DA7CC00AB35CB /* PayCell.xib */; };
+		36E9348924B8A6BE000F65AB /* Add_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 36E9348824B8A6BC000F65AB /* Add_Icon.png */; };
+		36E9348B24B8BB99000F65AB /* CustomProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9348A24B8BB99000F65AB /* CustomProductViewController.swift */; };
+		36E9348E24B933B4000F65AB /* ProductPriceWithCartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9348C24B933B4000F65AB /* ProductPriceWithCartCell.swift */; };
+		36E9348F24B933B4000F65AB /* ProductPriceWithCartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36E9348D24B933B4000F65AB /* ProductPriceWithCartCell.xib */; };
+		36E9349124B93652000F65AB /* Icon_Cart_Red.png in Resources */ = {isa = PBXBuildFile; fileRef = 36E9349024B93652000F65AB /* Icon_Cart_Red.png */; };
+		36E9349324B96193000F65AB /* DetailJoinGroupOrderSelectRecipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9349224B96193000F65AB /* DetailJoinGroupOrderSelectRecipeTableViewController.swift */; };
+		36E9349624B974BD000F65AB /* DetailMenuRecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9349424B974BD000F65AB /* DetailMenuRecipeCell.swift */; };
+		36E9349724B974BD000F65AB /* DetailMenuRecipeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36E9349524B974BD000F65AB /* DetailMenuRecipeCell.xib */; };
+		36E9349B24BAB05F000F65AB /* BrandCartTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9349A24BAB05F000F65AB /* BrandCartTableViewController.swift */; };
+		36E9349D24BAF522000F65AB /* DetailCreateGroupOrderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9349C24BAF522000F65AB /* DetailCreateGroupOrderTableViewController.swift */; };
+		36E9349F24BB4421000F65AB /* CreateGroupOrderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9349E24BB4421000F65AB /* CreateGroupOrderTableViewController.swift */; };
 		36EE4E472440B15D00AE2DE9 /* Icon_TrashCan.png in Resources */ = {isa = PBXBuildFile; fileRef = 36EE4E442440B15C00AE2DE9 /* Icon_TrashCan.png */; };
+		36F537AF24B5BEE40084A9F6 /* CustomizedControle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F537AE24B5BEE40084A9F6 /* CustomizedControle.swift */; };
 		36FABFFA2491F07E008A208E /* BrandStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FABFF92491F07E008A208E /* BrandStruct.swift */; };
 		36FABFFE2495CC6B008A208E /* BasicProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FABFFD2495CC6B008A208E /* BasicProductViewController.swift */; };
 		36FAC00224990901008A208E /* Icon_Back_Arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 36FAC00124990901008A208E /* Icon_Back_Arrow.png */; };
@@ -473,7 +487,6 @@
 		3625BB32245A5E8500330816 /* GuideToolTip.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = GuideToolTip.plist; sourceTree = "<group>"; };
 		3625BB34245A9C7500330816 /* TestFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFunctions.swift; sourceTree = "<group>"; };
 		362B9101234F27110079A108 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		362C481D235B48950010C845 /* Add_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Add_Icon.png; sourceTree = "<group>"; };
 		362C481F235B56550010C845 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
 		362C4820235B56550010C845 /* RecipeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeCell.xib; sourceTree = "<group>"; };
 		362C4823235B596A0010C845 /* RecipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeTableViewController.swift; sourceTree = "<group>"; };
@@ -481,9 +494,10 @@
 		362C4828235C71040010C845 /* QuantityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuantityCell.xib; sourceTree = "<group>"; };
 		362C482B235C75810010C845 /* Icon_Cup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Cup.png; sourceTree = "<group>"; };
 		362C482D235C8CDC0010C845 /* Icon_Favorite3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Favorite3.png; sourceTree = "<group>"; };
-		362C482F235C8F360010C845 /* Icon_Cart_Red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Cart_Red.png; sourceTree = "<group>"; };
 		362C4831235C8F560010C845 /* BasicButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicButtonCell.swift; sourceTree = "<group>"; };
 		362C4832235C8F560010C845 /* BasicButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BasicButtonCell.xib; sourceTree = "<group>"; };
+		3639F44524B6B26900B64B2B /* DetailJoinGroupOrderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailJoinGroupOrderTableViewController.swift; sourceTree = "<group>"; };
+		3639F44924B6B32500B64B2B /* DetailGroupOrderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailGroupOrderTableViewController.swift; sourceTree = "<group>"; };
 		363D9D262371C2180038E136 /* AppConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppConfig.plist; sourceTree = "<group>"; };
 		363DE7AB23CC9B1C00C60935 /* TemplateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateViewController.swift; sourceTree = "<group>"; };
 		363DE7AD23CD3A1000C60935 /* MenuRecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuRecipeCell.swift; sourceTree = "<group>"; };
@@ -658,6 +672,8 @@
 		36AA19AB23D553480039A758 /* DashboardStatusSummaryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DashboardStatusSummaryCell.xib; sourceTree = "<group>"; };
 		36AA19AC23D553480039A758 /* DashboardStatusSummaryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardStatusSummaryCell.swift; sourceTree = "<group>"; };
 		36AA3C982476B3210037EF1C /* MenuImageDescriptionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuImageDescriptionTableViewController.swift; sourceTree = "<group>"; };
+		36AC580F24BDF3FA009BBCDD /* MenuItemWithCartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemWithCartCell.swift; sourceTree = "<group>"; };
+		36AC581024BDF3FA009BBCDD /* MenuItemWithCartCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuItemWithCartCell.xib; sourceTree = "<group>"; };
 		36AE5B08244C334F00B4E307 /* Icon_Share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Share.png; sourceTree = "<group>"; };
 		36B6D9752401557E00041C2C /* MyFriendTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFriendTableViewController.swift; sourceTree = "<group>"; };
 		36B6D97B240412F400041C2C /* GroupFriendListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupFriendListTableViewController.swift; sourceTree = "<group>"; };
@@ -799,7 +815,19 @@
 		36DC7A2F2356CB94009D48F5 /* 珍珠鮮奶茶@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "珍珠鮮奶茶@2x.png"; sourceTree = "<group>"; };
 		36E8D3CC235DA7CC00AB35CB /* PayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayCell.swift; sourceTree = "<group>"; };
 		36E8D3CD235DA7CC00AB35CB /* PayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PayCell.xib; sourceTree = "<group>"; };
+		36E9348824B8A6BC000F65AB /* Add_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Add_Icon.png; sourceTree = "<group>"; };
+		36E9348A24B8BB99000F65AB /* CustomProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomProductViewController.swift; sourceTree = "<group>"; };
+		36E9348C24B933B4000F65AB /* ProductPriceWithCartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductPriceWithCartCell.swift; sourceTree = "<group>"; };
+		36E9348D24B933B4000F65AB /* ProductPriceWithCartCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductPriceWithCartCell.xib; sourceTree = "<group>"; };
+		36E9349024B93652000F65AB /* Icon_Cart_Red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Cart_Red.png; sourceTree = "<group>"; };
+		36E9349224B96193000F65AB /* DetailJoinGroupOrderSelectRecipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailJoinGroupOrderSelectRecipeTableViewController.swift; sourceTree = "<group>"; };
+		36E9349424B974BD000F65AB /* DetailMenuRecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMenuRecipeCell.swift; sourceTree = "<group>"; };
+		36E9349524B974BD000F65AB /* DetailMenuRecipeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailMenuRecipeCell.xib; sourceTree = "<group>"; };
+		36E9349A24BAB05F000F65AB /* BrandCartTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandCartTableViewController.swift; sourceTree = "<group>"; };
+		36E9349C24BAF522000F65AB /* DetailCreateGroupOrderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCreateGroupOrderTableViewController.swift; sourceTree = "<group>"; };
+		36E9349E24BB4421000F65AB /* CreateGroupOrderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupOrderTableViewController.swift; sourceTree = "<group>"; };
 		36EE4E442440B15C00AE2DE9 /* Icon_TrashCan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_TrashCan.png; sourceTree = "<group>"; };
+		36F537AE24B5BEE40084A9F6 /* CustomizedControle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizedControle.swift; sourceTree = "<group>"; };
 		36FABFF92491F07E008A208E /* BrandStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandStruct.swift; sourceTree = "<group>"; };
 		36FABFFD2495CC6B008A208E /* BasicProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicProductViewController.swift; sourceTree = "<group>"; };
 		36FAC00124990901008A208E /* Icon_Back_Arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Back_Arrow.png; sourceTree = "<group>"; };
@@ -864,7 +892,14 @@
 				36D6E8A1249DD88800F5493D /* PersonalContactViewController.swift */,
 				36FFB6D224A7888000E4D3F7 /* DetailBrandTableViewController.swift */,
 				36A8890424B1D08000C34BCD /* BrandSuggestionTableViewController.swift */,
+				36E9348A24B8BB99000F65AB /* CustomProductViewController.swift */,
 				3692958D24B2DBFF00FBB8C7 /* GroupOrderTableViewController.swift */,
+				36E9349E24BB4421000F65AB /* CreateGroupOrderTableViewController.swift */,
+				3639F44924B6B32500B64B2B /* DetailGroupOrderTableViewController.swift */,
+				36E9349C24BAF522000F65AB /* DetailCreateGroupOrderTableViewController.swift */,
+				3639F44524B6B26900B64B2B /* DetailJoinGroupOrderTableViewController.swift */,
+				36E9349224B96193000F65AB /* DetailJoinGroupOrderSelectRecipeTableViewController.swift */,
+				36E9349A24BAB05F000F65AB /* BrandCartTableViewController.swift */,
 			);
 			path = "Local menu";
 			sourceTree = "<group>";
@@ -884,6 +919,7 @@
 		36159C082354B8F300664D75 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				36E9348824B8A6BC000F65AB /* Add_Icon.png */,
 				36973AC923AB7342008804C5 /* Icon_Address.png */,
 				36973AC823AB7342008804C5 /* Icon_Birthday.png */,
 				36973ACA23AB7342008804C5 /* Icon_eMail.png */,
@@ -900,12 +936,11 @@
 				36C8C1B8235E8A2C002AD40F /* Image_QR_Code_original.png */,
 				36C8C1BB235E8AC6002AD40F /* Image_QR_Code.png */,
 				362C482B235C75810010C845 /* Icon_Cup.png */,
-				362C481D235B48950010C845 /* Add_Icon.png */,
 				36159C0B2354B9F400664D75 /* Icon_Favorite_Button.png */,
 				36DC79FD2356BB1E009D48F5 /* Icon_Favorite2_Button.png */,
 				362C482D235C8CDC0010C845 /* Icon_Favorite3.png */,
 				36973AD723ADA91A008804C5 /* Icon_QRCode.png */,
-				362C482F235C8F360010C845 /* Icon_Cart_Red.png */,
+				36E9349024B93652000F65AB /* Icon_Cart_Red.png */,
 				3625ACA123C6139F0037B865 /* Icon_About.png */,
 				3625ACA223C613A00037B865 /* Icon_Menu_Item.png */,
 				3625ACA023C6139D0037B865 /* Icon_Menu_List.png */,
@@ -953,15 +988,16 @@
 		3641C73D234CCEC30058CF26 /* Fun2Order */ = {
 			isa = PBXGroup;
 			children = (
+				367CE57523C02D2200C0840D /* Fun2Order.entitlements */,
 				3655A06C24A2E01C009AE1C5 /* Entity */,
 				3625BB2224581D7D00330816 /* AMPopTip */,
-				367CE57523C02D2200C0840D /* Fun2Order.entitlements */,
+				366E125B23502B7000BFFF45 /* FSPagerView */,
+				F505DDDF23692A9100E3F681 /* Controlles */,
+				36C0B36F236A781200B56C75 /* JsonStruct */,
+				3641C75B234DD2F40058CF26 /* Resources */,
 				36159C07235493C100664D75 /* StructDefinition */,
 				36C0B372236A8E2500B56C75 /* CommonFunctions */,
-				36C0B36F236A781200B56C75 /* JsonStruct */,
-				F505DDDF23692A9100E3F681 /* Controlles */,
 				36D58387235300D100AEB84F /* CustomCell */,
-				366E125B23502B7000BFFF45 /* FSPagerView */,
 				360EB73023C6084700753469 /* Local menu */,
 				3641C756234CD1620058CF26 /* SceneDelegate.swift */,
 				3641C73E234CCEC30058CF26 /* AppDelegate.swift */,
@@ -971,7 +1007,6 @@
 				36B80CA023B9B715004359E4 /* MyProfile.plist */,
 				3625BB32245A5E8500330816 /* GuideToolTip.plist */,
 				F505DDF123696BF900E3F681 /* GoogleService-Info.plist */,
-				3641C75B234DD2F40058CF26 /* Resources */,
 				3641C744234CCEC30058CF26 /* Main.storyboard */,
 				F505DDEB23692AE300E3F681 /* HomeTabBar.swift */,
 				362B9101234F27110079A108 /* HomeViewController.swift */,
@@ -1168,6 +1203,7 @@
 			children = (
 				367CE58023C4038400C0840D /* UIBarButtonItem+Badge.swift */,
 				36FAC0032499DD3F008A208E /* UIViewController+BackBtnEventIntercept.swift */,
+				36F537AE24B5BEE40084A9F6 /* CustomizedControle.swift */,
 				36B6D97D2405625000041C2C /* ImageZoomView.swift */,
 				36C0B373236A8E4100B56C75 /* UtilityFunctions.swift */,
 				3675ED1A23837834003A94B7 /* CoreDataFunctions.swift */,
@@ -1270,8 +1306,14 @@
 				36A2283624888BAE00AB98BC /* BannerAdCell.xib */,
 				36FFB6D424A790DE00E4D3F7 /* ProductPriceCell.swift */,
 				36FFB6D524A790DE00E4D3F7 /* ProductPriceCell.xib */,
+				36E9348C24B933B4000F65AB /* ProductPriceWithCartCell.swift */,
+				36E9348D24B933B4000F65AB /* ProductPriceWithCartCell.xib */,
+				36AC580F24BDF3FA009BBCDD /* MenuItemWithCartCell.swift */,
+				36AC581024BDF3FA009BBCDD /* MenuItemWithCartCell.xib */,
 				36A8890024B195FA00C34BCD /* BrandHeaderView.swift */,
 				36A8890124B195FA00C34BCD /* BrandHeaderView.xib */,
+				36E9349424B974BD000F65AB /* DetailMenuRecipeCell.swift */,
+				36E9349524B974BD000F65AB /* DetailMenuRecipeCell.xib */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -1508,6 +1550,7 @@
 				36C8C1B6235DEC59002AD40F /* Image_Person.png in Resources */,
 				36159C102354BEBA00664D75 /* 迷克夏@2x.jpg in Resources */,
 				36C8C1B2235DEA13002AD40F /* OrderHistoryCell.xib in Resources */,
+				36E9348924B8A6BE000F65AB /* Add_Icon.png in Resources */,
 				36D583ED2354151500AEB84F /* 茶湯會@3x.jpg in Resources */,
 				36D583DE2354151500AEB84F /* 丸作.jpg in Resources */,
 				36DC7A552356CB94009D48F5 /* 纖活綠茶@3x.png in Resources */,
@@ -1524,6 +1567,7 @@
 				36DC7A4D2356CB94009D48F5 /* 新鮮水果茶@3x.png in Resources */,
 				3625ACDB23C87E6C0037B865 /* MenuLocationCell.xib in Resources */,
 				3649CFC0235D49DF00C0F2EA /* CartGroupCell.xib in Resources */,
+				36E9349724B974BD000F65AB /* DetailMenuRecipeCell.xib in Resources */,
 				36D583E92354151500AEB84F /* 自在軒.png in Resources */,
 				364F1213235839AF00988937 /* ProductBriefCell.xib in Resources */,
 				364BEA1323F43621003A418C /* FollowCell.xib in Resources */,
@@ -1531,6 +1575,7 @@
 				36DC7A3E2356CB94009D48F5 /* 珍珠鮮奶茶@3x.png in Resources */,
 				3659704D23B06A49008CDD57 /* ConfigFavoriteProductCell.xib in Resources */,
 				36D583862352FCE000AEB84F /* 8.png in Resources */,
+				36E9349124B93652000F65AB /* Icon_Cart_Red.png in Resources */,
 				36D583D72354151500AEB84F /* Teas原味@2x.jpg in Resources */,
 				36DC7A372356CB94009D48F5 /* 珍珠鮮奶茶.png in Resources */,
 				3649CFC7235D5E6E00C0F2EA /* Pay_Cash.png in Resources */,
@@ -1559,6 +1604,7 @@
 				36DC79FE2356BB1E009D48F5 /* Icon_Favorite2_Button.png in Resources */,
 				36D583E32354151500AEB84F /* 柚豆.jpg in Resources */,
 				36857C9123E66BC100B410B8 /* NotificationActionCell.xib in Resources */,
+				36AC581224BDF3FA009BBCDD /* MenuItemWithCartCell.xib in Resources */,
 				36D583DC2354151500AEB84F /* 柚豆@3x.jpg in Resources */,
 				3649CFC9235D5E6E00C0F2EA /* Pay_ApplePay.png in Resources */,
 				3680A43123DB3FCE00BFC4A0 /* EditPaymentCell.xib in Resources */,
@@ -1583,7 +1629,6 @@
 				36C1F44E23D889110004B0CD /* MenuOrderMemberNGCell.xib in Resources */,
 				36973AD323AB7343008804C5 /* Icon_Phone.png in Resources */,
 				3641C74B234CCEC40058CF26 /* Assets.xcassets in Resources */,
-				362C4830235C8F360010C845 /* Icon_Cart_Red.png in Resources */,
 				364BEA1923F4F38C003A418C /* JoinInvitationCell.xib in Resources */,
 				36DC7A562356CB94009D48F5 /* 新鮮水果茶.png in Resources */,
 				36D583E82354151500AEB84F /* 圓石@3x.jpg in Resources */,
@@ -1673,11 +1718,11 @@
 				36973AD023AB7343008804C5 /* Icon_Birthday.png in Resources */,
 				36DC7A362356CB94009D48F5 /* 觀音拿鐵@3x.png in Resources */,
 				36B80C9D23B99453004359E4 /* Icon_Add_Group.png in Resources */,
+				36E9348F24B933B4000F65AB /* ProductPriceWithCartCell.xib in Resources */,
 				36DC7A462356CB94009D48F5 /* 金桔檸檬@2x.png in Resources */,
 				36C1F44A23D7FCC80004B0CD /* MenuOrderMemberCell.xib in Resources */,
 				36973AD823ADA91A008804C5 /* Icon_QRCode.png in Resources */,
 				36A2283824888BAE00AB98BC /* BannerAdCell.xib in Resources */,
-				362C481E235B48950010C845 /* Add_Icon.png in Resources */,
 				36DC7A522356CB94009D48F5 /* 仙草凍奶茶@2x.png in Resources */,
 				36D583D22354151500AEB84F /* 丸作@2x.jpg in Resources */,
 				3625ACA323C613A00037B865 /* Icon_Menu_List.png in Resources */,
@@ -1761,6 +1806,7 @@
 			files = (
 				3666F70823A2199800729E43 /* MyProfileViewController.swift in Sources */,
 				3655A0AB24A2E114009AE1C5 /* FRIEND_TABLE+CoreDataClass.swift in Sources */,
+				36E9349324B96193000F65AB /* DetailJoinGroupOrderSelectRecipeTableViewController.swift in Sources */,
 				366E126B23502B9100BFFF45 /* FSPageViewLayout.swift in Sources */,
 				36159C162355E5ED00664D75 /* GlobalConstants.swift in Sources */,
 				3655A0C824A2E114009AE1C5 /* Fun2Order.xcdatamodeld in Sources */,
@@ -1769,6 +1815,7 @@
 				3655A0AF24A2E114009AE1C5 /* PRODUCT_RECIPE+CoreDataClass.swift in Sources */,
 				366E126A23502B9100BFFF45 /* FSPagerView.swift in Sources */,
 				3655A0D424A2E114009AE1C5 /* MENU_RECIPE_TEMPLATE+CoreDataClass.swift in Sources */,
+				36E9349D24BAF522000F65AB /* DetailCreateGroupOrderTableViewController.swift in Sources */,
 				361C0BA3239AA50C0086BB65 /* CartOrderItemCell.swift in Sources */,
 				36FFB6D324A7888000E4D3F7 /* DetailBrandTableViewController.swift in Sources */,
 				36AA3C992476B3210037EF1C /* MenuImageDescriptionTableViewController.swift in Sources */,
@@ -1795,6 +1842,7 @@
 				3625ACDA23C87E6C0037B865 /* MenuLocationCell.swift in Sources */,
 				3625BB2A24581DAE00330816 /* PopTip.swift in Sources */,
 				36857C9B23E8F16800B410B8 /* JoinOrderSelectProductViewController.swift in Sources */,
+				3639F44624B6B26900B64B2B /* DetailJoinGroupOrderTableViewController.swift in Sources */,
 				3655A0D924A2E114009AE1C5 /* NOTIFICATION_TABLE+CoreDataClass.swift in Sources */,
 				36857C7F23E19BD500B410B8 /* PushNotificationSender.swift in Sources */,
 				36D583A92354038E00AEB84F /* BrandListCollectionViewController.swift in Sources */,
@@ -1804,6 +1852,7 @@
 				363DE7AF23CD3A1000C60935 /* MenuRecipeCell.swift in Sources */,
 				36AA199123D51DC70039A758 /* EditPaymentStatusTableViewController.swift in Sources */,
 				3655A0C324A2E114009AE1C5 /* MENU_ITEM+CoreDataProperties.swift in Sources */,
+				36E9349B24BAB05F000F65AB /* BrandCartTableViewController.swift in Sources */,
 				36973ABB23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift in Sources */,
 				368B712924209854007BFEB4 /* MenuListCategoryCell.swift in Sources */,
 				3655A0CB24A2E114009AE1C5 /* STORE_INFORMATION+CoreDataClass.swift in Sources */,
@@ -1814,6 +1863,7 @@
 				36DC79FB2356B783009D48F5 /* ProductDetailCell.swift in Sources */,
 				364F1212235839AF00988937 /* ProductBriefCell.swift in Sources */,
 				3655A0D624A2E114009AE1C5 /* STORE_BUSINESS_HOURS+CoreDataProperties.swift in Sources */,
+				36E9349624B974BD000F65AB /* DetailMenuRecipeCell.swift in Sources */,
 				36757C542483466100F5C08A /* OrderProductListTableViewController.swift in Sources */,
 				3655A0B524A2E114009AE1C5 /* ORDER_CONTENT_ITEM+CoreDataClass.swift in Sources */,
 				36B80C7323B2074F004359E4 /* ConfigFavoriteProductTableViewController.swift in Sources */,
@@ -1831,6 +1881,7 @@
 				36159C142355B3D500664D75 /* CommonStruct.swift in Sources */,
 				3655A0C124A2E114009AE1C5 /* FAVORITE_STORE+CoreDataClass.swift in Sources */,
 				36B80C7D23B4ED9E004359E4 /* GroupCell.swift in Sources */,
+				36E9348E24B933B4000F65AB /* ProductPriceWithCartCell.swift in Sources */,
 				36D5838D23533D1D00AEB84F /* FavoriteTableViewController.swift in Sources */,
 				36D583842352DB7F00AEB84F /* BannerDetailViewController.swift in Sources */,
 				3655A0A724A2E114009AE1C5 /* MENU_BRAND_CATEGORY+CoreDataClass.swift in Sources */,
@@ -1869,6 +1920,7 @@
 				F505DDE623692AC900E3F681 /* SignUpMailController.swift in Sources */,
 				36C0B374236A8E4100B56C75 /* UtilityFunctions.swift in Sources */,
 				36FABFFA2491F07E008A208E /* BrandStruct.swift in Sources */,
+				36E9349F24BB4421000F65AB /* CreateGroupOrderTableViewController.swift in Sources */,
 				36757C4D2482181800F5C08A /* BasicTitleCell.swift in Sources */,
 				362C4824235B596A0010C845 /* RecipeTableViewController.swift in Sources */,
 				3659704C23B06A49008CDD57 /* ConfigFavoriteProductCell.swift in Sources */,
@@ -1877,7 +1929,9 @@
 				36A2283724888BAE00AB98BC /* BannerAdCell.swift in Sources */,
 				3655A0D024A2E114009AE1C5 /* BRAND_PROFILE+CoreDataProperties.swift in Sources */,
 				36C6CAF723FAA5DE00C27DFB /* MenuHomeNativeAdCell.swift in Sources */,
+				3639F44A24B6B32500B64B2B /* DetailGroupOrderTableViewController.swift in Sources */,
 				3655A0D324A2E114009AE1C5 /* MENU_RECIPE+CoreDataProperties.swift in Sources */,
+				36AC581124BDF3FA009BBCDD /* MenuItemWithCartCell.swift in Sources */,
 				3655A0CC24A2E114009AE1C5 /* STORE_INFORMATION+CoreDataProperties.swift in Sources */,
 				3655A0CF24A2E114009AE1C5 /* FAVORITE_STORE+CoreDataProperties.swift in Sources */,
 				366E126823502B9100BFFF45 /* FSPagerViewLayoutAttributes.swift in Sources */,
@@ -1904,9 +1958,11 @@
 				3655A0AA24A2E114009AE1C5 /* ORDER_PRODUCT_RECIPE+CoreDataProperties.swift in Sources */,
 				3655A0CA24A2E114009AE1C5 /* MENU_ICON+CoreDataProperties.swift in Sources */,
 				366E126723502B9100BFFF45 /* FSPagerViewCell.swift in Sources */,
+				36F537AF24B5BEE40084A9F6 /* CustomizedControle.swift in Sources */,
 				F505DDE723692AC900E3F681 /* VerifyPhNoController.swift in Sources */,
 				3655A0B924A2E114009AE1C5 /* MENU_LOCATION+CoreDataClass.swift in Sources */,
 				36159C052354386900664D75 /* BrandCollectionViewCell.swift in Sources */,
+				36E9348B24B8BB99000F65AB /* CustomProductViewController.swift in Sources */,
 				3653CFB623F3E96A002DD303 /* NewProductCell.swift in Sources */,
 				36AA198B23D51CFC0039A758 /* HistoryPageViewController.swift in Sources */,
 				3655A0AD24A2E114009AE1C5 /* PRODUCT_RECIPE_PRICE+CoreDataClass.swift in Sources */,
@@ -2104,7 +2160,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -2112,7 +2168,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = TeamPlus.Fun2Order;
 				PRODUCT_NAME = "揪Fun";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2132,7 +2188,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -2140,7 +2196,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = TeamPlus.Fun2Order;
 				PRODUCT_NAME = "揪Fun";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -74,7 +74,6 @@ class CreateMenuTableViewController: UITableViewController, UITextFieldDelegate 
         self.navigationItem.leftBarButtonItem = newBackButton
         navigationController?.navigationBar.backIndicatorImage = backImage
 
-        //self.buttonTest.isHidden = true
         refreshMenu()
         
         self.buttonTest.isHidden = true
@@ -833,70 +832,3 @@ extension CreateMenuTableViewController: BasicProductDelegate {
     }
 }
 
-/*
-extension CreateMenuTableViewController: UINavigationBarDelegate {
-    func navigationShouldPopOnBackButton() -> Bool {
-        var alertWindow: UIWindow!
-        
-        if self.savedMenuInformation.brandName != self.menuInformation.brandName {
-            self.isNeedToConfirmFlag = true
-        }
-        
-        if self.savedMenuInformation.brandCategory != self.menuInformation.brandCategory {
-            self.isNeedToConfirmFlag = true
-        }
-
-        if self.isNeedToConfirmFlag {
-            let controller = UIAlertController(title: "提示訊息", message: "菜單資料已更動，您確定要離開嗎？", preferredStyle: .alert)
-
-            let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
-                print("Confirm to ignore CreateMennu change")
-                self.navigationController?.popToRootViewController(animated: true)
-                self.dismiss(animated: false, completion: nil)
-
-                alertWindow.isHidden = true
-            }
-            
-            controller.addAction(okAction)
-            let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
-                print("Cancel to ignore CreateMenu change")
-                alertWindow.isHidden = true
-            }
-            controller.addAction(cancelAction)
-            alertWindow = presentAlert(controller)
-            return false
-        } else {
-            //self.navigationController?.popToRootViewController(animated: true)
-            //self.dismiss(animated: false, completion: nil)
-            return true
-        }
-    }
-
-    func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
-        print("CreateMenuTableViewController navigationBar shouldPop event processed!!!")
-        var shouldPop = true
-        //let currentVC = self.topViewController
-        
-        //if (currentVC?.responds(to: #selector(currentViewControllerShouldPop)))! {
-        shouldPop = navigationShouldPopOnBackButton()
-        //}
-        
-        if shouldPop {
-            DispatchQueue.main.async {
-                self.navigationController?.popViewController(animated: true)
-            }
-            return true
-        } else {
-            for subView in navigationBar.subviews {
-                if 0.0 < subView.alpha && subView.alpha < 1.0 {
-                    UIView.animate(withDuration: 0.25, animations: {
-                        subView.alpha = 1.0
-                    })
-                }
-            }
-            return false
-        }
-        //return false
-    }
-}
-*/

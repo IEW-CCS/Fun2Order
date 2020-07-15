@@ -70,9 +70,9 @@ class MenuListTableViewController: UITableViewController, UIGestureRecognizerDel
 
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
-        self.title = "菜單首頁"
-        self.navigationController?.title = "菜單首頁"
-        self.tabBarController?.title = "菜單首頁"
+        self.title = "自製菜單"
+        self.navigationController?.title = "自製菜單"
+        self.tabBarController?.title = "自製菜單"
         navigationController?.setNavigationBarHidden(false, animated: false)
         setupAdLoader()
     }

@@ -51,10 +51,12 @@ class MenuListCategoryCell: UITableViewCell {
     }
     
     override func draw(_ rect: CGRect) {
-        let segmentFrame = self.scrollCategorySegment.frame
-        self.scrollCategorySegment.reDrawNewFrame(frame: segmentFrame)
-        self.scrollCategorySegment.setSelectedIndex(index: self.selectedIndex)
+        //let segmentFrame = self.scrollCategorySegment.frame
+        //self.scrollCategorySegment.reDrawNewFrame(frame: segmentFrame)
+        //self.scrollCategorySegment.segmentItems = self.itemsArray
+        //self.scrollCategorySegment.setSelectedIndex(index: self.selectedIndex)
     }
+    
     @objc func handleLongPressDeleteBrandCategory(_ sender: UILongPressGestureRecognizer) {
         if(sender.state == .began) {
             delegate?.deleteBrandCategory(sender: self)

@@ -1,8 +1,8 @@
 //
-//  GroupOrderTableViewController.swift
+//  DetailGroupOrderTableViewController.swift
 //  Fun2Order
 //
-//  Created by Lo Fang Chou on 2020/7/6.
+//  Created by Lo Fang Chou on 2020/7/9.
 //  Copyright © 2020 JStudio. All rights reserved.
 //
 
@@ -10,48 +10,46 @@ import UIKit
 import CoreData
 import Firebase
 
-class GroupOrderTableViewController: UITableViewController {
+class DetailGroupOrderTableViewController: UITableViewController {
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var collectionGroup: UICollectionView!
-    @IBOutlet weak var buttonNextStep: UIButton!
     //@IBOutlet weak var memberTableView: UITableView!
     //@IBOutlet weak var textViewMessage: UITextView!
-    //@IBOutlet weak var buttonDueDate: UIButton!
     //@IBOutlet weak var labelDueDate: UILabel!
+    //@IBOutlet weak var buttonDueDate: UIButton!
     //@IBOutlet weak var myCheckStatus: Checkbox!
-    //@IBOutlet weak var buttonCreateOrder: UIButton!
     //@IBOutlet weak var labelLocationCount: UILabel!
     //@IBOutlet weak var checkboxContactInfo: Checkbox!
+    //@IBOutlet weak var buttonCreateOrder: UIButton!
+    @IBOutlet weak var buttonNextStep: UIButton!
     
     var groupList: [Group] = [Group]()
     var memberList: [GroupMember] = [GroupMember]()
     var selectedGroupIndex: Int = 0
     //var isAttended: Bool = true
     //var favoriteStoreInfo: FavoriteStoreInfo = FavoriteStoreInfo()
-    var menuInformation: MenuInformation = MenuInformation()
-    //var detailMenuInformation: DetailMenuInformation = DetailMenuInformation()
+    //var menuInformation: MenuInformation = MenuInformation()
+    var detailMenuInformation: DetailMenuInformation = DetailMenuInformation()
     var brandName: String = ""
     var orderType: String = ""
     //var menuOrder: MenuOrder = MenuOrder()
     //var isNeedContactInfo: Bool = false
 
-    let app = UIApplication.shared.delegate as! AppDelegate
-    var vc: NSManagedObjectContext!
-    
+    //let app = UIApplication.shared.delegate as! AppDelegate
+    //var vc: NSManagedObjectContext!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        vc = app.persistentContainer.viewContext
-        
-        //let iconImage: UIImage? = UIImage(named: "Icon_Clock.png")
-        //self.buttonDueDate.setImage(iconImage, for: UIControl.State.normal)
+        //vc = app.persistentContainer.viewContext
 
-        //self.labelTitle.layer.borderWidth = 1.0
-        //self.labelTitle.layer.borderColor = UIColor.systemTeal.cgColor
-        //self.labelTitle.layer.cornerRadius = 6
         self.buttonNextStep.layer.borderWidth = 1.0
         self.buttonNextStep.layer.borderColor = UIColor.systemBlue.cgColor
         self.buttonNextStep.layer.cornerRadius = 6
+        
+        //self.labelTitle.layer.borderWidth = 1.0
+        //self.labelTitle.layer.borderColor = UIColor.systemTeal.cgColor
+        //self.labelTitle.layer.cornerRadius = 6
 
         self.collectionGroup.layer.borderWidth = 1.0
         self.collectionGroup.layer.borderColor = UIColor.systemBlue.cgColor
@@ -66,7 +64,7 @@ class GroupOrderTableViewController: UITableViewController {
         self.tableView.register(memberCellViewNib, forCellReuseIdentifier: "SelectMemberCell")
 
         self.tabBarController?.title = self.title
-        
+
         self.groupList = retrieveGroupList()
         if self.groupList.count > 0 {
             self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
@@ -75,21 +73,27 @@ class GroupOrderTableViewController: UITableViewController {
                     self.memberList[i].isSelected = true
                 }
             }
+            //self.memberTableView.reloadData()
             self.tableView.reloadData()
         }
 
-        self.labelTitle.text = self.menuInformation.brandName
-
+        self.labelTitle.text = self.detailMenuInformation.brandName
     }
 
+    //override func viewWillAppear(_ animated: Bool) {
+    //    self.title = "設定揪團訂單"
+    //    self.navigationController?.title = "設定揪團訂單"
+    //    self.tabBarController?.title = "設定揪團訂單"
+    //}
+    
     @IBAction func processNextStep(_ sender: UIButton) {
-        guard let orderController = self.storyboard?.instantiateViewController(withIdentifier: "SEND_ORDER_VC") as? CreateGroupOrderTableViewController else{
-            assertionFailure("[AssertionFailure] StoryBoard: SEND_ORDER_VC can't find!! (GroupOrderTableViewController)")
+        guard let orderController = self.storyboard?.instantiateViewController(withIdentifier: "DETAIL_SEND_ORDER_VC") as? DetailCreateGroupOrderTableViewController else{
+            assertionFailure("[AssertionFailure] StoryBoard: DETAIL_SEND_ORDER_VC can't find!! (DetailGroupOrderTableViewController)")
             return
         }
         
         orderController.memberList = self.memberList
-        orderController.menuInformation = self.menuInformation
+        orderController.detailMenuInformation = self.detailMenuInformation
         
         self.navigationController?.show(orderController, sender: self)
     }
@@ -97,7 +101,7 @@ class GroupOrderTableViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 1 {
             if self.memberList.isEmpty {
@@ -134,7 +138,7 @@ class GroupOrderTableViewController: UITableViewController {
         
         return super.tableView(tableView, heightForRowAt: indexPath)
     }
-    
+
     override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int {
         if indexPath.section == 1 {
             let newIndexPath = IndexPath(row: 0, section: indexPath.section)
@@ -162,10 +166,9 @@ class GroupOrderTableViewController: UITableViewController {
             return 0
         }
     }
-
 }
 
-extension GroupOrderTableViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension DetailGroupOrderTableViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -199,14 +202,15 @@ extension GroupOrderTableViewController: UICollectionViewDelegate, UICollectionV
 }
 
 
-extension GroupOrderTableViewController: UICollectionViewDelegateFlowLayout {
+extension DetailGroupOrderTableViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 80, height: 80)
     }
 }
 
-extension GroupOrderTableViewController: SetMemberSelectedStatusDelegate {
+extension DetailGroupOrderTableViewController: SetMemberSelectedStatusDelegate {
     func setMemberSelectedStatus(cell: UITableViewCell, status: Bool, data_index: Int) {
         self.memberList[data_index].isSelected = status
     }
 }
+

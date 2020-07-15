@@ -193,12 +193,13 @@ class JoinOrderSelectProductViewController: UIViewController, UITextFieldDelegat
             if let controllerRecipe = segue.destination as? JoinOrderSelectRecipeTableViewController {
                 controllerRecipe.menuInformation = self.menuInformation
                 controllerRecipe.isSelectRecipeMode = true
-                controllerRecipe.delegate = self
+                //controllerRecipe.delegate = self
             }
         }
     }
 }
 
+/*
 extension JoinOrderSelectProductViewController: JoinOrderSelectRecipeDelegate {
     func setRecipe(menu_recipes: [MenuRecipe]) {
         var isAnyRecipeItemFound: Bool = false
@@ -255,6 +256,7 @@ extension JoinOrderSelectProductViewController: JoinOrderSelectRecipeDelegate {
         //self.labelRecipe.text = recipeString
     }
 }
+*/
 
 extension JoinOrderSelectProductViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {

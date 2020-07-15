@@ -107,59 +107,119 @@ class NotificationActionTableViewController: UITableViewController {
     @IBAction func attendGroupOrder(_ sender: UIButton) {
         let dispatchGroup = DispatchGroup()
         var menuData: MenuInformation = MenuInformation()
+        var detailMenuData: DetailMenuInformation = DetailMenuInformation()
 
         let databaseRef = Database.database().reference()
         
-        let pathString = "USER_MENU_INFORMATION/\(self.notificationData.orderOwnerID)/\(self.notificationData.menuNumber)"
-        
-        dispatchGroup.enter()
-        databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
-            if snapshot.exists() {
-                let menuInfo = snapshot.value
-                let jsonData = try? JSONSerialization.data(withJSONObject: menuInfo as Any, options: [])
-                let jsonString = String(data: jsonData!, encoding: .utf8)!
-                print("jsonString = \(jsonString)")
+        if self.menuOrder.orderType == ORDER_TYPE_MENU {
+            let pathString = "USER_MENU_INFORMATION/\(self.notificationData.orderOwnerID)/\(self.notificationData.menuNumber)"
+            
+            dispatchGroup.enter()
+            databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.exists() {
+                    let menuInfo = snapshot.value
+                    let jsonData = try? JSONSerialization.data(withJSONObject: menuInfo as Any, options: [])
+                    let jsonString = String(data: jsonData!, encoding: .utf8)!
+                    print("jsonString = \(jsonString)")
 
-                let decoder: JSONDecoder = JSONDecoder()
-                do {
-                    menuData = try decoder.decode(MenuInformation.self, from: jsonData!)
-                    self.downloadMenuInformationFlag = true
-                    print("menuData decoded successful !!")
-                    print("menuData = \(menuData)")
-                    dispatchGroup.leave()
+                    let decoder: JSONDecoder = JSONDecoder()
+                    do {
+                        menuData = try decoder.decode(MenuInformation.self, from: jsonData!)
+                        self.downloadMenuInformationFlag = true
+                        print("menuData decoded successful !!")
+                        //print("menuData = \(menuData)")
+                        dispatchGroup.leave()
 
-                } catch {
+                    } catch {
+                        dispatchGroup.leave()
+                        print("attendGroupOrder menuData jsonData decode failed: \(error.localizedDescription)")
+                        presentSimpleAlertMessage(title: "資料錯誤", message: "菜單資料讀取錯誤，請團購發起人重發。")
+                        return
+                    }
+                } else {
                     dispatchGroup.leave()
-                    print("attendGroupOrder menuData jsonData decode failed: \(error.localizedDescription)")
-                    presentSimpleAlertMessage(title: "資料錯誤", message: "菜單資料讀取錯誤，請團購發起人重發。")
+                    print("attendGroupOrder USER_MENU_INFORMATION snapshot doesn't exist!")
+                    presentSimpleAlertMessage(title: "資料錯誤", message: "菜單資料不存在，請詢問團購發起人相關訊息。")
                     return
                 }
-            } else {
+            }) { (error) in
                 dispatchGroup.leave()
-                print("attendGroupOrder USER_MENU_INFORMATION snapshot doesn't exist!")
-                presentSimpleAlertMessage(title: "資料錯誤", message: "菜單資料不存在，請詢問團購發起人相關訊息。")
+                print(error.localizedDescription)
+                presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
                 return
             }
-        }) { (error) in
-            dispatchGroup.leave()
-            print(error.localizedDescription)
-            presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
+        } else if self.menuOrder.orderType == ORDER_TYPE_OFFICIAL_MENU {
+            let pathString = "DETAIL_MENU_INFORMATION/\(self.notificationData.menuNumber)"
+            
+            dispatchGroup.enter()
+            databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.exists() {
+                    let menuInfo = snapshot.value
+                    let jsonData = try? JSONSerialization.data(withJSONObject: menuInfo as Any, options: [])
+                    //let jsonString = String(data: jsonData!, encoding: .utf8)!
+                    //print("jsonString = \(jsonString)")
+
+                    let decoder: JSONDecoder = JSONDecoder()
+                    do {
+                        detailMenuData = try decoder.decode(DetailMenuInformation.self, from: jsonData!)
+                        self.downloadMenuInformationFlag = true
+                        print("detailMenuData decoded successful !!")
+                        //print("menuData = \(detailMenuData)")
+                        dispatchGroup.leave()
+
+                    } catch {
+                        dispatchGroup.leave()
+                        print("attendGroupOrder menuData jsonData decode failed: \(error.localizedDescription)")
+                        presentSimpleAlertMessage(title: "資料錯誤", message: "菜單資料讀取錯誤，請團購發起人重發。")
+                        return
+                    }
+                } else {
+                    dispatchGroup.leave()
+                    print("attendGroupOrder DETAIL_MENU_INFORMATION snapshot doesn't exist!")
+                    presentSimpleAlertMessage(title: "資料錯誤", message: "菜單資料不存在，請詢問團購發起人相關訊息。")
+                    return
+                }
+            }) { (error) in
+                dispatchGroup.leave()
+                print(error.localizedDescription)
+                presentSimpleAlertMessage(title: "錯誤訊息", message: error.localizedDescription)
+                return
+            }
+        } else {
+            presentSimpleAlertMessage(title: "資料錯誤", message: "菜單資料類別錯誤。")
             return
         }
 
         dispatchGroup.notify(queue: .main) {
-            if self.downloadMenuInformationFlag && self.downloadMenuOrderFlag && self.memberIndex >= 0 {
-                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                guard let joinController = storyBoard.instantiateViewController(withIdentifier: "JOIN_ORDER_VC") as? JoinGroupOrderTableViewController else{
-                    assertionFailure("[AssertionFailure] StoryBoard: JOIN_ORDER_VC can't find!! (NotificationActionViewController)")
-                    return
+            if self.menuOrder.orderType == ORDER_TYPE_MENU {
+                if self.downloadMenuInformationFlag && self.downloadMenuOrderFlag && self.memberIndex >= 0 {
+                    let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                    guard let joinController = storyBoard.instantiateViewController(withIdentifier: "JOIN_ORDER_VC") as? JoinGroupOrderTableViewController else{
+                        assertionFailure("[AssertionFailure] StoryBoard: JOIN_ORDER_VC can't find!! (NotificationActionViewController)")
+                        return
+                    }
+                    joinController.menuInformation = menuData
+                    joinController.memberContent = self.memberContent
+                    joinController.memberIndex = self.memberIndex
+                    joinController.menuOrder = self.menuOrder
+                    //joinController.delegate = self
+                    self.navigationController?.show(joinController, sender: self)
                 }
-                joinController.menuInformation = menuData
-                joinController.memberContent = self.memberContent
-                joinController.memberIndex = self.memberIndex
-                joinController.menuOrder = self.menuOrder
-                //joinController.delegate = self
-                self.navigationController?.show(joinController, sender: self)
+            } else if self.menuOrder.orderType == ORDER_TYPE_OFFICIAL_MENU {
+                if self.downloadMenuInformationFlag && self.downloadMenuOrderFlag && self.memberIndex >= 0 {
+                    let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                    guard let joinController = storyBoard.instantiateViewController(withIdentifier: "DETAIL_JOIN_ORDER_VC") as? DetailJoinGroupOrderTableViewController else{
+                        assertionFailure("[AssertionFailure] StoryBoard: DETAIL_JOIN_ORDER_VC can't find!! (NotificationActionViewController)")
+                        return
+                    }
+                    //joinController.menuInformation = menuData
+                    joinController.detailMenuInformation = detailMenuData
+                    joinController.memberContent = self.memberContent
+                    joinController.memberIndex = self.memberIndex
+                    joinController.menuOrder = self.menuOrder
+                    //joinController.delegate = self
+                    self.navigationController?.show(joinController, sender: self)
+                }
             }
         }
     }

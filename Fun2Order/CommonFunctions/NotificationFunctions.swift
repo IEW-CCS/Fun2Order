@@ -205,7 +205,7 @@ func setTabBarBadgeNumber(badge: Int) {
     let app = UIApplication.shared.delegate as! AppDelegate
     
     if let tabItems = app.myTabBar?.items {
-        let tabItem = tabItems[1] //Notification tab bar item
+        let tabItem = tabItems[2] //Notification tab bar item
         if badge == 0 {
             tabItem.badgeValue = nil
         } else {

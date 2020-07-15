@@ -43,10 +43,7 @@ class MenuRecipeCell: UITableViewCell {
     func setData(recipe_data: MenuRecipe, number_for_row: Int) {
         if self.menuRecipe.recipeItems != nil {
             self.menuRecipe.recipeItems?.removeAll()
-        } //else {
-          //  print("MenuRecipeCell -> self.menuRecipe.recipeItems is nil")
-          //  return
-        //}
+        }
         
         self.menuRecipe = recipe_data
         self.numberForRow = number_for_row

@@ -62,7 +62,7 @@ class NotificationActionCell: UITableViewCell {
         self.notificationData = notification
         self.labelTitle.text = "來自 \(notification.orderOwnerName) 的團購訊息"
         self.labelTitle.textColor = UIColor.black
-        self.labelBrandName.text = notification.brandName
+        self.labelBrandName.text = "【 \(notification.brandName) 】"
         //self.textViewMessageBody.text = notification.messageBody
         
         let formatter = DateFormatter()

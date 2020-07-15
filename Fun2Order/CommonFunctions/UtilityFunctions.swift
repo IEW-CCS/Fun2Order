@@ -297,3 +297,26 @@ class RuntimeUtils{
     }
 }
 
+func checkLimitedMenuItemsRemainedQuantity(limited_items: [MenuItem]?,  product_name: String, product_quantity: Int) -> Bool {
+    if limited_items != nil {
+        var remainedQuantity: Int = 0
+        for i in 0...limited_items!.count - 1 {
+            if product_name == limited_items![i].itemName {
+                if limited_items![i].quantityLimitation == nil {
+                    continue
+                }
+                
+                if limited_items![i].quantityRemained != nil {
+                    remainedQuantity = Int(limited_items![i].quantityRemained!)
+                }
+                
+                if product_quantity > remainedQuantity {
+                    presentSimpleAlertMessage(title: "錯誤訊息", message: "此產品為限量商品，目前訂購的數量已超過剩餘的數量，請修改數量或選擇其他產品後再重新送出")
+                    return false
+                }
+            }
+        }
+    }
+    
+    return true
+}

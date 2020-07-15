@@ -61,6 +61,14 @@ class MenuLocationTableViewController: UITableViewController, UIGestureRecognize
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.section == 0 {
+            return false
+        }
+        
+        return true
+    }
+
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .default, title: "刪除") { (action, indexPath) in
             self.deleteLocation(index: indexPath.row)

@@ -15,7 +15,8 @@ protocol ScrollUISegmentControllerDelegate: class {
 
 @IBDesignable
 class ScrollUISegmentController: UIScrollView  {
-   private var segmentedControl: UISegmentedControl = UISegmentedControl()
+    //private var segmentedControl: UISegmentedControl = UISegmentedControl()
+    private var segmentedControl: NoSwipeSegmentedControl = NoSwipeSegmentedControl()
     
     weak var segmentDelegate: ScrollUISegmentControllerDelegate?
 
@@ -67,20 +68,37 @@ class ScrollUISegmentController: UIScrollView  {
     
     func reDrawNewFrame(frame: CGRect) {
         self.frame = frame
+        let width = CGFloat(self.itemWidth * CGFloat(self.itemsCount))
+        print("self.itemWidth = \(self.itemWidth), self.itemsCount = \(self.itemsCount)")
+        print("width = \(width)")
+        let contentHeight =  self.frame.height
+        self.contentSize = CGSize (width: width, height: contentHeight)
+        print("ScrollUISegmentController self.contentSize = \(self.contentSize)")
         self.createSegment()
     }
 
     func createSegment() {
         self.segmentedControl.removeFromSuperview()
-        segmentheight =  self.frame.height
+        segmentheight = self.frame.height
         itemWidth = 80
         var width = CGFloat(self.itemWidth * CGFloat(self.itemsCount))
         if width < self.frame.width {
             itemWidth =  CGFloat(self.frame.width) / CGFloat(itemsCount)
              width = CGFloat(self.itemWidth * CGFloat(self.itemsCount))
         }
-        self.segmentedControl = UISegmentedControl(frame: CGRect(x: 0 , y: 0, width: width , height: segmentheight))
+        self.segmentedControl = NoSwipeSegmentedControl(frame: CGRect(x: 0 , y: 0, width: width , height: segmentheight))
+        self.segmentedControl.isExclusiveTouch = false
+        self.isUserInteractionEnabled = true
+        self.isExclusiveTouch = false
+        self.delaysContentTouches = false
         self.addSubview(self.segmentedControl)
+        //let contentView = IgnoreTouchView(frame: CGRect(x: 0 , y: 0, width: width , height: segmentheight))
+        //let contentView = UIView(frame: CGRect(x: 0 , y: 0, width: width , height: segmentheight))
+        //contentView.backgroundColor = UIColor.clear
+        //contentView.isExclusiveTouch = true
+        
+        //contentView.isUserInteractionEnabled = false
+        //self.addSubview(contentView)
         self.backgroundColor = .clear
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false

@@ -9,25 +9,40 @@
 import UIKit
 
 protocol JoinOrderSelectRecipeDelegate: class {
-    func setRecipe(menu_recipes: [MenuRecipe])
+    //func setRecipe(menu_recipes: [MenuRecipe])
+    func setRecipe(sender: JoinOrderSelectRecipeTableViewController, recipe_items: [MenuRecipe], quantity: Int, single_price: Int, comments: String)
 }
 
 class JoinOrderSelectRecipeTableViewController: UITableViewController {
+    @IBOutlet weak var labelProductName: UILabel!
+    @IBOutlet weak var buttonAddToCart: UIButton!
+    @IBOutlet weak var labelQuantity: UILabel!
+    @IBOutlet weak var labelPrice: UILabel!
+    @IBOutlet weak var textComments: UITextField!
+    
+    
     var menuInformation: MenuInformation = MenuInformation()
     var menuRecipes: [MenuRecipe] = [MenuRecipe]()
-    var cellHeight = [Int]();
+    var cellHeight = [Int]()
     weak var delegate: JoinOrderSelectRecipeDelegate?
     var isSelectRecipeMode: Bool = false
+    var productName: String = ""
+    var productQuantity: Int = 0
+    var singlePrice: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.buttonAddToCart.layer.borderWidth = 1.0
+        self.buttonAddToCart.layer.borderColor = UIColor.systemBlue.cgColor
+        self.buttonAddToCart.layer.cornerRadius = 6
+        
+        self.labelProductName.text = self.productName
+        
         let menuRecipeCellViewNib: UINib = UINib(nibName: "MenuRecipeCell", bundle: nil)
         self.tableView.register(menuRecipeCellViewNib, forCellReuseIdentifier: "MenuRecipeCell")
         
-        let basicButtonCellViewNib: UINib = UINib(nibName: "BasicButtonCell", bundle: nil)
-        self.tableView.register(basicButtonCellViewNib, forCellReuseIdentifier: "BasicButtonCell")
-
+        self.labelPrice.text = String(self.singlePrice * self.productQuantity)
         self.cellHeight.removeAll()
         if self.menuInformation.menuRecipes != nil {
             self.cellHeight = Array(repeating: 0, count: self.menuInformation.menuRecipes!.count)
@@ -41,20 +56,44 @@ class JoinOrderSelectRecipeTableViewController: UITableViewController {
             }
         }
     }
+    @IBAction func changeQuantity(_ sender: UIStepper) {
+        self.productQuantity = Int(sender.value)
+        self.labelQuantity.text = String(self.productQuantity)
+    }
+    
+    @IBAction func confirmToCart(_ sender: UIButton) {
+        if self.productQuantity == 0 {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "尚未指定產品數量，請重新指定")
+            return
+        }
+                
+        var comments: String = ""
+        if self.textComments.text != nil {
+            comments = self.textComments.text!
+        }
+        
+        self.delegate?.setRecipe(sender: self, recipe_items: self.menuRecipes, quantity: self.productQuantity, single_price: self.singlePrice, comments: comments)
+        self.navigationController?.popViewController(animated: true)
+    }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.menuInformation.menuRecipes == nil {
-            return 0
+        if section == 1 {
+            if self.menuInformation.menuRecipes == nil {
+                return 0
+            }
+            
+            return self.menuInformation.menuRecipes!.count
         }
         
-        return self.menuInformation.menuRecipes!.count + 1
+        return super.tableView(tableView, numberOfRowsInSection: section)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        /*
         if indexPath.row == self.menuInformation.menuRecipes!.count {
             let cell = tableView.dequeueReusableCell(withIdentifier: "BasicButtonCell", for: indexPath) as! BasicButtonCell
             
@@ -65,28 +104,43 @@ class JoinOrderSelectRecipeTableViewController: UITableViewController {
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell
         }
+        */
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MenuRecipeCell", for: indexPath) as! MenuRecipeCell
+        if indexPath.section == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MenuRecipeCell", for: indexPath) as! MenuRecipeCell
 
-        //cell.setData(recipe_data: self.menuInformation.menuRecipes![indexPath.row], number_for_row: 3)
-        cell.isSelectRecipeMode = self.isSelectRecipeMode
-        //cell.isSelectRecipeMode = true
-        cell.setData(recipe_data: self.menuRecipes[indexPath.row], number_for_row: 3)
-        cellHeight[indexPath.row] = cell.getCellHeight()
-        cell.tag = indexPath.row
-        cell.delegate = self
+            //cell.setData(recipe_data: self.menuInformation.menuRecipes![indexPath.row], number_for_row: 3)
+            cell.isSelectRecipeMode = self.isSelectRecipeMode
+            //cell.isSelectRecipeMode = true
+            cell.setData(recipe_data: self.menuRecipes[indexPath.row], number_for_row: 3)
+            cellHeight[indexPath.row] = cell.getCellHeight()
+            cell.tag = indexPath.row
+            cell.delegate = self
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            return cell
+        }
+        
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == self.menuInformation.menuRecipes!.count {
-            return 54
+        if indexPath.section == 1 {
+            return CGFloat(cellHeight[indexPath.row])
         }
         
-        return CGFloat(cellHeight[indexPath.row])
+        return super.tableView(tableView, heightForRowAt: indexPath)
     }
 
+    override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int {
+        if indexPath.section == 1 {
+            let newIndexPath = IndexPath(row: 0, section: indexPath.section)
+            return super.tableView(tableView, indentationLevelForRowAt: newIndexPath)
+        } else {
+            return super.tableView(tableView, indentationLevelForRowAt: indexPath)
+        }
+    }
 }
 
 extension JoinOrderSelectRecipeTableViewController: MenuRecipeCellDelegate {
@@ -97,13 +151,5 @@ extension JoinOrderSelectRecipeTableViewController: MenuRecipeCellDelegate {
     func addRecipeItem(cell: UITableViewCell, menu_recipe: MenuRecipe, data_index: Int) {
         self.menuRecipes[data_index] = menu_recipe
         self.tableView.reloadData()
-    }
-}
-
-extension JoinOrderSelectRecipeTableViewController: BasicButtonDelegate {
-    func joinOrderToSelectRecipe(sender: BasicButtonCell) {
-        delegate?.setRecipe(menu_recipes: self.menuRecipes)
-        navigationController?.popViewController(animated: true)
-        self.dismiss(animated: false, completion: nil)
     }
 }
