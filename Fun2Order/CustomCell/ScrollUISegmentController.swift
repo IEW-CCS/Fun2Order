@@ -92,13 +92,6 @@ class ScrollUISegmentController: UIScrollView  {
         self.isExclusiveTouch = false
         self.delaysContentTouches = false
         self.addSubview(self.segmentedControl)
-        //let contentView = IgnoreTouchView(frame: CGRect(x: 0 , y: 0, width: width , height: segmentheight))
-        //let contentView = UIView(frame: CGRect(x: 0 , y: 0, width: width , height: segmentheight))
-        //contentView.backgroundColor = UIColor.clear
-        //contentView.isExclusiveTouch = true
-        
-        //contentView.isUserInteractionEnabled = false
-        //self.addSubview(contentView)
         self.backgroundColor = .clear
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
@@ -110,13 +103,25 @@ class ScrollUISegmentController: UIScrollView  {
         self.segmentedControl.tintColor = self.segmentTintColor
         self.segmentedControl.selectedSegmentIndex = 0;
         insertItems()
+        //setupSegmentItemBackgroundImage()
         self.segmentedControl.addTarget(self, action: #selector(self.segmentChangeSelectedIndex(_:)), for: .valueChanged)
+    }
+    
+    func setupSegmentItemBackgroundImage() {
+        let segmentCount = self.segmentItems.count
+        var index: Int = 0
+        for i in 0...segmentCount - 1 {
+            index = i + 1
+            let imageName = "Segment_Color_\(String(format: "%02d", index)).png"
+            print("segment color name = \(imageName)")
+            self.segmentedControl.setImage(UIImage(named: imageName)!, forSegmentAt: i)
+        }
     }
     
     func insertItems(){
         for item in segmentItems {
             self.segmentedControl.insertSegment(withTitle: item, at: (segmentItems.firstIndex(of: item))!, animated: true)
-               }
+        }
     }
     
     func removeAllItems() {

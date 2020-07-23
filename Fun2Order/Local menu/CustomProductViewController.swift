@@ -44,7 +44,6 @@ class CustomProductViewController: UIViewController, UIGestureRecognizerDelegate
     @IBAction func changeQuantity(_ sender: UIStepper) {
         self.productQuantity = Int(sender.value)
         self.labelQuantity.text = String(self.productQuantity)
-
     }
     
     @IBAction func actionCancel(_ sender: UIButton) {
@@ -63,7 +62,7 @@ class CustomProductViewController: UIViewController, UIGestureRecognizerDelegate
             presentSimpleAlertMessage(title: "錯誤訊息", message: "新增的產品名稱不能為空白，請重新輸入")
             return
         }
-        
+
         var comments_string: String = ""
         if self.textComments.text != nil {
             comments_string = self.textComments.text!

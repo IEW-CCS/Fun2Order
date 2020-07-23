@@ -96,6 +96,9 @@ class NotificationTableViewController: UITableViewController {
             self.tableView.reloadData()
             self.refreshControl?.endRefreshing()
         }
+        
+        self.setupBadgeNumber()
+        
         setupBannerAdView()
     }
     
@@ -103,6 +106,40 @@ class NotificationTableViewController: UITableViewController {
         self.selectedIndex = sender.selectedSegmentIndex
         self.filterNotificationTypeList(index: self.selectedIndex)
         self.tableView.reloadData()
+    }
+    
+    func setupBadgeNumber() {
+        var badgeJoin: Int = 0
+        var badgeShipping: Int = 0
+        var badgeOther: Int = 0
+        
+        if self.notificationList.isEmpty {
+            return
+        }
+        
+        for i in 0...self.notificationList.count - 1 {
+            if self.notificationList[i].notificationType == NOTIFICATION_TYPE_ACTION_JOIN_ORDER && self.notificationList[i].isRead == "N" {
+                badgeJoin = badgeJoin + 1
+                continue
+            }
+            
+            if self.notificationList[i].notificationType == NOTIFICATION_TYPE_SHIPPING_NOTICE && self.notificationList[i].isRead == "N" {
+                badgeShipping = badgeShipping + 1
+                continue
+            }
+
+            if self.notificationList[i].isRead == "N" {
+                badgeOther = badgeOther + 1
+                continue
+            }
+        }
+        
+        print("badgeJoin = \(badgeJoin)")
+        print("badgeShipping = \(badgeShipping)")
+        print("badgeOther = \(badgeOther)")
+        
+        print("segment frame = \(self.segmentType.frame)")
+        
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -113,11 +150,6 @@ class NotificationTableViewController: UITableViewController {
         if section == 0 {
             return 1
         } else {
-            //if self.notificationList.isEmpty {
-            //    return 0
-            //}
-            
-            //return self.notificationList.count
             if self.typeNotificationList.isEmpty {
                 return 0
             }
@@ -232,84 +264,7 @@ class NotificationTableViewController: UITableViewController {
             default:
                 break
         }
-
-
-
-/*
-        switch self.notificationList[indexPath.row].notificationType {
-            case NOTIFICATION_TYPE_MESSAGE_DUETIME, NOTIFICATION_TYPE_ACTION_JOIN_ORDER:
-                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                guard let notifyActionController = storyBoard.instantiateViewController(withIdentifier: "NOTIFY_ACTION_VC") as? NotificationActionTableViewController else{
-                    assertionFailure("[AssertionFailure] StoryBoard: NOTIFY_ACTION_VC can't find!! (NotificationTableViewController)")
-                    return
-                }
-                notifyActionController.notificationData = self.notificationList[indexPath.row]
-                notifyActionController.indexPath = indexPath
-                self.notificationList[indexPath.row].isRead = "Y"
-                updateNotificationReadStatus(message_id: self.notificationList[indexPath.row].messageID, status: true)
-                setNotificationBadgeNumber()
-
-                guard let cell = self.tableView.cellForRow(at: indexPath) as? NotificationActionCell else {
-                    return
-                }
-                cell.setData(notification: self.notificationList[indexPath.row])
-                
-                navigationController?.show(notifyActionController, sender: self)
-
-                break
-                
-            case NOTIFICATION_TYPE_MESSAGE_INFORMATION:
-                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                guard let notifyInfoController = storyBoard.instantiateViewController(withIdentifier: "NOTIFY_MESSAGE_VC") as? NotificationMessageTableViewController else{
-                    assertionFailure("[AssertionFailure] StoryBoard: NOTIFY_INFO_VC can't find!! (NotificationTableViewController)")
-                    return
-                }
-                notifyInfoController.notificationData = self.notificationList[indexPath.row]
-                //notifyInfoController.indexPath = indexPath
-                self.notificationList[indexPath.row].isRead = "Y"
-                updateNotificationReadStatus(message_id: self.notificationList[indexPath.row].messageID, status: true)
-                setNotificationBadgeNumber()
-                guard let cell = self.tableView.cellForRow(at: indexPath) as? NotificationActionCell else {
-                    return
-                }
-                cell.setData(notification: self.notificationList[indexPath.row])
-
-                navigationController?.show(notifyInfoController, sender: self)
-
-                break
-            case NOTIFICATION_TYPE_SHIPPING_NOTICE:
-                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                guard let notifyInfoController = storyBoard.instantiateViewController(withIdentifier: "SHIPPING_NOTICE_DETAIL_VC") as? ShippingNoticeDetailTableViewController else{
-                    assertionFailure("[AssertionFailure] StoryBoard: SHIPPING_NOTICE_DETAIL_VC can't find!! (NotificationTableViewController)")
-                    return
-                }
-                notifyInfoController.notificationData = self.notificationList[indexPath.row]
-                self.notificationList[indexPath.row].isRead = "Y"
-                updateNotificationReadStatus(message_id: self.notificationList[indexPath.row].messageID, status: true)
-                setNotificationBadgeNumber()
-                guard let cell = self.tableView.cellForRow(at: indexPath) as? NotificationActionCell else {
-                    return
-                }
-                cell.setData(notification: self.notificationList[indexPath.row])
-
-                navigationController?.show(notifyInfoController, sender: self)
-                break
-
-            default:
-                break
-        }
-*/
     }
-
-/*
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .default, title: "刪除") { (action, indexPath) in
-
-        }
-
-        return [delete]
-    }
-*/
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if indexPath.section == 0 {

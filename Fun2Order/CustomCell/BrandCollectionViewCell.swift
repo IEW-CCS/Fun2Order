@@ -45,4 +45,12 @@ class BrandCollectionViewCell: UICollectionViewCell {
         }
         self.dataIndex = index
     }
+    
+    func setData(brand_name: String, icon: UIImage?, index: Int) {
+        self.txtLabel.text = brand_name
+        if icon != nil {
+            self.imageIcon.image = icon!
+        }
+        self.dataIndex = index
+    }
 }

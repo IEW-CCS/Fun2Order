@@ -144,15 +144,14 @@ func getOrderStatusDescription(status_code: String) -> String {
 }
 
 func resizeImage(image: UIImage, width: CGFloat) -> UIImage {
-   let widthInPixel: CGFloat = width
-   let widthInPoint = widthInPixel / UIScreen.main.scale
-   let size = CGSize(width: widthInPoint, height:
-      image.size.height * widthInPoint / image.size.width)
-   let renderer = UIGraphicsImageRenderer(size: size)
-   let newImage = renderer.image { (context) in
-      image.draw(in: renderer.format.bounds)
-   }
-   return newImage
+    let widthInPixel: CGFloat = width
+    let widthInPoint = widthInPixel / UIScreen.main.scale
+    let size = CGSize(width: widthInPoint, height: image.size.height * widthInPoint / image.size.width)
+    let renderer = UIGraphicsImageRenderer(size: size)
+    let newImage = renderer.image { (context) in
+        image.draw(in: renderer.format.bounds)
+    }
+    return newImage
 }
 
 func getProfileDatabasePath(u_id: String, key_value: String) -> String {

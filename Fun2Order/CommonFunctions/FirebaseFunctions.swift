@@ -180,6 +180,7 @@ func downloadFBMenuImage(menu_url: String, completion: @escaping(UIImage?) -> Vo
                 controller.addAction(okAction)
                 alertWindow = presentAlert(controller)
                 completion(nil)
+                return
             }
             
             completion(UIImage(data: data!)!)
@@ -209,6 +210,7 @@ func downloadFBMemberImage(member_id: String, completion: @escaping (UIImage?) -
                     controller.addAction(okAction)
                     alertWindow = presentAlert(controller)
                     completion(nil)
+                    return
                 }
                 
                 completion(UIImage(data: data!)!)
@@ -240,6 +242,7 @@ func downloadFBBrandImage(brand_url: String, completion: @escaping(UIImage?) -> 
                 controller.addAction(okAction)
                 alertWindow = presentAlert(controller)
                 completion(nil)
+                return
             }
             
             completion(UIImage(data: data!)!)

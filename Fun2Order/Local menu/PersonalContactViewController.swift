@@ -12,7 +12,7 @@ protocol PersonalContactInfoDelegate: class {
     func getUserContactInfo(sender: PersonalContactViewController, contact: UserContactInformation?)
 }
 
-class PersonalContactViewController: UIViewController {
+class PersonalContactViewController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
     @IBOutlet weak var buttonCancel: UIButton!
     @IBOutlet weak var buttonConfirm: UIButton!
     @IBOutlet weak var textName: UITextField!
@@ -24,6 +24,19 @@ class PersonalContactViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.textPhoneNumber.keyboardType = .numberPad
+
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+          textField.resignFirstResponder()
+          return true
+    }
+    
+    @objc func dismissKeyBoard() {
+        self.view.endEditing(true)
     }
 
     func setData(user_info: UserContactInformation) {

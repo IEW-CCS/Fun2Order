@@ -12,7 +12,7 @@ protocol DetailJoinGroupOrderSelectRecipeDelegate: class {
     func confirmProductRecipe(sender: DetailJoinGroupOrderSelectRecipeTableViewController, recipe_items: [DetailRecipeTemplate], quantity: Int, single_price: Int, comments: String)
 }
 
-class DetailJoinGroupOrderSelectRecipeTableViewController: UITableViewController {
+class DetailJoinGroupOrderSelectRecipeTableViewController: UITableViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
     @IBOutlet weak var buttonAddToCart: UIButton!
     @IBOutlet weak var labelProductName: UILabel!
     @IBOutlet weak var labelQuantity: UILabel!
@@ -46,6 +46,19 @@ class DetailJoinGroupOrderSelectRecipeTableViewController: UITableViewController
         self.labelProductName.text = self.detailProductItem.productName
         self.labelQuantity.text = "0"
         self.labelPrice.text = "0"
+
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+          textField.resignFirstResponder()
+          return true
+    }
+    
+    @objc func dismissKeyBoard() {
+        self.view.endEditing(true)
     }
 
     func prepareRecipeItems() {
@@ -82,6 +95,11 @@ class DetailJoinGroupOrderSelectRecipeTableViewController: UITableViewController
         }
         
         var isFoundFlag: Bool = false
+        if self.selectedRecipeItems.isEmpty {
+            self.productSinglePrice = self.detailProductItem.priceList![0].price
+            return
+        }
+        
         for i in 0...self.detailProductItem.priceList!.count - 1 {
             for j in 0...self.selectedRecipeItems.count - 1 {
                 for k in 0...self.selectedRecipeItems[j].recipeList.count - 1 {
@@ -112,33 +130,49 @@ class DetailJoinGroupOrderSelectRecipeTableViewController: UITableViewController
     }
     
     func verifyMandatory() -> Bool {
+        if self.detailProductItem.recipeRelation == nil {
+            return true
+        }
+        
         for k in 0...self.detailProductItem.recipeRelation!.count - 1 {
             let seq_no = self.detailProductItem.recipeRelation![k].templateSequence
+            print("verifyMandatory -> detailProductItem seq_no = \(seq_no)")
             
             var templateIndex: Int = 0
             for i in 0...self.recipeTemplates.count - 1 {
                 if self.recipeTemplates[i].templateSequence == seq_no {
                     templateIndex = i
-                    break
+                    print("templateIndex = \(templateIndex)")
+                    //break
                 }
             }
 
+            var itemIndex: Int = -1
+            for n in 0...self.selectedRecipeItems.count - 1 {
+                if self.selectedRecipeItems[n].templateSequence == seq_no {
+                    itemIndex = n
+                }
+            }
+            
+            if itemIndex < 0 {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "找不到相對應的配方範本資料")
+                return false
+            }
+            
             if self.recipeTemplates[templateIndex].mandatoryFlag {
-                var isFound: Bool = false
-                
-                for j in 0...self.selectedRecipeItems.count - 1 {
-                    for m in 0...self.selectedRecipeItems[j].recipeList.count - 1 {
-                        if self.selectedRecipeItems[j].recipeList[m].itemCheckedFlag {
+                //for j in 0...self.selectedRecipeItems.count - 1 {
+                    var isFound: Bool = false
+                    for m in 0...self.selectedRecipeItems[itemIndex].recipeList.count - 1 {
+                        if self.selectedRecipeItems[itemIndex].recipeList[m].itemCheckedFlag {
                             isFound = true
                         }
                     }
-                }
-                
-                if !isFound {
-                    let errorMessage = "[\(self.recipeTemplates[templateIndex].templateName)]為必選之項目，請重新指定配方內容"
-                    presentSimpleAlertMessage(title: "錯誤訊息", message: errorMessage)
-                    return false
-                }
+                    if !isFound {
+                        let errorMessage = "[\(self.recipeTemplates[templateIndex].templateName)]為必選之項目，請重新指定配方內容"
+                        presentSimpleAlertMessage(title: "錯誤訊息", message: errorMessage)
+                        return false
+                    }
+                //}
             }
         }
         

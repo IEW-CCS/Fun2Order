@@ -12,7 +12,7 @@ protocol NotificationShippingNoticeDelegate: class {
     func getShippingNotice(sender: NotificationShippingNoticeViewController, shipping_date: String, shipping_location: String, shipping_notice: String)
 }
 
-class NotificationShippingNoticeViewController: UIViewController {
+class NotificationShippingNoticeViewController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
     @IBOutlet weak var buttonCancel: UIButton!
     @IBOutlet weak var buttonConfirm: UIButton!
     @IBOutlet weak var labelShippingDateTime: UILabel!
@@ -29,6 +29,19 @@ class NotificationShippingNoticeViewController: UIViewController {
         self.textViewShippingNotice.layer.cornerRadius = 6
         self.labelShippingDateTime.text = ""
         self.textShippingLocation.text = ""
+
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+          textField.resignFirstResponder()
+          return true
+    }
+    
+    @objc func dismissKeyBoard() {
+        self.view.endEditing(true)
     }
     
     @IBAction func AssignShippingDateTime(_ sender: UIButton) {

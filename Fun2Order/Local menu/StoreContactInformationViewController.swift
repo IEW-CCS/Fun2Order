@@ -12,7 +12,7 @@ protocol StoreContactInformationDelegate: class {
     func getStoreContactInfo(sender: StoreContactInformationViewController, contact: StoreContactInformation)
 }
 
-class StoreContactInformationViewController: UIViewController {
+class StoreContactInformationViewController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
     @IBOutlet weak var textStoreName: UITextField!
     @IBOutlet weak var textStoreAddress: UITextField!
     @IBOutlet weak var textStorePhoneNumber: UITextField!
@@ -21,8 +21,21 @@ class StoreContactInformationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+          textField.resignFirstResponder()
+          return true
+    }
+    
+    @objc func dismissKeyBoard() {
+        self.view.endEditing(true)
+    }
+
     func setData(store_info: StoreContactInformation) {
         self.textStoreName.text = store_info.storeName
         self.textStoreAddress.text = store_info.storeAddress

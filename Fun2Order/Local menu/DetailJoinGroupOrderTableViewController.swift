@@ -20,7 +20,7 @@ extension DetailJoinGroupOrderDelegate {
 }
 
 
-class DetailJoinGroupOrderTableViewController: UITableViewController {
+class DetailJoinGroupOrderTableViewController: UITableViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
     @IBOutlet weak var segmentLocation: UISegmentedControl!
     @IBOutlet weak var segmentProductCategory: ScrollUISegmentController!
     @IBOutlet weak var barButtonCart: UIBarButtonItem!
@@ -56,7 +56,7 @@ class DetailJoinGroupOrderTableViewController: UITableViewController {
         self.segmentProductCategory.layer.cornerRadius = 6
         
         self.imageBrandIcon.layer.borderWidth = 1.0
-        self.imageBrandIcon.layer.borderColor = UIColor.systemBlue.cgColor
+        self.imageBrandIcon.layer.borderColor = UIColor.darkGray.cgColor
         self.imageBrandIcon.layer.cornerRadius = 6
         
         self.labelBrandName.text = self.detailMenuInformation.brandName
@@ -73,7 +73,20 @@ class DetailJoinGroupOrderTableViewController: UITableViewController {
 
         self.segmentProductCategory.segmentDelegate = self
 
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
+
         setupInterstitialAd()
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+          textField.resignFirstResponder()
+          return true
+    }
+    
+    @objc func dismissKeyBoard() {
+        self.view.endEditing(true)
     }
 
     @objc func back(sender: UIBarButtonItem) {
@@ -458,7 +471,7 @@ class DetailJoinGroupOrderTableViewController: UITableViewController {
             return 44
         }
 
-        if indexPath.section == 0 && indexPath.row == 0 {
+        if indexPath.section == 0 && indexPath.row == 1 {
             if self.menuOrder?.locations == nil {
                 return 0
             }
@@ -468,7 +481,7 @@ class DetailJoinGroupOrderTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 2 || section == 3 {
+        if section == 0 || section == 2 || section == 3 {
             return 0
         }
         
@@ -519,7 +532,7 @@ extension DetailJoinGroupOrderTableViewController: GADInterstitialDelegate {
     func interstitialDidReceiveAd(_ ad: GADInterstitial) {
         print("interstitialDidReceiveAd")
         if self.interstitialAd.isReady {
-            //self.interstitialAd.present(fromRootViewController: self)
+            self.interstitialAd.present(fromRootViewController: self)
             refreshJoinGroupOrder()
         } else {
             print("Interstitial Ad is not ready !!")
@@ -629,11 +642,27 @@ extension DetailJoinGroupOrderTableViewController: DetailJoinGroupOrderSelectRec
     func convertProductItem(item: [DetailRecipeTemplate], quantity: Int, single_price: Int, comments: String) -> MenuProductItem {
         var menuItem: MenuProductItem = MenuProductItem()
         
-        //menuItem.sequenceNumber == ??
+        //var menuItemSequenceIndex = 0
         menuItem.itemName = self.filterProducts[self.selectedProductIndex].productName
         menuItem.itemQuantity = quantity
         menuItem.itemPrice = single_price
         menuItem.itemComments = comments
+
+        /*
+        if self.memberContent.orderContent.menuProductItems == nil {
+           self.memberContent.orderContent.menuProductItems = [MenuProductItem]()
+           menuItemSequenceIndex = 1
+        }
+        if !self.memberContent.orderContent.menuProductItems!.isEmpty {
+           let lastIndex = self.memberContent.orderContent.menuProductItems!.count - 1
+           menuItemSequenceIndex = self.memberContent.orderContent.menuProductItems![lastIndex].sequenceNumber + 1
+        }
+        menuItem.sequenceNumber = menuItemSequenceIndex
+        */
+        
+        if item.isEmpty {
+            return menuItem
+        }
         
         var menuRecipeSequenceIndex: Int = 0
         for i in 0...item.count - 1 {

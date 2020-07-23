@@ -222,13 +222,15 @@ struct DetailRecipeItem: Codable {
     var itemName: String = ""
     var itemCheckedFlag: Bool = false
     var optionalPrice: Int = 0
+    var itemDisplayFlag: Bool?
 
     func toAnyObject() -> Any {
         return [
             "itemSequence": itemSequence,
             "itemName": itemName,
             "itemCheckedFlag": itemCheckedFlag,
-            "optionalPrice": optionalPrice
+            "optionalPrice": optionalPrice,
+            "itemDisplayFlag": itemDisplayFlag as Any
         ]
     }
 }

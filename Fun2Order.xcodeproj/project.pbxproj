@@ -63,6 +63,22 @@
 		362C482E235C8CDC0010C845 /* Icon_Favorite3.png in Resources */ = {isa = PBXBuildFile; fileRef = 362C482D235C8CDC0010C845 /* Icon_Favorite3.png */; };
 		362C4833235C8F560010C845 /* BasicButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362C4831235C8F560010C845 /* BasicButtonCell.swift */; };
 		362C4834235C8F560010C845 /* BasicButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 362C4832235C8F560010C845 /* BasicButtonCell.xib */; };
+		3634A61A24C4764100C86C97 /* Segment_Color_15.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A60A24C4763700C86C97 /* Segment_Color_15.png */; };
+		3634A61B24C4764100C86C97 /* Segment_Color_03.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A60B24C4763800C86C97 /* Segment_Color_03.png */; };
+		3634A61C24C4764100C86C97 /* Segment_Color_05.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A60C24C4763800C86C97 /* Segment_Color_05.png */; };
+		3634A61D24C4764100C86C97 /* Segment_Color_09.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A60D24C4763900C86C97 /* Segment_Color_09.png */; };
+		3634A61E24C4764100C86C97 /* Segment_Color_13.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A60E24C4763A00C86C97 /* Segment_Color_13.png */; };
+		3634A61F24C4764100C86C97 /* Segment_Color_12.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A60F24C4763A00C86C97 /* Segment_Color_12.png */; };
+		3634A62024C4764100C86C97 /* Segment_Color_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A61024C4763B00C86C97 /* Segment_Color_10.png */; };
+		3634A62124C4764100C86C97 /* Segment_Color_14.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A61124C4763C00C86C97 /* Segment_Color_14.png */; };
+		3634A62224C4764100C86C97 /* Segment_Color_07.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A61224C4763C00C86C97 /* Segment_Color_07.png */; };
+		3634A62324C4764100C86C97 /* Segment_Color_04.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A61324C4763D00C86C97 /* Segment_Color_04.png */; };
+		3634A62424C4764100C86C97 /* Segment_Color_16.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A61424C4763E00C86C97 /* Segment_Color_16.png */; };
+		3634A62524C4764100C86C97 /* Segment_Color_06.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A61524C4763E00C86C97 /* Segment_Color_06.png */; };
+		3634A62624C4764100C86C97 /* Segment_Color_02.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A61624C4763F00C86C97 /* Segment_Color_02.png */; };
+		3634A62724C4764100C86C97 /* Segment_Color_11.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A61724C4764000C86C97 /* Segment_Color_11.png */; };
+		3634A62824C4764100C86C97 /* Segment_Color_08.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A61824C4764000C86C97 /* Segment_Color_08.png */; };
+		3634A62924C4764100C86C97 /* Segment_Color_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 3634A61924C4764100C86C97 /* Segment_Color_01.png */; };
 		3639F44624B6B26900B64B2B /* DetailJoinGroupOrderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3639F44524B6B26900B64B2B /* DetailJoinGroupOrderTableViewController.swift */; };
 		3639F44A24B6B32500B64B2B /* DetailGroupOrderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3639F44924B6B32500B64B2B /* DetailGroupOrderTableViewController.swift */; };
 		363D9D272371C2180038E136 /* AppConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 363D9D262371C2180038E136 /* AppConfig.plist */; };
@@ -496,6 +512,22 @@
 		362C482D235C8CDC0010C845 /* Icon_Favorite3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Favorite3.png; sourceTree = "<group>"; };
 		362C4831235C8F560010C845 /* BasicButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicButtonCell.swift; sourceTree = "<group>"; };
 		362C4832235C8F560010C845 /* BasicButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BasicButtonCell.xib; sourceTree = "<group>"; };
+		3634A60A24C4763700C86C97 /* Segment_Color_15.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_15.png; sourceTree = "<group>"; };
+		3634A60B24C4763800C86C97 /* Segment_Color_03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_03.png; sourceTree = "<group>"; };
+		3634A60C24C4763800C86C97 /* Segment_Color_05.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_05.png; sourceTree = "<group>"; };
+		3634A60D24C4763900C86C97 /* Segment_Color_09.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_09.png; sourceTree = "<group>"; };
+		3634A60E24C4763A00C86C97 /* Segment_Color_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_13.png; sourceTree = "<group>"; };
+		3634A60F24C4763A00C86C97 /* Segment_Color_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_12.png; sourceTree = "<group>"; };
+		3634A61024C4763B00C86C97 /* Segment_Color_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_10.png; sourceTree = "<group>"; };
+		3634A61124C4763C00C86C97 /* Segment_Color_14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_14.png; sourceTree = "<group>"; };
+		3634A61224C4763C00C86C97 /* Segment_Color_07.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_07.png; sourceTree = "<group>"; };
+		3634A61324C4763D00C86C97 /* Segment_Color_04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_04.png; sourceTree = "<group>"; };
+		3634A61424C4763E00C86C97 /* Segment_Color_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_16.png; sourceTree = "<group>"; };
+		3634A61524C4763E00C86C97 /* Segment_Color_06.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_06.png; sourceTree = "<group>"; };
+		3634A61624C4763F00C86C97 /* Segment_Color_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_02.png; sourceTree = "<group>"; };
+		3634A61724C4764000C86C97 /* Segment_Color_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_11.png; sourceTree = "<group>"; };
+		3634A61824C4764000C86C97 /* Segment_Color_08.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_08.png; sourceTree = "<group>"; };
+		3634A61924C4764100C86C97 /* Segment_Color_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Segment_Color_01.png; sourceTree = "<group>"; };
 		3639F44524B6B26900B64B2B /* DetailJoinGroupOrderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailJoinGroupOrderTableViewController.swift; sourceTree = "<group>"; };
 		3639F44924B6B32500B64B2B /* DetailGroupOrderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailGroupOrderTableViewController.swift; sourceTree = "<group>"; };
 		363D9D262371C2180038E136 /* AppConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppConfig.plist; sourceTree = "<group>"; };
@@ -965,6 +997,29 @@
 			path = AMPopTip;
 			sourceTree = "<group>";
 		};
+		3634A60724C4761700C86C97 /* SegmentBackgroundColor */ = {
+			isa = PBXGroup;
+			children = (
+				3634A61924C4764100C86C97 /* Segment_Color_01.png */,
+				3634A61624C4763F00C86C97 /* Segment_Color_02.png */,
+				3634A60B24C4763800C86C97 /* Segment_Color_03.png */,
+				3634A61324C4763D00C86C97 /* Segment_Color_04.png */,
+				3634A60C24C4763800C86C97 /* Segment_Color_05.png */,
+				3634A61524C4763E00C86C97 /* Segment_Color_06.png */,
+				3634A61224C4763C00C86C97 /* Segment_Color_07.png */,
+				3634A61824C4764000C86C97 /* Segment_Color_08.png */,
+				3634A60D24C4763900C86C97 /* Segment_Color_09.png */,
+				3634A61024C4763B00C86C97 /* Segment_Color_10.png */,
+				3634A61724C4764000C86C97 /* Segment_Color_11.png */,
+				3634A60F24C4763A00C86C97 /* Segment_Color_12.png */,
+				3634A60E24C4763A00C86C97 /* Segment_Color_13.png */,
+				3634A61124C4763C00C86C97 /* Segment_Color_14.png */,
+				3634A60A24C4763700C86C97 /* Segment_Color_15.png */,
+				3634A61424C4763E00C86C97 /* Segment_Color_16.png */,
+			);
+			path = SegmentBackgroundColor;
+			sourceTree = "<group>";
+		};
 		3641C732234CCEC30058CF26 = {
 			isa = PBXGroup;
 			children = (
@@ -1056,6 +1111,7 @@
 		3641C75B234DD2F40058CF26 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3634A60724C4761700C86C97 /* SegmentBackgroundColor */,
 				3641C74A234CCEC40058CF26 /* Assets.xcassets */,
 				3641C75C234DD30A0058CF26 /* Images */,
 			);
@@ -1569,6 +1625,7 @@
 				3649CFC0235D49DF00C0F2EA /* CartGroupCell.xib in Resources */,
 				36E9349724B974BD000F65AB /* DetailMenuRecipeCell.xib in Resources */,
 				36D583E92354151500AEB84F /* 自在軒.png in Resources */,
+				3634A62124C4764100C86C97 /* Segment_Color_14.png in Resources */,
 				364F1213235839AF00988937 /* ProductBriefCell.xib in Resources */,
 				364BEA1323F43621003A418C /* FollowCell.xib in Resources */,
 				36DC7A5D2356CB94009D48F5 /* 百香愛玉@3x.png in Resources */,
@@ -1576,6 +1633,7 @@
 				3659704D23B06A49008CDD57 /* ConfigFavoriteProductCell.xib in Resources */,
 				36D583862352FCE000AEB84F /* 8.png in Resources */,
 				36E9349124B93652000F65AB /* Icon_Cart_Red.png in Resources */,
+				3634A62824C4764100C86C97 /* Segment_Color_08.png in Resources */,
 				36D583D72354151500AEB84F /* Teas原味@2x.jpg in Resources */,
 				36DC7A372356CB94009D48F5 /* 珍珠鮮奶茶.png in Resources */,
 				3649CFC7235D5E6E00C0F2EA /* Pay_Cash.png in Resources */,
@@ -1591,6 +1649,7 @@
 				3649CFC8235D5E6E00C0F2EA /* Pay_GooglePay.png in Resources */,
 				36C1F44423D7DEC50004B0CD /* Icon_Refresh.png in Resources */,
 				36D583D32354151500AEB84F /* 五十嵐@3x.png in Resources */,
+				3634A62424C4764100C86C97 /* Segment_Color_16.png in Resources */,
 				36D583E72354151500AEB84F /* 五十嵐@2x.png in Resources */,
 				3625BB33245A5E8500330816 /* GuideToolTip.plist in Resources */,
 				36C8C1BC235E8AC6002AD40F /* Image_QR_Code.png in Resources */,
@@ -1609,6 +1668,7 @@
 				3649CFC9235D5E6E00C0F2EA /* Pay_ApplePay.png in Resources */,
 				3680A43123DB3FCE00BFC4A0 /* EditPaymentCell.xib in Resources */,
 				36DC7A3F2356CB94009D48F5 /* 青茶.png in Resources */,
+				3634A62624C4764100C86C97 /* Segment_Color_02.png in Resources */,
 				36E8D3CF235DA7CC00AB35CB /* PayCell.xib in Resources */,
 				36DC7A482356CB94009D48F5 /* 珍珠觀音拿鐵@3x.png in Resources */,
 				36D583E52354151500AEB84F /* 自在軒@2x.png in Resources */,
@@ -1621,6 +1681,7 @@
 				3641C74E234CCEC40058CF26 /* LaunchScreen.storyboard in Resources */,
 				36973AD423AB7343008804C5 /* Icon_Name.png in Resources */,
 				3649CFB6235D430000C0F2EA /* Image_Friend1.png in Resources */,
+				3634A61D24C4764100C86C97 /* Segment_Color_09.png in Resources */,
 				36D583DA2354151500AEB84F /* 紅太陽.png in Resources */,
 				36DC7A422356CB94009D48F5 /* 紅茶.png in Resources */,
 				3666F70C23A22A5800729E43 /* Image_Default_Member.png in Resources */,
@@ -1628,6 +1689,7 @@
 				36DC7A592356CB94009D48F5 /* 觀音拿鐵@2x.png in Resources */,
 				36C1F44E23D889110004B0CD /* MenuOrderMemberNGCell.xib in Resources */,
 				36973AD323AB7343008804C5 /* Icon_Phone.png in Resources */,
+				3634A61E24C4764100C86C97 /* Segment_Color_13.png in Resources */,
 				3641C74B234CCEC40058CF26 /* Assets.xcassets in Resources */,
 				364BEA1923F4F38C003A418C /* JoinInvitationCell.xib in Resources */,
 				36DC7A562356CB94009D48F5 /* 新鮮水果茶.png in Resources */,
@@ -1651,6 +1713,7 @@
 				36DC7A5B2356CB94009D48F5 /* 鮮奶冬瓜.png in Resources */,
 				36DC7A3B2356CB94009D48F5 /* 青茶@2x.png in Resources */,
 				363D9D272371C2180038E136 /* AppConfig.plist in Resources */,
+				3634A62924C4764100C86C97 /* Segment_Color_01.png in Resources */,
 				36EE4E472440B15D00AE2DE9 /* Icon_TrashCan.png in Resources */,
 				3614E0E92358A9D900D23BA6 /* CategorySectionView.xib in Resources */,
 				3688A0AE235FDB9C001990CE /* MemberCell.xib in Resources */,
@@ -1665,11 +1728,13 @@
 				36D583D92354151500AEB84F /* 公館手作.jpg in Resources */,
 				36D583D52354151500AEB84F /* 圓石@2x.jpg in Resources */,
 				36DC7A4B2356CB94009D48F5 /* 珍珠觀音拿鐵@2x.png in Resources */,
+				3634A61F24C4764100C86C97 /* Segment_Color_12.png in Resources */,
 				367CE57D23C1ABEC00C0840D /* Icon_Clock.png in Resources */,
 				36DC7A332356CB94009D48F5 /* 金桔檸檬.png in Resources */,
 				36DC7A402356CB94009D48F5 /* 觀音拿鐵.png in Resources */,
 				3625ACDF23C962F00037B865 /* MenuItemCell.xib in Resources */,
 				36159C062354386900664D75 /* BrandCollectionViewCell.xib in Resources */,
+				3634A61C24C4764100C86C97 /* Segment_Color_05.png in Resources */,
 				365948E523CC11D600993062 /* SelectMenuRecipeTemplateCell.xib in Resources */,
 				3625ACD123C764920037B865 /* Icon_Menu_Recipe.png in Resources */,
 				36973AD523AB7343008804C5 /* Icon_UserAccount.png in Resources */,
@@ -1678,6 +1743,7 @@
 				36159C0C2354B9F400664D75 /* Icon_Favorite_Button.png in Resources */,
 				36D5839D2353466800AEB84F /* 2.png in Resources */,
 				3649CFB5235D430000C0F2EA /* Image_Friend4.png in Resources */,
+				3634A62024C4764100C86C97 /* Segment_Color_10.png in Resources */,
 				3659705123B06A6C008CDD57 /* ConfigFavoriteStoreCell.xib in Resources */,
 				362C482C235C75810010C845 /* Icon_Cup.png in Resources */,
 				36DC7A5C2356CB94009D48F5 /* 奶茶.png in Resources */,
@@ -1692,11 +1758,13 @@
 				36D583E62354151500AEB84F /* 五十嵐.png in Resources */,
 				36DC7A582356CB94009D48F5 /* 鮮奶冬瓜@2x.png in Resources */,
 				36973AD123AB7343008804C5 /* Icon_Address.png in Resources */,
+				3634A62724C4764100C86C97 /* Segment_Color_11.png in Resources */,
 				3692959224B4497000FBB8C7 /* Icon_Over_Due_date.png in Resources */,
 				36D583E12354151500AEB84F /* 丸作@3x.jpg in Resources */,
 				36D583D12354151500AEB84F /* 柚豆@2x.jpg in Resources */,
 				365DF519244D57C9004C47C4 /* ReportCell.xib in Resources */,
 				3649CFB8235D430000C0F2EA /* Image_Me.png in Resources */,
+				3634A61A24C4764100C86C97 /* Segment_Color_15.png in Resources */,
 				36DC7A4C2356CB94009D48F5 /* 奶茶@3x.png in Resources */,
 				36C8C1BA235E8A2C002AD40F /* Image_QR_Code_original.png in Resources */,
 				3659705523B07FD4008CDD57 /* Icon_Password.png in Resources */,
@@ -1704,7 +1772,9 @@
 				36DC7A352356CB94009D48F5 /* 纖活綠茶.png in Resources */,
 				3649CFBA235D430000C0F2EA /* Image_Friend2.png in Resources */,
 				3625ACA523C613A00037B865 /* Icon_Menu_Item.png in Resources */,
+				3634A62524C4764100C86C97 /* Segment_Color_06.png in Resources */,
 				36D583A123534BDA00AEB84F /* 7.png in Resources */,
+				3634A62224C4764100C86C97 /* Segment_Color_07.png in Resources */,
 				36DC7A382356CB94009D48F5 /* 珍珠奶茶@2x.png in Resources */,
 				36D583A52353599D00AEB84F /* FavoriteStoreCell.xib in Resources */,
 				36DC7A572356CB94009D48F5 /* 蜂蜜檸檬.png in Resources */,
@@ -1716,6 +1786,8 @@
 				36D583E42354151500AEB84F /* 茶湯會.jpg in Resources */,
 				36B80C7823B4A4CA004359E4 /* Icon_Delete.png in Resources */,
 				36973AD023AB7343008804C5 /* Icon_Birthday.png in Resources */,
+				3634A62324C4764100C86C97 /* Segment_Color_04.png in Resources */,
+				3634A61B24C4764100C86C97 /* Segment_Color_03.png in Resources */,
 				36DC7A362356CB94009D48F5 /* 觀音拿鐵@3x.png in Resources */,
 				36B80C9D23B99453004359E4 /* Icon_Add_Group.png in Resources */,
 				36E9348F24B933B4000F65AB /* ProductPriceWithCartCell.xib in Resources */,
@@ -2160,7 +2232,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -2188,7 +2260,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;

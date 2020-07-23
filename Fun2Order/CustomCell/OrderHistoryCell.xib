@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -69,10 +69,10 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o80-nf-sKE">
-                        <rect key="frame" x="259" y="115" width="40" height="40"/>
+                        <rect key="frame" x="263" y="135" width="36" height="36"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="40" id="8rx-DQ-Xo7"/>
-                            <constraint firstAttribute="width" constant="40" id="Mo2-gE-gbk"/>
+                            <constraint firstAttribute="height" constant="36" id="8rx-DQ-Xo7"/>
+                            <constraint firstAttribute="width" constant="36" id="Mo2-gE-gbk"/>
                         </constraints>
                         <state key="normal" title="QR" image="Image_QR_Code.png"/>
                         <connections>
@@ -116,6 +116,7 @@
                     <constraint firstItem="Eoe-ZZ-3LN" firstAttribute="leading" secondItem="7zC-Bg-ARv" secondAttribute="leading" id="B2B-SW-Mhe"/>
                     <constraint firstItem="Ovf-YS-Oo2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="C8Y-yb-haJ"/>
                     <constraint firstItem="gIb-07-5ix" firstAttribute="top" secondItem="KJT-N5-31D" secondAttribute="bottom" constant="10" id="FFg-1Y-b1T"/>
+                    <constraint firstItem="o80-nf-sKE" firstAttribute="top" secondItem="Eoe-ZZ-3LN" secondAttribute="bottom" constant="3" id="Ft2-jq-HNm"/>
                     <constraint firstItem="fQb-wq-jGh" firstAttribute="leading" secondItem="Ovf-YS-Oo2" secondAttribute="trailing" constant="29" id="G2h-rz-S9D"/>
                     <constraint firstItem="hv2-7G-K89" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="I61-ob-wER"/>
                     <constraint firstItem="HzZ-6X-Xbc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="IYs-8y-3EA"/>
@@ -136,7 +137,6 @@
                     <constraint firstItem="7zC-Bg-ARv" firstAttribute="trailing" secondItem="aBY-lp-DIo" secondAttribute="trailing" id="kWF-Zd-KJm"/>
                     <constraint firstItem="HzZ-6X-Xbc" firstAttribute="top" secondItem="hv2-7G-K89" secondAttribute="bottom" constant="8" id="kr2-i9-Ceh"/>
                     <constraint firstItem="gIb-07-5ix" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="plv-QO-kLp"/>
-                    <constraint firstItem="o80-nf-sKE" firstAttribute="top" secondItem="7zC-Bg-ARv" secondAttribute="bottom" constant="12" id="qcY-LK-rvi"/>
                     <constraint firstItem="7zC-Bg-ARv" firstAttribute="leading" secondItem="aBY-lp-DIo" secondAttribute="leading" id="s4o-y6-5aO"/>
                     <constraint firstItem="ffu-Vm-r0O" firstAttribute="leading" secondItem="gIb-07-5ix" secondAttribute="trailing" constant="10" id="u2Q-yO-oba"/>
                     <constraint firstItem="KJT-N5-31D" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="xjv-Nh-cR3"/>

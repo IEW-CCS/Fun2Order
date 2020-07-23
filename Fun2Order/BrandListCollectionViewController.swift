@@ -16,8 +16,11 @@ protocol BrandListDelegate: class {
 
 class BrandListCollectionViewController: UICollectionViewController, UITextFieldDelegate {
     var brandList: [DetailBrandCategory] = [DetailBrandCategory]()
+    var searchBrandList: [DetailBrandCategory] = [DetailBrandCategory]()
     var brandImageList: [UIImage] = [UIImage]()
+    var searchBrandImageList: [UIImage] = [UIImage]()
     weak var delegate: BrandListDelegate?
+    var searchedFlag: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +30,6 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
         
         let headerViewNib: UINib = UINib(nibName: "BrandHeaderView", bundle: nil)
         self.collectionView.register(headerViewNib, forSupplementaryViewOfKind:UICollectionView.elementKindSectionHeader, withReuseIdentifier: "BrandHeaderView")
-        //self.collectionView.register(BrandHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "BrandHeaderView")
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
@@ -38,7 +40,13 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
         collectionView.collectionViewLayout = layout
         self.tabBarController?.title = self.title
         downloadFBBrandCategoryList()
-        //testUploadBrandDetail()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        self.title = "品牌列表"
+        self.navigationController?.title = "品牌列表"
+        self.tabBarController?.title = "品牌列表"
+        navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -75,8 +83,12 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
                 if !self.brandList.isEmpty {
                     self.brandImageList = Array(repeating: UIImage(), count: self.brandList.count)
                 }
+                self.searchBrandList = self.brandList
+                //print("self.searchBrandList = \(self.searchBrandList)")
+                self.searchBrandImageList = self.brandImageList
                 
                 self.collectionView.reloadData()
+                self.collectionView.collectionViewLayout.invalidateLayout()
             }
         }) { (error) in
             print("downloadFBBrandCategoryList: \(error.localizedDescription)")
@@ -88,18 +100,34 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if self.brandList.isEmpty {
-            return 0
+        if self.searchedFlag {
+            if self.searchBrandList.isEmpty {
+                return 0
+            }
+            
+            //print("self.searchedFlag is true, return searchBrandList count = \(self.searchBrandList.count)")
+            return self.searchBrandList.count
+        } else {
+            if self.brandList.isEmpty {
+                return 0
+            }
+            
+            //print("self.searchedFlag is false, return brandList count = \(self.brandList.count)")
+            return self.brandList.count
         }
-        
-        return self.brandList.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BrandCollectionViewCell", for: indexPath) as! BrandCollectionViewCell
     
-        cell.setData(brand_name: self.brandList[indexPath.row].brandName, brand_image: self.brandList[indexPath.row].brandIconImage, index: indexPath.row)
-        cell.delegate = self
+        if self.searchedFlag {
+            cell.setData(brand_name: self.searchBrandList[indexPath.row].brandName, icon: self.searchBrandImageList[indexPath.row], index: indexPath.row)
+            cell.delegate = self
+
+        } else {
+            cell.setData(brand_name: self.brandList[indexPath.row].brandName, brand_image: self.brandList[indexPath.row].brandIconImage, index: indexPath.row)
+            cell.delegate = self
+        }
         return cell
     }
 
@@ -110,15 +138,19 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
             return
         }
 
-        detailBrandController.setData(brand_name: self.brandList[indexPath.row].brandName, brand_image: self.brandImageList[indexPath.row])
-        navigationController?.show(detailBrandController, sender: self)
+        if self.searchedFlag {
+            detailBrandController.setData(brand_name: self.searchBrandList[indexPath.row].brandName, brand_image: self.searchBrandImageList[indexPath.row])
+        } else {
+            detailBrandController.setData(brand_name: self.brandList[indexPath.row].brandName, brand_image: self.brandImageList[indexPath.row])
+        }
         
+        navigationController?.show(detailBrandController, sender: self)
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let headerView = self.collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "BrandHeaderView", for: indexPath) as! BrandHeaderView
         headerView.delegate = self
-        headerView.setData(items: ["茶飲類", "咖啡", "小吃"])
+        headerView.setData(items: ["茶飲類"])
         
         return headerView
     }
@@ -137,7 +169,11 @@ extension BrandListCollectionViewController: UICollectionViewDelegateFlowLayout 
 
 extension BrandListCollectionViewController: BrandCollectionCellDelegate {
     func getBrandImage(sender: BrandCollectionViewCell, icon: UIImage?, index: Int) {
-        self.brandImageList[index] = icon!
+        var iconImage: UIImage = UIImage()
+        if icon != nil {
+            iconImage = icon!
+        }
+        self.brandImageList[index] = iconImage
     }
 }
 
@@ -150,5 +186,33 @@ extension BrandListCollectionViewController: BrandHeaderDelegate {
         }
 
         navigationController?.show(suggestionController, sender: self)
+    }
+    
+    func searchBrandRequest(sender: BrandHeaderView, searchText: String) {
+        //print("BrandListCollectionViewController received searchBrandRequest")
+        print("BrandListCollectionViewController searchText: \(searchText)")
+        if self.brandList.isEmpty {
+            return
+        }
+        
+        if searchText == "" {
+            self.searchedFlag = false
+            self.searchBrandList = self.brandList
+            self.searchBrandImageList = self.brandImageList
+        } else {
+            self.searchedFlag = true
+            self.searchBrandList.removeAll()
+            self.searchBrandImageList.removeAll()
+            
+            for i in 0...self.brandList.count - 1  {
+                if self.brandList[i].brandName.contains(searchText) {
+                    self.searchBrandList.append(self.brandList[i])
+                    self.searchBrandImageList.append(self.brandImageList[i])
+                }
+            }
+        }
+        
+        self.collectionView.reloadData()
+        self.collectionView.collectionViewLayout.invalidateLayout()
     }
 }

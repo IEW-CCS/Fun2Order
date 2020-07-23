@@ -11,14 +11,14 @@ import UIKit
 
 // AdMob Ad Unit ID declaration
 /// Test Ad Unit ID
-let MENULIST_NATIVE_AD = "ca-app-pub-3940256099942544/3986624511" /// Test Native Unit ID
-let NOTIFICATIONLIST_BANNER_AD = "ca-app-pub-3940256099942544/2934735716" /// Test Banner Unit ID
-let JOINORDER_INTERSTITIAL_AD = "ca-app-pub-3940256099942544/5135589807" /// Test Interstitial Unit ID
+//let MENULIST_NATIVE_AD = "ca-app-pub-3940256099942544/3986624511" /// Test Native Unit ID
+//let NOTIFICATIONLIST_BANNER_AD = "ca-app-pub-3940256099942544/2934735716" /// Test Banner Unit ID
+//let JOINORDER_INTERSTITIAL_AD = "ca-app-pub-3940256099942544/5135589807" /// Test Interstitial Unit ID
 
 /// IEW Production Ad Unit ID
-//let MENULIST_NATIVE_AD = "ca-app-pub-6672968234138119/4619965469" /// IEW Production Native Unit ID 2
-//let NOTIFICATIONLIST_BANNER_AD = "ca-app-pub-6672968234138119/9417830726" /// IEW Production Banner Unit ID
-//let JOINORDER_INTERSTITIAL_AD = "ca-app-pub-6672968234138119/3517393514" /// IEW Production Interstitial Unit ID
+let MENULIST_NATIVE_AD = "ca-app-pub-6672968234138119/4619965469" /// IEW Production Native Unit ID 2
+let NOTIFICATIONLIST_BANNER_AD = "ca-app-pub-6672968234138119/9417830726" /// IEW Production Banner Unit ID
+let JOINORDER_INTERSTITIAL_AD = "ca-app-pub-6672968234138119/3517393514" /// IEW Production Interstitial Unit ID
 
 /// Others Ad Unit ID
 //let MENULIST_NATIVE_AD = "ca-app-pub-6672968234138119/7456638522" /// IEW Production Native Unit ID 1

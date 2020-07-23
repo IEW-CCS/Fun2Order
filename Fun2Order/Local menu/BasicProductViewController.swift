@@ -20,7 +20,7 @@ extension BasicProductDelegate {
     func editBasicProductInformation(sender: BasicProductViewController, product_info: MenuItem) {}
 }
 
-class BasicProductViewController: UIViewController {
+class BasicProductViewController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
     @IBOutlet weak var buttonCancel: UIButton!
     @IBOutlet weak var buttonConfirm: UIButton!
     @IBOutlet weak var textProductName: UITextField!
@@ -75,8 +75,21 @@ class BasicProductViewController: UIViewController {
 
         self.textProductPrice.keyboardType = .numberPad
         self.textQuantityLimit.keyboardType = .numberPad
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+          textField.resignFirstResponder()
+          return true
+    }
+    
+    @objc func dismissKeyBoard() {
+        self.view.endEditing(true)
+    }
+
     func setData(product_item: MenuItem) {
         self.textProductName.text = product_item.itemName
         self.textProductPrice.text = String(product_item.itemPrice)

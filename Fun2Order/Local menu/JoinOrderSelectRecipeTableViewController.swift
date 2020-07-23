@@ -13,7 +13,7 @@ protocol JoinOrderSelectRecipeDelegate: class {
     func setRecipe(sender: JoinOrderSelectRecipeTableViewController, recipe_items: [MenuRecipe], quantity: Int, single_price: Int, comments: String)
 }
 
-class JoinOrderSelectRecipeTableViewController: UITableViewController {
+class JoinOrderSelectRecipeTableViewController: UITableViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
     @IBOutlet weak var labelProductName: UILabel!
     @IBOutlet weak var buttonAddToCart: UIButton!
     @IBOutlet weak var labelQuantity: UILabel!
@@ -55,7 +55,21 @@ class JoinOrderSelectRecipeTableViewController: UITableViewController {
                 }
             }
         }
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+          textField.resignFirstResponder()
+          return true
+    }
+    
+    @objc func dismissKeyBoard() {
+        self.view.endEditing(true)
+    }
+
     @IBAction func changeQuantity(_ sender: UIStepper) {
         self.productQuantity = Int(sender.value)
         self.labelQuantity.text = String(self.productQuantity)

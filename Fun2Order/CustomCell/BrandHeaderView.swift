@@ -10,6 +10,7 @@ import UIKit
 
 protocol BrandHeaderDelegate: class {
     func suggestNewBrand(sender: BrandHeaderView)
+    func searchBrandRequest(sender: BrandHeaderView, searchText: String)
 }
 
 class BrandHeaderView: UICollectionReusableView, UITextFieldDelegate {
@@ -25,6 +26,8 @@ class BrandHeaderView: UICollectionReusableView, UITextFieldDelegate {
         self.buttonSuggestion.layer.borderWidth = 1.0
         self.buttonSuggestion.layer.borderColor = UIColor.lightGray.cgColor
         self.buttonSuggestion.layer.cornerRadius = 6
+        
+        self.searchBrand.delegate = self
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
         tap.cancelsTouchesInView = false
@@ -56,5 +59,10 @@ class BrandHeaderView: UICollectionReusableView, UITextFieldDelegate {
     @IBAction func suggestNewBrand(_ sender: UIButton) {
         self.delegate?.suggestNewBrand(sender: self)
     }
-        
+}
+
+extension BrandHeaderView: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.delegate?.searchBrandRequest(sender: self, searchText: searchText)
+    }
 }
