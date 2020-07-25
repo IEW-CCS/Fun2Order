@@ -532,7 +532,7 @@ extension DetailJoinGroupOrderTableViewController: GADInterstitialDelegate {
     func interstitialDidReceiveAd(_ ad: GADInterstitial) {
         print("interstitialDidReceiveAd")
         if self.interstitialAd.isReady {
-            self.interstitialAd.present(fromRootViewController: self)
+            //self.interstitialAd.present(fromRootViewController: self)
             refreshJoinGroupOrder()
         } else {
             print("Interstitial Ad is not ready !!")

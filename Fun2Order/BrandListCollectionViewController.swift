@@ -15,13 +15,15 @@ protocol BrandListDelegate: class {
 }
 
 class BrandListCollectionViewController: UICollectionViewController, UITextFieldDelegate {
-    var brandList: [DetailBrandCategory] = [DetailBrandCategory]()
-    var searchBrandList: [DetailBrandCategory] = [DetailBrandCategory]()
-    var brandImageList: [UIImage] = [UIImage]()
-    var searchBrandImageList: [UIImage] = [UIImage]()
+    var brandList: [DetailBrandListStruct] = [DetailBrandListStruct]()
+    var filterBrandList: [DetailBrandListStruct] = [DetailBrandListStruct]()
+    var searchBrandList: [DetailBrandListStruct] = [DetailBrandListStruct]()
+    var brandCategoryList: [String] = ["茶飲類"]
     weak var delegate: BrandListDelegate?
     var searchedFlag: Bool = false
-    
+    var refreshControl = UIRefreshControl()
+    var selectedIndex: Int = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -39,6 +41,12 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
         layout.minimumLineSpacing = 5
         collectionView.collectionViewLayout = layout
         self.tabBarController?.title = self.title
+        
+        self.collectionView.alwaysBounceVertical = true
+        self.refreshControl.attributedTitle = NSAttributedString(string: "正在更新品牌列表")
+        self.refreshControl.addTarget(self, action: #selector(self.refreshBrandList), for: .valueChanged)
+        self.collectionView.addSubview(refreshControl)
+
         downloadFBBrandCategoryList()
     }
 
@@ -58,6 +66,48 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
         self.view.endEditing(true)
     }
 
+    @objc func refreshBrandList() {
+        print("Refresh brand List...")
+        downloadFBBrandCategoryList()
+    }
+    
+    func prepareBrandCategoryList() {
+        if self.brandList.isEmpty {
+            print("self.brandList is empty, no need to prepare brand category list")
+            return
+        }
+        
+        self.brandCategoryList.removeAll()
+        for i in 0...self.brandList.count - 1 {
+            if self.brandList[i].brandData.brandCategory ==  nil {
+                continue
+            }
+            
+            if !self.brandCategoryList.contains(self.brandList[i].brandData.brandCategory!) {
+                self.brandCategoryList.append(self.brandList[i].brandData.brandCategory!)
+            }
+        }
+    }
+    
+    func filteredBrandListByCategory() {
+        if self.brandList.isEmpty {
+            print("self.brandList is empty, no need to filter brand list")
+            return
+        }
+        
+        self.filterBrandList.removeAll()
+        
+        for i in 0...self.brandList.count - 1 {
+            if self.brandList[i].brandData.brandCategory ==  nil {
+                continue
+            }
+
+            if self.brandList[i].brandData.brandCategory! == self.brandCategoryList[self.selectedIndex] {
+                self.filterBrandList.append(self.brandList[i])
+            }
+        }
+    }
+
     func downloadFBBrandCategoryList() {
         self.brandList.removeAll()
 
@@ -69,29 +119,34 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
                 let childEnumerator = snapshot.children
                 
                 let childDecoder: JSONDecoder = JSONDecoder()
+                var index: Int = 0
                 while let childData = childEnumerator.nextObject() as? DataSnapshot {
                     do {
                         let childJsonData = try? JSONSerialization.data(withJSONObject: childData.value as Any, options: [])
                         let realData = try childDecoder.decode(DetailBrandCategory.self, from: childJsonData!)
-                        self.brandList.append(realData)
+                        var brandData: DetailBrandListStruct = DetailBrandListStruct()
+                        brandData.brandData = realData
+                        brandData.index = index
+                        self.brandList.append(brandData)
+                        index = index + 1
                     } catch {
                         print("downloadFBBrandCategoryList jsonData decode failed: \(error.localizedDescription)")
                         continue
                     }
                 }
                 
-                if !self.brandList.isEmpty {
-                    self.brandImageList = Array(repeating: UIImage(), count: self.brandList.count)
-                }
-                self.searchBrandList = self.brandList
-                //print("self.searchBrandList = \(self.searchBrandList)")
-                self.searchBrandImageList = self.brandImageList
-                
+                self.prepareBrandCategoryList()
+                self.filteredBrandListByCategory()
+
+                self.searchBrandList = self.filterBrandList
+
                 self.collectionView.reloadData()
                 self.collectionView.collectionViewLayout.invalidateLayout()
+                self.refreshControl.endRefreshing()
             }
         }) { (error) in
             print("downloadFBBrandCategoryList: \(error.localizedDescription)")
+            self.refreshControl.endRefreshing()
         }
     }
     
@@ -105,15 +160,13 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
                 return 0
             }
             
-            //print("self.searchedFlag is true, return searchBrandList count = \(self.searchBrandList.count)")
             return self.searchBrandList.count
         } else {
-            if self.brandList.isEmpty {
+            if self.filterBrandList.isEmpty {
                 return 0
             }
             
-            //print("self.searchedFlag is false, return brandList count = \(self.brandList.count)")
-            return self.brandList.count
+            return self.filterBrandList.count
         }
     }
 
@@ -121,11 +174,11 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BrandCollectionViewCell", for: indexPath) as! BrandCollectionViewCell
     
         if self.searchedFlag {
-            cell.setData(brand_name: self.searchBrandList[indexPath.row].brandName, icon: self.searchBrandImageList[indexPath.row], index: indexPath.row)
+            cell.setData(brand_data: self.searchBrandList[indexPath.row], index: self.searchBrandList[indexPath.row].index)
             cell.delegate = self
 
         } else {
-            cell.setData(brand_name: self.brandList[indexPath.row].brandName, brand_image: self.brandList[indexPath.row].brandIconImage, index: indexPath.row)
+            cell.setData(brand_data: self.filterBrandList[indexPath.row], index: self.filterBrandList[indexPath.row].index)
             cell.delegate = self
         }
         return cell
@@ -139,9 +192,9 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
         }
 
         if self.searchedFlag {
-            detailBrandController.setData(brand_name: self.searchBrandList[indexPath.row].brandName, brand_image: self.searchBrandImageList[indexPath.row])
+            detailBrandController.setData(brand_name: self.searchBrandList[indexPath.row].brandData.brandName, brand_image: self.searchBrandList[indexPath.row].brandImage)
         } else {
-            detailBrandController.setData(brand_name: self.brandList[indexPath.row].brandName, brand_image: self.brandImageList[indexPath.row])
+            detailBrandController.setData(brand_name: self.filterBrandList[indexPath.row].brandData.brandName, brand_image: self.filterBrandList[indexPath.row].brandImage)
         }
         
         navigationController?.show(detailBrandController, sender: self)
@@ -150,7 +203,7 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let headerView = self.collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "BrandHeaderView", for: indexPath) as! BrandHeaderView
         headerView.delegate = self
-        headerView.setData(items: ["茶飲類"])
+        headerView.setData(items: self.brandCategoryList, select_index: self.selectedIndex)
         
         return headerView
     }
@@ -166,14 +219,18 @@ extension BrandListCollectionViewController: UICollectionViewDelegateFlowLayout 
     }
 }
 
-
 extension BrandListCollectionViewController: BrandCollectionCellDelegate {
     func getBrandImage(sender: BrandCollectionViewCell, icon: UIImage?, index: Int) {
         var iconImage: UIImage = UIImage()
         if icon != nil {
             iconImage = icon!
         }
-        self.brandImageList[index] = iconImage
+        self.brandList[index].brandImage = iconImage
+        if let filterIndex = self.filterBrandList.firstIndex(where: { $0.index == index }) {
+            print("The first index = \(filterIndex)")
+            self.filterBrandList[filterIndex].brandImage = iconImage
+        }
+        //filteredBrandListByCategory()
     }
 }
 
@@ -189,30 +246,38 @@ extension BrandListCollectionViewController: BrandHeaderDelegate {
     }
     
     func searchBrandRequest(sender: BrandHeaderView, searchText: String) {
-        //print("BrandListCollectionViewController received searchBrandRequest")
         print("BrandListCollectionViewController searchText: \(searchText)")
-        if self.brandList.isEmpty {
+        if self.filterBrandList.isEmpty {
             return
         }
         
         if searchText == "" {
             self.searchedFlag = false
-            self.searchBrandList = self.brandList
-            self.searchBrandImageList = self.brandImageList
+            self.searchBrandList = self.filterBrandList
         } else {
             self.searchedFlag = true
             self.searchBrandList.removeAll()
-            self.searchBrandImageList.removeAll()
             
-            for i in 0...self.brandList.count - 1  {
-                if self.brandList[i].brandName.contains(searchText) {
-                    self.searchBrandList.append(self.brandList[i])
-                    self.searchBrandImageList.append(self.brandImageList[i])
+            for i in 0...self.filterBrandList.count - 1  {
+                if self.filterBrandList[i].brandData.brandName.contains(searchText) {
+                    self.searchBrandList.append(self.filterBrandList[i])
                 }
             }
         }
         
         self.collectionView.reloadData()
         self.collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    func changeBrandCategory(sender: BrandHeaderView, index: Int) {
+        self.selectedIndex = index
+        
+        filteredBrandListByCategory()
+        
+        //self.collectionView.reloadData()
+        let indexSet = IndexSet(integer: 0)
+        self.collectionView.reloadSections(indexSet)
+        self.collectionView.collectionViewLayout.invalidateLayout()
+
     }
 }

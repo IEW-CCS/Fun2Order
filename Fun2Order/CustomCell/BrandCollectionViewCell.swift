@@ -46,6 +46,17 @@ class BrandCollectionViewCell: UICollectionViewCell {
         self.dataIndex = index
     }
     
+    func setData(brand_data: DetailBrandListStruct, index: Int) {
+        self.txtLabel.text = brand_data.brandData.brandName
+        if brand_data.brandImage == nil && brand_data.brandData.brandIconImage != nil {
+            downloadFBBrandImage(brand_url: brand_data.brandData.brandIconImage!, completion: receiveBrandImage)
+        } else {
+            self.imageIcon.image = brand_data.brandImage!
+        }
+        
+        self.dataIndex = index
+    }
+    
     func setData(brand_name: String, icon: UIImage?, index: Int) {
         self.txtLabel.text = brand_name
         if icon != nil {

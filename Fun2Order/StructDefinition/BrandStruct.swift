@@ -27,6 +27,12 @@ struct DetailBrandCategory: Codable {
     }
 }
 
+struct DetailBrandListStruct{
+    var index: Int = 0
+    var brandData: DetailBrandCategory = DetailBrandCategory()
+    var brandImage: UIImage?
+}
+
 struct DetailBrandProfile: Codable {
     var brandName: String = ""
     var brandIconImage: String?
