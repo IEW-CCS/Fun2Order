@@ -7,22 +7,24 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 class DetailBrandTableViewController: UITableViewController {
     @IBOutlet weak var imageBrandIcon: UIImageView!
     @IBOutlet weak var labelBrandName: UILabel!
     @IBOutlet weak var segmentCategory: ScrollUISegmentController!
     @IBOutlet weak var buttonGroup: UIButton!
-    
+
     var brandName: String = ""
     var brandImage: UIImage?
-    
+
     var detailBrandProfile: DetailBrandProfile = DetailBrandProfile()
     var detailMenuInfo: DetailMenuInformation = DetailMenuInformation()
     var filterProducts: [DetailProductItem] = [DetailProductItem]()
     var productCategory: [String] = [String]()
     var selectedIndex: Int = -1
-    
+    var bannerView: GADBannerView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let productCell: UINib = UINib(nibName: "ProductPriceCell", bundle: nil)
@@ -38,11 +40,39 @@ class DetailBrandTableViewController: UITableViewController {
         self.imageBrandIcon.layer.borderWidth = 1.0
         self.imageBrandIcon.layer.borderColor = UIColor.white.cgColor
         self.imageBrandIcon.layer.cornerRadius = 6
-        
+
+        self.bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
+        addBannerViewToView(self.bannerView)
+
         self.segmentCategory.segmentDelegate = self
         downloadFBDetailBrandProfile(brand_name: self.brandName, completion: receiveFBDetailBrandProfile)
     }
-    
+
+    func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(bannerView)
+        view.addConstraints([NSLayoutConstraint(item: bannerView,
+                            attribute: .bottom,
+                            relatedBy: .equal,
+                            toItem: bottomLayoutGuide,
+                            attribute: .top,
+                            multiplier: 1,
+                            constant: 0),
+         NSLayoutConstraint(item: bannerView,
+                            attribute: .centerX,
+                            relatedBy: .equal,
+                            toItem: view,
+                            attribute: .centerX,
+                            multiplier: 1,
+                            constant: 0)
+        ])
+        
+        bannerView.adUnitID = NOTIFICATIONLIST_BANNER_AD
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        bannerView.delegate = self
+    }
+
     func setupSegmentCategory() {
         if self.productCategory.isEmpty {
             self.segmentCategory.isHidden = true
@@ -218,7 +248,8 @@ class DetailBrandTableViewController: UITableViewController {
         if indexPath.section == 0 && indexPath.row == 2 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProductPriceCell", for: indexPath) as! ProductPriceCell
             let contents = self.getPriceRecipeItems(index: self.selectedIndex)
-            cell.setData(name: "", contents: contents, style: 0)
+            //let description = self.filterProducts[indexPath.row].productDescription ?? ""
+            cell.setData(name: "", description: "", contents: contents, style: 0)
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
 
             return cell
@@ -226,9 +257,10 @@ class DetailBrandTableViewController: UITableViewController {
         
         if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProductPriceCell", for: indexPath) as! ProductPriceCell
-            
+
             let contents = self.getProductPriceItems(index: indexPath.row)
-            cell.setData(name: self.filterProducts[indexPath.row].productName, contents: contents, style: 1)
+            let description = self.filterProducts[indexPath.row].productDescription ?? ""
+            cell.setData(name: self.filterProducts[indexPath.row].productName, description: description, contents: contents, style: 1)
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
 
             return cell
@@ -262,5 +294,25 @@ extension DetailBrandTableViewController: ScrollUISegmentControllerDelegate {
         self.selectedIndex = index
         self.filterProductsByCategory(index: self.selectedIndex)
         self.tableView.reloadData()
+    }
+}
+
+extension DetailBrandTableViewController: GADBannerViewDelegate {
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        print("Banner loaded successfully")
+        bannerView.alpha = 0
+        UIView.animate(withDuration: 1, animations: {
+          bannerView.alpha = 1
+        })
+        //self.isAdLoadedSuccess = true
+        //self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+    }
+    
+    func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
+        print("Fail to receive ads")
+        print(error)
+        //self.isAdLoadedSuccess = false
+        //self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        //self.tableView.reloadData()
     }
 }

@@ -16,6 +16,7 @@ class ProductPriceWithCartCell: UITableViewCell {
     @IBOutlet weak var labelProductName: UILabel!
     @IBOutlet weak var stackViewPrice: UIStackView!
     @IBOutlet weak var buttonCart: UIButton!
+    @IBOutlet weak var labelDescription: UILabel!
     
     var rowIndex: Int = 0
     weak var delegate: ProductPriceWithCartDelegate?
@@ -30,7 +31,7 @@ class ProductPriceWithCartCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func setData(name: String, contents: [String], index: Int, style: Int, standalone_flag: Bool) {
+    func setData(name: String, description: String, contents: [String], index: Int, style: Int, standalone_flag: Bool) {
         for subView in self.stackViewPrice.arrangedSubviews {
             subView.removeFromSuperview()
             self.stackViewPrice.removeArrangedSubview(subView)
@@ -38,6 +39,7 @@ class ProductPriceWithCartCell: UITableViewCell {
 
         self.rowIndex = index
         self.labelProductName.text = name
+        self.labelDescription.text = description
         if style == 0 {
             self.labelProductName.textColor = UIColor.systemBlue
             self.labelProductName.text = "品名"

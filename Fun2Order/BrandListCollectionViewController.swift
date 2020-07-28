@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import Firebase
+import GoogleMobileAds
 
 protocol BrandListDelegate: class {
     func getBrandInformation(sender: BrandListCollectionViewController, info: BrandTemplate)
@@ -23,6 +24,7 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
     var searchedFlag: Bool = false
     var refreshControl = UIRefreshControl()
     var selectedIndex: Int = 0
+    var bannerView: GADBannerView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +49,10 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
         self.refreshControl.addTarget(self, action: #selector(self.refreshBrandList), for: .valueChanged)
         self.collectionView.addSubview(refreshControl)
 
+        //self.bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+        self.bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
+        addBannerViewToView(self.bannerView)
+        
         downloadFBBrandCategoryList()
     }
 
@@ -54,6 +60,7 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
         self.title = "品牌列表"
         self.navigationController?.title = "品牌列表"
         self.tabBarController?.title = "品牌列表"
+        reloadBannerAd()
         navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
     }
 
@@ -66,6 +73,38 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
         self.view.endEditing(true)
     }
 
+    func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(bannerView)
+        view.addConstraints([NSLayoutConstraint(item: bannerView,
+                            attribute: .bottom,
+                            relatedBy: .equal,
+                            toItem: bottomLayoutGuide,
+                            attribute: .top,
+                            multiplier: 1,
+                            constant: 0),
+         NSLayoutConstraint(item: bannerView,
+                            attribute: .centerX,
+                            relatedBy: .equal,
+                            toItem: view,
+                            attribute: .centerX,
+                            multiplier: 1,
+                            constant: 0)
+        ])
+        
+        bannerView.adUnitID = NOTIFICATIONLIST_BANNER_AD
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        bannerView.delegate = self
+    }
+    
+    func reloadBannerAd() {
+        bannerView.adUnitID = NOTIFICATIONLIST_BANNER_AD
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        bannerView.delegate = self
+    }
+    
     @objc func refreshBrandList() {
         print("Refresh brand List...")
         downloadFBBrandCategoryList()
@@ -279,5 +318,25 @@ extension BrandListCollectionViewController: BrandHeaderDelegate {
         self.collectionView.reloadSections(indexSet)
         self.collectionView.collectionViewLayout.invalidateLayout()
 
+    }
+}
+
+extension BrandListCollectionViewController: GADBannerViewDelegate {
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        print("Banner loaded successfully")
+        bannerView.alpha = 1
+        UIView.animate(withDuration: 1, animations: {
+          bannerView.alpha = 1
+        })
+        //self.isAdLoadedSuccess = true
+        //self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+    }
+    
+    func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
+        print("Fail to receive ads")
+        print(error)
+        //self.isAdLoadedSuccess = false
+        //self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        //self.tableView.reloadData()
     }
 }

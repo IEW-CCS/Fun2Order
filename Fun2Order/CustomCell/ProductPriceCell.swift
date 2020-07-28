@@ -11,6 +11,7 @@ import UIKit
 class ProductPriceCell: UITableViewCell {
     @IBOutlet weak var labelProductName: UILabel!
     @IBOutlet weak var stackViewPrice: UIStackView!
+    @IBOutlet weak var labelDescription: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,13 +22,14 @@ class ProductPriceCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func setData(name: String, contents: [String], style: Int) {
+    func setData(name: String, description: String, contents: [String], style: Int) {
         for subView in self.stackViewPrice.arrangedSubviews {
             subView.removeFromSuperview()
             self.stackViewPrice.removeArrangedSubview(subView)
         }
 
         self.labelProductName.text = name
+        self.labelDescription.text = description
         if style == 0 {
             self.labelProductName.textColor = UIColor.systemBlue
             self.labelProductName.text = "品名"

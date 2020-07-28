@@ -395,7 +395,8 @@ class DetailJoinGroupOrderTableViewController: UITableViewController, UIGestureR
         if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProductPriceWithCartCell", for: indexPath) as! ProductPriceWithCartCell
             let contents = self.getPriceRecipeItems(index: self.selectedIndex)
-            cell.setData(name: "", contents: contents, index: indexPath.row, style: 0, standalone_flag: false)
+            //let description = self.filterProducts[indexPath.row].productDescription ?? ""
+            cell.setData(name: "", description: "", contents: contents, index: indexPath.row, style: 0, standalone_flag: false)
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
 
             return cell
@@ -406,7 +407,8 @@ class DetailJoinGroupOrderTableViewController: UITableViewController, UIGestureR
             
             cell.delegate = self
             let contents = self.getProductPriceItems(index: indexPath.row)
-            cell.setData(name: self.filterProducts[indexPath.row].productName, contents: contents, index: indexPath.row, style: 1, standalone_flag: self.standAloneFlagArray[self.selectedIndex])
+            let description = self.filterProducts[indexPath.row].productDescription ?? ""
+            cell.setData(name: self.filterProducts[indexPath.row].productName, description: description, contents: contents, index: indexPath.row, style: 1, standalone_flag: self.standAloneFlagArray[self.selectedIndex])
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
 
             return cell
@@ -532,7 +534,7 @@ extension DetailJoinGroupOrderTableViewController: GADInterstitialDelegate {
     func interstitialDidReceiveAd(_ ad: GADInterstitial) {
         print("interstitialDidReceiveAd")
         if self.interstitialAd.isReady {
-            //self.interstitialAd.present(fromRootViewController: self)
+            self.interstitialAd.present(fromRootViewController: self)
             refreshJoinGroupOrder()
         } else {
             print("Interstitial Ad is not ready !!")

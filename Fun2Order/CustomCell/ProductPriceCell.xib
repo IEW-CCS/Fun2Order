@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -29,17 +29,26 @@
                             <constraint firstAttribute="width" constant="180" id="L8D-Ry-d0P"/>
                         </constraints>
                     </stackView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rph-wG-vQh">
+                        <rect key="frame" x="10" y="31" width="0.0" height="0.0"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="rph-wG-vQh" firstAttribute="top" secondItem="MQ1-Pq-K4n" secondAttribute="bottom" constant="-1.5" id="CEX-J3-OPh"/>
                     <constraint firstItem="MQ1-Pq-K4n" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Cp8-6Y-NPi"/>
                     <constraint firstItem="Sgb-zt-unf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2" id="bls-4U-To9"/>
                     <constraint firstItem="Sgb-zt-unf" firstAttribute="centerY" secondItem="MQ1-Pq-K4n" secondAttribute="centerY" id="hi8-EP-Mw7"/>
                     <constraint firstItem="MQ1-Pq-K4n" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="mY9-od-148"/>
+                    <constraint firstItem="rph-wG-vQh" firstAttribute="leading" secondItem="MQ1-Pq-K4n" secondAttribute="leading" id="pgE-ri-65h"/>
                     <constraint firstAttribute="trailing" secondItem="Sgb-zt-unf" secondAttribute="trailing" constant="10" id="zUD-ay-ytX"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="labelDescription" destination="rph-wG-vQh" id="Z99-Vq-c4q"/>
                 <outlet property="labelProductName" destination="MQ1-Pq-K4n" id="iuf-4e-fat"/>
                 <outlet property="stackViewPrice" destination="Sgb-zt-unf" id="F9m-tg-p0R"/>
             </connections>

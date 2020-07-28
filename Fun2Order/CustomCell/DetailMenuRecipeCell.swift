@@ -130,7 +130,8 @@ class DetailMenuRecipeCell: UITableViewCell {
         //print("Click item index = \(index)")
         
         self.recipeItems.recipeList[index].itemCheckedFlag = !self.recipeItems.recipeList[index].itemCheckedFlag
-        if self.recipeItemRelation[index] {
+        //if self.recipeItemRelation[index] {
+        if self.recipeItems.recipeList[index].itemCheckedFlag {
             selectedItem.setSelected()
         } else {
             selectedItem.setUnSelected()
