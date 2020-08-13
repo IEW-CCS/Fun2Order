@@ -255,7 +255,7 @@ class NotificationActionTableViewController: UITableViewController {
                     }
                     
                     updateNotificationReplyStatus(order_number: self.notificationData.orderNumber, reply_status: MENU_ORDER_REPLY_STATUS_REJECT, reply_time: dateString)
-                    self.refreshNotificationDelegate?.refreshNotificationList()
+                    //self.refreshNotificationDelegate?.refreshNotificationList()
 
                 } catch {
                     print("notAttendGroupOrder jsonData decode failed: \(error.localizedDescription)")

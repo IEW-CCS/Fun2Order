@@ -130,55 +130,62 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
         }
         
         let contentGroup = DispatchGroup()
-                
-        for i in 0...self.memberList.count - 1 {
-            if self.memberList[i].isSelected {
-                var memberContent: MenuOrderMemberContent = MenuOrderMemberContent()
-                var contentItem: MenuOrderContentItem = MenuOrderContentItem()
-                
-                let databaseRef = Database.database().reference()
-                let pathString = "USER_PROFILE/\(self.memberList[i].memberID)"
-                contentGroup.enter()
-                databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
-                    if snapshot.exists() {
-                        var userProfile: UserProfile = UserProfile()
-                        let profileData = snapshot.value
-                        let jsonData = try? JSONSerialization.data(withJSONObject: profileData as Any, options: [])
+        if self.memberList.isEmpty {
+            self.uploadMenuOrder()
+            //self.sendGroupOrderNotification()
+            self.sendMulticastNotification()
+            return
+        } else {
+            for i in 0...self.memberList.count - 1 {
+                if self.memberList[i].isSelected {
+                    var memberContent: MenuOrderMemberContent = MenuOrderMemberContent()
+                    var contentItem: MenuOrderContentItem = MenuOrderContentItem()
+                    
+                    let databaseRef = Database.database().reference()
+                    let pathString = "USER_PROFILE/\(self.memberList[i].memberID)"
+                    contentGroup.enter()
+                    databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+                        if snapshot.exists() {
+                            var userProfile: UserProfile = UserProfile()
+                            let profileData = snapshot.value
+                            let jsonData = try? JSONSerialization.data(withJSONObject: profileData as Any, options: [])
 
-                        let decoder: JSONDecoder = JSONDecoder()
-                        do {
-                            userProfile = try decoder.decode(UserProfile.self, from: jsonData!)
-                        } catch {
-                            print("createMenuOrder userProfile jsonData decode failed: \(error.localizedDescription)")
-                            return
-                            //presentSimpleAlertMessage(title: "資料錯誤", message: "")
-                        }
-                        //let token_id = snapshot.value as! String
-                        let token_id = userProfile.tokenID
-                        var ostype = userProfile.ostype
-                        if ostype == nil || ostype! == "" {
-                            ostype = "iOS"
-                        }
-                        
-                        memberContent.memberID = self.memberList[i].memberID
-                        memberContent.orderOwnerID = self.menuOrder.orderOwnerID
-                        memberContent.memberTokenID = token_id
-                        contentItem.orderNumber = self.menuOrder.orderNumber
-                        contentItem.itemOwnerID = self.memberList[i].memberID
-                        contentItem.itemOwnerName = self.memberList[i].memberName
-                        contentItem.replyStatus = MENU_ORDER_REPLY_STATUS_WAIT
-                        contentItem.createTime = self.menuOrder.createTime
-                        contentItem.ostype = ostype
-                        memberContent.orderContent = contentItem
+                            let decoder: JSONDecoder = JSONDecoder()
+                            do {
+                                userProfile = try decoder.decode(UserProfile.self, from: jsonData!)
+                            } catch {
+                                print("createMenuOrder userProfile jsonData decode failed: \(error.localizedDescription)")
+                                return
+                                //presentSimpleAlertMessage(title: "資料錯誤", message: "")
+                            }
+                            //let token_id = snapshot.value as! String
+                            let token_id = userProfile.tokenID
+                            var ostype = userProfile.ostype
+                            if ostype == nil || ostype! == "" {
+                                ostype = "iOS"
+                            }
+                            
+                            memberContent.memberID = self.memberList[i].memberID
+                            memberContent.orderOwnerID = self.menuOrder.orderOwnerID
+                            memberContent.memberTokenID = token_id
+                            contentItem.orderNumber = self.menuOrder.orderNumber
+                            contentItem.itemOwnerID = self.memberList[i].memberID
+                            contentItem.itemOwnerName = self.memberList[i].memberName
+                            contentItem.replyStatus = MENU_ORDER_REPLY_STATUS_WAIT
+                            contentItem.createTime = self.menuOrder.createTime
+                            contentItem.ostype = ostype
+                            memberContent.orderContent = contentItem
 
-                        self.menuOrder.contentItems.append(memberContent)
+                            self.menuOrder.contentItems.append(memberContent)
+                            contentGroup.leave()
+                        }
+                    })  { (error) in
+                        print(error.localizedDescription)
                         contentGroup.leave()
                     }
-                })  { (error) in
-                    print(error.localizedDescription)
-                    contentGroup.leave()
                 }
             }
+
         }
         
         contentGroup.notify(queue: .main) {
@@ -186,27 +193,8 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
             //self.app.saveContext()
 
             self.uploadMenuOrder()
-            self.sendGroupOrderNotification()
-            /*
-            if self.isAttended {
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                guard let join_vc = storyboard.instantiateViewController(withIdentifier: "DETAIL_JOIN_ORDER_VC") as? DetailJoinGroupOrderTableViewController else{
-                    assertionFailure("[AssertionFailure] StoryBoard: JOIN_ORDER_VC can't find!! (GroupOrderViewController)")
-                    return
-                }
-
-                join_vc.detailMenuInformation = self.detailMenuInformation
-                join_vc.memberContent = self.menuOrder.contentItems[0]
-                join_vc.memberIndex = 0
-                join_vc.menuOrder = self.menuOrder
-                DispatchQueue.main.async {
-                    self.show(join_vc, sender: self)
-                }
-            } else {
-                self.navigationController?.popToRootViewController(animated: true)
-                self.dismiss(animated: false, completion: nil)
-            }
-            */
+            //self.sendGroupOrderNotification()
+            self.sendMulticastNotification()
         }
     }
     
@@ -246,6 +234,43 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
                     self.dismiss(animated: false, completion: nil)
                 }
             }
+        }
+    }
+
+    func sendMulticastNotification() {
+        var tokenIDs: [String] = [String]()
+        
+        if !self.menuOrder.contentItems.isEmpty {
+            var orderNotify: NotificationData = NotificationData()
+            let title: String = "團購邀請"
+            var body: String = ""
+            let dateNow = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = DATETIME_FORMATTER
+            let dateTimeString = formatter.string(from: dateNow)
+
+            body = "來自『 \(self.menuOrder.orderOwnerName)』 發起的團購邀請，請點擊通知以查看詳細資訊。"
+            orderNotify.messageTitle = title
+            orderNotify.messageBody = body
+            orderNotify.notificationType = NOTIFICATION_TYPE_ACTION_JOIN_ORDER
+            orderNotify.receiveTime = dateTimeString
+            orderNotify.orderOwnerID = self.menuOrder.orderOwnerID
+            orderNotify.orderOwnerName = self.menuOrder.orderOwnerName
+            orderNotify.menuNumber = self.menuOrder.menuNumber
+            orderNotify.orderNumber = self.menuOrder.orderNumber
+            orderNotify.dueTime = self.menuOrder.dueTime
+            orderNotify.brandName = self.menuOrder.brandName
+            orderNotify.attendedMemberCount = self.menuOrder.contentItems.count
+            orderNotify.messageDetail = self.textViewMessage.text
+            orderNotify.isRead = "N"
+
+            for i in 0...self.menuOrder.contentItems.count - 1 {
+                tokenIDs.append(self.menuOrder.contentItems[i].memberTokenID)
+            }
+            
+            let sender = PushNotificationSender()
+            //sender.sendDeviceGroupPushNotification(to: tokenIDs, title: title, body: body, data: orderNotify, ostype: "iOS")
+            sender.sendMulticastMessage(to: tokenIDs, notification_key: "", title: title, body: body, data: orderNotify, ostype: "iOS")
         }
     }
 
@@ -297,6 +322,7 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
                     continue
                 }
                 
+                usleep(50000)
                 sender.sendPushNotification(to: tokenID, title: title, body: body, data: orderNotify, ostype: self.menuOrder.contentItems[i].orderContent.ostype)
             }
         }
@@ -389,8 +415,8 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
     }
     
     @IBAction func sendOrderGroup(_ sender: UIButton) {
-        let friendList = retrieveFriendList()
-        print("\(friendList)")
+        //let friendList = retrieveFriendList()
+        //print("\(friendList)")
         
         if self.memberList.isEmpty && !self.isAttended {
             print("Selected Group's member list is empty")

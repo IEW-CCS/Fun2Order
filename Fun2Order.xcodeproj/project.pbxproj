@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -54,6 +54,7 @@
 		3625BB33245A5E8500330816 /* GuideToolTip.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3625BB32245A5E8500330816 /* GuideToolTip.plist */; };
 		3625BB35245A9C7500330816 /* TestFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3625BB34245A9C7500330816 /* TestFunctions.swift */; };
 		362B9102234F27110079A108 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362B9101234F27110079A108 /* HomeViewController.swift */; };
+		362B9AC424D2761700A1858A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 362B9AC324D2761700A1858A /* Kingfisher */; };
 		362C4821235B56550010C845 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362C481F235B56550010C845 /* RecipeCell.swift */; };
 		362C4822235B56550010C845 /* RecipeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 362C4820235B56550010C845 /* RecipeCell.xib */; };
 		362C4824235B596A0010C845 /* RecipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362C4823235B596A0010C845 /* RecipeTableViewController.swift */; };
@@ -192,6 +193,7 @@
 		366E126A23502B9100BFFF45 /* FSPagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E126223502B9100BFFF45 /* FSPagerView.swift */; };
 		366E126B23502B9100BFFF45 /* FSPageViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E126323502B9100BFFF45 /* FSPageViewLayout.swift */; };
 		366E126C23502B9100BFFF45 /* FSPageViewTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E126423502B9100BFFF45 /* FSPageViewTransformer.swift */; };
+		3675618724E2C82E0057C3C3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3675618624E2C82E0057C3C3 /* GoogleService-Info.plist */; };
 		36757C482482169800F5C08A /* BrandCategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36757C472482169800F5C08A /* BrandCategoryTableViewController.swift */; };
 		36757C4D2482181800F5C08A /* BasicTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36757C4B2482181800F5C08A /* BasicTitleCell.swift */; };
 		36757C4E2482181800F5C08A /* BasicTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36757C4C2482181800F5C08A /* BasicTitleCell.xib */; };
@@ -422,7 +424,6 @@
 		F505DDEA23692AC900E3F681 /* VerifyMailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F505DDE523692AC900E3F681 /* VerifyMailController.swift */; };
 		F505DDEC23692AE300E3F681 /* HomeTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F505DDEB23692AE300E3F681 /* HomeTabBar.swift */; };
 		F505DDEE23692AEF00E3F681 /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F505DDED23692AEF00E3F681 /* EntryViewController.swift */; };
-		F505DDF223696BF900E3F681 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F505DDF123696BF900E3F681 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -645,6 +646,7 @@
 		366E126323502B9100BFFF45 /* FSPageViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSPageViewLayout.swift; sourceTree = "<group>"; };
 		366E126423502B9100BFFF45 /* FSPageViewTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSPageViewTransformer.swift; sourceTree = "<group>"; };
 		366E126D23502BD100BFFF45 /* Fun2Order-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fun2Order-Bridging-Header.h"; sourceTree = "<group>"; };
+		3675618624E2C82E0057C3C3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		36757C472482169800F5C08A /* BrandCategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandCategoryTableViewController.swift; sourceTree = "<group>"; };
 		36757C4B2482181800F5C08A /* BasicTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicTitleCell.swift; sourceTree = "<group>"; };
 		36757C4C2482181800F5C08A /* BasicTitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BasicTitleCell.xib; sourceTree = "<group>"; };
@@ -878,7 +880,6 @@
 		F505DDE523692AC900E3F681 /* VerifyMailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyMailController.swift; sourceTree = "<group>"; };
 		F505DDEB23692AE300E3F681 /* HomeTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTabBar.swift; sourceTree = "<group>"; };
 		F505DDED23692AEF00E3F681 /* EntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
-		F505DDF123696BF900E3F681 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -886,6 +887,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				362B9AC424D2761700A1858A /* Kingfisher in Frameworks */,
 				36AA19A723D531E70039A758 /* Charts.framework in Frameworks */,
 				209BEFB628E04A098C352AEB /* Pods_Fun2Order.framework in Frameworks */,
 			);
@@ -1061,7 +1063,7 @@
 				363D9D262371C2180038E136 /* AppConfig.plist */,
 				36B80CA023B9B715004359E4 /* MyProfile.plist */,
 				3625BB32245A5E8500330816 /* GuideToolTip.plist */,
-				F505DDF123696BF900E3F681 /* GoogleService-Info.plist */,
+				3675618624E2C82E0057C3C3 /* GoogleService-Info.plist */,
 				3641C744234CCEC30058CF26 /* Main.storyboard */,
 				F505DDEB23692AE300E3F681 /* HomeTabBar.swift */,
 				362B9101234F27110079A108 /* HomeViewController.swift */,
@@ -1536,6 +1538,9 @@
 			dependencies = (
 			);
 			name = Fun2Order;
+			packageProductDependencies = (
+				362B9AC324D2761700A1858A /* Kingfisher */,
+			);
 			productName = Fun2Order;
 			productReference = 3641C73B234CCEC30058CF26 /* 揪Fun.app */;
 			productType = "com.apple.product-type.application";
@@ -1565,6 +1570,9 @@
 				Base,
 			);
 			mainGroup = 3641C732234CCEC30058CF26;
+			packageReferences = (
+				362B9AC224D2761700A1858A /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = 3641C73C234CCEC30058CF26 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -1738,7 +1746,6 @@
 				365948E523CC11D600993062 /* SelectMenuRecipeTemplateCell.xib in Resources */,
 				3625ACD123C764920037B865 /* Icon_Menu_Recipe.png in Resources */,
 				36973AD523AB7343008804C5 /* Icon_UserAccount.png in Resources */,
-				F505DDF223696BF900E3F681 /* GoogleService-Info.plist in Resources */,
 				36D583EC2354151500AEB84F /* 上宇林@3x.jpg in Resources */,
 				36159C0C2354B9F400664D75 /* Icon_Favorite_Button.png in Resources */,
 				36D5839D2353466800AEB84F /* 2.png in Resources */,
@@ -1765,6 +1772,7 @@
 				365DF519244D57C9004C47C4 /* ReportCell.xib in Resources */,
 				3649CFB8235D430000C0F2EA /* Image_Me.png in Resources */,
 				3634A61A24C4764100C86C97 /* Segment_Color_15.png in Resources */,
+				3675618724E2C82E0057C3C3 /* GoogleService-Info.plist in Resources */,
 				36DC7A4C2356CB94009D48F5 /* 奶茶@3x.png in Resources */,
 				36C8C1BA235E8A2C002AD40F /* Image_QR_Code_original.png in Resources */,
 				3659705523B07FD4008CDD57 /* Icon_Password.png in Resources */,
@@ -2232,7 +2240,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -2240,7 +2248,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = TeamPlus.Fun2Order;
 				PRODUCT_NAME = "揪Fun";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2260,7 +2268,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -2268,7 +2276,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = TeamPlus.Fun2Order;
 				PRODUCT_NAME = "揪Fun";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2300,6 +2308,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		362B9AC224D2761700A1858A /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.14.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		362B9AC324D2761700A1858A /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 362B9AC224D2761700A1858A /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		3655A09224A2E112009AE1C5 /* Fun2Order.xcdatamodeld */ = {

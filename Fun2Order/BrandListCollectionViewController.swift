@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import Firebase
 import GoogleMobileAds
+import Kingfisher
 
 protocol BrandListDelegate: class {
     func getBrandInformation(sender: BrandListCollectionViewController, info: BrandTemplate)
@@ -57,11 +58,13 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
         self.title = "品牌列表"
         self.navigationController?.title = "品牌列表"
         self.tabBarController?.title = "品牌列表"
+        navigationController?.setNavigationBarHidden(false, animated: false)
         reloadBannerAd()
-        navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
+        //navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -107,7 +110,11 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
     
     @objc func refreshBrandList() {
         print("Refresh brand List...")
-        downloadFBBrandCategoryList()
+        if verifyImaegeStatus() {
+            downloadFBBrandCategoryList()
+        } else {
+            self.refreshControl.endRefreshing()
+        }
     }
     
     func prepareBrandCategoryList() {
@@ -147,6 +154,16 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
         }
     }
 
+    func verifyImaegeStatus() -> Bool {
+        var verifyResult: Bool = true
+        
+        if self.filterBrandList.contains(where: { $0.brandImage == nil }) {
+            verifyResult = false
+        }
+        
+        return verifyResult
+    }
+    
     func downloadFBBrandCategoryList() {
         self.brandList.removeAll()
 
@@ -181,6 +198,9 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
 
                 self.collectionView.reloadData()
                 self.collectionView.collectionViewLayout.invalidateLayout()
+                //var contentSize = self.collectionView.collectionViewLayout.collectionViewContentSize
+                //contentSize.height = contentSize.height + 20
+                //self.collectionView.collectionViewLayout.collectionViewContentSize = contentSize
                 self.refreshControl.endRefreshing()
             }
         }) { (error) in
@@ -266,7 +286,7 @@ extension BrandListCollectionViewController: BrandCollectionCellDelegate {
         }
         self.brandList[index].brandImage = iconImage
         if let filterIndex = self.filterBrandList.firstIndex(where: { $0.index == index }) {
-            print("The first index = \(filterIndex)")
+            //print("The first index = \(filterIndex)")
             self.filterBrandList[filterIndex].brandImage = iconImage
         }
         //filteredBrandListByCategory()

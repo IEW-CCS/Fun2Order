@@ -230,7 +230,7 @@ func downloadFBBrandImage(brand_url: String, completion: @escaping(UIImage?) -> 
     var alertWindow: UIWindow!
     if brand_url != "" {
         let storageRef = Storage.storage().reference()
-        storageRef.child(brand_url).getData(maxSize: 3 * 2048 * 2048, completion: { (data, error) in
+        storageRef.child(brand_url).getData(maxSize: 3 * 1024 * 100, completion: { (data, error) in
             if let error = error {
                 print(error.localizedDescription)
                 let controller = UIAlertController(title: "存取品牌影像錯誤", message: error.localizedDescription, preferredStyle: .alert)
@@ -597,4 +597,20 @@ func downloadFBDetailMenuInformation(menu_number: String, completion: @escaping 
         print("downloadFBDetailMenuInformation Firebase error = \(error.localizedDescription)")
         completion(nil)
     }
+}
+
+func uploadFBBrandCategory(brand_name: String, brand_category: DetailBrandCategory) {
+    
+    let databaseRef = Database.database().reference()
+    let pathString = "BRAND_CATEGORY/\(brand_name)"
+    
+    databaseRef.child(pathString).setValue(brand_category.toAnyObject())
+}
+
+func uploadFBDetailBrandProfile(brand_name: String, brand_profile: DetailBrandProfile) {
+    
+    let databaseRef = Database.database().reference()
+    let pathString = "DETAIL_BRAND_PROFILE/\(brand_name)"
+    
+    databaseRef.child(pathString).setValue(brand_profile.toAnyObject())
 }

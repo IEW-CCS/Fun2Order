@@ -49,9 +49,9 @@ class HistoryTableViewController: UITableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        self.title = "歷史紀錄"
-        self.navigationController?.title = "歷史紀錄"
-        self.tabBarController?.title = "歷史紀錄"
+        self.title = "揪團紀錄"
+        self.navigationController?.title = "揪團紀錄"
+        self.tabBarController?.title = "揪團紀錄"
         navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
         setupBannerAdView()
     }
@@ -91,7 +91,8 @@ class HistoryTableViewController: UITableViewController {
             } else {
                 if menuOrderList[i].dueTime < nowString {
                     self.filteredMenuOrderList.append(self.menuOrderList[i])
-                }            }
+                }
+            }
         }
     }
     
@@ -134,6 +135,7 @@ class HistoryTableViewController: UITableViewController {
                     self.tableView.reloadData()
                 }
             } else {
+                self.filteredMenuOrderList.removeAll()
                 self.tableView.reloadData()
                 print("queryMenuOrder snapshot doesn't exist!")
                 return

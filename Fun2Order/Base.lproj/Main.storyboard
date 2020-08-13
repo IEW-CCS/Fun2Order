@@ -1797,10 +1797,10 @@
             </objects>
             <point key="canvasLocation" x="-2984.057971014493" y="-502.23214285714283"/>
         </scene>
-        <!--通知-->
+        <!--邀請通知-->
         <scene sceneID="wmy-qK-5NW">
             <objects>
-                <tableViewController storyboardIdentifier="NOTIFY_VC" title="通知" id="dyB-lO-HUv" customClass="NotificationTableViewController" customModule="揪Fun" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NOTIFY_VC" title="邀請通知" id="dyB-lO-HUv" customClass="NotificationTableViewController" customModule="揪Fun" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="XYK-s1-56r">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1840,7 +1840,7 @@
                             <outlet property="delegate" destination="dyB-lO-HUv" id="WOe-TB-YwR"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="通知" image="TabBar_Notify" selectedImage="TabBar_Notify" id="VlK-GF-EFr"/>
+                    <tabBarItem key="tabBarItem" title="邀請通知" image="TabBar_Notify" selectedImage="TabBar_Notify" id="VlK-GF-EFr"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="segmentType" destination="xfO-CH-f3l" id="iLZ-zw-efd"/>
@@ -2572,10 +2572,10 @@
             </objects>
             <point key="canvasLocation" x="-1249" y="-1215"/>
         </scene>
-        <!--菜單列表-->
+        <!--自製菜單-->
         <scene sceneID="5ZY-I6-s9L">
             <objects>
-                <tableViewController storyboardIdentifier="MENULIST_VC" title="菜單列表" id="8zi-YN-Plp" customClass="MenuListTableViewController" customModule="揪Fun" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="MENULIST_VC" title="自製菜單" id="8zi-YN-Plp" customClass="MenuListTableViewController" customModule="揪Fun" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Pso-vS-7ag">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2595,7 +2595,7 @@
                             <outlet property="delegate" destination="8zi-YN-Plp" id="yxA-Wa-hCy"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="自製菜單" image="TabBar_Home" selectedImage="TabBar_Home" id="htG-hQ-8r1"/>
+                    <tabBarItem key="tabBarItem" title="自製菜單" image="TabBar_Menu" selectedImage="TabBar_Menu" id="htG-hQ-8r1"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                 </tableViewController>
@@ -2672,7 +2672,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="212-21-1zO">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="-88" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
                                 <barButtonItem title="取消" id="3G1-92-PTN">
@@ -2859,11 +2859,11 @@
                         <color key="selectedImageTintColor" red="0.14901960784313725" green="0.65098039215686276" blue="0.60392156862745094" alpha="0.84705882352941175" colorSpace="calibratedRGB"/>
                     </tabBar>
                     <connections>
-                        <segue destination="8zi-YN-Plp" kind="relationship" relationship="viewControllers" id="kBG-6Y-L2v"/>
-                        <segue destination="vnr-TV-y70" kind="relationship" relationship="viewControllers" id="uvG-Gi-PBF"/>
-                        <segue destination="dyB-lO-HUv" kind="relationship" relationship="viewControllers" id="PoE-9Z-GpC"/>
-                        <segue destination="BkH-ek-Dwa" kind="relationship" relationship="viewControllers" id="y99-4l-U7F"/>
-                        <segue destination="Qxv-6f-9in" kind="relationship" relationship="viewControllers" id="esa-Hv-qes"/>
+                        <segue destination="vnr-TV-y70" kind="relationship" relationship="viewControllers" id="Cxl-cR-0kr"/>
+                        <segue destination="8zi-YN-Plp" kind="relationship" relationship="viewControllers" id="3BQ-DT-ael"/>
+                        <segue destination="dyB-lO-HUv" kind="relationship" relationship="viewControllers" id="QTw-TG-4yQ"/>
+                        <segue destination="BkH-ek-Dwa" kind="relationship" relationship="viewControllers" id="X6S-9d-6ry"/>
+                        <segue destination="Qxv-6f-9in" kind="relationship" relationship="viewControllers" id="v7d-nG-Fek"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KUe-e4-efo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2909,10 +2909,10 @@
             </objects>
             <point key="canvasLocation" x="3719" y="-1969"/>
         </scene>
-        <!--訂單歷史紀錄-->
+        <!--揪團歷史紀錄-->
         <scene sceneID="uMw-ne-tbo">
             <objects>
-                <tableViewController title="訂單歷史紀錄" id="BkH-ek-Dwa" customClass="HistoryTableViewController" customModule="揪Fun" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="揪團歷史紀錄" id="BkH-ek-Dwa" customClass="HistoryTableViewController" customModule="揪Fun" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ahG-BJ-RK5">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2941,7 +2941,7 @@
                             <outlet property="delegate" destination="BkH-ek-Dwa" id="SNr-IV-Ihd"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="紀錄" image="TabBar_History" selectedImage="TabBar_History" id="QcF-56-Ro9"/>
+                    <tabBarItem key="tabBarItem" title="揪團紀錄" image="TabBar_History" selectedImage="TabBar_History" id="QcF-56-Ro9"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="segmentType" destination="QCP-2Q-G3U" id="1vj-Vm-PFB"/>
@@ -3099,8 +3099,7 @@
                             <outlet property="delegate" destination="vnr-TV-y70" id="sCU-JZ-KuK"/>
                         </connections>
                     </collectionView>
-                    <tabBarItem key="tabBarItem" title="品牌" image="TabBar_Brand" selectedImage="TabBar_Brand" id="0bV-VC-Qk2"/>
-                    <navigationItem key="navigationItem" title="品牌列表" id="ZyC-RG-kdM"/>
+                    <tabBarItem key="tabBarItem" title="品牌列表" image="TabBar_Brand" selectedImage="TabBar_Brand" id="0bV-VC-Qk2"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Pd-B7-4GF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -4298,7 +4297,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9NQ-PY-VDq" customClass="ScrollUISegmentController" customModule="揪Fun" customModuleProvider="target">
-                                                    <rect key="frame" x="-1" y="0.0" width="407" height="44"/>
+                                                    <rect key="frame" x="-2" y="0.0" width="406" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 </view>
@@ -5154,7 +5153,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="tEh-jb-Yam">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="-311" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
                                 <barButtonItem title="取消" id="1aH-bF-icT">
@@ -7362,7 +7361,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Ue0-yi-4xJ"/>
-        <segue reference="uvG-Gi-PBF"/>
+        <segue reference="Cxl-cR-0kr"/>
         <segue reference="4er-VB-nT3"/>
         <segue reference="dLe-pF-aQX"/>
     </inferredMetricsTieBreakers>
@@ -7387,6 +7386,7 @@
         <image name="TabBar_History" width="25" height="25"/>
         <image name="TabBar_Home" width="25" height="25"/>
         <image name="TabBar_Me" width="25" height="25"/>
+        <image name="TabBar_Menu" width="25" height="25"/>
         <image name="TabBar_Notify" width="25" height="25"/>
         <image name="ToolBar_Cart" width="25" height="21"/>
         <image name="ToolBar_Menu" width="25" height="25"/>

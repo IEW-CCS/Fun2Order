@@ -17,5 +17,5 @@ target 'Fun2Order' do
     pod 'Firebase/Storage'
     pod 'Firebase/Firestore'
     pod 'Firebase/Database'
-    pod "FlagPhoneNumber"
+    pod 'FlagPhoneNumber'
 end

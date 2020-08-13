@@ -41,9 +41,9 @@ class NotificationTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.title = "通知列表"
-        self.navigationController?.title = "通知列表"
-        self.tabBarController?.title = "通知列表"
+        self.title = "邀請通知"
+        self.navigationController?.title = "邀請通知"
+        self.tabBarController?.title = "邀請通知"
         navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
         setupBannerAdView()
     }
@@ -310,8 +310,10 @@ class NotificationTableViewController: UITableViewController {
 extension NotificationTableViewController: ApplicationRefreshNotificationDelegate {
     func refreshNotificationList() {
         print("NotificationTableViewController received ApplicationRefreshNotificationDelegate refreshNotificationList")
+        //usleep(1500000)
         self.notificationList.removeAll()
         self.notificationList = retrieveNotificationList()
+        self.filterNotificationTypeList(index: self.selectedIndex)
         DispatchQueue.main.async {
             setNotificationBadgeNumber()
             self.tableView.reloadData()

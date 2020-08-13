@@ -237,7 +237,7 @@ func addNewFriendRequestNotification(message: String, friend_id: String, friend_
                 }
             }
         }
-
+ 
         if isUserDuplicate {
             print("User ID is duplicate!")
             presentSimpleAlertMessage(title: "警告訊息", message: "[\(friend_name)]已存在於好友列表中")

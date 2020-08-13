@@ -1777,7 +1777,10 @@ func updateNotificationReplyStatus(order_number: String, reply_status: String, r
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
     vc = app.persistentContainer.viewContext
-    
+    //let app = UIApplication.shared.delegate as! AppDelegate
+    weak var refreshNotificationDelegate: ApplicationRefreshNotificationDelegate?
+
+    refreshNotificationDelegate = app.notificationDelegate
     let fetchRequest: NSFetchRequest<NOTIFICATION_TABLE> = NOTIFICATION_TABLE.fetchRequest()
     //let predicateString = "messageID == \"\(message_id)\""
     do {
@@ -1816,7 +1819,8 @@ func updateNotificationReplyStatus(order_number: String, reply_status: String, r
     }
     
     app.saveContext()
-    
+    //usleep(100000)
+    refreshNotificationDelegate?.refreshNotificationList()
 }
 
 func updateNotificationNewDueTime(order_number: String, due_time: String) {

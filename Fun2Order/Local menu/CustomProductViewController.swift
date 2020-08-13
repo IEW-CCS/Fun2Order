@@ -68,7 +68,7 @@ class CustomProductViewController: UIViewController, UIGestureRecognizerDelegate
             comments_string = self.textComments.text!
         }
         
-        if self.textSinglePrice.text != nil {
+        if self.textSinglePrice.text != nil && self.textSinglePrice.text!.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
             self.singlePrice = Int(self.textSinglePrice.text!)!
         }
 
