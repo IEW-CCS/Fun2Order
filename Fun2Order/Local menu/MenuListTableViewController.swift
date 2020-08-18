@@ -484,19 +484,12 @@ class MenuListTableViewController: UITableViewController, UIGestureRecognizerDel
 
 extension MenuListTableViewController: DisplayGroupOrderDelegate {
     func didGroupButtonPressed(at index: IndexPath) {
-        let groupList = retrieveGroupList()
-        if groupList.isEmpty{
-            presentSimpleAlertMessage(title: "提示訊息", message: "您尚未建立任何群組，請至\n『我的設定』--> 『群組資訊』中\n先建立群組並加入好友\n之後即可開始使用揪團功能")
-            return
-        }
-/*
-        guard let groupOrderController = self.storyboard?.instantiateViewController(withIdentifier: "GroupOrder_VC") as? GroupOrderViewController else{
-            assertionFailure("[AssertionFailure] StoryBoard: GroupOrder_VC can't find!! (MenuListTableViewController)")
-            return
-        }
-        groupOrderController.orderType = ORDER_TYPE_MENU
-        groupOrderController.menuInformation = self.menuInfosByCategory[index.row]
- */
+        //let groupList = retrieveGroupList()
+        //if groupList.isEmpty{
+        //    presentSimpleAlertMessage(title: "提示訊息", message: "您尚未建立任何群組，請至\n『我的設定』--> 『群組資訊』中\n先建立群組並加入好友\n之後即可開始使用揪團功能")
+        //    return
+        //}
+
         guard let groupOrderController = self.storyboard?.instantiateViewController(withIdentifier: "CREATE_ORDER_VC") as? GroupOrderTableViewController else {
             assertionFailure("[AssertionFailure] StoryBoard: CREATE_ORDER_VC can't find!! (MenuListTableViewController)")
             return

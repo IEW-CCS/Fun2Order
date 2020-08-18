@@ -13,44 +13,23 @@ import Firebase
 class DetailGroupOrderTableViewController: UITableViewController {
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var collectionGroup: UICollectionView!
-    //@IBOutlet weak var memberTableView: UITableView!
-    //@IBOutlet weak var textViewMessage: UITextView!
-    //@IBOutlet weak var labelDueDate: UILabel!
-    //@IBOutlet weak var buttonDueDate: UIButton!
-    //@IBOutlet weak var myCheckStatus: Checkbox!
-    //@IBOutlet weak var labelLocationCount: UILabel!
-    //@IBOutlet weak var checkboxContactInfo: Checkbox!
-    //@IBOutlet weak var buttonCreateOrder: UIButton!
     @IBOutlet weak var buttonNextStep: UIButton!
     
     var groupList: [Group] = [Group]()
     var memberList: [GroupMember] = [GroupMember]()
     var selectedGroupIndex: Int = 0
-    //var isAttended: Bool = true
-    //var favoriteStoreInfo: FavoriteStoreInfo = FavoriteStoreInfo()
-    //var menuInformation: MenuInformation = MenuInformation()
     var detailMenuInformation: DetailMenuInformation = DetailMenuInformation()
     var brandName: String = ""
     var orderType: String = ""
-    //var menuOrder: MenuOrder = MenuOrder()
-    //var isNeedContactInfo: Bool = false
-
-    //let app = UIApplication.shared.delegate as! AppDelegate
-    //var vc: NSManagedObjectContext!
+    var addIndex: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        //vc = app.persistentContainer.viewContext
 
         self.buttonNextStep.layer.borderWidth = 1.0
         self.buttonNextStep.layer.borderColor = UIColor.systemBlue.cgColor
         self.buttonNextStep.layer.cornerRadius = 6
         
-        //self.labelTitle.layer.borderWidth = 1.0
-        //self.labelTitle.layer.borderColor = UIColor.systemTeal.cgColor
-        //self.labelTitle.layer.cornerRadius = 6
-
         self.collectionGroup.layer.borderWidth = 1.0
         self.collectionGroup.layer.borderColor = UIColor.systemBlue.cgColor
         self.collectionGroup.layer.cornerRadius = 6
@@ -66,15 +45,17 @@ class DetailGroupOrderTableViewController: UITableViewController {
         self.tabBarController?.title = self.title
 
         self.groupList = retrieveGroupList()
-        if self.groupList.count > 0 {
+        if !self.groupList.isEmpty {
             self.memberList = retrieveMemberList(group_id: self.groupList[self.selectedGroupIndex].groupID)
             if !self.memberList.isEmpty {
                 for i in 0...self.memberList.count - 1 {
                     self.memberList[i].isSelected = true
                 }
             }
-            //self.memberTableView.reloadData()
+            self.addIndex = self.groupList.count
             self.tableView.reloadData()
+        } else {
+            self.addIndex = 0
         }
 
         self.labelTitle.text = self.detailMenuInformation.brandName
@@ -174,10 +155,25 @@ extension DetailGroupOrderTableViewController: UICollectionViewDelegate, UIColle
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.groupList.count
+        //return self.groupList.count
+        if self.groupList.isEmpty {
+            print("CollectionView numberOfItemsInSection return 1")
+            return 1
+        } else {
+            print("CollectionView numberOfItemsInSection return groupList.count + 1 = \(self.groupList.count + 1)")
+            return self.groupList.count + 1
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if indexPath.row == self.addIndex {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GroupCell", for: indexPath) as! GroupCell
+            cell.setData(group_image: UIImage(named: "Icon_Add_Group.png")!, group_name: "新增群組", index: indexPath)
+            cell.setTitleColor(title_color: UIColor.systemBlue)
+            cell.tag = indexPath.row
+            return cell
+        }
+
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GroupCell", for: indexPath) as! GroupCell
         cell.setData(group_image: self.groupList[indexPath.row].groupImage, group_name: self.groupList[indexPath.row].groupName, index: indexPath)
         //cell.setTitleColor(title_color: UIColor.black)
@@ -187,17 +183,29 @@ extension DetailGroupOrderTableViewController: UICollectionViewDelegate, UIColle
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Select group name = [\(self.groupList[indexPath.row].groupName)]")
-        self.selectedGroupIndex = indexPath.row
-        //List the members information in the group
-        self.memberList.removeAll()
-        self.memberList = retrieveMemberList(group_id: self.groupList[indexPath.row].groupID)
-        if !self.memberList.isEmpty {
-            for i in 0...self.memberList.count - 1 {
-                self.memberList[i].isSelected = true
+        if indexPath.row == self.addIndex {
+            print("Clicke to add new group")
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            guard let group_vc = storyboard.instantiateViewController(withIdentifier: "GROUP_EDIT_VC") as? GroupEditTableViewController else{
+                assertionFailure("[AssertionFailure] StoryBoard: GROUP_EDIT_VC can't find!! (ViewController)")
+                return
             }
+            
+            group_vc.delegate = self
+            navigationController?.show(group_vc, sender: self)
+        } else {
+            print("Select group name = [\(self.groupList[indexPath.row].groupName)]")
+            self.selectedGroupIndex = indexPath.row
+            //List the members information in the group
+            self.memberList.removeAll()
+            self.memberList = retrieveMemberList(group_id: self.groupList[indexPath.row].groupID)
+            if !self.memberList.isEmpty {
+                for i in 0...self.memberList.count - 1 {
+                    self.memberList[i].isSelected = true
+                }
+            }
+            self.tableView.reloadData()
         }
-        self.tableView.reloadData()
     }
 }
 
@@ -214,3 +222,26 @@ extension DetailGroupOrderTableViewController: SetMemberSelectedStatusDelegate {
     }
 }
 
+extension DetailGroupOrderTableViewController: GroupEditDelegate {
+    func editGroupComplete(sender: GroupEditTableViewController, index: Int) {
+        self.groupList = retrieveGroupList()
+        print("DetailGroupOrderTableViewController refreshGroup groupList.count = \(self.groupList.count)")
+        if self.groupList.isEmpty {
+            self.addIndex = 0
+        } else {
+            self.addIndex = self.groupList.count
+            self.selectedGroupIndex = self.groupList.count - 1
+        }
+
+        if index >= 0 {
+            self.memberList.removeAll()
+            self.memberList = retrieveMemberList(group_id: self.groupList[index].groupID)
+            self.selectedGroupIndex = index
+            //self.memberTableView.reloadData()
+        }
+
+        self.collectionGroup.reloadData()
+        self.collectionGroup.collectionViewLayout.invalidateLayout()
+        self.tableView.reloadData()
+    }
+}

@@ -112,13 +112,14 @@ class MemberGroupViewController: UIViewController {
             let editAction = UIAlertAction(title: "編輯群組", style: .default) { (_) in
                 print("Edit Group Information")
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                guard let group_vc = storyboard.instantiateViewController(withIdentifier: "GROUP_EDIT_VC") as? GroupEditViewController else{
+                guard let group_vc = storyboard.instantiateViewController(withIdentifier: "GROUP_EDIT_VC") as? GroupEditTableViewController else{
                     assertionFailure("[AssertionFailure] StoryBoard: GROUP_EDIT_VC can't find!! (ViewController)")
                     return
                 }
 
                 group_vc.isEditFlag = true
                 group_vc.groupID = self.groupList[sender.view!.tag].groupID
+                group_vc.selectedGroupIndex = self.selectedGroupIndex
                 group_vc.delegate = self
                 self.navigationController?.show(group_vc, sender: self)
             }
@@ -293,7 +294,7 @@ extension MemberGroupViewController: UICollectionViewDataSource, UICollectionVie
         if indexPath.row == self.addIndex {
             print("Clicke to add new group")
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            guard let group_vc = storyboard.instantiateViewController(withIdentifier: "GROUP_EDIT_VC") as? GroupEditViewController else{
+            guard let group_vc = storyboard.instantiateViewController(withIdentifier: "GROUP_EDIT_VC") as? GroupEditTableViewController else{
                 assertionFailure("[AssertionFailure] StoryBoard: GROUP_EDIT_VC can't find!! (ViewController)")
                 return
             }
@@ -374,7 +375,7 @@ extension MemberGroupViewController: GroupFriendListDelegate {
 }
 
 extension MemberGroupViewController: GroupEditDelegate {
-    func editGroupComplete(sender: GroupEditViewController) {
+    func editGroupComplete(sender: GroupEditTableViewController, index: Int) {
         self.groupList = retrieveGroupList()
         print("MemberGroupViewController refreshGroup groupList.count = \(self.groupList.count)")
         if self.groupList.isEmpty {
@@ -385,7 +386,14 @@ extension MemberGroupViewController: GroupEditDelegate {
             self.buttonAddMember.isEnabled = true
             self.selectedGroupIndex = self.groupList.count - 1
         }
-        
+
+        if index >= 0 {
+            self.memberList.removeAll()
+            self.memberList = retrieveMemberList(group_id: self.groupList[index].groupID)
+            self.selectedGroupIndex = index
+            //self.memberTableView.reloadData()
+        }
+
         self.collectionGroup.reloadData()
         self.collectionGroup.collectionViewLayout.invalidateLayout()
         self.memberTableView.reloadData()

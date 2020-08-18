@@ -8,6 +8,7 @@
 
 import UIKit
 import GoogleMobileAds
+import Firebase
 
 class DetailBrandTableViewController: UITableViewController {
     @IBOutlet weak var imageBrandIcon: UIImageView!
@@ -24,6 +25,7 @@ class DetailBrandTableViewController: UITableViewController {
     var productCategory: [String] = [String]()
     var selectedIndex: Int = -1
     var bannerView: GADBannerView!
+    var menuOrder: MenuOrder = MenuOrder()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -174,7 +176,7 @@ class DetailBrandTableViewController: UITableViewController {
         for i in 0...priceTemplate.recipeList.count - 1 {
             itemsString.append(priceTemplate.recipeList[i].itemName)
         }
-                
+
         return itemsString
     }
     
@@ -209,21 +211,187 @@ class DetailBrandTableViewController: UITableViewController {
     }
     
     @IBAction func confirmJoinGroup(_ sender: UIButton) {
-        let groupList = retrieveGroupList()
-        if groupList.isEmpty{
-            presentSimpleAlertMessage(title: "提示訊息", message: "您尚未建立任何群組，請至\n『我的設定』--> 『群組資訊』中\n先建立群組並加入好友\n之後即可開始使用揪團功能")
-            return
+        //let groupList = retrieveGroupList()
+        //if groupList.isEmpty{
+        //    presentSimpleAlertMessage(title: "提示訊息", message: "您尚未建立任何群組，請至\n『我的設定』--> 『群組資訊』中\n先建立群組並加入好友\n之後即可開始使用揪團功能")
+        //    return
+        //}
+        let controller = UIAlertController(title: "選擇訂購方式", message: nil, preferredStyle: .alert)
+        
+        let groupAction = UIAlertAction(title: "揪團訂購", style: .default) { (_) in
+            print("Create GroupOrder for friends")
+            guard let groupOrderController = self.storyboard?.instantiateViewController(withIdentifier: "DETAIL_CREATE_ORDER_VC") as? DetailGroupOrderTableViewController else {
+                assertionFailure("[AssertionFailure] StoryBoard: DETAIL_CREATE_ORDER_VC can't find!! (MenuListTableViewController)")
+                return
+            }
+            groupOrderController.orderType = ORDER_TYPE_OFFICIAL_MENU
+            groupOrderController.brandName = self.brandName
+            groupOrderController.detailMenuInformation = self.detailMenuInfo
+            self.navigationController?.show(groupOrderController, sender: self)
         }
-        guard let groupOrderController = self.storyboard?.instantiateViewController(withIdentifier: "DETAIL_CREATE_ORDER_VC") as? DetailGroupOrderTableViewController else {
-            assertionFailure("[AssertionFailure] StoryBoard: DETAIL_CREATE_ORDER_VC can't find!! (MenuListTableViewController)")
-            return
+        
+        groupAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+        controller.addAction(groupAction)
+        
+        let singleAction = UIAlertAction(title: "自己訂購", style: .default) { (_) in
+            print("Create GroupOrder for myself")
+            self.createMenuOrder()
         }
-        groupOrderController.orderType = ORDER_TYPE_OFFICIAL_MENU
-        groupOrderController.brandName = self.brandName
-        groupOrderController.detailMenuInformation = self.detailMenuInfo
-        navigationController?.show(groupOrderController, sender: self)
+        
+        singleAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
+        controller.addAction(singleAction)
+        
+        let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
+           print("Cancel update")
+        }
+        
+        cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+        controller.addAction(cancelAction)
+        
+        present(controller, animated: true, completion: nil)
+
     }
     
+    func createMenuOrder() {
+        let timeZone = TimeZone.init(identifier: "UTC+8")
+        let formatter = DateFormatter()
+        formatter.timeZone = timeZone
+        formatter.locale = Locale.init(identifier: "zh_TW")
+        formatter.dateFormat = DATETIME_FORMATTER
+        
+        let tmpOrderNumber = "M\(formatter.string(from: Date()))"
+      
+        self.menuOrder.orderNumber = tmpOrderNumber
+        self.menuOrder.menuNumber = self.detailMenuInfo.menuNumber
+        self.menuOrder.orderType = ORDER_TYPE_OFFICIAL_MENU
+        self.menuOrder.orderStatus = ORDER_STATUS_READY
+        self.menuOrder.orderOwnerID = Auth.auth().currentUser!.uid
+        self.menuOrder.orderOwnerName = getMyUserName()
+        self.menuOrder.orderTotalQuantity = 0
+        self.menuOrder.orderTotalPrice = 0
+        self.menuOrder.brandName = self.detailMenuInfo.brandName
+        self.menuOrder.needContactInfoFlag = false
+        
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = DATETIME_FORMATTER
+        let timeString = timeFormatter.string(from: Date())
+        self.menuOrder.createTime = timeString
+        self.menuOrder.dueTime = ""
+
+        var myContent: MenuOrderMemberContent = MenuOrderMemberContent()
+        var myItem: MenuOrderContentItem = MenuOrderContentItem()
+
+        myContent.memberID = Auth.auth().currentUser!.uid
+        myContent.orderOwnerID = self.menuOrder.orderOwnerID
+        myContent.memberTokenID = getMyTokenID()
+        myItem.orderNumber = self.menuOrder.orderNumber
+        myItem.itemOwnerID = Auth.auth().currentUser!.uid
+        myItem.itemOwnerName = getMyUserName()
+        myItem.replyStatus = MENU_ORDER_REPLY_STATUS_WAIT
+        myItem.createTime = self.menuOrder.createTime
+        myContent.orderContent = myItem
+        myItem.ostype = "iOS"
+
+        self.menuOrder.contentItems.append(myContent)
+        self.uploadMenuOrder()
+        self.sendMulticastNotification()
+    }
+    
+    func uploadMenuOrder() {
+        let databaseRef = Database.database().reference()
+        
+        if Auth.auth().currentUser?.uid == nil {
+            print("uploadMenuOrder Auth.auth().currentUser?.uid == nil")
+            return
+        }
+        
+        let pathString = "USER_MENU_ORDER/\(Auth.auth().currentUser!.uid)/\(self.menuOrder.orderNumber)"
+        databaseRef.child(pathString).setValue(self.menuOrder.toAnyObject()) { (error, reference) in
+            if let error = error {
+                print("uploadMenuOrder error = \(error.localizedDescription)")
+                return
+            } else {
+                // Send notification to refresh HistoryList function
+                print("GroupOrderViewController sends notification to refresh History List function")
+                NotificationCenter.default.post(name: NSNotification.Name("RefreshHistory"), object: nil)
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                guard let join_vc = storyboard.instantiateViewController(withIdentifier: "DETAIL_JOIN_ORDER_VC") as? DetailJoinGroupOrderTableViewController else{
+                    assertionFailure("[AssertionFailure] StoryBoard: JOIN_ORDER_VC can't find!! (GroupOrderViewController)")
+                    return
+                }
+
+                join_vc.detailMenuInformation = self.detailMenuInfo
+                join_vc.memberContent = self.menuOrder.contentItems[0]
+                join_vc.memberIndex = 0
+                join_vc.menuOrder = self.menuOrder
+                DispatchQueue.main.async {
+                    self.show(join_vc, sender: self)
+                }
+            }
+        }
+    }
+
+    func sendMulticastNotification() {
+        var tokenIDs: [String] = [String]()
+        
+        if !self.menuOrder.contentItems.isEmpty {
+            var orderNotify: NotificationData = NotificationData()
+            let title: String = "團購邀請"
+            var body: String = ""
+            let dateNow = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = DATETIME_FORMATTER
+            let dateTimeString = formatter.string(from: dateNow)
+
+            body = "來自『 \(self.menuOrder.orderOwnerName)』 發起的團購邀請，請點擊通知以查看詳細資訊。"
+            orderNotify.messageTitle = title
+            orderNotify.messageBody = body
+            orderNotify.notificationType = NOTIFICATION_TYPE_ACTION_JOIN_ORDER
+            orderNotify.receiveTime = dateTimeString
+            orderNotify.orderOwnerID = self.menuOrder.orderOwnerID
+            orderNotify.orderOwnerName = self.menuOrder.orderOwnerName
+            orderNotify.menuNumber = self.menuOrder.menuNumber
+            orderNotify.orderNumber = self.menuOrder.orderNumber
+            orderNotify.dueTime = self.menuOrder.dueTime
+            orderNotify.brandName = self.menuOrder.brandName
+            orderNotify.attendedMemberCount = self.menuOrder.contentItems.count
+            orderNotify.messageDetail = ""
+            orderNotify.isRead = "Y"
+
+            // send to iOS type device
+            for i in 0...self.menuOrder.contentItems.count - 1 {
+                if self.menuOrder.contentItems[i].orderContent.ostype != nil {
+                    if self.menuOrder.contentItems[i].orderContent.ostype! == OS_TYPE_IOS {
+                        tokenIDs.append(self.menuOrder.contentItems[i].memberTokenID)
+                    }
+                } else {
+                    tokenIDs.append(self.menuOrder.contentItems[i].memberTokenID)
+                }
+            }
+            
+            if !tokenIDs.isEmpty {
+                let sender = PushNotificationSender()
+                sender.sendMulticastMessage(to: tokenIDs, notification_key: "", title: title, body: body, data: orderNotify, ostype: OS_TYPE_IOS)
+            }
+            
+            tokenIDs.removeAll()
+            // send to Android type device
+            for i in 0...self.menuOrder.contentItems.count - 1 {
+                if self.menuOrder.contentItems[i].orderContent.ostype != nil {
+                    if self.menuOrder.contentItems[i].orderContent.ostype! == OS_TYPE_ANDROID {
+                        tokenIDs.append(self.menuOrder.contentItems[i].memberTokenID)
+                    }
+                }
+            }
+            
+            if !tokenIDs.isEmpty {
+                let sender = PushNotificationSender()
+                usleep(100000)
+                sender.sendMulticastMessage(to: tokenIDs, notification_key: "", title: title, body: body, data: orderNotify, ostype: OS_TYPE_ANDROID)
+            }
+        }
+    }
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -304,15 +472,10 @@ extension DetailBrandTableViewController: GADBannerViewDelegate {
         UIView.animate(withDuration: 1, animations: {
           bannerView.alpha = 1
         })
-        //self.isAdLoadedSuccess = true
-        //self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
     }
     
     func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
         print("Fail to receive ads")
         print(error)
-        //self.isAdLoadedSuccess = false
-        //self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-        //self.tableView.reloadData()
     }
 }

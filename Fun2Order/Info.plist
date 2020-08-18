@@ -47,6 +47,8 @@
 	<string>以用於製作菜單，指定會員頭像及掃描好友QR Code，請問是否願意讓揪Fun存取？</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>以用於製作菜單，指定會員頭像及掃描好友QR Code，請問是否願意讓揪Fun存取？</string>
+	<key>NSContactsUsageDescription</key>
+	<string>以利用通訊錄的電話搜尋是否有好友已加入揪Fun並可將其加入自己的好友中，請問是否願意讓揪Fun存取通訊錄？</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

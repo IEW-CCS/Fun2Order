@@ -39,6 +39,7 @@ class PushNotificationSender {
                         print("PushNotificationSender sendPushNotification decode data from FCM server successfule!")
                         NSLog("Received data:\n\(jsonDataDict))")
                     }
+                    
                 }
             } catch let err as NSError {
                 print(err.debugDescription)
@@ -133,8 +134,9 @@ class PushNotificationSender {
         let url = NSURL(string: urlString)!
                 
         let requestKeyString: [String: Any] =
-            ["operation": "create",
+            ["operation": "remove",
              "notification_key_name": getMyTokenID(),
+             "notification_key": "",
              "registration_ids": tokens]
         
         let request = NSMutableURLRequest(url: url as URL)

@@ -75,6 +75,7 @@ class HistoryTableViewController: UITableViewController {
 
     func filterHistoryDueTime() {
         if self.menuOrderList.isEmpty {
+            self.filteredMenuOrderList.removeAll()
             return
         }
         
@@ -135,7 +136,8 @@ class HistoryTableViewController: UITableViewController {
                     self.tableView.reloadData()
                 }
             } else {
-                self.filteredMenuOrderList.removeAll()
+                //self.filteredMenuOrderList.removeAll()
+                self.filterHistoryDueTime()
                 self.tableView.reloadData()
                 print("queryMenuOrder snapshot doesn't exist!")
                 return

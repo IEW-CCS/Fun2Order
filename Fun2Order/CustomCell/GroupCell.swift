@@ -23,6 +23,7 @@ class GroupCell: UICollectionViewCell {
         self.imageGroup.image = group_image
         self.labelGroupName.text = group_name
         self.indexPath = index
+        self.labelGroupName.textColor = nil
     }
     
     func setTitleColor(title_color: UIColor) {

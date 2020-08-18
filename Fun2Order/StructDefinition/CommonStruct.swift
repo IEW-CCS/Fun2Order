@@ -623,6 +623,14 @@ struct ReportLayoutStruct {
     var width: CGFloat = 0
 }
 
+struct UserContactInfo {
+    var userID: String = ""
+    var userContactName: String = ""
+    var userName: String = ""
+    var phoneNumber: String = ""
+    var userImageURL: String = ""
+}
+
 struct TestStruct: Codable {
     var messageID: String = ""
     var locations: [String]? = [String]()

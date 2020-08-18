@@ -1,29 +1,34 @@
 //
-//  GroupEditViewController.swift
+//  GroupEditTableViewController.swift
 //  Fun2Order
 //
-//  Created by Lo Fang Chou on 2019/12/26.
-//  Copyright © 2019 JStudio. All rights reserved.
+//  Created by Lo Fang Chou on 2020/8/13.
+//  Copyright © 2020 JStudio. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
-//protocol GroupEditDelegate: class {
-//    func editGroupComplete(sender: GroupEditViewController)
-//}
+protocol GroupEditDelegate: class {
+    func editGroupComplete(sender: GroupEditTableViewController, index: Int)
+}
 
-class GroupEditViewController: UIViewController {
+class GroupEditTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var imageGroup: UIImageView!
     @IBOutlet weak var labelGroupName: UILabel!
     @IBOutlet weak var textGroupName: UITextField!
     @IBOutlet weak var textGroupDescription: UITextField!
     @IBOutlet weak var buttonCancel: UIButton!
     @IBOutlet weak var buttonUpdate: UIButton!
-    
+
     var isEditFlag: Bool = false
     var groupID: Int = 0
-    //weak var delegate: GroupEditDelegate?
+    var selectedGroupIndex: Int = -1
+    var friendList: [Friend] = [Friend]()
+    //var filterFriendList: [Friend] = [Friend]()
+    var selectFlag: [Bool] = [Bool]()
+
+    weak var delegate: GroupEditDelegate?
 
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
@@ -33,10 +38,17 @@ class GroupEditViewController: UIViewController {
 
         vc = app.persistentContainer.viewContext
 
+        let friendNib: UINib = UINib(nibName: "SelectMemberCell", bundle: nil)
+        self.tableView.register(friendNib, forCellReuseIdentifier: "SelectMemberCell")
+
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleImageTap(_:)))
         self.imageGroup.addGestureRecognizer(tapGesture)
         self.imageGroup.isUserInteractionEnabled = true
-        
+
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
+
         if !self.isEditFlag {
             self.buttonUpdate.setTitle("新增", for: .normal)
             self.labelGroupName.text = ""
@@ -44,6 +56,10 @@ class GroupEditViewController: UIViewController {
             self.buttonUpdate.setTitle("變更", for: .normal)
             displayGroup()
         }
+        
+        self.friendList = retrieveFriendList()
+        prepareFriendList()
+        self.tableView.reloadData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -52,6 +68,34 @@ class GroupEditViewController: UIViewController {
         self.tabBarController?.title = "編輯群組資訊"
     }
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+          textField.resignFirstResponder()
+          return true
+    }
+    
+    @objc func dismissKeyBoard() {
+        self.view.endEditing(true)
+    }
+
+    func prepareFriendList() {
+        if self.friendList.isEmpty {
+            return
+        }
+        
+        self.selectFlag = Array(repeating: false, count: self.friendList.count)
+        
+        if self.isEditFlag {
+            let memberList = retrieveMemberList(group_id: self.groupID)
+            if !memberList.isEmpty {
+                for i in 0...friendList.count - 1 {
+                    if memberList.contains(where: {$0.memberID == self.friendList[i].memberID} ) {
+                        self.selectFlag[i] = true
+                    }
+                }
+            }
+        }
+    }
+    
     @IBAction func cancelUpdate(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
         self.dismiss(animated: false, completion: nil)
@@ -62,14 +106,20 @@ class GroupEditViewController: UIViewController {
             presentSimpleAlertMessage(title: "錯誤訊息", message: "群組名稱不能為空白，請重新輸入")
             return
         }
+        
         if self.isEditFlag {
             updateGroup(group_id: self.groupID)
         } else {
             addGroup()
         }
         
-        //NotificationCenter.default.post(name: NSNotification.Name("RefreshGroup"), object: nil)
-        //delegate?.editGroupComplete(sender: self)
+        updateMember()
+        
+        if self.selectedGroupIndex == -1 {
+            self.selectedGroupIndex = 0
+        }
+        
+        self.delegate?.editGroupComplete(sender: self, index: self.selectedGroupIndex)
         self.navigationController?.popViewController(animated: true)
         self.dismiss(animated: false, completion: nil)
     }
@@ -138,6 +188,7 @@ class GroupEditViewController: UIViewController {
         
         let serialID = getGroupSerial()
         groupData.groupID = Int16(serialID)
+        self.groupID = Int(groupData.groupID)
         groupData.groupName = self.textGroupName.text
         groupData.groupImage = self.imageGroup.image!.pngData()
         groupData.groupDescription = self.textGroupDescription.text
@@ -146,6 +197,10 @@ class GroupEditViewController: UIViewController {
         app.saveContext()
         
         saveGroupSerial(new_serial: serialID + 1)
+        let groupList = retrieveGroupList()
+        if !groupList.isEmpty {
+            self.selectedGroupIndex = groupList.count - 1
+        }
     }
     
     func updateGroup(group_id: Int) {
@@ -187,14 +242,94 @@ class GroupEditViewController: UIViewController {
             }
         }
     }
+
+    func updateMember() {
+        if self.friendList.isEmpty {
+            print("GroupEditTableViewController updateMember: self.friendList is empty")
+            return
+        }
+        
+        deleteMemberByGroup(group_id: self.groupID)
+        
+        let semaphore = DispatchSemaphore(value: 2)
+
+        for i in 0...self.friendList.count - 1 {
+            if self.selectFlag[i] {
+                var memberInfo: GroupMember = GroupMember()
+                memberInfo.groupID = self.groupID
+                memberInfo.memberID = self.friendList[i].memberID
+                memberInfo.memberName = self.friendList[i].memberName
+                semaphore.wait()
+                insertGroupMember(member_info: memberInfo)
+                semaphore.signal()
+            }
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 1 {
+            if self.friendList.isEmpty {
+                return 0
+            }
+            
+            return self.friendList.count
+        }
+        
+        return super.tableView(tableView, numberOfRowsInSection: section)
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SelectMemberCell", for: indexPath) as! SelectMemberCell
+            
+            cell.setData(member_id: self.friendList[indexPath.row].memberID, member_name: self.friendList[indexPath.row].memberName, ini_status: self.selectFlag[indexPath.row])
+            
+            cell.tag = indexPath.row
+            cell.delegate = self
+
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            return cell
+        }
+        
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int {
+        if indexPath.section == 1 {
+            let newIndexPath = IndexPath(row: 0, section: indexPath.section)
+            return super.tableView(tableView, indentationLevelForRowAt: newIndexPath)
+        } else {
+            return super.tableView(tableView, indentationLevelForRowAt: indexPath)
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 1 {
+            return 50
+        }
+
+        return super.tableView(tableView, heightForRowAt: indexPath)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
+    }
+
 }
 
-extension GroupEditViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
+extension GroupEditTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
         let newImage = resizeImage(image: image, width: 120)
         self.imageGroup.image = newImage
         dismiss(animated: true, completion: nil)
+    }
+}
+
+extension GroupEditTableViewController: SetMemberSelectedStatusDelegate {
+    func setMemberSelectedStatus(cell: UITableViewCell, status: Bool, data_index: Int) {
+        self.selectFlag[data_index] = status
     }
 }

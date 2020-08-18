@@ -264,13 +264,37 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
             orderNotify.messageDetail = self.textViewMessage.text
             orderNotify.isRead = "N"
 
+            // send to iOS type device
             for i in 0...self.menuOrder.contentItems.count - 1 {
-                tokenIDs.append(self.menuOrder.contentItems[i].memberTokenID)
+                if self.menuOrder.contentItems[i].orderContent.ostype != nil {
+                    if self.menuOrder.contentItems[i].orderContent.ostype! == OS_TYPE_IOS {
+                        tokenIDs.append(self.menuOrder.contentItems[i].memberTokenID)
+                    }
+                } else {
+                    tokenIDs.append(self.menuOrder.contentItems[i].memberTokenID)
+                }
             }
             
-            let sender = PushNotificationSender()
-            //sender.sendDeviceGroupPushNotification(to: tokenIDs, title: title, body: body, data: orderNotify, ostype: "iOS")
-            sender.sendMulticastMessage(to: tokenIDs, notification_key: "", title: title, body: body, data: orderNotify, ostype: "iOS")
+            if !tokenIDs.isEmpty {
+                let sender = PushNotificationSender()
+                sender.sendMulticastMessage(to: tokenIDs, notification_key: "", title: title, body: body, data: orderNotify, ostype: OS_TYPE_IOS)
+            }
+            
+            tokenIDs.removeAll()
+            // send to Android type device
+            for i in 0...self.menuOrder.contentItems.count - 1 {
+                if self.menuOrder.contentItems[i].orderContent.ostype != nil {
+                    if self.menuOrder.contentItems[i].orderContent.ostype! == OS_TYPE_ANDROID {
+                        tokenIDs.append(self.menuOrder.contentItems[i].memberTokenID)
+                    }
+                }
+            }
+            
+            if !tokenIDs.isEmpty {
+                let sender = PushNotificationSender()
+                usleep(100000)
+                sender.sendMulticastMessage(to: tokenIDs, notification_key: "", title: title, body: body, data: orderNotify, ostype: OS_TYPE_ANDROID)
+            }
         }
     }
 

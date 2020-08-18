@@ -15,6 +15,7 @@ protocol GroupFriendListDelegate: class {
 class GroupFriendListTableViewController: UITableViewController {
     @IBOutlet weak var barButtonConfirm: UIBarButtonItem!
     var friendList: [Friend] = [Friend]()
+    var contactList: [UserContactInfo] = [UserContactInfo]()
     var selectFlag: [Bool] = [Bool]()
     
     weak var delegate: GroupFriendListDelegate?

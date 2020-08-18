@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import Kingfisher
 
 class MemberCell: UITableViewCell {
     @IBOutlet weak var backView: UIView!
@@ -64,7 +66,40 @@ class MemberCell: UITableViewCell {
     
     func setData(member_id: String, member_name: String) {
         //self.memberLabel.text = member_name
-        downloadFBMemberImage(member_id: member_id, completion: receiveMemberImage)
+        //downloadFBMemberImage(member_id: member_id, completion: receiveMemberImage)
         downloadFBUserProfile(user_id: member_id, completion: receiveUserProfile)
+        downloadUserImage(member_id: member_id)
     }
+    
+    func downloadUserImage(member_id: String) {
+        let databaseRef = Database.database().reference()
+        let storageRef = Storage.storage().reference()
+        
+        let pathString = "USER_PROFILE/\(member_id)/photoURL"
+        databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                let imageURL = snapshot.value as! String
+                storageRef.child(imageURL).downloadURL(completion: { (url, error) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                        return
+                    }
+                    
+                    if url == nil {
+                        print("downloadURL returns nil")
+                        return
+                    }
+                    
+                    print("downloadURL = \(url!)")
+                    
+                    self.memberImage.kf.setImage(with: url)
+                })
+            } else {
+                print("downloadMemberImage photoURL snapshot doesn't exist!")
+            }
+        })  { (error) in
+            print(error.localizedDescription)
+        }
+    }
+
 }

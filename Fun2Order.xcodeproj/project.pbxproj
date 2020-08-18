@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		209BEFB628E04A098C352AEB /* Pods_Fun2Order.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB291C2335559C1835EB614 /* Pods_Fun2Order.framework */; };
+		360DDBF024E527AA002C2737 /* GroupEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360DDBEF24E527AA002C2737 /* GroupEditTableViewController.swift */; };
 		360EB73423C609CD00753469 /* MenuListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360EB73323C609CD00753469 /* MenuListTableViewController.swift */; };
 		360EB73623C60A4900753469 /* CreateMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360EB73523C60A4900753469 /* CreateMenuTableViewController.swift */; };
 		360EB73823C60B1500753469 /* MenuHomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360EB73723C60B1500753469 /* MenuHomeTableViewController.swift */; };
@@ -458,6 +459,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		360DDBEF24E527AA002C2737 /* GroupEditTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupEditTableViewController.swift; sourceTree = "<group>"; };
 		360EB73323C609CD00753469 /* MenuListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuListTableViewController.swift; sourceTree = "<group>"; };
 		360EB73523C60A4900753469 /* CreateMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMenuTableViewController.swift; sourceTree = "<group>"; };
 		360EB73723C60B1500753469 /* MenuHomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHomeTableViewController.swift; sourceTree = "<group>"; };
@@ -934,6 +936,7 @@
 				3639F44524B6B26900B64B2B /* DetailJoinGroupOrderTableViewController.swift */,
 				36E9349224B96193000F65AB /* DetailJoinGroupOrderSelectRecipeTableViewController.swift */,
 				36E9349A24BAB05F000F65AB /* BrandCartTableViewController.swift */,
+				360DDBEF24E527AA002C2737 /* GroupEditTableViewController.swift */,
 			);
 			path = "Local menu";
 			sourceTree = "<group>";
@@ -1932,6 +1935,7 @@
 				363DE7AF23CD3A1000C60935 /* MenuRecipeCell.swift in Sources */,
 				36AA199123D51DC70039A758 /* EditPaymentStatusTableViewController.swift in Sources */,
 				3655A0C324A2E114009AE1C5 /* MENU_ITEM+CoreDataProperties.swift in Sources */,
+				360DDBF024E527AA002C2737 /* GroupEditTableViewController.swift in Sources */,
 				36E9349B24BAB05F000F65AB /* BrandCartTableViewController.swift in Sources */,
 				36973ABB23A888B0008804C5 /* ConfigMyFavoriteTableViewController.swift in Sources */,
 				368B712924209854007BFEB4 /* MenuListCategoryCell.swift in Sources */,
@@ -2240,7 +2244,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -2268,7 +2272,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fun2Order/Fun2Order.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 34KF2N2J26;
 				INFOPLIST_FILE = Fun2Order/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
