@@ -496,45 +496,6 @@ func uploadFBShareMenuInformation(menu_info: MenuInformation, menu_images: [UIIm
     }
 }
 
-func monitorFBProductQuantityLimit(owner_id: String, order_number: String, completion: @escaping([MenuItem]?) -> Void) {
-    let databaseRef = Database.database().reference()
-    let pathString = "USER_MENU_ORDER/\(owner_id)/\(order_number)/limitedMenuItems"
-
-    //databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
-    databaseRef.child(pathString).observe(.value, with: { (snapshot) in
-        if snapshot.exists() {
-            var menuItems: [MenuItem] = [MenuItem]()
-            let childEnumerator = snapshot.children
-            
-            let childDecoder: JSONDecoder = JSONDecoder()
-            while let childData = childEnumerator.nextObject() as? DataSnapshot {
-                //print("child = \(childData)")
-                do {
-                    let childJsonData = try? JSONSerialization.data(withJSONObject: childData.value as Any, options: [])
-                    let realData = try childDecoder.decode(MenuItem.self, from: childJsonData!)
-                    menuItems.append(realData)
-                    print("Success: \(realData.itemName)")
-                } catch {
-                    print("monitorFBProductQuantityLimit jsonData decode failed: \(error.localizedDescription)")
-                    continue
-                }
-            }
-
-            if menuItems.isEmpty {
-                completion(nil)
-            } else {
-                completion(menuItems)
-            }
-        } else {
-            print("monitorFBProductQuantityLimit [MenuItem] snapshot doesn't exist!")
-            completion(nil)
-        }
-    })  { (error) in
-        print("monitorFBProductQuantityLimit Firebase error = \(error.localizedDescription)")
-        completion(nil)
-    }
-}
-
 func downloadFBDetailBrandProfile(brand_name: String, completion: @escaping (DetailBrandProfile?) -> Void) {
     var brandData: DetailBrandProfile = DetailBrandProfile()
     let databaseRef = Database.database().reference()
@@ -613,4 +574,121 @@ func uploadFBDetailBrandProfile(brand_name: String, brand_profile: DetailBrandPr
     let pathString = "DETAIL_BRAND_PROFILE/\(brand_name)"
     
     databaseRef.child(pathString).setValue(brand_profile.toAnyObject())
+}
+
+func monitorFBProductQuantityLimit(owner_id: String, order_number: String, completion: @escaping([MenuItem]?) -> Void) {
+    let databaseRef = Database.database().reference()
+    let pathString = "USER_MENU_ORDER/\(owner_id)/\(order_number)/limitedMenuItems"
+
+    //databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+    databaseRef.child(pathString).observe(.value, with: { (snapshot) in
+        if snapshot.exists() {
+            var menuItems: [MenuItem] = [MenuItem]()
+            let childEnumerator = snapshot.children
+            
+            let childDecoder: JSONDecoder = JSONDecoder()
+            while let childData = childEnumerator.nextObject() as? DataSnapshot {
+                //print("child = \(childData)")
+                do {
+                    let childJsonData = try? JSONSerialization.data(withJSONObject: childData.value as Any, options: [])
+                    let realData = try childDecoder.decode(MenuItem.self, from: childJsonData!)
+                    menuItems.append(realData)
+                    print("Success: \(realData.itemName)")
+                } catch {
+                    print("monitorFBProductQuantityLimit jsonData decode failed: \(error.localizedDescription)")
+                    continue
+                }
+            }
+
+            if menuItems.isEmpty {
+                completion(nil)
+            } else {
+                completion(menuItems)
+            }
+        } else {
+            print("monitorFBProductQuantityLimit [MenuItem] snapshot doesn't exist!")
+            completion(nil)
+        }
+    })  { (error) in
+        print("monitorFBProductQuantityLimit Firebase error = \(error.localizedDescription)")
+        completion(nil)
+    }
+}
+
+func downloadFBBrandEventList(brand_name: String, completion: @escaping([DetailBrandEvent]?) -> Void) {
+    let databaseRef = Database.database().reference()
+    let pathString = "DETAIL_BRAND_EVENT/\(brand_name)"
+
+    //databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+    databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+        if snapshot.exists() {
+            var eventItems: [DetailBrandEvent] = [DetailBrandEvent]()
+            let childEnumerator = snapshot.children
+            
+            let childDecoder: JSONDecoder = JSONDecoder()
+            while let childData = childEnumerator.nextObject() as? DataSnapshot {
+                //print("child = \(childData)")
+                do {
+                    let childJsonData = try? JSONSerialization.data(withJSONObject: childData.value as Any, options: [])
+                    let realData = try childDecoder.decode(DetailBrandEvent.self, from: childJsonData!)
+                    eventItems.append(realData)
+                    //print("Success: \(realData.itemName)")
+                } catch {
+                    print("downloadFBBrandEventList jsonData decode failed: \(error.localizedDescription)")
+                    continue
+                }
+            }
+
+            if eventItems.isEmpty {
+                completion(nil)
+            } else {
+                completion(eventItems)
+            }
+        } else {
+            print("downloadFBBrandEventList [DetailBrandEvent] snapshot doesn't exist!")
+            completion(nil)
+        }
+    })  { (error) in
+        print("downloadFBBrandEventList Firebase error = \(error.localizedDescription)")
+        completion(nil)
+    }
+}
+
+func downloadFBBrandStoreList(brand_name: String, completion: @escaping([DetailStoreInformation]?) -> Void) {
+    let databaseRef = Database.database().reference()
+    let pathString = "DETAIL_BRAND_STORE/\(brand_name)"
+
+    //databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+    databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+        if snapshot.exists() {
+            var storeItems: [DetailStoreInformation] = [DetailStoreInformation]()
+            let childEnumerator = snapshot.children
+            
+            let childDecoder: JSONDecoder = JSONDecoder()
+            while let childData = childEnumerator.nextObject() as? DataSnapshot {
+                //print("child = \(childData)")
+                do {
+                    let childJsonData = try? JSONSerialization.data(withJSONObject: childData.value as Any, options: [])
+                    let realData = try childDecoder.decode(DetailStoreInformation.self, from: childJsonData!)
+                    storeItems.append(realData)
+                    //print("Success: \(realData.itemName)")
+                } catch {
+                    print("downloadFBBrandStoreList jsonData decode failed: \(error.localizedDescription)")
+                    continue
+                }
+            }
+
+            if storeItems.isEmpty {
+                completion(nil)
+            } else {
+                completion(storeItems)
+            }
+        } else {
+            print("downloadFBBrandStoreList [DetailStoreInformation] snapshot doesn't exist!")
+            completion(nil)
+        }
+    })  { (error) in
+        print("downloadFBBrandStoreList Firebase error = \(error.localizedDescription)")
+        completion(nil)
+    }
 }

@@ -27,6 +27,7 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
     var brandName: String = ""
     var orderType: String = ""
     var menuOrder: MenuOrder = MenuOrder()
+    var storeInfo: StoreContactInformation?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,6 +96,7 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
         self.menuOrder.orderTotalPrice = 0
         self.menuOrder.brandName = self.detailMenuInformation.brandName
         self.menuOrder.needContactInfoFlag = self.isNeedContactInfo
+        self.menuOrder.storeInfo = self.storeInfo
         
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = DATETIME_FORMATTER

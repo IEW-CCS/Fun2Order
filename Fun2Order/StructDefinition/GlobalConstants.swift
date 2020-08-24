@@ -121,3 +121,6 @@ let PRODUCT_OPERATION_MODE_EDIT = "EDIT"
 
 let OS_TYPE_IOS = "iOS"
 let OS_TYPE_ANDROID = "Android"
+
+//let TEST_BACKGROUND_COLOR = UIColor(red: 212/255, green: 187/255, blue: 146/255, alpha: 1.0)
+//let TEST_TABBAR_COLOR = UIColor(red: 83/255, green: 41/255, blue: 18/255, alpha: 1.0)

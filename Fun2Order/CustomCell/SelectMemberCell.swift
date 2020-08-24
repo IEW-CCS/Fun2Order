@@ -124,7 +124,27 @@ class SelectMemberCell: UITableViewCell {
             print(error.localizedDescription)
         }
     }
-    
+
+    func downloadContactImage(contact: UserContactInfo) {
+        let storageRef = Storage.storage().reference()
+        
+        storageRef.child(contact.userImageURL).downloadURL(completion: { (url, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
+            if url == nil {
+                print("downloadURL returns nil")
+                return
+            }
+            
+            print("downloadURL = \(url!)")
+            
+            self.memberImage.kf.setImage(with: url)
+        })
+    }
+
     func getCheckStatus() -> Bool {
         return self.checkStatus
     }
@@ -133,7 +153,10 @@ class SelectMemberCell: UITableViewCell {
         self.selectCheckBox.isChecked = status
     }
     
-    func setSubTitle(sub_title: String) {
-        self.labelSubTitle.text = sub_title
+    func setContact(contact: UserContactInfo, ini_status: Bool) {
+        self.selectCheckBox.isChecked = ini_status
+        self.labelSubTitle.text = contact.userContactName
+        downloadFBUserProfile(user_id: contact.userID, completion: receiveUserProfile)
+        downloadContactImage(contact: contact)
     }
 }

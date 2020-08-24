@@ -14,6 +14,7 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
     var friendList: [Friend] = [Friend]()
     var myProfile: UserProfile = UserProfile()
     var authUserProfile: [UserProfile] = [UserProfile]()
+    var allContactsInfo: [UserContactInfo] = [UserContactInfo]()
     var newFriendList: [Friend] = [Friend]()
     var updatedFriend: Friend = Friend()
     var updatedFlag: String = ""
@@ -158,6 +159,8 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
             return
         }
         
+        self.allContactsInfo.removeAll()
+        
         let keys = [CNContactFamilyNameKey,CNContactGivenNameKey,CNContactPhoneNumbersKey]
         let fetch = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
         do {
@@ -174,7 +177,13 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
                     phoneNumber = phoneNumber.replacingOccurrences(of: ")", with: "", options: .literal, range: nil)
                     if self.verifyPhoneNumber(phone_number: phoneNumber) {
                         //print(phoneNumber)
-                        phoneList.append(self.convertPhoneNumber(phone_number: phoneNumber))
+                        let convertedPhoneNumber = self.convertPhoneNumber(phone_number: phoneNumber)
+                        phoneList.append(convertedPhoneNumber)
+                        var userContact: UserContactInfo = UserContactInfo()
+                        userContact.phoneNumber = convertedPhoneNumber
+                        userContact.userContactName = "\(contact.familyName)\(contact.givenName)"
+                        
+                        self.allContactsInfo.append(userContact)
                     }
                 }
                 
@@ -184,7 +193,7 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
         }
         
         print("phoneList = \(phoneList)")
-        self.queryAuthenticatedUserProfile(phone_list: phoneList)
+        self.queryAuthenticatedUserProfile(contact_list: self.allContactsInfo)
     }
     
     func verifyPhoneNumber(phone_number: String) -> Bool {
@@ -224,8 +233,8 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
         return result
     }
     
-    func queryAuthenticatedUserProfile(phone_list: [String]) {
-        if phone_list.isEmpty {
+    func queryAuthenticatedUserProfile(contact_list: [UserContactInfo]) {
+        if contact_list.isEmpty {
             return
         }
 
@@ -234,9 +243,9 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
         let pathString = "USER_PROFILE"
         
         self.authUserProfile.removeAll()
-        for i in 0...phone_list.count - 1 {
+        for i in 0...contact_list.count - 1 {
             dispatchGroup.enter()
-            let query = (databaseRef.child(pathString).queryOrdered(byChild: "phoneNumber")).queryEqual(toValue: phone_list[i])
+            let query = (databaseRef.child(pathString).queryOrdered(byChild: "phoneNumber")).queryEqual(toValue: contact_list[i].phoneNumber)
             query.observeSingleEvent(of: .value, with: { (snapshot) in
                 if snapshot.exists() {
                     var userData: UserProfile = UserProfile()
@@ -304,14 +313,17 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
 
                         friend.memberID = self.authUserProfile[i].userID
                         friend.memberName = self.authUserProfile[i].userName
+                        filteredFriendsList.append(friend)
+
+                        guard let index = self.allContactsInfo.firstIndex(where: { $0.phoneNumber ==  self.authUserProfile[i].phoneNumber}) else {
+                            continue
+                        }
                         
                         contact.userID = self.authUserProfile[i].userID
                         contact.userName = self.authUserProfile[i].userName
                         contact.userImageURL = self.authUserProfile[i].photoURL
-                        //contact.userContactName = ""
-                        //contact.phoneNumber = ""
-                        
-                        filteredFriendsList.append(friend)
+                        contact.userContactName = self.allContactsInfo[index].userContactName
+                        contact.phoneNumber = self.authUserProfile[i].phoneNumber
                         contactList.append(contact)
                     }
                 }
@@ -328,14 +340,17 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
 
                     friend.memberID = self.authUserProfile[i].userID
                     friend.memberName = self.authUserProfile[i].userName
+                    filteredFriendsList.append(friend)
 
+                    guard let index = self.allContactsInfo.firstIndex(where: { $0.phoneNumber ==  self.authUserProfile[i].phoneNumber}) else {
+                        continue
+                    }
+                    
                     contact.userID = self.authUserProfile[i].userID
                     contact.userName = self.authUserProfile[i].userName
                     contact.userImageURL = self.authUserProfile[i].photoURL
-                    //contact.userContactName = ""
-                    //contact.phoneNumber = ""
-
-                    filteredFriendsList.append(friend)
+                    contact.userContactName = self.allContactsInfo[index].userContactName
+                    contact.phoneNumber = self.authUserProfile[i].phoneNumber
                     contactList.append(contact)
                 }
             }
@@ -353,6 +368,7 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
 
         controllerGroupFriendList.friendList = filteredFriendsList
         controllerGroupFriendList.contactList = contactList
+        controllerGroupFriendList.contactModeFlag = true
         controllerGroupFriendList.delegate = self
         self.navigationController?.show(controllerGroupFriendList, sender: self)
     }

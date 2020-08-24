@@ -245,6 +245,21 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        if self.filterBrandList[indexPath.row].brandData.coworkBrandFlag != nil {
+            if self.filterBrandList[indexPath.row].brandData.coworkBrandFlag! {
+                guard let officialBrandController = storyBoard.instantiateViewController(withIdentifier: "OFFICIAL_BRAND_VC") as? BrandTabBarController else{
+                    assertionFailure("[AssertionFailure] StoryBoard: OFFICIAL_BRAND_VC can't find!! (BrandListCollectionViewController)")
+                    return
+                }
+                
+                officialBrandController.brandName = self.filterBrandList[indexPath.row].brandData.brandName
+                
+                navigationController?.show(officialBrandController, sender: self)
+                return
+            }
+        }
+        
         guard let detailBrandController = storyBoard.instantiateViewController(withIdentifier: "DETAIL_BRAND_VC") as? DetailBrandTableViewController else{
             assertionFailure("[AssertionFailure] StoryBoard: DETAIL_BRAND_VC can't find!! (BrandListCollectionViewController)")
             return

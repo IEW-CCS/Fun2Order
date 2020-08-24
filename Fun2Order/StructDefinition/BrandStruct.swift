@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MapKit
 
 struct DetailBrandCategory: Codable {
     var brandName: String = ""
@@ -16,6 +17,7 @@ struct DetailBrandCategory: Codable {
     var brandSubCategory: String?
     var updateDateTime: String = ""
     var imageDownloadUrl: String?
+    var coworkBrandFlag: Bool?
     
     func toAnyObject() -> Any {
         return [
@@ -24,7 +26,8 @@ struct DetailBrandCategory: Codable {
             "brandCategory": brandCategory as Any,
             "brandSubCategory": brandSubCategory as Any,
             "updateDateTime": updateDateTime,
-            "imageDownloadUrl": imageDownloadUrl as Any
+            "imageDownloadUrl": imageDownloadUrl as Any,
+            "coworkBrandFlag": coworkBrandFlag as Any
         ]
     }
 }
@@ -37,40 +40,101 @@ struct DetailBrandListStruct{
 
 struct DetailBrandProfile: Codable {
     var brandName: String = ""
+    var menuNumber: String = ""
     var brandIconImage: String?
     var brandCategory: String?
     var brandSubCategory: String?
     var brandDescription: String?
-    var menuNumber: String = ""
-    var storeInfo: [DetailStoreInformation]?
+    var storeCategory: [String]?
+    var storeSubCategory: [String]?
+    //var storeInfo: [DetailStoreInformation]?
     var officialWebURL: String?
     var facebookURL: String?
     var instagramURL: String?
     var updateDateTime: String = ""
     var imageDownloadUrl: String?
+    var brandStoryURL: String?
+    var brandEventBannerURL: String?
+    var brandMenuBannerURL: String?
+    //var brandEvents: [DetailBrandEvent]?
+    var brandStyle: DetailStyle?
+    var coworkBrandFlag: Bool?
 
     func toAnyObject() -> Any {
-        var storeArray: [Any] = [Any]()
+        //var storeArray: [Any] = [Any]()
+        //var eventArray: [Any] = [Any]()
         
+        /*
         if storeInfo != nil {
             for itemData in (storeInfo as [DetailStoreInformation]?)! {
                 storeArray.append(itemData.toAnyObject())
             }
         }
 
+        if brandEvents != nil {
+            for itemData in (brandEvents as [DetailBrandEvent]?)! {
+                eventArray.append(itemData.toAnyObject())
+            }
+        }
+        */
+
         return [
             "brandName": brandName,
+            "menuNumber": menuNumber,
             "brandIconImage": brandIconImage as Any,
             "brandCategory": brandCategory as Any,
             "brandSubCategory": brandSubCategory as Any,
             "brandDescription": brandDescription as Any,
-            "menuNumber": menuNumber,
-            "storeInfo": storeArray,
+            "storeCategory": storeCategory as Any,
+            "storeSubCategory": storeSubCategory as Any,
+            //"storeInfo": storeArray,
             "officialWebURL": officialWebURL as Any,
             "facebookURL": facebookURL as Any,
             "instagramURL": instagramURL as Any,
             "updateDateTime": updateDateTime,
-            "imageDownloadUrl": imageDownloadUrl as Any
+            "imageDownloadUrl": imageDownloadUrl as Any,
+            "brandStoryURL": brandStoryURL as Any,
+            "brandEventBannerURL": brandEventBannerURL as Any,
+            "brandMenuBannerURL": brandMenuBannerURL as Any,
+            //"brandEvents": eventArray,
+            "brandStyle": brandStyle?.toAnyObject() as Any,
+            "coworkBrandFlag": coworkBrandFlag as Any
+        ]
+    }
+}
+
+struct DetailStyle: Codable {
+    var backgroundColor: [Float]?
+    var tabBarColor: [Float]?
+    var textTintColor: [Float]?
+    
+    func toAnyObject() -> Any {
+        return [
+            "backgroundColor": backgroundColor as Any,
+            "tabBarColor": tabBarColor as Any,
+            "textTintColor": textTintColor as Any
+        ]
+    }
+}
+
+struct DetailBrandEvent: Codable {
+    var eventTitle: String = ""
+    var eventSubTitle: String?
+    var eventType: String?
+    var eventImageURL: String?
+    var eventContentURL: String?
+    var eventContent: String?
+    var publishDate: String = ""
+
+    func toAnyObject() -> Any {
+        return [
+            "eventTitle": eventTitle,
+            "eventSubTitle": eventSubTitle as Any,
+            "eventType": eventType as Any,
+            "eventImageURL": eventImageURL as Any,
+            "eventContentURL": eventContentURL as Any,
+            "eventContent": eventContent as Any,
+            "publishDate": publishDate
         ]
     }
 }
@@ -140,6 +204,7 @@ struct DetailProductItem: Codable {
     var productSubCategory: String?
     var productDescription: String?
     var productImageURL: [String]?
+    var productWebURL: String?
     var productBasicPrice: Int = 0
     var recipeRelation: [DetailRecipeRelation]?
     var priceList: [DetailRecipeItemPrice]?
@@ -166,6 +231,7 @@ struct DetailProductItem: Codable {
             "productSubCategory": productSubCategory as Any,
             "productDescription": productDescription as Any,
             "productImageURL": productImageURL as Any,
+            "productWebURL": productWebURL as Any,
             "productBasicPrice": productBasicPrice,
             "recipeRelation": relationArray,
             "priceList": priceArray
@@ -268,14 +334,26 @@ struct DetailStoreInformation: Codable {
     var storeCategory: String?
     var storeSubCategory: String?
     var storeDescription: String?
+    var storeLongitude: String?
+    var storeLatitude: String?
     var storeWebURL: String?
     var storeFacebookURL: String?
     var storeInstagramURL: String?
+    var storeImageURL: String?
     var storeAddress: String?
     var storePhoneNumber: String?
-    var deliveryService: String?
+    var deliveryServiceFlag: Bool = false
+    var deliveryService: [DeliveryService]?
 
     func toAnyObject() -> Any {
+        var deliveryArray: [Any] = [Any]()
+
+        if deliveryService != nil {
+            for itemData in (deliveryService as [DeliveryService]?)! {
+                deliveryArray.append(itemData.toAnyObject())
+            }
+        }
+
         return [
             "storeID": storeID,
             "storeName": storeName,
@@ -283,12 +361,28 @@ struct DetailStoreInformation: Codable {
             "storeCategory": storeCategory as Any,
             "storeSubCategory": storeSubCategory as Any,
             "storeDescription": storeDescription as Any,
+            "storeLongitude": storeLongitude as Any,
+            "storeLatitude": storeLatitude as Any,
             "storeWebURL": storeWebURL as Any,
             "storeFacebookURL": storeFacebookURL as Any,
             "storeInstagramURL": storeInstagramURL as Any,
+            "storeImageURL": storeImageURL as Any,
             "storeAddress": storeAddress as Any,
             "storePhoneNumber": storePhoneNumber as Any,
-            "deliveryService": deliveryService as Any
+            "deliveryServiceFlag": deliveryServiceFlag,
+            "deliveryService": deliveryArray
+        ]
+    }
+}
+
+struct DeliveryService: Codable {
+    var itemName: String = ""
+    var itemDescription: String = ""
+    
+    func toAnyObject() -> Any {
+        return [
+            "itemName": itemName,
+            "itemDescription": itemDescription
         ]
     }
 }

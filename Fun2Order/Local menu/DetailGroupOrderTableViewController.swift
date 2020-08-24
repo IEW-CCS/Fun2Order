@@ -22,6 +22,7 @@ class DetailGroupOrderTableViewController: UITableViewController {
     var brandName: String = ""
     var orderType: String = ""
     var addIndex: Int = 0
+    var storeInfo: StoreContactInformation?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +76,7 @@ class DetailGroupOrderTableViewController: UITableViewController {
         
         orderController.memberList = self.memberList
         orderController.detailMenuInformation = self.detailMenuInformation
+        orderController.storeInfo = self.storeInfo
         
         self.navigationController?.show(orderController, sender: self)
     }

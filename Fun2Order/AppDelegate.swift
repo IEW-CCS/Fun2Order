@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import Firebase
 import GoogleMobileAds
+import CoreLocation
 
 protocol ApplicationRefreshNotificationDelegate: class {
     func refreshNotificationList()
@@ -28,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     weak var menuListDelegate: ApplicationRefreshMenuListDelegate?
     weak var toolTipDelegate: GuideToolTipDelegate?
     var newFriendID: String = ""
+    let lm = CLLocationManager()
 
     func application(_ application: UIApplication,
                      willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -69,6 +71,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             UIApplication.shared.registerUserNotificationSettings(settings)
         }
 
+        self.lm.requestWhenInUseAuthorization()
+        
         Messaging.messaging().delegate = self
 
         getNotifications(func_id: "application didFinishLaunchingWithOptions", completion: refreshNotifyList)
