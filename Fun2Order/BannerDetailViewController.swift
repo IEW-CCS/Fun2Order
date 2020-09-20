@@ -22,6 +22,7 @@ class BannerDetailViewController: UIViewController {
         
         setupAboutInfo()
         //testFunction()
+
     }
 
     @IBAction func openWebSite(_ sender: UIButton) {

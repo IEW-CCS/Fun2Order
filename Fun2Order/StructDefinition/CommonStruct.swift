@@ -203,7 +203,8 @@ struct FavoriteProductDetail {
     var productRecipeString: String = ""
 }
 
-struct Group {
+
+struct UserGroup {
     var groupID: Int = 0
     var groupName: String = ""
     var groupDescription: String = ""
@@ -482,7 +483,11 @@ struct MenuOrder: Codable  {
     var contentItems: [MenuOrderMemberContent] = [MenuOrderMemberContent]()
     var limitedMenuItems: [MenuItem]?
     var needContactInfoFlag: Bool?
-    
+    var deliveryInfo: MenuOrderDeliveryInformation?
+    var orderHistory: [String: OrderHistoryRecord]?
+    var coworkBrandFlag: Bool?
+    var groupOrderFlag: Bool?
+
     func toAnyObject() -> Any {
         var itemsArray: [Any] = [Any]()
         if !contentItems.isEmpty {
@@ -496,6 +501,14 @@ struct MenuOrder: Codable  {
         if limitedMenuItems != nil {
             for itemData in (limitedMenuItems as [MenuItem]?)! {
                 menuItemsArray.append(itemData.toAnyObject())
+            }
+        }
+
+        var historyArray: [String: Any] = [String: Any]()
+
+        if orderHistory != nil {
+            for itemData in (orderHistory as [String: OrderHistoryRecord]?)! {
+                historyArray[itemData.key] = itemData.value.toAnyObject()
             }
         }
 
@@ -515,7 +528,29 @@ struct MenuOrder: Codable  {
             "storeInfo": storeInfo?.toAnyObject() as Any,
             "contentItems": itemsArray,
             "limitedMenuItems": menuItemsArray,
-            "needContactInfoFlag": needContactInfoFlag as Any
+            "needContactInfoFlag": needContactInfoFlag as Any,
+            "deliveryInfo": deliveryInfo?.toAnyObject() as Any,
+            "orderHistory": historyArray,
+            "coworkBrandFlag": coworkBrandFlag as Any,
+            "groupOrderFlag": groupOrderFlag as Any
+        ]
+    }
+}
+
+struct MenuOrderDeliveryInformation: Codable {
+    var deliveryType: String = ""
+    var deliveryTime: String = ""
+    var deliveryAddress: String = ""
+    var contactName: String = ""
+    var contactPhoneNumber: String = ""
+    
+    func toAnyObject() -> Any {
+        return [
+            "deliveryType": deliveryType,
+            "deliveryTime": deliveryTime,
+            "deliveryAddress": deliveryAddress,
+            "contactName": contactName,
+            "contactPhoneNumber": contactPhoneNumber
         ]
     }
 }
@@ -639,6 +674,63 @@ struct TestStruct: Codable {
         return [
             "messageID": messageID,
             "locations": locations as Any
+        ]
+    }
+}
+
+struct MasterStruct: Codable, Identifiable {
+    var id: Int = 0
+    var iconName: String = ""
+    var functionName: String = ""
+    var accessLevel: Int = 0
+}
+
+struct StoreUserControl: Codable {
+    var brandName: String = ""
+    var storeID: Int = 0
+    var storeName: String = ""
+    var userName: String = ""
+    var userEmail: String = ""
+    var userPassword: String = ""
+    var userType: String = "" // Brand Manager/Store Manager/Stuff
+    var userAccessLevel: Int = 0
+    var userID: String = ""
+    var userToken: String = ""
+    var loginStatus: String = ""
+    
+    func toAnyObject() -> Any {
+        return [
+            "brandName": brandName,
+            "storeID": storeID,
+            "storeName": storeName,
+            "userName": userName,
+            "userEmail": userEmail,
+            "userPassword": userPassword,
+            "userType": userType,
+            "userAccessLevel": userAccessLevel,
+            "userID": userID,
+            "userToken": userToken,
+            "loginStatus": loginStatus
+        ]
+    }
+}
+
+struct StoreNotificationData: Codable {
+    var orderOwnerID: String = ""
+    var orderOwnerName: String = ""
+    var orderOwnerToken: String = ""
+    var orderNumber: String = ""
+    var notificationType: String = ""
+    var createTime: String = ""
+    
+    func toAnyObject() -> Any {
+        return [
+            "orderOwnerID": orderOwnerID,
+            "orderOwnerName": orderOwnerName,
+            "orderOwnerToken": orderOwnerToken,
+            "orderNumber": orderNumber,
+            "notificationType": notificationType,
+            "createTime": createTime
         ]
     }
 }

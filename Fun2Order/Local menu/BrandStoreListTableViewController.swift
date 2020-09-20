@@ -17,7 +17,8 @@ class BrandStoreListTableViewController: UITableViewController {
     var menuOrder: MenuOrder = MenuOrder()
     var detailMenuInfo: DetailMenuInformation = DetailMenuInformation()
     var selectedStoreInfo: DetailStoreInformation = DetailStoreInformation()
-    
+    var groupOrderFlag: Bool = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         print("BrandStoreListTableViewController viewDidLoad")
@@ -51,6 +52,7 @@ class BrandStoreListTableViewController: UITableViewController {
         self.tableView.reloadData()
     }
 
+    /*
     func createMenuOrder() {
         let timeZone = TimeZone.init(identifier: "UTC+8")
         let formatter = DateFormatter()
@@ -59,11 +61,11 @@ class BrandStoreListTableViewController: UITableViewController {
         formatter.dateFormat = DATETIME_FORMATTER
         
         let tmpOrderNumber = "M\(formatter.string(from: Date()))"
-      
+
         self.menuOrder.orderNumber = tmpOrderNumber
         self.menuOrder.menuNumber = self.detailMenuInfo.menuNumber
         self.menuOrder.orderType = ORDER_TYPE_OFFICIAL_MENU
-        self.menuOrder.orderStatus = ORDER_STATUS_READY
+        self.menuOrder.orderStatus = ORDER_STATUS_INIT
         self.menuOrder.orderOwnerID = Auth.auth().currentUser!.uid
         self.menuOrder.orderOwnerName = getMyUserName()
         self.menuOrder.orderTotalQuantity = 0
@@ -84,7 +86,13 @@ class BrandStoreListTableViewController: UITableViewController {
         timeFormatter.dateFormat = DATETIME_FORMATTER
         let timeString = timeFormatter.string(from: Date())
         self.menuOrder.createTime = timeString
-        self.menuOrder.dueTime = ""
+
+        var dateComponent = DateComponents()
+        dateComponent.day = 1
+        let newDate = Calendar.current.date(byAdding: dateComponent, to: Date())
+        timeFormatter.dateFormat = "yyyyMMdd"
+        let dueTimeString = timeFormatter.string(from: newDate!)
+        self.menuOrder.dueTime = "\(dueTimeString)000000000"
 
         var myContent: MenuOrderMemberContent = MenuOrderMemberContent()
         var myItem: MenuOrderContentItem = MenuOrderContentItem()
@@ -199,6 +207,7 @@ class BrandStoreListTableViewController: UITableViewController {
             }
         }
     }
+    */
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -245,27 +254,34 @@ extension BrandStoreListTableViewController: BrandStoreDelegate {
             
             self.detailMenuInfo = menu_info!
 
+            var storeContact: StoreContactInformation = StoreContactInformation()
+            storeContact.storeName = self.selectedStoreInfo.storeName
+            storeContact.storeAddress = self.selectedStoreInfo.storeAddress
+            storeContact.storePhoneNumber = self.selectedStoreInfo.storePhoneNumber
+            storeContact.facebookURL = self.selectedStoreInfo.storeFacebookURL
+            storeContact.instagramURL = self.selectedStoreInfo.storeInstagramURL
+
+            guard let deliveryController = self.storyboard?.instantiateViewController(withIdentifier: "DELIVERY_INFO_VC") as? DeliveryInformationTableViewController else {
+                assertionFailure("[AssertionFailure] StoryBoard: DELIVERY_INFO_VC can't find!! (BrandStoreListTableViewController)")
+                return
+            }
+
+            deliveryController.orderType = ORDER_TYPE_OFFICIAL_MENU
+            deliveryController.brandName = self.detailMenuInfo.brandName
+            deliveryController.storeName = self.selectedStoreInfo.storeName
+            deliveryController.detailMenuInformation = self.detailMenuInfo
+            deliveryController.storeInfo = storeContact
+            deliveryController.brandBackgroundColor = self.brandBackgroundColor
+            deliveryController.brandTextTintColor = self.brandTextTintColor
+
             let controller = UIAlertController(title: "選擇訂購方式", message: nil, preferredStyle: .alert)
             
             let groupAction = UIAlertAction(title: "揪團訂購", style: .default) { (_) in
                 print("Create GroupOrder for friends")
-                guard let groupOrderController = self.storyboard?.instantiateViewController(withIdentifier: "DETAIL_CREATE_ORDER_VC") as? DetailGroupOrderTableViewController else {
-                    assertionFailure("[AssertionFailure] StoryBoard: DETAIL_CREATE_ORDER_VC can't find!! (MenuListTableViewController)")
-                    return
-                }
+                self.groupOrderFlag = true
                 
-                var storeContact: StoreContactInformation = StoreContactInformation()
-                storeContact.storeName = self.selectedStoreInfo.storeName
-                storeContact.storeAddress = self.selectedStoreInfo.storeAddress
-                storeContact.storePhoneNumber = self.selectedStoreInfo.storePhoneNumber
-                storeContact.facebookURL = self.selectedStoreInfo.storeFacebookURL
-                storeContact.instagramURL = self.selectedStoreInfo.storeInstagramURL
-
-                groupOrderController.orderType = ORDER_TYPE_OFFICIAL_MENU
-                groupOrderController.brandName = self.detailMenuInfo.brandName
-                groupOrderController.detailMenuInformation = self.detailMenuInfo
-                groupOrderController.storeInfo = storeContact
-                self.navigationController?.show(groupOrderController, sender: self)
+                deliveryController.groupOrderFlag = self.groupOrderFlag
+                self.navigationController?.show(deliveryController, sender: self)
             }
             
             groupAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
@@ -273,9 +289,12 @@ extension BrandStoreListTableViewController: BrandStoreDelegate {
             
             let singleAction = UIAlertAction(title: "自己訂購", style: .default) { (_) in
                 print("Create GroupOrder for myself")
-                self.createMenuOrder()
+                self.groupOrderFlag = false
+                
+                deliveryController.groupOrderFlag = self.groupOrderFlag
+                self.navigationController?.show(deliveryController, sender: self)
             }
-            
+
             singleAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
             controller.addAction(singleAction)
             
@@ -298,8 +317,9 @@ extension BrandStoreListTableViewController: BrandStoreDelegate {
         }
         
         storeMapController.storeInfo = self.storeList[index]
+        storeMapController.brandBackgroundColor = self.brandBackgroundColor
+        storeMapController.brandTextTintColor = self.brandTextTintColor
         self.navigationController?.show(storeMapController, sender: self)
-
     }
     
     func dialPhoneNumber(sender: BrandStoreCell, index: Int) {
@@ -309,31 +329,13 @@ extension BrandStoreListTableViewController: BrandStoreDelegate {
             print("Store Phone Number is nil")
             return
         }
+                    
+        guard let url = URL(string: "tel://\(self.storeList[index].storePhoneNumber!)") else {
+            return
+        }
         
-        //let controller = UIAlertController(title: "確定撥打電話？", message: nil, preferredStyle: .actionSheet)
-                
-        //let dialAction = UIAlertAction(title: "\(self.storeList[index].storePhoneNumber!)", style: .default) { (_) in
-        //    print("Dial phone number: [\(self.storeList[index].storePhoneNumber!)]")
-            
-            guard let url = URL(string: "tel://\(self.storeList[index].storePhoneNumber!)") else {
-                return
-            }
-            
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            }
-        //}
-        
-        //dialAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
-        //controller.addAction(dialAction)
-        
-        //let cancelAction = UIAlertAction(title: "取消", style: .default) { (_) in
-        //    print("Cancel update")
-        //}
-        
-        //cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
-        //controller.addAction(cancelAction)
-        
-        //present(controller, animated: true, completion: nil)
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
 }

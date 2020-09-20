@@ -137,7 +137,7 @@ class CreateGroupOrderTableViewController: UITableViewController, UIGestureRecog
         self.menuOrder.orderNumber = tmpOrderNumber
         self.menuOrder.menuNumber = self.menuInformation.menuNumber
         self.menuOrder.orderType = ORDER_TYPE_MENU
-        self.menuOrder.orderStatus = ORDER_STATUS_READY
+        self.menuOrder.orderStatus = ORDER_STATUS_INIT
         self.menuOrder.orderOwnerID = self.menuInformation.userID
         //self.menuOrder.orderOwnerName = (Auth.auth().currentUser?.displayName)!
         self.menuOrder.orderOwnerName = getMyUserName()

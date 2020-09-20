@@ -19,15 +19,19 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
     @IBOutlet weak var labelLocationCount: UILabel!
     @IBOutlet weak var myCheckStatus: Checkbox!
     @IBOutlet weak var checkboxContactInfo: Checkbox!
+    @IBOutlet weak var checkboxSeparatePackage: Checkbox!
+    
     
     var isAttended: Bool = true
     var isNeedContactInfo: Bool = false
     var memberList: [GroupMember] = [GroupMember]()
     var detailMenuInformation: DetailMenuInformation = DetailMenuInformation()
+    var deliveryInfo: MenuOrderDeliveryInformation = MenuOrderDeliveryInformation()
     var brandName: String = ""
     var orderType: String = ""
     var menuOrder: MenuOrder = MenuOrder()
     var storeInfo: StoreContactInformation?
+    var coworkBrandFlag: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,7 +93,7 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
         self.menuOrder.orderNumber = tmpOrderNumber
         self.menuOrder.menuNumber = self.detailMenuInformation.menuNumber
         self.menuOrder.orderType = ORDER_TYPE_OFFICIAL_MENU
-        self.menuOrder.orderStatus = ORDER_STATUS_READY
+        self.menuOrder.orderStatus = ORDER_STATUS_INIT
         self.menuOrder.orderOwnerID = Auth.auth().currentUser!.uid
         self.menuOrder.orderOwnerName = getMyUserName()
         self.menuOrder.orderTotalQuantity = 0
@@ -97,7 +101,10 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
         self.menuOrder.brandName = self.detailMenuInformation.brandName
         self.menuOrder.needContactInfoFlag = self.isNeedContactInfo
         self.menuOrder.storeInfo = self.storeInfo
-        
+        self.menuOrder.deliveryInfo = self.deliveryInfo
+        self.menuOrder.coworkBrandFlag = true
+        self.menuOrder.groupOrderFlag = true
+
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = DATETIME_FORMATTER
         let timeString = timeFormatter.string(from: Date())
@@ -112,7 +119,7 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
             formatter2.dateFormat = DATETIME_FORMATTER
             self.menuOrder.dueTime = formatter2.string(from: timeData!)
         }
-                
+
         if self.isAttended {
             var myContent: MenuOrderMemberContent = MenuOrderMemberContent()
             var myItem: MenuOrderContentItem = MenuOrderContentItem()
@@ -130,7 +137,7 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
 
             self.menuOrder.contentItems.append(myContent)
         }
-        
+
         let contentGroup = DispatchGroup()
         if self.memberList.isEmpty {
             self.uploadMenuOrder()
@@ -187,7 +194,6 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
                     }
                 }
             }
-
         }
         
         contentGroup.notify(queue: .main) {
@@ -300,6 +306,7 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
         }
     }
 
+    /*
     func sendGroupOrderNotification() {
         if !self.menuOrder.contentItems.isEmpty {
             let myTokenID = getMyTokenID()
@@ -353,6 +360,7 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
             }
         }
     }
+    */
 
 
     @IBAction func setupOrderDueDate(_ sender: UIButton) {
@@ -441,10 +449,7 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
     }
     
     @IBAction func sendOrderGroup(_ sender: UIButton) {
-        //let friendList = retrieveFriendList()
-        //print("\(friendList)")
-        
-        if self.memberList.isEmpty && !self.isAttended {
+       if self.memberList.isEmpty && !self.isAttended {
             print("Selected Group's member list is empty")
             presentSimpleAlertMessage(title: "錯誤訊息", message: "此團購訂單尚未指定任何參與者，請重新選取參與者")
             return
@@ -456,7 +461,19 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
         }
 
         self.buttonConfirm.isEnabled = false
-        createMenuOrder()
+        downloadFBDetailBrandProfile(brand_name: self.detailMenuInformation.brandName, completion: { brandProfile in
+            if brandProfile == nil {
+                presentSimpleAlertMessage(title: "錯誤訊息", message: "存取品牌資料時發生錯誤")
+                return
+            }
+            
+            if brandProfile!.coworkBrandFlag == nil {
+                self.coworkBrandFlag = false
+            } else {
+                self.coworkBrandFlag =  brandProfile!.coworkBrandFlag!
+            }
+            self.createMenuOrder()
+        })
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -467,7 +484,6 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
             }
         }
     }
-
 }
 
 extension DetailCreateGroupOrderTableViewController: MenuLocationDelegate {

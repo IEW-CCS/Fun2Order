@@ -27,7 +27,6 @@ class DetailJoinGroupOrderTableViewController: UITableViewController, UIGestureR
     @IBOutlet weak var labelBrandName: UILabel!
     @IBOutlet weak var imageBrandIcon: UIImageView!
     
-    
     var detailMenuInformation: DetailMenuInformation = DetailMenuInformation()
     var memberContent: MenuOrderMemberContent = MenuOrderMemberContent()
     var menuOrder: MenuOrder?

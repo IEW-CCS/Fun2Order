@@ -13,7 +13,7 @@ class MemberGroupViewController: UIViewController {
     @IBOutlet weak var buttonAddMember: UIButton!
     @IBOutlet weak var memberTableView: UITableView!
     
-    var groupList: [Group] = [Group]()
+    var groupList: [UserGroup] = [UserGroup]()
     var memberList: [GroupMember] = [GroupMember]()
     var addIndex: Int = 0
     var selectedGroupIndex: Int = -1

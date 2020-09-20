@@ -19,7 +19,7 @@ class BrandTabBarController: UITabBarController {
         print("BrandTabBarController viewControllers count = \(String(describing: self.viewControllers?.count))")
         downloadFBDetailBrandProfile(brand_name: self.brandName, completion: receiveFBDetailBrandProfile)
     }
-        
+
     func receiveFBDetailBrandProfile(brand_profile: DetailBrandProfile?) {
         var backgroundColor: UIColor?
         var tabBarColor: UIColor?

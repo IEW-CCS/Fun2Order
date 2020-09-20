@@ -27,8 +27,7 @@ class BrandCartTableViewController: UITableViewController {
     var limitedMenuItems: [MenuItem]?
     var originalMenuProductItems: [MenuProductItem]?
     var orderGlobalQuantity: [MenuItem]?
-
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -202,6 +201,7 @@ class BrandCartTableViewController: UITableViewController {
                 presentSimpleAlertMessage(title: "錯誤訊息", message: "上傳團購單資訊時發生錯誤：\(error.localizedDescription)")
                 return
             }
+            
             let formatter = DateFormatter()
             formatter.dateFormat = DATETIME_FORMATTER
             let dateString = formatter.string(from: Date())

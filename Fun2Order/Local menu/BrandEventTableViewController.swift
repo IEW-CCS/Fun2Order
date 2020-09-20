@@ -17,7 +17,6 @@ class BrandEventTableViewController: UITableViewController {
     var brandTextTintColor: UIColor!
     var brandProfile: DetailBrandProfile = DetailBrandProfile()
     var eventList: [DetailBrandEvent] = [DetailBrandEvent]()
-    //let url_string: String = "http://www.shangyulin.com.tw/images/index/pic_02.jpg"
     var url_string: String = ""
     
     override func viewDidLoad() {
@@ -51,8 +50,7 @@ class BrandEventTableViewController: UITableViewController {
         
         self.imageEventTitle.kf.setImage(with: url)
         
-        //testUploadBrandEvent()
-        downloadFBBrandEventList(brand_name: "上宇林", completion: receiveEventList)
+        downloadFBBrandEventList(brand_name: self.brandProfile.brandName, completion: receiveEventList)
     }
     
     func receiveEventList(items: [DetailBrandEvent]?) {
@@ -98,7 +96,6 @@ class BrandEventTableViewController: UITableViewController {
         }
         
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        //cell.backgroundColor = TEST_BACKGROUND_COLOR
         cell.backgroundColor = self.brandBackgroundColor
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell

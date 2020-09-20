@@ -334,8 +334,8 @@ struct DetailStoreInformation: Codable {
     var storeCategory: String?
     var storeSubCategory: String?
     var storeDescription: String?
-    var storeLongitude: String?
     var storeLatitude: String?
+    var storeLongitude: String?
     var storeWebURL: String?
     var storeFacebookURL: String?
     var storeInstagramURL: String?
@@ -344,6 +344,10 @@ struct DetailStoreInformation: Codable {
     var storePhoneNumber: String?
     var deliveryServiceFlag: Bool = false
     var deliveryService: [DeliveryService]?
+    var businessTime: BusinessTime?
+    var storeState: String?
+    var normalProcessTime: Int?
+    var busyProcessTime: Int?
 
     func toAnyObject() -> Any {
         var deliveryArray: [Any] = [Any]()
@@ -361,8 +365,8 @@ struct DetailStoreInformation: Codable {
             "storeCategory": storeCategory as Any,
             "storeSubCategory": storeSubCategory as Any,
             "storeDescription": storeDescription as Any,
-            "storeLongitude": storeLongitude as Any,
             "storeLatitude": storeLatitude as Any,
+            "storeLongitude": storeLongitude as Any,
             "storeWebURL": storeWebURL as Any,
             "storeFacebookURL": storeFacebookURL as Any,
             "storeInstagramURL": storeInstagramURL as Any,
@@ -370,7 +374,11 @@ struct DetailStoreInformation: Codable {
             "storeAddress": storeAddress as Any,
             "storePhoneNumber": storePhoneNumber as Any,
             "deliveryServiceFlag": deliveryServiceFlag,
-            "deliveryService": deliveryArray
+            "deliveryService": deliveryArray,
+            "businessTime": businessTime?.toAnyObject() as Any,
+            "storeState": storeState as Any,
+            "normalProcessTime": normalProcessTime as Any,
+            "busyProcessTime": busyProcessTime as Any
         ]
     }
 }
@@ -383,6 +391,34 @@ struct DeliveryService: Codable {
         return [
             "itemName": itemName,
             "itemDescription": itemDescription
+        ]
+    }
+}
+
+struct BusinessTime: Codable {
+    var dayOffFlag: Bool = false
+    var openTime: String = "080000"
+    var closeTime: String = "220000"
+    
+    func toAnyObject() -> Any {
+        return [
+            "dayOffFlag": dayOffFlag,
+            "openTime": openTime,
+            "closeTime": closeTime
+        ]
+    }
+}
+
+struct OrderHistoryRecord: Codable, Hashable {
+    var claimTimeStamp: String = ""
+    var claimUser: String = ""
+    var claimStatus: String = ""
+    
+    func toAnyObject() -> Any {
+        return [
+            "claimTimeStamp": claimTimeStamp,
+            "claimUser": claimUser,
+            "claimStatus": claimStatus
         ]
     }
 }

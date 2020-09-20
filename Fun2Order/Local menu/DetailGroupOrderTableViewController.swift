@@ -15,10 +15,12 @@ class DetailGroupOrderTableViewController: UITableViewController {
     @IBOutlet weak var collectionGroup: UICollectionView!
     @IBOutlet weak var buttonNextStep: UIButton!
     
-    var groupList: [Group] = [Group]()
+    var groupList: [UserGroup] = [UserGroup]()
     var memberList: [GroupMember] = [GroupMember]()
     var selectedGroupIndex: Int = 0
     var detailMenuInformation: DetailMenuInformation = DetailMenuInformation()
+    var deliveryInfo: MenuOrderDeliveryInformation = MenuOrderDeliveryInformation()
+    var detailBrandProfile: DetailBrandProfile = DetailBrandProfile()
     var brandName: String = ""
     var orderType: String = ""
     var addIndex: Int = 0
@@ -77,6 +79,7 @@ class DetailGroupOrderTableViewController: UITableViewController {
         orderController.memberList = self.memberList
         orderController.detailMenuInformation = self.detailMenuInformation
         orderController.storeInfo = self.storeInfo
+        orderController.deliveryInfo = self.deliveryInfo
         
         self.navigationController?.show(orderController, sender: self)
     }

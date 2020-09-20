@@ -15,7 +15,7 @@ class GroupOrderTableViewController: UITableViewController {
     @IBOutlet weak var collectionGroup: UICollectionView!
     @IBOutlet weak var buttonNextStep: UIButton!
     
-    var groupList: [Group] = [Group]()
+    var groupList: [UserGroup] = [UserGroup]()
     var memberList: [GroupMember] = [GroupMember]()
     var selectedGroupIndex: Int = 0
     var menuInformation: MenuInformation = MenuInformation()

@@ -66,10 +66,12 @@ class DetailJoinGroupOrderSelectRecipeTableViewController: UITableViewController
             if !self.detailProductItem.recipeRelation!.isEmpty {
                 for i in 0...self.detailProductItem.recipeRelation!.count - 1 {
                     let seq_no = self.detailProductItem.recipeRelation![i].templateSequence
-                    for j in 0...self.recipeTemplates.count - 1 {
-                        if self.recipeTemplates[j].templateSequence == seq_no {
-                            self.selectedRecipeItems.append(self.recipeTemplates[j])
-                            break
+                    if !self.recipeTemplates.isEmpty {
+                        for j in 0...self.recipeTemplates.count - 1 {
+                            if self.recipeTemplates[j].templateSequence == seq_no {
+                                self.selectedRecipeItems.append(self.recipeTemplates[j])
+                                break
+                            }
                         }
                     }
                 }
@@ -134,16 +136,22 @@ class DetailJoinGroupOrderSelectRecipeTableViewController: UITableViewController
             return true
         }
         
+        if checkRecipeTemplate() == 0 {
+            return true
+        }
+        
         for k in 0...self.detailProductItem.recipeRelation!.count - 1 {
             let seq_no = self.detailProductItem.recipeRelation![k].templateSequence
             print("verifyMandatory -> detailProductItem seq_no = \(seq_no)")
             
             var templateIndex: Int = 0
-            for i in 0...self.recipeTemplates.count - 1 {
-                if self.recipeTemplates[i].templateSequence == seq_no {
-                    templateIndex = i
-                    print("templateIndex = \(templateIndex)")
-                    //break
+            if !self.recipeTemplates.isEmpty {
+                for i in 0...self.recipeTemplates.count - 1 {
+                    if self.recipeTemplates[i].templateSequence == seq_no {
+                        templateIndex = i
+                        print("templateIndex = \(templateIndex)")
+                        //break
+                    }
                 }
             }
 
@@ -177,6 +185,21 @@ class DetailJoinGroupOrderSelectRecipeTableViewController: UITableViewController
         }
         
         return true
+    }
+    
+    func checkRecipeTemplate() -> Int {
+        var returnCount: Int = 0
+        if self.detailProductItem.recipeRelation != nil {
+            if !self.detailProductItem.recipeRelation!.isEmpty {
+                for i in 0...self.detailProductItem.recipeRelation!.count - 1 {
+                    if self.recipeTemplates.contains(where: { $0.templateSequence ==  self.detailProductItem.recipeRelation![i].templateSequence }) {
+                        returnCount = returnCount + 1
+                    }
+                }
+            }
+        }
+        
+        return returnCount
     }
     
     @IBAction func changeQuantity(_ sender: UIStepper) {
@@ -213,7 +236,8 @@ class DetailJoinGroupOrderSelectRecipeTableViewController: UITableViewController
                 return 0
             }
             
-            return self.detailProductItem.recipeRelation!.count
+            //return self.detailProductItem.recipeRelation!.count
+            return checkRecipeTemplate()
         }
         
         return super.tableView(tableView, numberOfRowsInSection: section)

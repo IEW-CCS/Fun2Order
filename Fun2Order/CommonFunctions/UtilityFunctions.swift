@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import Firebase
-
+import MessageUI
 
 func getFirebaseUrlForRequest(uri: String) -> String {
     let path = NSHomeDirectory() + "/Documents/GoogleService-Info.plist"
@@ -115,28 +115,42 @@ func Activityalert( title: String )-> UIAlertController {
     return _Activityalert
 }
 
+
+/*
+ let ORDER_STATUS_INIT: String = "INIT"          // Initial and editing state of the order
+ let ORDER_STATUS_NEW: String = "NEW"            // User create the real order and send to store
+ let ORDER_STATUS_ACCEPT: String = "ACCEPT"      // Store manager confirms to receive the real order
+ let ORDER_STATUS_REJECT: String = "REJECT"      // Store manager rejects the real order
+ let ORDER_STATUS_INPROCESS: String = "INPR"     // Store starts making the content of the order
+ let ORDER_STATUS_READY: String = "READY"        // Store gets the order ready to take out or deliver
+ let ORDER_STATUS_DELIVERY: String = "DELIVERY"  // Products in delivery
+ let ORDER_STATUS_CLOSE: String = "CLOSE"        // Customer receives products and finishes this order
+*/
 func getOrderStatusDescription(status_code: String) -> String {
     switch status_code {
     case ORDER_STATUS_INIT:
-        return "初始狀態"
+        return "成立訂單"
         
-    case ORDER_STATUS_CREATE:
-        return "訂單成立"
+    case ORDER_STATUS_NEW:
+        return "送出訂單"
         
-    case ORDER_STATUS_CONFIRM:
+    case ORDER_STATUS_ACCEPT:
         return "已接單"
 
-    case ORDER_STATUS_MAKE:
+    case ORDER_STATUS_REJECT:
+        return "已拒絕"
+        
+    case ORDER_STATUS_INPROCESS:
         return "製作中"
         
-    case ORDER_STATUS_READY:
+    case ORDER_STATUS_PROCESSEND:
         return "製作完畢"
-        
+
     case ORDER_STATUS_DELIVERY:
         return "運送中"
         
-    case ORDER_STATUS_FINISH:
-        return "已取餐"
+    case ORDER_STATUS_CLOSE:
+        return "已結單"
 
     default:
         return ""

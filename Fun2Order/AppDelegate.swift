@@ -131,13 +131,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         if isReadFlag == "Y" || notificationType == NOTIFICATION_TYPE_NEW_FRIEND {
+            getTappedNotification(notification: notification)
+            self.notificationDelegate?.refreshNotificationList()
             completionHandler([])
-            getTappedNotification(notification: notification)
-            self.notificationDelegate?.refreshNotificationList()
         } else {
-            completionHandler(UNNotificationPresentationOptions.alert)
             getTappedNotification(notification: notification)
             self.notificationDelegate?.refreshNotificationList()
+            completionHandler(UNNotificationPresentationOptions.alert)
         }
     }
 

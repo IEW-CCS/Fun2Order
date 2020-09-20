@@ -264,7 +264,7 @@ class DetailBrandTableViewController: UITableViewController {
         self.menuOrder.orderNumber = tmpOrderNumber
         self.menuOrder.menuNumber = self.detailMenuInfo.menuNumber
         self.menuOrder.orderType = ORDER_TYPE_OFFICIAL_MENU
-        self.menuOrder.orderStatus = ORDER_STATUS_READY
+        self.menuOrder.orderStatus = ORDER_STATUS_INIT
         self.menuOrder.orderOwnerID = Auth.auth().currentUser!.uid
         self.menuOrder.orderOwnerName = getMyUserName()
         self.menuOrder.orderTotalQuantity = 0
@@ -276,7 +276,13 @@ class DetailBrandTableViewController: UITableViewController {
         timeFormatter.dateFormat = DATETIME_FORMATTER
         let timeString = timeFormatter.string(from: Date())
         self.menuOrder.createTime = timeString
-        self.menuOrder.dueTime = ""
+        
+        var dateComponent = DateComponents()
+        dateComponent.day = 1
+        let newDate = Calendar.current.date(byAdding: dateComponent, to: Date())
+        timeFormatter.dateFormat = "yyyyMMdd"
+        let dueTimeString = timeFormatter.string(from: newDate!)
+        self.menuOrder.dueTime = "\(dueTimeString)000000000"
 
         var myContent: MenuOrderMemberContent = MenuOrderMemberContent()
         var myItem: MenuOrderContentItem = MenuOrderContentItem()

@@ -400,7 +400,7 @@ class CartOrderCell: UITableViewCell {
         do {
             let order_data = try vc.fetch(fetchOrder).first
             order_data?.setValue(newOrderNumber, forKey: "orderNumber")
-            order_data?.setValue(ORDER_STATUS_CREATE, forKey: "orderStatus")
+            order_data?.setValue(ORDER_STATUS_NEW, forKey: "orderStatus")
             
             //app.saveContext()
         } catch {

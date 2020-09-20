@@ -91,14 +91,24 @@ let MENU_ORDER_REPLY_STATUS_WAIT: String = "WAIT"
 let MENU_ORDER_REPLY_STATUS_ACCEPT: String = "ACCEPT"
 let MENU_ORDER_REPLY_STATUS_REJECT: String = "REJECT"
 let MENU_ORDER_REPLY_STATUS_EXPIRE: String = "EXPIRE"
-
-let ORDER_STATUS_INIT: String = "INIT"    //Initial and editing state of the order
-let ORDER_STATUS_CREATE: String = "CREATE"    // User create the real order and send to store
-let ORDER_STATUS_CONFIRM: String = "CONFIRM"    // Store manager confirms to receive the real order
-let ORDER_STATUS_MAKE: String = "MAKE"    // Store starts making the content of the order
-let ORDER_STATUS_READY: String = "READY"    // Store gets the order ready to take out or deliver
-let ORDER_STATUS_DELIVERY: String = "DELIVERY"
-let ORDER_STATUS_FINISH: String = "FINISH"    // Customer receives products and finishes this order
+/*
+let ORDER_STATUS_INIT: String = "INIT"          // Initial and editing state of the order
+let ORDER_STATUS_NEW: String = "NEW"            // User create the real order and send to store
+let ORDER_STATUS_ACCEPT: String = "ACCEPT"      // Store manager confirms to receive the real order
+let ORDER_STATUS_REJECT: String = "REJECT"      // Store manager rejects the real order
+let ORDER_STATUS_INPROCESS: String = "INPR"     // Store starts making the content of the order
+let ORDER_STATUS_READY: String = "READY"        // Store gets the order ready to take out or deliver
+let ORDER_STATUS_DELIVERY: String = "DELIVERY"  // Products in delivery
+let ORDER_STATUS_CLOSE: String = "CLOSE"        // Customer receives products and finishes this order
+*/
+let ORDER_STATUS_INIT: String = "INIT"          // Initial and editing state of the order
+let ORDER_STATUS_NEW: String = "NEW"            // User create the real order and send to store
+let ORDER_STATUS_ACCEPT: String = "ACCEPT"      // Store manager confirms to receive the real order
+let ORDER_STATUS_REJECT: String = "REJECT"      // Store manager rejects the real order
+let ORDER_STATUS_INPROCESS: String = "INPR"     // Store starts making the content of the order
+let ORDER_STATUS_PROCESSEND: String = "PREN"        // Store gets the order ready to take out or deliver
+let ORDER_STATUS_DELIVERY: String = "DELIVERY"  // Products in delivery
+let ORDER_STATUS_CLOSE: String = "CLOSE"        // Customer receives products and finishes this order
 
 let NOTIFICATION_TYPE_MESSAGE_DUETIME = "DUETIME"
 let NOTIFICATION_TYPE_MESSAGE_INFORMATION = "INFO"

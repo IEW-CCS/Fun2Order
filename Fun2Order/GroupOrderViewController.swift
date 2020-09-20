@@ -21,7 +21,7 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
     @IBOutlet weak var textViewMessage: UITextView!
     @IBOutlet weak var scrollView: UIScrollView!
     
-    var groupList: [Group] = [Group]()
+    var groupList: [UserGroup] = [UserGroup]()
     var memberList: [GroupMember] = [GroupMember]()
     var selectedGroupIndex: Int = 0
     var isAttended: Bool = true
@@ -190,7 +190,7 @@ class GroupOrderViewController: UIViewController, UIGestureRecognizerDelegate, U
         self.menuOrder.orderNumber = tmpOrderNumber
         self.menuOrder.menuNumber = self.menuInformation.menuNumber
         self.menuOrder.orderType = ORDER_TYPE_MENU
-        self.menuOrder.orderStatus = ORDER_STATUS_READY
+        self.menuOrder.orderStatus = ORDER_STATUS_INIT
         self.menuOrder.orderOwnerID = self.menuInformation.userID
         //self.menuOrder.orderOwnerName = (Auth.auth().currentUser?.displayName)!
         self.menuOrder.orderOwnerName = getMyUserName()

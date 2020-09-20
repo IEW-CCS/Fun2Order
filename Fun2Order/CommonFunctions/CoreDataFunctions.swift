@@ -639,8 +639,8 @@ func updateOrderData(brand_id: Int, store_id: Int) {
 }
 
 
-func retrieveGroupList() -> [Group] {
-    var returnList = [Group]()
+func retrieveGroupList() -> [UserGroup] {
+    var returnList = [UserGroup]()
 
     let app = UIApplication.shared.delegate as! AppDelegate
     var vc: NSManagedObjectContext!
@@ -652,7 +652,7 @@ func retrieveGroupList() -> [Group] {
     do {
         let group_list = try vc.fetch(fetchGroup)
         for group_data in group_list {
-            var tmpGroup = Group()
+            var tmpGroup = UserGroup()
             tmpGroup.groupID = Int(group_data.groupID)
             tmpGroup.groupName = group_data.groupName!
             tmpGroup.groupImage = UIImage(data: group_data.groupImage!)!
