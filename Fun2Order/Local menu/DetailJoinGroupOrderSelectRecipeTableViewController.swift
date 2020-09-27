@@ -27,7 +27,8 @@ class DetailJoinGroupOrderSelectRecipeTableViewController: UITableViewController
     var cellHeight = [Int]()
     var mandatoryFlag: Bool = false
     weak var delegate: DetailJoinGroupOrderSelectRecipeDelegate?
-    
+    var shortageProducts: [ShortageItem] = [ShortageItem]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.buttonAddToCart.layer.borderWidth = 1.0
@@ -256,7 +257,8 @@ class DetailJoinGroupOrderSelectRecipeTableViewController: UITableViewController
                     break
                 }
             }
-            cell.setData(recipe_data: self.recipeTemplates[templateIndex], recipe_items: self.selectedRecipeItems[indexPath.row],  recipe_relation: self.detailProductItem.recipeRelation![indexPath.row].itemRelation, number_for_row: 3)
+            //cell.setData(recipe_data: self.recipeTemplates[templateIndex], recipe_items: self.selectedRecipeItems[indexPath.row],  recipe_relation: self.detailProductItem.recipeRelation![indexPath.row].itemRelation, number_for_row: 3)
+            cell.setData(recipe_data: self.recipeTemplates[templateIndex], recipe_items: self.selectedRecipeItems[indexPath.row],  recipe_relation: self.detailProductItem.recipeRelation![indexPath.row].itemRelation, number_for_row: 3, shortage_product: self.shortageProducts)
             cellHeight[indexPath.row] = cell.getCellHeight()
             cell.tag = indexPath.row
             cell.delegate = self

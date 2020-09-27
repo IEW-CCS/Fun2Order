@@ -30,12 +30,16 @@ class BrandStoreCell: UITableViewCell {
     @IBOutlet weak var buttonOrder: UIButton!
     @IBOutlet weak var labelDistance: UILabel!
     @IBOutlet weak var imageMap: UIImageView!
+    @IBOutlet weak var labelBusinessTime: UILabel!
     
     var storeInfo: DetailStoreInformation = DetailStoreInformation()
     weak var delegate: BrandStoreDelegate?
     var locationManager: CLLocationManager!
     var currentLocation: CLLocationCoordinate2D!
     var storeLocation: CLLocationCoordinate2D!
+    var openTime: String = ""
+    var closeTime: String = ""
+    var offFlag: Bool = false
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -91,6 +95,7 @@ class BrandStoreCell: UITableViewCell {
         self.labelStoreAddress.text = store_info.storeAddress
         self.labelStorePhoneNumber.text = store_info.storePhoneNumber
         calculateDistance()
+        setupBusinessTime()
     }
     
     func calculateDistance() {
@@ -127,7 +132,66 @@ class BrandStoreCell: UITableViewCell {
         })
     }
     
+    func setupBusinessTime() {
+        downloadFBStoreBusinessTimeChange(brand_name: self.storeInfo.brandName, store_name: self.storeInfo.storeName, completion: { businessData in
+            if businessData != nil {
+                if businessData!.dayOffFlag {
+                    self.labelBusinessTime.text = "今日店休"
+                    self.offFlag = true
+                    return
+                } else {
+                    if self.storeInfo.businessTime != nil {
+                        self.storeInfo.businessTime?.openTime = businessData!.openTime
+                        self.storeInfo.businessTime?.closeTime = businessData!.closeTime
+                        self.openTime = businessData!.openTime
+                        self.closeTime = businessData!.closeTime
+                        self.labelBusinessTime.text = "今日營業時間：\(self.openTime)至\(self.closeTime)"
+                    }
+                }
+            } else {
+                guard let openTimeString = self.storeInfo.businessTime?.openTime else {
+                    print("Get Store Open Time failed")
+                    //presentSimpleAlertMessage(title: "錯誤訊息", message: "店家未定義營業時間，請聯絡系統管理員")
+                    return
+                }
+                
+                guard let closeTimeString = self.storeInfo.businessTime?.closeTime else {
+                    print("Get Store Close Time failed")
+                    //presentSimpleAlertMessage(title: "錯誤訊息", message: "店家未定義營業時間，請聯絡系統管理員")
+                    return
+                }
+                
+                self.openTime = openTimeString
+                self.closeTime = closeTimeString
+                self.labelBusinessTime.text = "今日營業時間：\(self.openTime)至\(self.closeTime)"
+            }
+        })
+    }
+    
     @IBAction func createOrder(_ sender: UIButton) {
+        if self.offFlag {
+            presentSimpleAlertMessage(title: "提示訊息", message: "今日店家公休，請擇日再試")
+            return
+        }
+        
+        if self.openTime == "" || self.closeTime == "" {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "店家未定義營業時間，請聯絡系統管理員")
+            return
+        }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss"
+        let timeString = formatter.string(from: Date())
+            
+        if timeString < self.openTime {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "目前還未到店家營業時間，請稍候再試")
+            return
+        }
+        
+        if timeString > self.closeTime {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "目前已過店家營業時間，請於明日再試")
+            return
+        }
+
         self.delegate?.selectedStoreToOrder(sender: self, index: self.tag)
     }
 }

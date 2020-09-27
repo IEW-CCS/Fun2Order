@@ -358,7 +358,7 @@ class CreateGroupOrderTableViewController: UITableViewController, UIGestureRecog
             if !tokenIDs.isEmpty {
                 let sender = PushNotificationSender()
                 //sender.sendDeviceGroupPushNotification(to: tokenIDs, title: title, body: body, data: orderNotify, ostype: "iOS")
-                sender.sendMulticastMessage(to: tokenIDs, notification_key: "", title: title, body: body, data: orderNotify, ostype: OS_TYPE_IOS)
+                sender.sendMulticastMessage(to: tokenIDs, title: title, body: body, data: orderNotify, ostype: OS_TYPE_IOS)
             }
             
             tokenIDs.removeAll()
@@ -374,7 +374,7 @@ class CreateGroupOrderTableViewController: UITableViewController, UIGestureRecog
             if !tokenIDs.isEmpty {
                 let sender = PushNotificationSender()
                 //sender.sendDeviceGroupPushNotification(to: tokenIDs, title: title, body: body, data: orderNotify, ostype: "iOS")
-                sender.sendMulticastMessage(to: tokenIDs, notification_key: "", title: title, body: body, data: orderNotify, ostype: OS_TYPE_ANDROID)
+                sender.sendMulticastMessage(to: tokenIDs, title: title, body: body, data: orderNotify, ostype: OS_TYPE_ANDROID)
             }
         }
     }
@@ -489,6 +489,7 @@ class CreateGroupOrderTableViewController: UITableViewController, UIGestureRecog
         }
 
         self.buttonConfirm.isEnabled = false
+
         createMenuOrder()
     }
 

@@ -39,7 +39,7 @@ class DeliveryInformationTableViewController: UITableViewController, UITextField
         self.buttonSendOrder.layer.borderColor = UIColor.systemBlue.cgColor
         self.buttonSendOrder.layer.cornerRadius = 6
 
-        self.tableView.backgroundColor = self.brandBackgroundColor
+        //self.tableView.backgroundColor = self.brandBackgroundColor
 
         if self.groupOrderFlag {
             self.buttonSendOrder.setTitle("下一步", for: .normal)
@@ -196,7 +196,7 @@ class DeliveryInformationTableViewController: UITableViewController, UITextField
             
             if !tokenIDs.isEmpty {
                 let sender = PushNotificationSender()
-                sender.sendMulticastMessage(to: tokenIDs, notification_key: "", title: title, body: body, data: orderNotify, ostype: OS_TYPE_IOS)
+                sender.sendMulticastMessage(to: tokenIDs, title: title, body: body, data: orderNotify, ostype: OS_TYPE_IOS)
             }
             
             tokenIDs.removeAll()
@@ -212,7 +212,7 @@ class DeliveryInformationTableViewController: UITableViewController, UITextField
             if !tokenIDs.isEmpty {
                 let sender = PushNotificationSender()
                 usleep(100000)
-                sender.sendMulticastMessage(to: tokenIDs, notification_key: "", title: title, body: body, data: orderNotify, ostype: OS_TYPE_ANDROID)
+                sender.sendMulticastMessage(to: tokenIDs, title: title, body: body, data: orderNotify, ostype: OS_TYPE_ANDROID)
             }
         }
     }
@@ -245,7 +245,7 @@ class DeliveryInformationTableViewController: UITableViewController, UITextField
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         let dayString = formatter.string(from: Date())
-        formatter.dateFormat = "HH:mm:ss"
+        formatter.dateFormat = "HH:mm"
         let timeString = formatter.string(from: self.datePicker.date)
         
         self.deliveryInfo.deliveryTime = "\(dayString) \(timeString)"
@@ -262,7 +262,7 @@ class DeliveryInformationTableViewController: UITableViewController, UITextField
             groupOrderController.orderType = ORDER_TYPE_OFFICIAL_MENU
             groupOrderController.brandName = self.detailMenuInformation.brandName
             groupOrderController.detailMenuInformation = self.detailMenuInformation
-            groupOrderController.storeInfo = self.menuOrder.storeInfo
+            groupOrderController.storeInfo = self.storeInfo
             groupOrderController.deliveryInfo = self.deliveryInfo
             self.navigationController?.show(groupOrderController, sender: self)
         } else {
@@ -282,7 +282,7 @@ class DeliveryInformationTableViewController: UITableViewController, UITextField
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        cell.backgroundColor = self.brandBackgroundColor
+        //cell.backgroundColor = self.brandBackgroundColor
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell
     }

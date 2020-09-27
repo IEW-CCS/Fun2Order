@@ -31,6 +31,13 @@ class ProductPriceWithCartCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
+    func setDisable() {
+        self.labelProductName.textColor = COLOR_PEPPER_RED
+        self.labelDescription.textColor = COLOR_PEPPER_RED
+        self.buttonCart.isEnabled = false
+        self.buttonCart.isHidden = true
+    }
+    
     func setData(name: String, description: String, contents: [String], index: Int, style: Int, standalone_flag: Bool) {
         for subView in self.stackViewPrice.arrangedSubviews {
             subView.removeFromSuperview()
@@ -76,6 +83,8 @@ class ProductPriceWithCartCell: UITableViewCell {
             
             self.stackViewPrice.addArrangedSubview(squareView)
         }
+        self.buttonCart.isEnabled = true
+        //self.buttonCart.isHidden = false
     }
     
     @IBAction func addToCart(_ sender: UIButton) {

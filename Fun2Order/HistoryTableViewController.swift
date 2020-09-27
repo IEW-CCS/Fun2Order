@@ -44,6 +44,11 @@ class HistoryTableViewController: UITableViewController {
             object: nil
         )
 
+        refreshControl = UIRefreshControl()
+        refreshControl?.attributedTitle = NSAttributedString(string: "正在更新揪團紀錄")
+        self.tableView.refreshControl = refreshControl
+        refreshControl?.addTarget(self, action: #selector(refreshHistoryList), for: .valueChanged)
+
         self.segmentType.selectedSegmentIndex = 0
         queryMenuOrder()
     }
@@ -54,6 +59,12 @@ class HistoryTableViewController: UITableViewController {
         self.tabBarController?.title = "揪團紀錄"
         navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: false)
         setupBannerAdView()
+    }
+
+    @objc func refreshHistoryList() {
+        DispatchQueue.main.async {
+            self.queryMenuOrder()
+        }
     }
 
     func setupBannerAdView() {
@@ -131,15 +142,22 @@ class HistoryTableViewController: UITableViewController {
                         print("queryMenuOrder jsonData decode failed: \(error.localizedDescription)")
                         continue
                     }
-                    self.menuOrderList.sort(by: {$0.createTime > $1.createTime })
-                    self.filterHistoryDueTime()
-                    self.tableView.reloadData()
+               }
+                self.menuOrderList.sort(by: {$0.createTime > $1.createTime })
+                self.filterHistoryDueTime()
+                self.tableView.reloadData()
+                //sleep(1)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.refreshControl?.endRefreshing()
                 }
             } else {
                 //self.filteredMenuOrderList.removeAll()
                 self.filterHistoryDueTime()
                 self.tableView.reloadData()
                 print("queryMenuOrder snapshot doesn't exist!")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.refreshControl?.endRefreshing()
+                }
                 return
             }
         }) { (error) in
@@ -420,6 +438,10 @@ extension HistoryTableViewController: DisplayQRCodeDelegate {
         qrCodeController.modalTransitionStyle = .crossDissolve
         qrCodeController.modalPresentationStyle = .overFullScreen
         navigationController?.present(qrCodeController, animated: true, completion: nil)
+    }
+    
+    func sendNewOrderToStore(at index: IndexPath) {
+        queryMenuOrder()
     }
 }
 

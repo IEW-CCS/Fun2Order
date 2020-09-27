@@ -128,13 +128,19 @@ class MenuListTableViewController: UITableViewController, UIGestureRecognizerDel
                 app.toolTipDelegate?.triggerCreateMenuTooltip(parent: self.view)
                 self.filterMenuInfosByCategory()
                 self.tableView.reloadData()
-                self.refreshControl?.endRefreshing()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.refreshControl?.endRefreshing()
+                }
                 return
             }
-            self.refreshControl?.endRefreshing()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.refreshControl?.endRefreshing()
+            }
         }) { (error) in
             print("downloadFBMenuInformationList: \(error.localizedDescription)")
-            self.refreshControl?.endRefreshing()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.refreshControl?.endRefreshing()
+            }
         }
     }
     

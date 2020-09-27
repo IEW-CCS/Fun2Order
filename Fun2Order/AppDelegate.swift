@@ -178,7 +178,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // signOut from FIRAuth
             do {
                 try Auth.auth().signOut()
-            }catch {
+            } catch {
                 print(error.localizedDescription)
             }
         } else {

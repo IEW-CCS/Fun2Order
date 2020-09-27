@@ -10,16 +10,20 @@ import UIKit
 import Firebase
 
 protocol BrandCartDelegate: class {
-    func updateOrderContent(sender: BrandCartTableViewController, content: [MenuProductItem]?)
+    func changeOrderContent(sender: BrandCartTableViewController, content: [MenuProductItem]?)
 }
 
 class BrandCartTableViewController: UITableViewController {
     @IBOutlet weak var labelBrandName: UILabel!
     @IBOutlet weak var buttonConfirm: UIButton!
+    @IBOutlet weak var labelDeliveryType: UILabel!
+    @IBOutlet weak var labelDeliveryAddress: UILabel!
+    @IBOutlet weak var labelDeliveryTime: UILabel!
     
     var brandName: String = ""
     var memberIndex: Int = 0
     var needContactInfoFlag: Bool?
+    var menuOrder: MenuOrder = MenuOrder()
     var memberContent: MenuOrderMemberContent = MenuOrderMemberContent()
     let app = UIApplication.shared.delegate as! AppDelegate
     weak var refreshNotificationDelegate: ApplicationRefreshNotificationDelegate?
@@ -41,7 +45,23 @@ class BrandCartTableViewController: UITableViewController {
         self.tableView.register(productCellViewNib, forCellReuseIdentifier: "NewProductCell")
         
         self.labelBrandName.text = self.brandName
-
+        setupDeliveryInformation()
+    }
+    
+    func setupDeliveryInformation() {
+        if self.menuOrder.deliveryInfo != nil {
+            if self.menuOrder.deliveryInfo!.deliveryType == DELIVERY_TYPE_TAKEOUT {
+                self.labelDeliveryType.text =
+                    "外帶"
+                self.labelDeliveryAddress.isHidden = true
+            } else {
+                self.labelDeliveryType.text = "外送"
+                self.labelDeliveryAddress.isHidden = false
+                self.labelDeliveryAddress.text = self.menuOrder.deliveryInfo!.deliveryAddress
+            }
+            
+            self.labelDeliveryTime.text = self.menuOrder.deliveryInfo!.deliveryTime
+        }
     }
     
     func setLimitedMenuItems(items: [MenuItem]?, global_quantity: [MenuItem]?) {
@@ -149,15 +169,21 @@ class BrandCartTableViewController: UITableViewController {
 
     func updateOrderContent() {
         var totalQuantity: Int = 0
+        var totalPrice: Int = 0
+        
         if self.memberContent.orderContent.menuProductItems != nil {
             if !self.memberContent.orderContent.menuProductItems!.isEmpty {
                 for i in 0...self.memberContent.orderContent.menuProductItems!.count - 1 {
                     totalQuantity = totalQuantity + self.memberContent.orderContent.menuProductItems![i].itemQuantity
+                    totalPrice = totalPrice + (self.memberContent.orderContent.menuProductItems![i].itemPrice *  self.memberContent.orderContent.menuProductItems![i].itemQuantity)
                 }
             }
         }
 
         self.memberContent.orderContent.itemQuantity = totalQuantity
+        self.memberContent.orderContent.itemFinalPrice = totalPrice
+        print("self.memberContent.orderContent.itemQuantity = \(totalQuantity)")
+        print("self.memberContent.orderContent.itemFinalPrice = \(totalPrice)")
 
         if !verifyLimitedQuantity() {
             return
@@ -194,6 +220,8 @@ class BrandCartTableViewController: UITableViewController {
             }
         }
 
+        self.menuOrder.contentItems[self.memberIndex] = self.memberContent
+        
         let pathString = "USER_MENU_ORDER/\(self.memberContent.orderOwnerID)/\(self.memberContent.orderContent.orderNumber)/contentItems/\(self.memberIndex)"
         databaseRef.child(pathString).setValue(self.memberContent.toAnyObject()) { (error, reference) in
             if let error = error {
@@ -209,10 +237,39 @@ class BrandCartTableViewController: UITableViewController {
             self.refreshNotificationDelegate?.refreshNotificationList()
             //self.delegate?.refreshHistoryInvitationList(sender: self)
             //self.isNeedToConfirmFlag = false
+            NotificationCenter.default.post(name: NSNotification.Name("RefreshHistory"), object: nil)
             presentSimpleAlertMessage(title: "訊息", message: "已成功加入團購單")
+            if self.menuOrder.coworkBrandFlag != nil && self.menuOrder.groupOrderFlag != nil {
+                if self.menuOrder.coworkBrandFlag! == true && self.menuOrder.groupOrderFlag! == false {
+                    self.askToSendOrderToStore()
+                }
+            }
             self.navigationController?.popToRootViewController(animated: true)
             self.dismiss(animated: false, completion: nil)
         }
+    }
+        
+    func askToSendOrderToStore() {
+        var alertWindow: UIWindow!
+        let controller = UIAlertController(title: "訂單直送店家", message: "請問需要將此訂購單的內容直接傳送給店家嗎？\n按下確定則將購物車內容傳送給店家\n按下暫不傳送可於稍後購物車內容確定後再至『揪團紀錄』中傳送訂單資訊給店家", preferredStyle: .alert)
+
+        let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
+            print("Confirm to send new order to store")
+
+            //sendOrderToStoreNotification(menu_order: self.menuOrder)
+            verifyStoreState(menu_order: self.menuOrder)
+            alertWindow.isHidden = true
+        }
+        
+        controller.addAction(okAction)
+        let cancelAction = UIAlertAction(title: "暫不傳送", style: .cancel) { (_) in
+            print("Not to send new order to store")
+            presentSimpleAlertMessage(title: "提示訊息", message: "稍後購物車內容確定後可至『揪團紀錄』中傳送訂單資訊給店家，或也可以在購物車中重新確認直送訂單資訊予店家")
+            alertWindow.isHidden = true
+        }
+        controller.addAction(cancelAction)
+        alertWindow = presentAlert(controller)
+
     }
 
     @IBAction func confirmAttendGroupOrder(_ sender: UIButton) {
@@ -236,7 +293,7 @@ class BrandCartTableViewController: UITableViewController {
                 controller.preferredContentSize.width = 320
                 controller.setValue(personalController, forKey: "contentViewController")
                 controller.addChild(personalController)
-                
+
                 let userInfo = getMyContactInfo()
                 
                 personalController.setData(user_info: userInfo)
@@ -253,11 +310,11 @@ class BrandCartTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 1 {
+        if section == 2 {
             if self.memberContent.orderContent.menuProductItems == nil {
                 return 0
             }
@@ -273,7 +330,7 @@ class BrandCartTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 1 {
+        if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NewProductCell", for: indexPath) as! NewProductCell
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             cell.setData(item: self.self.memberContent.orderContent.menuProductItems![indexPath.row])
@@ -290,7 +347,7 @@ class BrandCartTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int {
-        if indexPath.section == 1 {
+        if indexPath.section == 2 {
             let newIndexPath = IndexPath(row: 0, section: indexPath.section)
             return super.tableView(tableView, indentationLevelForRowAt: newIndexPath)
         } else {
@@ -299,8 +356,14 @@ class BrandCartTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 1 {
+        if indexPath.section == 2 {
             return 80
+        }
+        
+        if indexPath.section == 1 {
+            if self.menuOrder.coworkBrandFlag == nil || self.menuOrder.coworkBrandFlag! == false {
+                return 0
+            }
         }
 
         return super.tableView(tableView, heightForRowAt: indexPath)
@@ -311,11 +374,17 @@ class BrandCartTableViewController: UITableViewController {
             return 0
         }
         
+        if section == 1 {
+            if self.menuOrder.coworkBrandFlag == nil || self.menuOrder.coworkBrandFlag! == false {
+                return 0
+            }
+        }
+        
         return 50
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.section == 0 {
+        if indexPath.section == 0 || indexPath.section == 1 {
             return false
         }
         
@@ -323,7 +392,7 @@ class BrandCartTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        if indexPath.section == 1 {
+        if indexPath.section == 2 {
             let deleteAction = UITableViewRowAction(style: .default, title: "刪除") { (action, indexPath) in
                 self.deleteMenuProductItem(index: indexPath.row)
             }
@@ -348,10 +417,10 @@ class BrandCartTableViewController: UITableViewController {
             }
             
             if self.memberContent.orderContent.menuProductItems!.isEmpty {
-                self.delegate?.updateOrderContent(sender: self, content: nil)
+                self.delegate?.changeOrderContent(sender: self, content: nil)
                 self.memberContent.orderContent.menuProductItems = nil
             } else {
-                self.delegate?.updateOrderContent(sender: self, content: self.memberContent.orderContent.menuProductItems)
+                self.delegate?.changeOrderContent(sender: self, content: self.memberContent.orderContent.menuProductItems)
             }
             self.tableView.reloadData()
             alertWindow.isHidden = true

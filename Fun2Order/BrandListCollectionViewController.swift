@@ -11,6 +11,8 @@ import CoreData
 import Firebase
 import GoogleMobileAds
 import Kingfisher
+import AppTrackingTransparency
+import AdSupport
 
 protocol BrandListDelegate: class {
     func getBrandInformation(sender: BrandListCollectionViewController, info: BrandTemplate)
@@ -51,10 +53,25 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
         self.collectionView.addSubview(refreshControl)
 
         //self.bannerView = GADBannerView(adSize: kGADAdSizeBanner)
-        self.bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
-        addBannerViewToView(self.bannerView)
-        
+        //self.bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
+        //addBannerViewToView(self.bannerView)
+        requestIDFA()
         downloadFBBrandCategoryList()
+    }
+    
+    func requestIDFA() {
+        if #available(iOS 14, *) {
+            if ATTrackingManager.trackingAuthorizationStatus == ATTrackingManager.AuthorizationStatus.notDetermined {
+                ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
+                    print("ATTrackingManager.requestTrackingAuthorization status is \(status)")
+                    self.bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
+                    self.addBannerViewToView(self.bannerView)
+                })
+            }
+        } else {
+            self.bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
+            self.addBannerViewToView(self.bannerView)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -113,7 +130,9 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
         if verifyImaegeStatus() {
             downloadFBBrandCategoryList()
         } else {
-            self.refreshControl.endRefreshing()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.refreshControl.endRefreshing()
+            }
         }
     }
     
@@ -201,11 +220,16 @@ class BrandListCollectionViewController: UICollectionViewController, UITextField
                 //var contentSize = self.collectionView.collectionViewLayout.collectionViewContentSize
                 //contentSize.height = contentSize.height + 20
                 //self.collectionView.collectionViewLayout.collectionViewContentSize = contentSize
-                self.refreshControl.endRefreshing()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.refreshControl.endRefreshing()
+                }
             }
         }) { (error) in
             print("downloadFBBrandCategoryList: \(error.localizedDescription)")
-            self.refreshControl.endRefreshing()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.refreshControl.endRefreshing()
+            }
+
         }
     }
     

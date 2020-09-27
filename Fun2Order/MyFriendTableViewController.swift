@@ -47,7 +47,9 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
         self.friendList.removeAll()
         self.friendList = retrieveFriendList()
         self.tableView.reloadData()
-        self.refreshControl?.endRefreshing()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.refreshControl?.endRefreshing()
+        }
     }
 
     @IBAction func addFriend(_ sender: UIBarButtonItem) {
@@ -462,7 +464,7 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
         
         if !tokenList.isEmpty {
             let sender = PushNotificationSender()
-            sender.sendMulticastMessage(to: tokenList, notification_key: "", title: title, body: body, data: notifyData, ostype: OS_TYPE_IOS)
+            sender.sendMulticastMessage(to: tokenList, title: title, body: body, data: notifyData, ostype: OS_TYPE_IOS)
         }
 
         
@@ -483,7 +485,7 @@ class MyFriendTableViewController: UITableViewController, UIGestureRecognizerDel
         
         if !tokenList.isEmpty {
             let sender = PushNotificationSender()
-            sender.sendMulticastMessage(to: tokenList, notification_key: "", title: title, body: body, data: notifyData, ostype: OS_TYPE_ANDROID)
+            sender.sendMulticastMessage(to: tokenList, title: title, body: body, data: notifyData, ostype: OS_TYPE_ANDROID)
         }
     }
 

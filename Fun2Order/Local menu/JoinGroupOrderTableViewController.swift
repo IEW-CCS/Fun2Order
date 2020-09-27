@@ -229,6 +229,7 @@ class JoinGroupOrderTableViewController: UITableViewController, UIGestureRecogni
         cartController.needContactInfoFlag = self.menuOrder!.needContactInfoFlag
         cartController.originalMenuProductItems = self.originalMenuProductItems
         cartController.orderGlobalQuantity = self.orderGlobalQuantity
+        cartController.menuOrder = self.menuOrder!
         cartController.delegate = self
 
         self.navigationController?.show(cartController, sender: self)
@@ -626,7 +627,7 @@ extension JoinGroupOrderTableViewController: MenuOrderBoardDelegate {
 }
 
 extension JoinGroupOrderTableViewController: BrandCartDelegate {
-    func updateOrderContent(sender: BrandCartTableViewController, content: [MenuProductItem]?) {
+    func changeOrderContent(sender: BrandCartTableViewController, content: [MenuProductItem]?) {
         self.memberContent.orderContent.menuProductItems = content
         setupCartBadgeNumber()
     }
@@ -723,6 +724,7 @@ extension JoinGroupOrderTableViewController: MenuItemWithCartDelegate {
         self.selectedProductName = self.menuInformation.menuItems![index].itemName
         recipeController.productName = self.selectedProductName
         recipeController.menuInformation = self.menuInformation
+        recipeController.singlePrice = self.menuInformation.menuItems![index].itemPrice
         recipeController.isSelectRecipeMode = true
         recipeController.delegate = self
 

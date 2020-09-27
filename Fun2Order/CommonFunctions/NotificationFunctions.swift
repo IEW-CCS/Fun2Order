@@ -423,3 +423,122 @@ func verifyNotificationType(type: String) -> Bool {
             return false
     }
 }
+
+func verifyStoreState(menu_order: MenuOrder) {
+    downloadFBStoreInformation(brand_name: menu_order.brandName, store_name: menu_order.storeInfo!.storeName!, completion: {storeData in
+        if storeData == nil {
+            presentSimpleAlertMessage(title: "錯誤訊息", message: "存取店家資料時發生錯誤")
+            return
+        }
+        
+        var processTime: Int = 0
+        if storeData!.storeState != nil {
+            if storeData!.storeState == STORE_STATE_NORMAL {
+                if storeData!.normalProcessTime != nil {
+                    processTime = storeData!.normalProcessTime!
+                }
+            } else if storeData!.storeState == STORE_STATE_BUSY {
+                if storeData!.busyProcessTime != nil {
+                    processTime = storeData!.busyProcessTime!
+                }
+            }
+        }
+        
+        var menuOrder: MenuOrder = MenuOrder()
+        menuOrder = menu_order
+        if processTime == 0 {
+            sendOrderToStoreNotification(menu_order: menuOrder)
+        } else {
+            let timeFormatter = DateFormatter()
+            var dateComponent = DateComponents()
+            dateComponent.minute = processTime
+            let newDate = Calendar.current.date(byAdding: dateComponent, to: Date())
+            timeFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+            let newTimeString = timeFormatter.string(from: newDate!)
+            if newTimeString > menu_order.deliveryInfo!.deliveryTime {
+                if storeData!.storeState == STORE_STATE_NORMAL {
+                    presentSimpleAlertMessage(title: "提示訊息", message: "因製作餐點需時，因此取餐時間將更新為：\(newTimeString)")
+                    menuOrder.deliveryInfo!.deliveryTime = newTimeString
+                } else if storeData!.storeState == STORE_STATE_BUSY {
+                    presentSimpleAlertMessage(title: "提示訊息", message: "因目前店家忙碌中，因此取餐時間將更新為：\(newTimeString)")
+                    menuOrder.deliveryInfo!.deliveryTime = newTimeString
+                }
+            }
+            sendOrderToStoreNotification(menu_order: menuOrder)
+        }
+    })
+}
+
+func sendOrderToStoreNotification(menu_order: MenuOrder) {
+    var newOrder: MenuOrder = MenuOrder()
+    
+    newOrder = menu_order
+    newOrder.orderStatus = ORDER_STATUS_NEW
+    
+    if newOrder.storeInfo == nil {
+        presentSimpleAlertMessage(title: "錯誤訊息", message: "店家訊息不存在於訂單資料中，請重新產生訂單")
+        return
+    }
+    
+    if newOrder.storeInfo!.storeName == nil || newOrder.storeInfo!.storeName!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+        presentSimpleAlertMessage(title: "錯誤訊息", message: "店家名稱未指定於訂單資料中，請重新產生訂單")
+        return
+    }
+
+    if newOrder.brandName.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+        presentSimpleAlertMessage(title: "錯誤訊息", message: "訂單資料中之品牌名稱為空白，請重新產生訂單")
+        return
+    }
+    
+    var totalOrderQuantity: Int = 0
+    var totalOrderPrice: Int = 0
+    
+    if !menu_order.contentItems.isEmpty {
+        for item in menu_order.contentItems {
+            totalOrderQuantity = totalOrderQuantity + item.orderContent.itemQuantity
+            totalOrderPrice = totalOrderPrice + item.orderContent.itemFinalPrice
+        }
+    }
+    
+    newOrder.orderTotalQuantity = totalOrderQuantity
+    newOrder.orderTotalPrice = totalOrderPrice
+    print("totalOrderQuantity = \(totalOrderQuantity)")
+    print("totalOrderPrice = \(totalOrderPrice)")
+    
+    updateFBUserMenuOrderStatus(user_id: menu_order.orderOwnerID, order_number: menu_order.orderNumber, status_code: ORDER_STATUS_NEW)
+    updateFBUserMenuOrderQuantityPrice(user_id: menu_order.orderOwnerID, order_number: menu_order.orderNumber, total_quantity: totalOrderQuantity, total_price: totalOrderPrice)
+    updateFBUserMenuOrderDeliveryInfo(user_id: menu_order.orderOwnerID, order_number: menu_order.orderNumber, delivery_time: menu_order.deliveryInfo!.deliveryTime)
+    
+    uploadFBStoreNewOrder(menu_order: newOrder)
+
+    downloadFBStoreUserControlList(brand_name: newOrder.brandName, completion: { userList in
+        if userList == nil {
+            print("No users to send notification")
+            return
+        }
+        
+        var tokenIDs: [String] = [String]()
+        for userData in userList! {
+            if userData.storeName == menu_order.storeInfo!.storeName {
+                tokenIDs.append(userData.userToken)
+            }
+        }
+        
+        if tokenIDs.isEmpty {
+            print("No token id found")
+            return
+        }
+        
+        var storeNotify: StoreNotificationData = StoreNotificationData()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMddHHmmssSSS"
+        let dateString = formatter.string(from: Date())
+        
+        storeNotify.createTime = dateString
+        storeNotify.notificationType = STORE_NOTIFICATION_TYPE_NEW_ORDER
+        
+        let sender = PushNotificationSender()
+        sender.sendStoreMulticastMessage(to: tokenIDs, title: "新進訂單", body: "來自『\(menu_order.deliveryInfo!.contactName)』的新進訂購單，請儘速閱讀詳細內容", data: storeNotify, ostype: OS_TYPE_IOS)
+
+    })
+}

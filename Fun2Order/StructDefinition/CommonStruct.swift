@@ -543,6 +543,7 @@ struct MenuOrderDeliveryInformation: Codable {
     var deliveryAddress: String = ""
     var contactName: String = ""
     var contactPhoneNumber: String = ""
+    var separatePackageFlag: Bool = false
     
     func toAnyObject() -> Any {
         return [
@@ -550,7 +551,8 @@ struct MenuOrderDeliveryInformation: Codable {
             "deliveryTime": deliveryTime,
             "deliveryAddress": deliveryAddress,
             "contactName": contactName,
-            "contactPhoneNumber": contactPhoneNumber
+            "contactPhoneNumber": contactPhoneNumber,
+            "separatePackageFlag": separatePackageFlag
         ]
     }
 }
@@ -731,6 +733,29 @@ struct StoreNotificationData: Codable {
             "orderNumber": orderNumber,
             "notificationType": notificationType,
             "createTime": createTime
+        ]
+    }
+}
+
+struct ShortageItem: Codable {
+    var sequenceNumber: Int = 0
+    var itemCategory : String = ""
+    var itemProduct: String = ""
+    var comments: String?
+  
+    
+    init(sequenceNumber: Int, category: String, product: String) {
+        self.sequenceNumber = sequenceNumber
+        self.itemCategory = category
+        self.itemProduct = product
+    }
+    
+    func toAnyObject() -> Any {
+        return [
+            "sequenceNumber": sequenceNumber,
+            "itemCategory": itemCategory,
+            "itemProduct": itemProduct,
+            "comments": comments as Any
         ]
     }
 }

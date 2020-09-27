@@ -124,6 +124,100 @@ class DetailMenuRecipeCell: UITableViewCell {
         self.cellHeight = cellTotalHeight + CELL_MARGIN_HEIGHT
     }
     
+    func setData(recipe_data: DetailRecipeTemplate, recipe_items: DetailRecipeTemplate, recipe_relation: [Bool], number_for_row: Int, shortage_product: [ShortageItem]) {
+        if !self.recipeTemplate.recipeList.isEmpty {
+            self.recipeTemplate.recipeList.removeAll()
+        }
+        
+        self.recipeTemplate = recipe_data
+        self.recipeItems = recipe_items
+        self.recipeItemRelation = recipe_relation
+        self.numberForRow = number_for_row
+        self.titleLabel.text = recipe_data.templateName
+        if recipe_data.mandatoryFlag {
+            self.titleLabel.text = self.titleLabel.text! + " (必選)"
+        } else {
+            self.titleLabel.text = self.titleLabel.text! + " (選填)"
+        }
+        
+        let ITEM_HEIGHT = 44
+        let LABEL_WIDTH = 95
+        //let BUTTON_WIDTH = 36
+        let ITEM_WIDTH_SPACE = 5
+        let ITEM_HEIGHT_SPACE = 5
+        let CELL_MARGIN_HEIGHT = 15
+        let ITEM_WIDTH = ITEM_WIDTH_SPACE + LABEL_WIDTH
+        var cellTotalHeight: Int = 0
+        
+        for view in self.subviews {
+            if view.isKind(of: ShadowGradientView.self) || view.isKind(of: UIButton.self){
+                view.removeFromSuperview()
+            }
+        }
+        
+        cellTotalHeight = Int(backView.frame.height)
+        
+        var rowCountIndex: Int = 0
+        var totalRowCount: Int = 0
+        let initMargin: Int = 5
+        var itemY2: CGFloat = 0
+        
+        if recipe_data.recipeList.isEmpty {
+            cellTotalHeight = cellTotalHeight + (ITEM_HEIGHT_SPACE + ITEM_HEIGHT)*(totalRowCount + 1)
+            self.cellHeight = cellTotalHeight + CELL_MARGIN_HEIGHT
+            return
+        }
+
+        var displayIndex: Int = 0
+        for index in 0...recipe_data.recipeList.count - 1 {
+            //let mod_number = index%number_for_row
+            let mod_number = displayIndex%number_for_row
+            rowCountIndex = totalRowCount
+            itemY2 = CGFloat(self.backView.frame.maxY + CGFloat((ITEM_HEIGHT_SPACE + ITEM_HEIGHT)*rowCountIndex + 8))
+            let itemRect = CGRect(x: CGFloat(self.backView.frame.minX + CGFloat(ITEM_WIDTH_SPACE + ITEM_WIDTH * mod_number + initMargin)), y: CGFloat(itemY2), width: CGFloat(LABEL_WIDTH), height: CGFloat(ITEM_HEIGHT))
+
+            let itemLabel = ShadowGradientView(frame: itemRect)
+            itemLabel.gradientBorderColor = .lightGray
+            itemLabel.gradientBorderWidth = Double(1.5)
+            itemLabel.labelText = recipe_data.recipeList[index].itemName
+            itemLabel.tag = index
+
+            if self.recipeItems.recipeList[index].itemCheckedFlag {
+                itemLabel.setSelected()
+            } else {
+                itemLabel.setUnSelected()
+            }
+            
+            var shortageFlag: Bool = false
+            if shortage_product.contains(where: { $0.itemProduct == recipe_data.recipeList[index].itemName }) {
+                shortageFlag = true
+                itemLabel.setDisabled()
+            }
+            
+            if recipe_relation[index] {
+                self.addSubview(itemLabel)
+
+                if !shortageFlag {
+                    let tapGesture = UITapGestureRecognizer(target: self, action:#selector(self.itemClicked(_:)))
+                    itemLabel.addGestureRecognizer(tapGesture)
+                }
+                displayIndex = displayIndex + 1
+            } else {
+                itemLabel.isHidden  = true
+                self.addSubview(itemLabel)
+            }
+
+            if (mod_number == (number_for_row - 1)) {
+                if !(index == (recipe_data.recipeList.count - 1)) {
+                    totalRowCount = totalRowCount + 1
+                }
+            }
+        }
+        
+        cellTotalHeight = cellTotalHeight + (ITEM_HEIGHT_SPACE + ITEM_HEIGHT)*(totalRowCount + 1)
+        self.cellHeight = cellTotalHeight + CELL_MARGIN_HEIGHT
+    }
+
     @objc func itemClicked(_ sender: UITapGestureRecognizer) {
         let selectedItem = sender.view as! ShadowGradientView
         let index = selectedItem.tag
@@ -167,3 +261,4 @@ class DetailMenuRecipeCell: UITableViewCell {
         self.delegate?.configProductRecipeRelation(sender: self, index: self.tag, recipe_items: self.recipeItems)
     }
 }
+

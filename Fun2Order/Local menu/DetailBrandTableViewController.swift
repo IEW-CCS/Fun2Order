@@ -26,6 +26,7 @@ class DetailBrandTableViewController: UITableViewController {
     var selectedIndex: Int = -1
     var bannerView: GADBannerView!
     var menuOrder: MenuOrder = MenuOrder()
+    var coworkBrandFlag: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -235,7 +236,20 @@ class DetailBrandTableViewController: UITableViewController {
         
         let singleAction = UIAlertAction(title: "自己訂購", style: .default) { (_) in
             print("Create GroupOrder for myself")
-            self.createMenuOrder()
+            downloadFBDetailBrandProfile(brand_name: self.detailMenuInfo.brandName, completion: { brandProfile in
+                if brandProfile == nil {
+                    presentSimpleAlertMessage(title: "錯誤訊息", message: "存取品牌資料時發生錯誤")
+                    return
+                }
+                
+                if brandProfile!.coworkBrandFlag == nil {
+                    self.coworkBrandFlag = false
+                } else {
+                    self.coworkBrandFlag =  brandProfile!.coworkBrandFlag!
+                }
+                self.createMenuOrder()
+            })
+            //self.createMenuOrder()
         }
         
         singleAction.setValue(UIColor.systemBlue, forKey: "titleTextColor")
@@ -271,6 +285,8 @@ class DetailBrandTableViewController: UITableViewController {
         self.menuOrder.orderTotalPrice = 0
         self.menuOrder.brandName = self.detailMenuInfo.brandName
         self.menuOrder.needContactInfoFlag = false
+        self.menuOrder.coworkBrandFlag = self.coworkBrandFlag
+        self.menuOrder.groupOrderFlag = false
         
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = DATETIME_FORMATTER
@@ -377,7 +393,7 @@ class DetailBrandTableViewController: UITableViewController {
             
             if !tokenIDs.isEmpty {
                 let sender = PushNotificationSender()
-                sender.sendMulticastMessage(to: tokenIDs, notification_key: "", title: title, body: body, data: orderNotify, ostype: OS_TYPE_IOS)
+                sender.sendMulticastMessage(to: tokenIDs, title: title, body: body, data: orderNotify, ostype: OS_TYPE_IOS)
             }
             
             tokenIDs.removeAll()
@@ -393,7 +409,7 @@ class DetailBrandTableViewController: UITableViewController {
             if !tokenIDs.isEmpty {
                 let sender = PushNotificationSender()
                 usleep(100000)
-                sender.sendMulticastMessage(to: tokenIDs, notification_key: "", title: title, body: body, data: orderNotify, ostype: OS_TYPE_ANDROID)
+                sender.sendMulticastMessage(to: tokenIDs, title: title, body: body, data: orderNotify, ostype: OS_TYPE_ANDROID)
             }
         }
     }

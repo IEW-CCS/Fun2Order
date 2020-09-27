@@ -73,6 +73,7 @@ class JoinOrderSelectRecipeTableViewController: UITableViewController, UIGesture
     @IBAction func changeQuantity(_ sender: UIStepper) {
         self.productQuantity = Int(sender.value)
         self.labelQuantity.text = String(self.productQuantity)
+        self.labelPrice.text = String(self.singlePrice * self.productQuantity)
     }
     
     @IBAction func confirmToCart(_ sender: UIButton) {

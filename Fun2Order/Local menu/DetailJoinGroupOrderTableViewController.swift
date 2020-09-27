@@ -44,7 +44,7 @@ class DetailJoinGroupOrderTableViewController: UITableViewController, UIGestureR
     var productCategory: [String] = [String]()
     var selectedIndex: Int = -1
     var selectedProductIndex: Int = 0
-
+    var shortageProducts: [ShortageItem] = [ShortageItem]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,6 +76,7 @@ class DetailJoinGroupOrderTableViewController: UITableViewController, UIGestureR
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
 
+        setupShortageProducts()
         setupInterstitialAd()
     }
 
@@ -220,6 +221,34 @@ class DetailJoinGroupOrderTableViewController: UITableViewController, UIGestureR
         self.filterProducts = self.detailMenuInformation.productCategory![index].productItems!
     }
 
+    func setupShortageProducts() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        let dayString = formatter.string(from: Date())
+        
+        downloadFBStoreShortageProductList(brand_name: self.menuOrder!.brandName, store_name: self.menuOrder!.storeInfo!.storeName!, day_string: dayString, completion: { shortageList in
+            if shortageList == nil {
+                return
+            }
+            
+            self.shortageProducts = shortageList!
+            print("self.shortageProducts = \(self.shortageProducts)")
+            self.tableView.reloadData()
+        })
+    }
+    
+    func verifyShortageProduct(item_name: String) -> Bool {
+        var result: Bool = false
+        
+        if !self.shortageProducts.isEmpty {
+            if self.shortageProducts.contains(where: {$0.itemProduct == item_name}) {
+                result = true
+            }
+        }
+        
+        return result
+    }
+    
     func getPriceRecipeItems(index: Int) -> [String] {
         var itemsString: [String] = [String]()
 
@@ -320,11 +349,11 @@ class DetailJoinGroupOrderTableViewController: UITableViewController, UIGestureR
         cartController.brandName = self.detailMenuInformation.brandName
         cartController.memberIndex = self.memberIndex
         cartController.needContactInfoFlag = self.menuOrder!.needContactInfoFlag
+        cartController.menuOrder = self.menuOrder!
         cartController.delegate = self
 
         self.navigationController?.show(cartController, sender: self)
     }
-    
     
     func refreshJoinGroupOrder() {
         //self.labelBrandName.text = self.detailMenuInformation.brandName
@@ -408,6 +437,11 @@ class DetailJoinGroupOrderTableViewController: UITableViewController, UIGestureR
             let contents = self.getProductPriceItems(index: indexPath.row)
             let description = self.filterProducts[indexPath.row].productDescription ?? ""
             cell.setData(name: self.filterProducts[indexPath.row].productName, description: description, contents: contents, index: indexPath.row, style: 1, standalone_flag: self.standAloneFlagArray[self.selectedIndex])
+            if !self.shortageProducts.isEmpty {
+                if self.verifyShortageProduct(item_name: self.filterProducts[indexPath.row].productName) {
+                    cell.setDisable()
+                }
+            }
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
 
             return cell
@@ -633,6 +667,7 @@ extension DetailJoinGroupOrderTableViewController: ProductPriceWithCartDelegate 
         self.selectedProductIndex = index
         recipeController.detailProductItem = self.filterProducts[index]
         recipeController.mandatoryFlag = self.mandatoryFlagArray[self.selectedIndex]
+        recipeController.shortageProducts = self.shortageProducts
         recipeController.delegate = self
         
         self.navigationController?.show(recipeController, sender: self)
@@ -748,7 +783,7 @@ extension DetailJoinGroupOrderTableViewController: DetailJoinGroupOrderSelectRec
 }
 
 extension DetailJoinGroupOrderTableViewController: BrandCartDelegate {
-    func updateOrderContent(sender: BrandCartTableViewController, content: [MenuProductItem]?) {
+    func changeOrderContent(sender: BrandCartTableViewController, content: [MenuProductItem]?) {
         self.memberContent.orderContent.menuProductItems = content
         setupCartBadgeNumber()
     }

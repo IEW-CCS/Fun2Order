@@ -106,7 +106,7 @@ let ORDER_STATUS_NEW: String = "NEW"            // User create the real order an
 let ORDER_STATUS_ACCEPT: String = "ACCEPT"      // Store manager confirms to receive the real order
 let ORDER_STATUS_REJECT: String = "REJECT"      // Store manager rejects the real order
 let ORDER_STATUS_INPROCESS: String = "INPR"     // Store starts making the content of the order
-let ORDER_STATUS_PROCESSEND: String = "PREN"        // Store gets the order ready to take out or deliver
+let ORDER_STATUS_PROCESSEND: String = "PREN"    // Store gets the order ready to take out or deliver
 let ORDER_STATUS_DELIVERY: String = "DELIVERY"  // Products in delivery
 let ORDER_STATUS_CLOSE: String = "CLOSE"        // Customer receives products and finishes this order
 
@@ -128,6 +128,12 @@ let REPORT_LAYOUT_TYPE_CELL = "REPORT_CELL"
 let PRODUCT_OPERATION_MODE_ADD = "ADD"
 let PRODUCT_OPERATION_MODE_COPY = "COPY"
 let PRODUCT_OPERATION_MODE_EDIT = "EDIT"
+
+let STORE_NOTIFICATION_TYPE_NEW_ORDER = "NEW_ORDER"
+let STORE_NOTIFICATION_TYPE_BRAND_MESSAGE = "BRAND_MESSAGE"
+
+let STORE_STATE_BUSY = "BUSY"
+let STORE_STATE_NORMAL = "NORMAL"
 
 let OS_TYPE_IOS = "iOS"
 let OS_TYPE_ANDROID = "Android"

@@ -30,34 +30,6 @@ class DeliveryAddressTableViewController: UITableViewController {
     }
     
     @IBAction func addNewDeliveryAddress(_ sender: UIBarButtonItem) {
-        /*
-        var alertWindow: UIWindow!
-        let controller = UIAlertController(title: "新增地址", message: "輸入要新增之外送地址", preferredStyle: .alert)
-
-        let okAction = UIAlertAction(title: "確定", style: .default) { (_) in
-            print("Confirm to add this address")
-            let address_string = controller.textFields?[0].text
-            if address_string == nil || address_string!.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
-                presentSimpleAlertMessage(title: "錯誤訊息", message: "輸入的外送地址不能為空白，請重新輸入")
-                alertWindow.isHidden = true
-                return
-            }
-            
-            insertFavoriteAddress(favorite_address: address_string!)
-            self.addressList = retrieveFavoriteAddress()
-
-            self.tableView.reloadData()
-            alertWindow.isHidden = true
-        }
-        
-        controller.addAction(okAction)
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
-            print("Cancel to add this address")
-            alertWindow.isHidden = true
-        }
-        controller.addAction(cancelAction)
-        alertWindow = presentAlert(controller)
-        */
         let controller = UIAlertController(title: "請輸入外送地址", message: nil, preferredStyle: .alert)
         controller.addTextField { (textField) in
             textField.placeholder = "外送地址"

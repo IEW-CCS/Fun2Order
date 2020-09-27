@@ -177,7 +177,7 @@ class PushNotificationSender {
         task.resume()
     }
     
-    func sendMulticastMessage(to tokens: [String], notification_key: String, title: String, body: String, data: Any, ostype: String?) {
+    func sendMulticastMessage(to tokens: [String], title: String, body: String, data: Any, ostype: String?) {
         let dataDict = data as! NotificationData
         let urlString = "https://fcm.googleapis.com/fcm/send"
         let url = NSURL(string: urlString)!
@@ -225,4 +225,54 @@ class PushNotificationSender {
         }
         task.resume()
     }
+
+    func sendStoreMulticastMessage(to tokens: [String], title: String, body: String, data: Any, ostype: String?) {
+        let dataDict = data as! StoreNotificationData
+        let urlString = "https://fcm.googleapis.com/fcm/send"
+        let url = NSURL(string: urlString)!
+        
+        var paramString: [String: Any] =
+            [//"to" : notification_key,
+             "registration_ids": tokens,
+             "notification" : ["title" : title, "body" : body],
+             "data": dataDict.toAnyObject()]
+
+        if ostype != nil {
+            if ostype! == "Android" {
+                paramString.removeValue(forKey: "notification")
+            }
+        }
+
+        let request = NSMutableURLRequest(url: url as URL)
+        request.httpMethod = "POST"
+        request.httpBody = try? JSONSerialization.data(withJSONObject: paramString, options: [])
+        let jsonString = try? JSONSerialization.data(withJSONObject: paramString, options: [])
+        print("jsonString = \(String(describing: jsonString))")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("key=\(self.authKey)", forHTTPHeaderField: "Authorization")
+
+        let task =  URLSession.shared.dataTask(with: request as URLRequest)  { (data, response, error) in
+            do {
+                if let jsonData = data {
+                    //print("jsonData = \(jsonData)")
+                    if let jsonDataDict  = try JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: Any] {
+                        print("----------------------------------------------------------------")
+                        print("PushNotificationSender sendPushNotification decode data from FCM server successfule!")
+                        NSLog("Received data:\n\(jsonDataDict))")
+                    }
+                }
+                
+                if error != nil {
+                    print("error = \(String(describing: error?.localizedDescription))")
+                }
+                
+                print("response = \(String(describing: response?.description))")
+                
+            } catch let err as NSError {
+                print(err.debugDescription)
+            }
+        }
+        task.resume()
+    }
+
 }

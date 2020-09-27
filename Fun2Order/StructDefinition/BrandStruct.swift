@@ -329,6 +329,7 @@ struct BrandSuggestionData: Codable {
 
 struct DetailStoreInformation: Codable {
     var storeID: Int = 0
+    var brandName: String = ""
     var storeName: String = ""
     var storeMenuNumber: String = ""
     var storeCategory: String?
@@ -360,6 +361,7 @@ struct DetailStoreInformation: Codable {
 
         return [
             "storeID": storeID,
+            "brandName": brandName,
             "storeName": storeName,
             "storeMenuNumber": storeMenuNumber,
             "storeCategory": storeCategory as Any,
@@ -420,6 +422,19 @@ struct OrderHistoryRecord: Codable, Hashable {
             "claimUser": claimUser,
             "claimStatus": claimStatus
         ]
+    }
+}
+
+struct activityShortageItem: Codable, Identifiable {
+    var id : UUID = UUID()
+    var category : String
+    var product : String
+    var isShortage : Bool
+    
+    init(category: String, product: String, isShortage: Bool) {
+        self.category = category
+        self.product = product
+        self.isShortage = isShortage
     }
 }
 

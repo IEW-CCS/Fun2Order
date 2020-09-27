@@ -2928,7 +2928,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="進行中"/>
-                                            <segment title="已逾期"/>
+                                            <segment title="已完成"/>
                                         </segments>
                                         <connections>
                                             <action selector="changeHistoryType:" destination="BkH-ek-Dwa" eventType="valueChanged" id="M6F-As-UcT"/>
@@ -4298,7 +4298,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9NQ-PY-VDq" customClass="ScrollUISegmentController" customModule="揪Fun" customModuleProvider="target">
-                                                    <rect key="frame" x="4" y="0.0" width="404" height="44"/>
+                                                    <rect key="frame" x="3" y="0.0" width="402" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 </view>
@@ -6488,17 +6488,80 @@
                                                 <constraint firstItem="r9w-zC-Nyy" firstAttribute="leading" secondItem="dB0-Xe-KWo" secondAttribute="leadingMargin" id="NJU-Fs-v5S"/>
                                                 <constraint firstItem="r9w-zC-Nyy" firstAttribute="centerY" secondItem="dB0-Xe-KWo" secondAttribute="centerY" id="ZAX-B5-8Fd"/>
                                                 <constraint firstAttribute="trailing" secondItem="NoV-p7-qiH" secondAttribute="trailing" constant="20" id="aFE-Fe-UbW"/>
+                                                <constraint firstItem="NoV-p7-qiH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="r9w-zC-Nyy" secondAttribute="trailing" constant="8" symbolic="YES" id="t6q-gf-YG5"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="已選購產品" id="A0h-3Q-CIB">
+                            <tableViewSection headerTitle="取餐資訊" id="A0h-3Q-CIB">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="HfW-TH-W05">
                                         <rect key="frame" x="0.0" y="156" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HfW-TH-W05" id="ZDJ-yf-bmn">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3pu-1F-cUP">
+                                                    <rect key="frame" x="20" y="11.5" width="38" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p3W-t3-zPf">
+                                                    <rect key="frame" x="76" y="11.5" width="63" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="p3W-t3-zPf" firstAttribute="centerY" secondItem="3pu-1F-cUP" secondAttribute="centerY" id="Ggi-Ww-mxK"/>
+                                                <constraint firstItem="3pu-1F-cUP" firstAttribute="leading" secondItem="ZDJ-yf-bmn" secondAttribute="leadingMargin" id="MSc-FS-lvd"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="p3W-t3-zPf" secondAttribute="trailing" constant="20" symbolic="YES" id="UW1-dq-a1e"/>
+                                                <constraint firstItem="3pu-1F-cUP" firstAttribute="centerY" secondItem="ZDJ-yf-bmn" secondAttribute="centerY" id="g4c-tI-dQR"/>
+                                                <constraint firstItem="p3W-t3-zPf" firstAttribute="leading" secondItem="3pu-1F-cUP" secondAttribute="trailing" constant="18" id="gIP-I1-0qa"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="z7L-BD-PI0">
+                                        <rect key="frame" x="0.0" y="199.5" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="z7L-BD-PI0" id="lu3-rT-sLw">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="取餐時間" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7kz-5o-YBw">
+                                                    <rect key="frame" x="20" y="11.5" width="70" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uel-0l-Knw">
+                                                    <rect key="frame" x="106" y="11.5" width="38" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.69411764710000001" green="0.0" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="uel-0l-Knw" firstAttribute="leading" secondItem="7kz-5o-YBw" secondAttribute="trailing" constant="16" id="9vk-6N-4Iq"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="uel-0l-Knw" secondAttribute="trailing" constant="20" symbolic="YES" id="aV1-Xi-Jn1"/>
+                                                <constraint firstItem="7kz-5o-YBw" firstAttribute="centerY" secondItem="lu3-rT-sLw" secondAttribute="centerY" id="esz-3O-Fbe"/>
+                                                <constraint firstItem="7kz-5o-YBw" firstAttribute="leading" secondItem="lu3-rT-sLw" secondAttribute="leadingMargin" id="u7G-eA-rcp"/>
+                                                <constraint firstItem="uel-0l-Knw" firstAttribute="centerY" secondItem="7kz-5o-YBw" secondAttribute="centerY" id="vvj-B6-Oz6"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="已選購產品" id="WYW-gh-jGt">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="jka-Vv-gVy">
+                                        <rect key="frame" x="0.0" y="299" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jka-Vv-gVy" id="qHG-Bh-5h9">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
@@ -6515,6 +6578,9 @@
                     <connections>
                         <outlet property="buttonConfirm" destination="NoV-p7-qiH" id="Lkc-In-9ie"/>
                         <outlet property="labelBrandName" destination="r9w-zC-Nyy" id="prN-2q-TMm"/>
+                        <outlet property="labelDeliveryAddress" destination="p3W-t3-zPf" id="L2o-BD-lFb"/>
+                        <outlet property="labelDeliveryTime" destination="uel-0l-Knw" id="Wrz-mn-rD7"/>
+                        <outlet property="labelDeliveryType" destination="3pu-1F-cUP" id="1xE-U1-vlL"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Aov-Rx-Blq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -6648,7 +6714,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="buB-gs-UVo">
-                                                    <rect key="frame" x="19" y="6" width="374" height="32"/>
+                                                    <rect key="frame" x="18" y="6" width="374" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                     <segments>
                                                         <segment title="自取"/>
@@ -6677,7 +6743,7 @@
                                                     </connections>
                                                 </button>
                                                 <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bwq-UO-1ST">
-                                                    <rect key="frame" x="97" y="5" width="296" height="34"/>
+                                                    <rect key="frame" x="94" y="5" width="298" height="34"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -6728,7 +6794,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="如：王先生" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hbL-5W-ojP">
-                                                    <rect key="frame" x="97" y="5" width="296" height="34"/>
+                                                    <rect key="frame" x="94" y="5" width="298" height="34"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -6921,7 +6987,7 @@
         <scene sceneID="5ru-fW-Zai">
             <objects>
                 <tableViewController storyboardIdentifier="BRAND_STORE_VC" title="分店資訊及訂購" id="Ddr-7W-V6T" customClass="BrandStoreListTableViewController" customModule="揪Fun" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="KJO-TE-tQh">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="KJO-TE-tQh">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -7066,7 +7132,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lFO-1l-UTf" customClass="ScrollUISegmentController" customModule="揪Fun" customModuleProvider="target">
-                                                    <rect key="frame" x="3" y="0.0" width="404" height="44"/>
+                                                    <rect key="frame" x="1" y="0.0" width="404" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 </view>

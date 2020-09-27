@@ -32,6 +32,7 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
     var menuOrder: MenuOrder = MenuOrder()
     var storeInfo: StoreContactInformation?
     var coworkBrandFlag: Bool = false
+    var packageFlag: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,13 +58,18 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
         
         self.myCheckStatus.isChecked = true
         self.myCheckStatus.valueChanged = { (isChecked) in
-            print("checkbox is checked: \(isChecked)")
+            print("myCheckStatus is checked: \(isChecked)")
             self.isAttended = isChecked
         }
 
         self.checkboxContactInfo.valueChanged = { (isChecked) in
-            print("checkbox is checked: \(isChecked)")
+            print("checkboxContactInfo is checked: \(isChecked)")
             self.isNeedContactInfo = isChecked
+        }
+        
+        self.checkboxSeparatePackage.valueChanged = { (isChecked) in
+            print("checkboxSeparatePackage is checked: \(isChecked)")
+            self.packageFlag = isChecked
         }
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
@@ -90,6 +96,8 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
         
         let tmpOrderNumber = "M\(formatter.string(from: Date()))"
       
+        self.deliveryInfo.separatePackageFlag = self.packageFlag
+        
         self.menuOrder.orderNumber = tmpOrderNumber
         self.menuOrder.menuNumber = self.detailMenuInformation.menuNumber
         self.menuOrder.orderType = ORDER_TYPE_OFFICIAL_MENU
@@ -102,7 +110,7 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
         self.menuOrder.needContactInfoFlag = self.isNeedContactInfo
         self.menuOrder.storeInfo = self.storeInfo
         self.menuOrder.deliveryInfo = self.deliveryInfo
-        self.menuOrder.coworkBrandFlag = true
+        self.menuOrder.coworkBrandFlag = self.coworkBrandFlag
         self.menuOrder.groupOrderFlag = true
 
         let timeFormatter = DateFormatter()
@@ -201,7 +209,6 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
             //self.app.saveContext()
 
             self.uploadMenuOrder()
-            //self.sendGroupOrderNotification()
             self.sendMulticastNotification()
         }
     }
@@ -222,7 +229,7 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
             } else {
                 // Send notification to refresh HistoryList function
                 print("GroupOrderViewController sends notification to refresh History List function")
-                NotificationCenter.default.post(name: NSNotification.Name("RefreshHistory"), object: nil)
+                //NotificationCenter.default.post(name: NSNotification.Name("RefreshHistory"), object: nil)
                 if self.isAttended {
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     guard let join_vc = storyboard.instantiateViewController(withIdentifier: "DETAIL_JOIN_ORDER_VC") as? DetailJoinGroupOrderTableViewController else{
@@ -285,7 +292,7 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
             
             if !tokenIDs.isEmpty {
                 let sender = PushNotificationSender()
-                sender.sendMulticastMessage(to: tokenIDs, notification_key: "", title: title, body: body, data: orderNotify, ostype: OS_TYPE_IOS)
+                sender.sendMulticastMessage(to: tokenIDs, title: title, body: body, data: orderNotify, ostype: OS_TYPE_IOS)
             }
             
             tokenIDs.removeAll()
@@ -301,67 +308,10 @@ class DetailCreateGroupOrderTableViewController: UITableViewController, UIGestur
             if !tokenIDs.isEmpty {
                 let sender = PushNotificationSender()
                 usleep(100000)
-                sender.sendMulticastMessage(to: tokenIDs, notification_key: "", title: title, body: body, data: orderNotify, ostype: OS_TYPE_ANDROID)
+                sender.sendMulticastMessage(to: tokenIDs, title: title, body: body, data: orderNotify, ostype: OS_TYPE_ANDROID)
             }
         }
     }
-
-    /*
-    func sendGroupOrderNotification() {
-        if !self.menuOrder.contentItems.isEmpty {
-            let myTokenID = getMyTokenID()
-            let dateNow = Date()
-            let formatter = DateFormatter()
-            formatter.dateFormat = DATETIME_FORMATTER
-            let dateTimeString = formatter.string(from: dateNow)
-            
-            for i in 0...self.menuOrder.contentItems.count - 1 {
-                
-                print("\(self.menuOrder.contentItems[i].orderContent.itemOwnerName)'s tokenID = \(self.menuOrder.contentItems[i].memberTokenID)")
-                
-                let tokenID = self.menuOrder.contentItems[i].memberTokenID
-                
-                var orderNotify: NotificationData = NotificationData()
-                let title: String = "團購邀請"
-                var body: String = ""
-                body = "來自『 \(self.menuOrder.orderOwnerName)』 發起的團購邀請，請點擊通知以查看詳細資訊。"
-                //if self.textViewMessage.text == nil || self.textViewMessage.text == "" {
-                //    body = "來自 \(self.menuOrder.orderOwnerName) 發起的團購邀請，請點擊通知以查看詳細資訊。"
-                //} else {
-                //    body = "來自 \(self.menuOrder.orderOwnerName) 的團購邀請：\n" + textViewMessage.text!
-                //}
-
-                orderNotify.messageTitle = title
-                orderNotify.messageBody = body
-                orderNotify.notificationType = NOTIFICATION_TYPE_ACTION_JOIN_ORDER
-                orderNotify.receiveTime = dateTimeString
-                orderNotify.orderOwnerID = self.menuOrder.orderOwnerID
-                orderNotify.orderOwnerName = self.menuOrder.orderOwnerName
-                orderNotify.menuNumber = self.menuOrder.menuNumber
-                orderNotify.orderNumber = self.menuOrder.orderNumber
-                orderNotify.dueTime = self.menuOrder.dueTime
-                orderNotify.brandName = self.menuOrder.brandName
-                orderNotify.attendedMemberCount = self.menuOrder.contentItems.count
-                orderNotify.messageDetail = self.textViewMessage.text
-                orderNotify.isRead = "N"
-
-                let sender = PushNotificationSender()
-
-                if tokenID == myTokenID {
-                    orderNotify.messageBody = "自己發起並參與的團購單"
-                    orderNotify.isRead = "Y"
-                    //insertNotification(notification: orderNotify)
-                    sender.sendPushNotification(to: tokenID, title: title, body: orderNotify.messageBody, data: orderNotify, ostype: self.menuOrder.contentItems[i].orderContent.ostype)
-                    continue
-                }
-                
-                usleep(50000)
-                sender.sendPushNotification(to: tokenID, title: title, body: body, data: orderNotify, ostype: self.menuOrder.contentItems[i].orderContent.ostype)
-            }
-        }
-    }
-    */
-
 
     @IBAction func setupOrderDueDate(_ sender: UIButton) {
         let controller = UIAlertController(title: "請設定截止時間", message: nil, preferredStyle: .actionSheet)

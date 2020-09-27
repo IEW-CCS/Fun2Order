@@ -129,10 +129,10 @@ func Activityalert( title: String )-> UIAlertController {
 func getOrderStatusDescription(status_code: String) -> String {
     switch status_code {
     case ORDER_STATUS_INIT:
-        return "成立訂單"
+        return "訂單建立"
         
     case ORDER_STATUS_NEW:
-        return "送出訂單"
+        return "新訂單"
         
     case ORDER_STATUS_ACCEPT:
         return "已接單"

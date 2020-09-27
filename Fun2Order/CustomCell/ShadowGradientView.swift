@@ -129,6 +129,13 @@ import Foundation
         updateGradient()
     }
     
+    public func setDisabled() {
+        self.gradientColor = 15
+        self.label.textColor = .black
+        self.gradientBorderColor = .lightGray
+        updateGradient()
+    }
+    
     private func installShadow() {
         self.backgroundColor = UIColor.clear
         self.layer.cornerRadius = cornerRadius

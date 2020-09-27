@@ -692,3 +692,200 @@ func downloadFBBrandStoreList(brand_name: String, completion: @escaping([DetailS
         completion(nil)
     }
 }
+
+func uploadFBStoreNewOrder(menu_order: MenuOrder) {
+    let databaseRef = Database.database().reference()
+    var pathString: String = "STORE_MENU_ORDER/\(menu_order.brandName)/\(menu_order.storeInfo!.storeName!)"
+    
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    let dateString = formatter.string(from: Date())
+    pathString = pathString + "/\(dateString)/\(menu_order.orderNumber)"
+    
+    databaseRef.child(pathString).setValue(menu_order.toAnyObject())
+
+}
+
+func updateFBUserMenuOrderStatus(user_id: String, order_number: String, status_code: String) {
+    if user_id.trimmingCharacters(in: .whitespacesAndNewlines) == "" || order_number.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+        presentSimpleAlertMessage(title: "錯誤訊息", message: "使用者ID/訂單號碼 資料中存在空白")
+        return
+    }
+    
+    let databaseRef = Database.database().reference()
+    let pathString = "USER_MENU_ORDER/\(user_id)/\(order_number)/orderStatus"
+    
+    databaseRef.child(pathString).setValue(status_code)
+}
+
+func updateFBUserMenuOrderQuantityPrice(user_id: String, order_number: String, total_quantity: Int, total_price:  Int) {
+    if user_id.trimmingCharacters(in: .whitespacesAndNewlines) == "" || order_number.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+        presentSimpleAlertMessage(title: "錯誤訊息", message: "使用者ID/訂單號碼 資料中存在空白")
+        return
+    }
+    
+    let databaseRef = Database.database().reference()
+    let quantityString = "USER_MENU_ORDER/\(user_id)/\(order_number)/orderTotalQuantity"
+    let priceString = "USER_MENU_ORDER/\(user_id)/\(order_number)/orderTotalPrice"
+
+    databaseRef.child(quantityString).setValue(total_quantity)
+    databaseRef.child(priceString).setValue(total_price)
+}
+
+func updateFBUserMenuOrderDeliveryInfo(user_id: String, order_number: String, delivery_time: String) {
+    if user_id.trimmingCharacters(in: .whitespacesAndNewlines) == "" || order_number.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+        presentSimpleAlertMessage(title: "錯誤訊息", message: "使用者ID/訂單號碼 資料中存在空白")
+        return
+    }
+    
+    let databaseRef = Database.database().reference()
+    let pathString = "USER_MENU_ORDER/\(user_id)/\(order_number)/deliveryInfo/deliveryTime"
+    
+    databaseRef.child(pathString).setValue(delivery_time)
+}
+
+
+func downloadFBStoreUserControlList(brand_name: String, completion: @escaping([StoreUserControl]?) -> Void) {
+    let databaseRef = Database.database().reference()
+    let pathString = "STORE_USER_CONTROL/\(brand_name)"
+
+    databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+        if snapshot.exists() {
+            var userList: [StoreUserControl] = [StoreUserControl]()
+            let childEnumerator = snapshot.children
+            
+            let childDecoder: JSONDecoder = JSONDecoder()
+            while let childData = childEnumerator.nextObject() as? DataSnapshot {
+                //print("child = \(childData)")
+                do {
+                    let childJsonData = try? JSONSerialization.data(withJSONObject: childData.value as Any, options: [])
+                    let realData = try childDecoder.decode(StoreUserControl.self, from: childJsonData!)
+                    userList.append(realData)
+                    //print("Success: \(realData.itemName)")
+                } catch {
+                    print("downloadFBStoreUserControlList jsonData decode failed: \(error.localizedDescription)")
+                    continue
+                }
+            }
+
+            if userList.isEmpty {
+                completion(nil)
+            } else {
+                completion(userList)
+            }
+        } else {
+            print("downloadFBStoreUserControlList [StoreUserControl] snapshot doesn't exist!")
+            completion(nil)
+        }
+    })  { (error) in
+        print("downloadFBStoreUserControlList Firebase error = \(error.localizedDescription)")
+        completion(nil)
+    }
+}
+
+func downloadFBStoreInformation(brand_name: String, store_name: String, completion: @escaping (DetailStoreInformation?) -> Void) {
+    var storeData: DetailStoreInformation = DetailStoreInformation()
+    let databaseRef = Database.database().reference()
+    let pathString = "DETAIL_BRAND_STORE/\(brand_name)/\(store_name)"
+
+    databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+        if snapshot.exists() {
+            let storeInfo = snapshot.value
+            let jsonData = try? JSONSerialization.data(withJSONObject: storeInfo as Any, options: [])
+            //let jsonString = String(data: jsonData!, encoding: .utf8)!
+            //print("brandProfile jsonString = \(jsonString)")
+
+            let decoder: JSONDecoder = JSONDecoder()
+            do {
+                storeData = try decoder.decode(DetailStoreInformation.self, from: jsonData!)
+                //print("storeData decoded successful !!")
+                //print("storeData = \(brandData)")
+                completion(storeData)
+            } catch {
+                print("downloadFBStoreInformation storeData jsonData decode failed: \(error.localizedDescription)")
+                completion(nil)
+            }
+        } else {
+            print("downloadFBStoreInformation DETAIL_BRAND_STORE snapshot doesn't exist!")
+            completion(nil)
+        }
+    })  { (error) in
+        print("downloadFBStoreInformation Firebase error = \(error.localizedDescription)")
+        completion(nil)
+    }
+}
+
+func downloadFBStoreBusinessTimeChange(brand_name: String, store_name: String, completion: @escaping (BusinessTime?) -> Void) {
+    var businessData: BusinessTime = BusinessTime()
+    
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    let dayString = formatter.string(from: Date())
+
+    let databaseRef = Database.database().reference()
+    let pathString = "STORE_BUSINESS_TIME_CHANGE/\(brand_name)/\(store_name)/\(dayString)"
+
+    databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+        if snapshot.exists() {
+            let storeInfo = snapshot.value
+            let jsonData = try? JSONSerialization.data(withJSONObject: storeInfo as Any, options: [])
+            //let jsonString = String(data: jsonData!, encoding: .utf8)!
+            //print("brandProfile jsonString = \(jsonString)")
+
+            let decoder: JSONDecoder = JSONDecoder()
+            do {
+                businessData = try decoder.decode(BusinessTime.self, from: jsonData!)
+                //print("storeData decoded successful !!")
+                //print("storeData = \(brandData)")
+                completion(businessData)
+            } catch {
+                print("downloadFBStoreBusinessTimeChange businessData jsonData decode failed: \(error.localizedDescription)")
+                completion(nil)
+            }
+        } else {
+            print("downloadFBStoreBusinessTimeChange STORE_BUSINESS_TIME_CHANGE snapshot doesn't exist!")
+            completion(nil)
+        }
+    })  { (error) in
+        print("downloadFBStoreBusinessTimeChange Firebase error = \(error.localizedDescription)")
+        completion(nil)
+    }
+}
+
+func downloadFBStoreShortageProductList(brand_name: String, store_name: String, day_string: String, completion: @escaping([ShortageItem]?) -> Void) {
+    let databaseRef = Database.database().reference()
+    let pathString = "DETAIL_BRAND_STORE_SHORTAGE/\(brand_name)/\(store_name)/\(day_string)"
+
+    databaseRef.child(pathString).observeSingleEvent(of: .value, with: { (snapshot) in
+        if snapshot.exists() {
+            var shortageList: [ShortageItem] = [ShortageItem]()
+            let childEnumerator = snapshot.children
+            
+            let childDecoder: JSONDecoder = JSONDecoder()
+            while let childData = childEnumerator.nextObject() as? DataSnapshot {
+                //print("child = \(childData)")
+                do {
+                    let childJsonData = try? JSONSerialization.data(withJSONObject: childData.value as Any, options: [])
+                    let realData = try childDecoder.decode(ShortageItem.self, from: childJsonData!)
+                    shortageList.append(realData)
+                    //print("Success: \(realData.itemName)")
+                } catch {
+                    print("downloadFBStoreShortageProductList jsonData decode failed: \(error.localizedDescription)")
+                    continue
+                }
+            }
+
+            if shortageList.isEmpty {
+                completion(nil)
+            } else {
+                completion(shortageList)
+            }
+        } else {
+            print("downloadFBStoreShortageProductList [ShortageItem] snapshot doesn't exist!")
+            completion(nil)
+        }
+    })  { (error) in
+        print("downloadFBStoreShortageProductList Firebase error = \(error.localizedDescription)")
+        completion(nil)
+    }
+}

@@ -94,7 +94,9 @@ class NotificationTableViewController: UITableViewController {
         DispatchQueue.main.async {
             setNotificationBadgeNumber()
             self.tableView.reloadData()
-            self.refreshControl?.endRefreshing()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.refreshControl?.endRefreshing()
+            }
         }
         
         self.setupBadgeNumber()
